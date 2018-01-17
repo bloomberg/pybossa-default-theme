@@ -219,15 +219,19 @@
         {% endif %}
 {% endmacro %}
 
-{% macro render_grid_projects(projects, title, upload_method, id=None, title_class='col-md-offset-1 col-md-10', projects_class='col-sm-offset-2 col-sm-8 col-md-offset-0 col-md-4', container=True, subheading=None, active_cat=None, featured=False) %}
+{% macro render_grid_projects(projects, title, upload_method, id=None, title_class='col-md-offset-1 col-md-10', projects_class='col-sm-offset-2 col-sm-8 col-md-offset-0 col-md-4', container=True, subheading=None, active_cat=None, featured=False, section_class=None, readmore_text=None, title_size='1') %}
+{% if section_class %}
+<section id="{{id}}" class="{{section_class}}">
+{% else %}
 <section id="{{id}}" class="account {{title |lower }}-projects">
+{% endif %}
     {% if container %}
     <div class="container">
     {% endif %}
         <div class="row">
             <div class="{{title_class}}">
                 <div class="text-center">
-                    <h1>{{title}}</h1>
+                    <h{{title_size}}>{{title}}</h{{title_size}}>
                     {% if subheading %}
                     <p>{{subheading}}</p>
                     {% endif %}
@@ -253,7 +257,7 @@
                             {% endif %}
                            {% else %}
                            {% if active_cat != 'draft' %}
-                           <p class="readmore"><a href="{{ url_for('project.details', short_name=f.short_name)}}">{{_('More info')}}</a></p>
+                           <p class="readmore"><a href="{{ url_for('project.details', short_name=f.short_name)}}">{{_(readmore_text or 'More info')}}</a></p>
                            {% endif %}
                            {% endif %}
                        </div>

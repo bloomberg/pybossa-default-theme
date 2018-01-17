@@ -17,24 +17,10 @@
         </div>
     </div>
 </section>
-<section class="home projects">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-offset-1 col-md-10">
-               {% for f in featured %}
-               <div class="col-sm-offset-2 col-sm-8 col-md-offset-0 col-md-4">
-                   <div class="thumbnail card">
-                       <div class="post-pic" style="background: rgb(0, 151, 167) url({{helper.render_url_thumbnail(f, upload_method)}}) no-repeat center top; background-size: cover;"></div>
-                       <div class="caption">
-                           <h3>{{f.name}}</h3>
-                           <p>{{f.description}}</p>
-                           <p class="readmore"><a href="{{ url_for('project.details', short_name=f.short_name)}}">{{_('Contribute')}}</a></p>
-                       </div>
-                   </div>
-               </div>
-               {% endfor %}
-           </div>
-        </div>
-    </div>
-</section>
+{% if historical_contributions %}
+{{ helper.render_grid_projects(historical_contributions, 'Historical Contributions', upload_method, current_user, section_class='home projects', title_size='2') }}
+{% endif %}
+{% if featured %}
+{{ helper.render_grid_projects(featured, 'Featured Projects', upload_method, current_user, section_class='home projects', readmore_text='Contribute', title_size='2') }}
+{% endif %}
 {% endblock %}
