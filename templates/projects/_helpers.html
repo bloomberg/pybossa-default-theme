@@ -34,7 +34,7 @@
 </div>
 {% endmacro %}
 
-{% macro render_project_local_nav(project, active_link, current_user, pro_features) -%}
+{% macro render_project_local_nav(project, active_link, current_user, pro_features, upload_method) -%}
 <ul class="list-group" style="margin-top: 21px;">
     {{ render_project_thumbnail(project, upload_method, class="img-responsive thumbnail card") }}
 </ul>
@@ -340,8 +340,8 @@
 
 {% macro render_project_thumbnail(project, upload_method, id, class, style) %}
 {% if project.info.container %}
-    {% if upload_method == 'rackspace'%}
-    <img id="{{id}}" class="{{class}}" width="{{width}}" src="{{ url_for('rackspace', filename=project.info.thumbnail, container=project.info.container)}}" style="{{style}}" onError="this.onerror=null;this.src='{{url_for('static', filename='img/placeholder.project.png')}}';">
+    {% if upload_method == 'rackspace' or upload_method == 'cloud'%}
+    <img id="{{id}}" class="{{class}}" width="{{width}}" src="{{ url_for(upload_method, filename=project.info.thumbnail, container=project.info.container)}}" style="{{style}}" onError="this.onerror=null;this.src='{{url_for('static', filename='img/placeholder.project.png')}}';">
     {% else %}
     <img id="{{id}}"  class="{{class}}" width="{{width}}" src="{{ url_for('uploads.uploaded_file', filename=(project.info.container + '/' + project.info.thumbnail))}}" style="{{style}}" onError="this.onerror=null;this.src='{{url_for('static', filename='img/placeholder.project.png')}}';" >
     {% endif %}
@@ -354,8 +354,8 @@
 
 {%- macro render_url_thumbnail(project, upload_method) %}
 {%- if project.info.container %}
-    {%- if upload_method == 'rackspace'%}
-    {{ url_for('rackspace', filename=project.info.thumbnail, container=project.info.container)}}
+    {%- if upload_method in ['rackspace', 'cloud'] %}
+    {{ url_for(upload_method, filename=project.info.thumbnail, container=project.info.container)}}
     {%- else %}
     {{ url_for('uploads.uploaded_file', filename=(project.info.container + '/' + project.info.thumbnail))}}
     {% endif -%}
