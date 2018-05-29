@@ -8,7 +8,7 @@
 {{ helper.render_loading(loading_text) }}
 <div class="container">
     <div class="col-md-3">
-        {{ helper.render_project_local_nav(project, 'tasks', current_user, pro_features)}}
+        {{ helper.render_project_local_nav(project, 'tasks', current_user, pro_features, upload_method)}}
     </div>
     <div class="col-md-9">
         <h1><strong>{{project.name}}</strong>: {{_('Currently configured autoimport')}}</h1>

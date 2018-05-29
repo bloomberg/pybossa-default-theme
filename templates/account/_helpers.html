@@ -1,4 +1,4 @@
-{% macro render_account_local_nav(current_user, active_link) -%}
+{% macro render_account_local_nav(current_user, active_link, upload_method = None) -%}
 <ul class="list-group" style="margin-top: 21px;">
     {{ render_user_thumbnail(current_user, upload_method, class="img-thumbnail") }}
 </ul>
@@ -77,8 +77,8 @@
 
 {%- macro render_user_avatar_src(user, upload_method) %}
     {%- if user.info.avatar %}
-        {%- if upload_method == 'rackspace'%}
-        {{ url_for('rackspace', filename=user.info.avatar, container=user.info.container)}}
+        {%- if upload_method == 'rackspace' or upload_method == 'cloud' %}
+        {{ url_for(upload_method, filename=user.info.avatar, container=user.info.container)}}
         {%- else %}
         {{url_for('uploads.uploaded_file', filename=(user.info.container + '/' + user.info.avatar))}}
         {% endif -%}
@@ -90,8 +90,8 @@
 
 {% macro render_user_thumbnail(user, upload_method, id, class, style) %}
     {% if user.info.avatar %}
-        {% if upload_method == 'rackspace'%}
-        <img id="{{id}}" class="{{class}}" style="{{style}}" src="{{ url_for('rackspace', filename=user.info.avatar, container=user.info.container)}}" onError="this.onerror=null;this.src='{{url_for('static', filename='img/placeholder.user.png')}}';">
+        {% if upload_method in ['rackspace', 'cloud'] %}
+        <img id="{{id}}" class="{{class}}" style="{{style}}" src="{{ url_for(upload_method, filename=user.info.avatar, container=user.info.container)}}" onError="this.onerror=null;this.src='{{url_for('static', filename='img/placeholder.user.png')}}';">
         {% else %}
         <img id="{{id}}" class="{{class}}" style="{{style}}" src="{{ url_for('uploads.uploaded_file', filename=(user.info.container + '/' + user.info.avatar))}}" onError="this.onerror=null;this.src='{{url_for('static', filename='img/placeholder.user.png')}}';">
         {% endif %}
@@ -133,8 +133,8 @@
 
 {% macro render_avatar(user, upload_method, class, width) %}
 {% if user.info.avatar %}
-    {% if upload_method == 'rackspace'%}
-    <img class="{{class}}" width="{{width}}" src="{{ url_for('rackspace', filename=user.info.avatar, container=user.info.container)}}" onError="this.onerror=null;this.src='{{url_for('static', filename='img/placeholder.user.png')}}';">
+    {% if upload_method in ['rackspace', 'cloud'] %}
+    <img class="{{class}}" width="{{width}}" src="{{ url_for(upload_method, filename=user.info.avatar, container=user.info.container)}}" onError="this.onerror=null;this.src='{{url_for('static', filename='img/placeholder.user.png')}}';">
     {% else %}
     <img class="{{class}}" width="{{width}}" src="{{ url_for('uploads.uploaded_file', filename=(user.info.container + '/' + user.info.avatar))}}" onError="this.onerror=null;this.src='{{url_for('static', filename='img/placeholder.user.png')}}';">
     {% endif %}

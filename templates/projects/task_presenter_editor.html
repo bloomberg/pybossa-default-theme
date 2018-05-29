@@ -40,7 +40,7 @@
             <fieldset>
                 {{ render_field(form.editor)}}
                 <div class="form-actions">
-                    {% if current_user.admin or (project.owner_id == current_user.id or current_user.id in project.owners_ids) %}
+                    {% if current_user.admin or ((project.owner_id == current_user.id or current_user.id in project.owners_ids) and not disable_editor) %}
                     <input type="submit" value={{ _('Update the project task presenter') }} class="btn btn-primary" />
                     {% else %}
                     <input type="submit" value={{ _('Update the project task presenter') }} class="btn btn-primary" disabled />

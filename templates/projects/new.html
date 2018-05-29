@@ -5,11 +5,11 @@
 
 {% block content %}
 {% from "_formhelpers.html" import render_field %}
- 
+
 <section class="account profile">
 <div id="app-form" class="container">
     <div class=" col-sm-3 col-md-3 " style="margin-top:30px;">
-        {{ helper.render_account_local_nav(current_user, active_link) }}
+        {{ helper.render_account_local_nav(current_user, active_link, upload_method) }}
     </div>
     <div class="col-sm-9 col-md-9" style="margin-top:30px;">
         <h2><strong>{{ _('Project') }}</strong>: {{ _('Create a new project') }}</h2>
