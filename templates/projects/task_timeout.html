@@ -1,0 +1,18 @@
+{% extends "projects/base.html" %}
+{% set active_page = "projects" %}
+{% set active_link  = "tasks" %}
+{% set section = _('Task Timeout') %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block projectcontent %}
+<form id="task_timeout" method="post" action="{{ url_for('project.task_timeout', short_name=project.short_name) }}">
+    {{ form.hidden_tag() }}
+    <fieldset>
+        {{ render_field(form.timeout, placeholder= _('The maximum time available to complete a task in this project')) }}
+        <div class="form-actions">
+            <input type="submit" value={{_('Set timeout')}} class="btn btn-primary" />
+            <a href="{{url_for('project.tasks', short_name=project.short_name)}}" class="btn btn-default">{{_('Cancel')}}</a>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}

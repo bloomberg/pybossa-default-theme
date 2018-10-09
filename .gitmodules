@@ -1,6 +1,6 @@
 [submodule "static/js/pybossa"]
 	path = static/js/pybossa
-	url = https://github.com/PyBossa/pybossa.js.git
+	url = https://github.com/bloomberg/pybossa.js.git
 [submodule "static/js/pybossa-player"]
 	path = static/js/pybossa-player
-	url = https://github.com/PyBossa/pybossa-player.js.git
+	url = https://github.com/bloomberg/pybossa-player.js.git

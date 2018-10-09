@@ -5,14 +5,19 @@
 
 {% block content %}
 {% from "_formhelpers.html" import render_field %}
- 
+
 <section class="account profile">
 <div id="app-form" class="container">
-    <div class=" col-sm-3 col-md-3 ">
-        {{ helper.render_account_local_nav(current_user, active_link) }}
+    <div class=" col-sm-3 col-md-3 " style="margin-top:30px;">
+        {{ helper.render_account_local_nav(current_user, active_link, upload_method) }}
     </div>
-    <div class="col-sm-9 col-md-9">
+    <div class="col-sm-9 col-md-9" style="margin-top:30px;">
         <h2><strong>{{ _('Project') }}</strong>: {{ _('Create a new project') }}</h2>
+        {% if message %}
+        <div style="margin: 15px 0 15px 0">
+            {{ message|safe }}
+        </div>
+        {% endif %}
         <form class="" method="post" action="{{ url_for('project.new')}}" enctype="multipart/form-data"}}>
         {{ form.hidden_tag() }}
         <fieldset>
@@ -25,6 +30,7 @@
 · Will you help make a difference? Explain to the volunteers why their contribution is essential and how the result of your project can help change things!
 
 (you can use Markdown to give format to your description!)')) }}
+            {{ render_field(form.password, class_="span4", placeholder=_('Enter project password')) }}
             <div class="form-actions">
                 <input type="submit" value={{_('Create the project')}} class="btn btn-primary" />
                 <a href="{{url_for('account.profile', name=current_user.name)}}" class="btn btn-default">{{_('Cancel')}}</a>

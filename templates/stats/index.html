@@ -8,7 +8,7 @@
 <section class="stats leaderboard">
     <div class="container">
         <div class="row">
-            <div class="col-md-offset-2 col-md-8">
+            <div class="col-md-offset-2 col-md-8" style="margin-top: 50px;">
                 {% if enforce_privacy and (current_user.is_anonymous() or (current_user.is_authenticated and not current_user.admin)) %}
                 {{ privacy.render_lock_page() }}
                 {% else %}

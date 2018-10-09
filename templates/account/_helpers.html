@@ -1,22 +1,22 @@
-{% macro render_account_local_nav(current_user, active_link) -%}
+{% macro render_account_local_nav(current_user, active_link, upload_method = None) -%}
 <ul class="list-group" style="margin-top: 21px;">
     {{ render_user_thumbnail(current_user, upload_method, class="img-thumbnail") }}
 </ul>
-<ul class="list-group" style="margin-top: 21px;">
-    <li class="list-group-item {% if active_link=="profile"%}active{% endif %}"><a href="{{url_for('account.profile', name=current_user.name)}}">{{ _('My Account') }}</a><i class="fa fa-chevron-right pull-right"></i></li>
-    <li class="list-group-item {% if active_link=="projects"%}active{% endif %}"><a href="{{url_for('account.projects', name=current_user.name)}}">{{ _('My Projects') }}</a><i class="fa fa-chevron-right pull-right"></i></li>
-    {% if current_user.admin %}
-    <li class="list-group-item {% if active_link=="admin"%}active{% endif %}"><a href="{{url_for('admin.index')}}">{{ _('Admin Site') }}</a><i class="fa fa-chevron-right pull-right"></i></li>
+<div class="list-group" style="margin-top: 21px;">
+    <a href="{{url_for('account.profile', name=current_user.name)}}" class="list-group-item {% if active_link=='profile'%}active{% endif %}">{{ _('My Account') }}<i class="fa fa-chevron-right pull-right"></i></a>
+    {% if current_user.admin or current_user.subadmin %}
+    <a href="{{url_for('account.projects', name=current_user.name)}}" class="list-group-item {% if active_link=='projects'%}active{% endif %}">{{ _('My Projects') }}<i class="fa fa-chevron-right pull-right"></i></a>
+    <a href="{{url_for('admin.index')}}" class="list-group-item {% if active_link=='admin'%}active{% endif %}">{{ _('Admin Site') }}<i class="fa fa-chevron-right pull-right"></i></a>
     {% endif %}
-    <li class="list-group-item {% if active_link=="settings"%}active{% endif %}"><a href="{{url_for('account.update_profile', name=current_user.name)}}"> {{ _('My Settings') }}</a><i class="fa fa-chevron-right pull-right"></i></li>
-</ul>
+    <a href="{{url_for('account.update_profile', name=current_user.name)}}" class="list-group-item {% if active_link=='settings'%}active{% endif %}">{{ _('My Settings') }}<i class="fa fa-chevron-right pull-right"></i></a>
+</div>
 {% endmacro %}
 
 {% macro render_twitter_btn(project) %}
 <a href="https://twitter.com/share" class="twitter-share-button"
-    data-text="{{ _('I\'ve done') }} {{project.c}} {{ _('tasks for the @PyBossa project:') }} {{project.name}}. {{ _('Do you want to help?') }} {{url_for('project.details',short_name=project.short_name,_external=True)}}"
+    data-text="{{ _('I\'ve done') }} {{project.c}} {{ _('tasks for the @PyBossa project:') }} {{project.name}}. {{ _('Do you want to help?') }} {{url_for('project.details', short_name=project.short_name,_external=True)}}"
     data-count="none">{{ _('Tweet') }}</a>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 {% endmacro %}
 
 {% macro render_googlePlus_btn(project) %}
@@ -26,7 +26,7 @@
 </script>
 
 <!-- Place this tag where you want the +1 button to render. -->
-<div class="g-plusone" data-size="medium" data-annotation="none" data-href="{{url_for('project.details',short_name=project.short_name,_external=True)}}"></div>
+<div class="g-plusone" data-size="medium" data-annotation="none" data-href="{{url_for('project.details',short_name=project.short_name, _external=True)}}"></div>
 
 <!-- Place this render call where appropriate. -->
 <script type="text/javascript">gapi.plusone.go();</script>
@@ -36,7 +36,7 @@
 {% macro render_user_profile(user, upload_method, settings, private=True) %}
 <p><strong><i class="fa fa-user"></i> {{ _('Nick')}}:</strong> {{ user.name }}</p>
 {% if private %}
-<p><strong><i class="fa fa-envelope"></i> {{_('E-mail')}}:</strong> {{user.email_addr }} 
+<p><strong><i class="fa fa-envelope"></i> {{_('E-mail')}}:</strong> {{user.email_addr }}
     {% if (user.valid_email == False) %}
       {% if (user.confirmation_email_sent == False) %}
       <a href="{{ url_for('account.confirm_email')}}" class="btn btn-warning btn-xs">Validate email</a>
@@ -77,8 +77,8 @@
 
 {%- macro render_user_avatar_src(user, upload_method) %}
     {%- if user.info.avatar %}
-        {%- if upload_method == 'rackspace'%}
-        {{ url_for('rackspace', filename=user.info.avatar, container=user.info.container)}} 
+        {%- if upload_method == 'rackspace' or upload_method == 'cloud' %}
+        {{ url_for(upload_method, filename=user.info.avatar, container=user.info.container)}}
         {%- else %}
         {{url_for('uploads.uploaded_file', filename=(user.info.container + '/' + user.info.avatar))}}
         {% endif -%}
@@ -90,8 +90,8 @@
 
 {% macro render_user_thumbnail(user, upload_method, id, class, style) %}
     {% if user.info.avatar %}
-        {% if upload_method == 'rackspace'%}
-        <img id="{{id}}" class="{{class}}" style="{{style}}" src="{{ url_for('rackspace', filename=user.info.avatar, container=user.info.container)}}" onError="this.onerror=null;this.src='{{url_for('static', filename='img/placeholder.user.png')}}';">
+        {% if upload_method in ['rackspace', 'cloud'] %}
+        <img id="{{id}}" class="{{class}}" style="{{style}}" src="{{ url_for(upload_method, filename=user.info.avatar, container=user.info.container)}}" onError="this.onerror=null;this.src='{{url_for('static', filename='img/placeholder.user.png')}}';">
         {% else %}
         <img id="{{id}}" class="{{class}}" style="{{style}}" src="{{ url_for('uploads.uploaded_file', filename=(user.info.container + '/' + user.info.avatar))}}" onError="this.onerror=null;this.src='{{url_for('static', filename='img/placeholder.user.png')}}';">
         {% endif %}
@@ -117,7 +117,7 @@
       {% else %}
       <li class="active">
           <a href="#">{{ page }}</a>
-      </li>  
+      </li>
       {% endif %}
     {% endif %}
   {%- endfor %}
@@ -133,8 +133,8 @@
 
 {% macro render_avatar(user, upload_method, class, width) %}
 {% if user.info.avatar %}
-    {% if upload_method == 'rackspace'%}
-    <img class="{{class}}" width="{{width}}" src="{{ url_for('rackspace', filename=user.info.avatar, container=user.info.container)}}" onError="this.onerror=null;this.src='{{url_for('static', filename='img/placeholder.user.png')}}';">
+    {% if upload_method in ['rackspace', 'cloud'] %}
+    <img class="{{class}}" width="{{width}}" src="{{ url_for(upload_method, filename=user.info.avatar, container=user.info.container)}}" onError="this.onerror=null;this.src='{{url_for('static', filename='img/placeholder.user.png')}}';">
     {% else %}
     <img class="{{class}}" width="{{width}}" src="{{ url_for('uploads.uploaded_file', filename=(user.info.container + '/' + user.info.avatar))}}" onError="this.onerror=null;this.src='{{url_for('static', filename='img/placeholder.user.png')}}';">
     {% endif %}

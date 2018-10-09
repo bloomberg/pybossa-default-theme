@@ -5,4 +5,61 @@
     {% if project.long_description != project.description  %}
     {{ project.long_description | e | markdown }}
     {% endif %}
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-hover table-condensed">
+                <tr>
+                    <td><p>Project ID:</p></td>
+                    <td><p>{{project.id}}</p></td>
+                </tr>
+                <tr>
+                    <td><p>Total number of tasks:</p></td>
+                    <td><p>{{n_tasks}}</p></td>
+                </tr>
+                <tr>
+                    <td><p>Total number of tasks remaining:</p></td>
+                    <td><p>{{n_available_tasks}}</p></td>
+                </tr>
+                {% if current_user.admin or current_user.subadmin %}
+                <tr>
+                    <td><p>Total number of task runs:</p></td>
+                    <td><p>{{num_expected_task_runs}}</p></td>
+                </tr>
+                <tr>
+                    <td><p>Total number of task runs remaining:</p></td>
+                    <td><p>{{num_remaining_task_runs}}</p></td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td><p>Total number of tasks available for you:</p></td>
+                    <td><p>{{n_available_tasks_for_user}}</p></td>
+                </tr>
+                <tr>
+                    <td><p>Tasks completed by you:</p></td>
+                    <td><p>{{n_completed_tasks_by_user}}</p></td>
+                </tr>
+                <tr>
+                    <td><p>Oldest available task (with highest priority):</p></td>
+                    <td><p>{{oldest_available_task | datetime}}</p></td>
+                </tr>
+                <tr>
+                    <td><p>Last submission date:</p></td>
+                    <td><p>{{latest_submitted_task | datetime}}</p></td>
+                </tr>
+                {% if current_user.admin or current_user.subadmin %}
+                <tr>
+                    <td><p>Project Owner:</p></td>
+                    <td><p>{{ owner.fullname }}</p></td>
+                </tr>
+                    {% if config.ENABLE_ACCESS_CONTROL %}
+                    <tr>
+                        <td><p>Data Classification Levels</p></td>
+                        <td><p>{{', '.join(project.info.data_access or ['None'])}}</p></td>
+                    </tr>
+                    {% endif %}
+                {% endif %}
+            </table>
+        </div>
+    </div>
+
 {% endblock %}

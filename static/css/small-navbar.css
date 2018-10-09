@@ -1,0 +1,17 @@
+@media (min-width: 980px) {
+    .navbar-nav > li > a{
+        padding-top: 30px;
+        padding-bottom: 24px;
+        line-height: 5px;
+    }
+  }
+    .navbar-inner[style]{
+        min-height: 50px !important;
+    }
+    .navbar-brand > img{
+        max-width: 70px;
+        margin-top: -10px;
+    }
+    .navbar-fixed-top{
+        position: absolute;
+    }

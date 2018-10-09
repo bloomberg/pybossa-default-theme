@@ -1,0 +1,115 @@
+{% extends "admin/base.html" %}
+{% from "account/_helpers.html" import render_account_local_nav %}
+{% from "admin/_helpers.html" import render_admin_user, render_project_card_user, render_project_card_manage_users %}
+
+{% block rightbody %}
+<div class ="container">
+<div class="col-sm-9 col-md-9" style="margin-top:30px;">
+<h1><strong>{{ _('Admin Site') }}:</strong> {{ _('Enable, Disable User Accounts') }}</h1>
+{% from "_formhelpers.html" import render_field %}
+
+<div class="row">
+    <form class="form-search" method="POST">
+        {{ form.hidden_tag() }}
+        <div class="col-md-12">
+            <div class="input-group">
+                <input id="user" name="user" type="text" class="form-control" placeholder="Try with full name or nick name">
+                <span class="input-group-btn">
+                    <button id="search-btn" type="submit" class="btn btn-primary "><i class="fa fa-search"></i> {{ _('Search') }}</button>
+                    <button id="advanced-search" type="button" class="btn btn-success" data-target="#filterModal" data-toggle="modal">
+                        <i class="fa fa-search"> {{ _('Advanced Search') }}</i>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% if found %}
+<h2>{{ _('Found Users') }}</h2>
+<div class="row">
+{% for user in found %}
+    <div class="col-sm-4 col-md-4">
+    {{ render_project_card_manage_users(user, upload_method, background=True)}}
+    </div>
+{% endfor %}
+</div>
+{% endif %}
+
+{% if users %}
+<h1>{{ _('Current Enabled Users') }}</h1>
+<div class="row">
+    {% for user in users %}
+    <div class="col-sm-4 col-md-4">
+    {{ render_project_card_manage_users(user, upload_method, background=True)}}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if disabledusers %}
+<h1>{{ _('Current Disabled Users') }}</h1>
+<div class="row">
+    {% for user in disabledusers %}
+    <div class="col-sm-4 col-md-4">
+    {{ render_project_card_manage_users(user, upload_method, background=True)}}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+</div>
+</div> <!-- container -->
+
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="infoModalLabel">User Smart Search</h4>
+            </div>
+            <div class="modal-body">
+                <div class="filter-rows">
+                    <div class="row" style="margin-bottom: 5px">
+                        <div class="form-inline col-xs-12">
+                            <select class="form-group form-control filter-field-name" style="width: 150px">
+                                <option value="" disabled selected>Field Name</option>
+                                {% for column_name in filter_columns %}
+                                <option value="{{column_name}}">{{column_name}}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="form-group">
+                                <input type="text" class="form-control filter-field-value" placeholder="Field Value" disabled style="width:214px"/>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-danger form-control remove-filter-button">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" class="btn btn-primary add-filter-row-button" name="button">Add Row</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id='saveFilterModal'>Save changes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var filter_data = {{ filter_data|tojson }};
+    var first_page_url = "{{ url_for('admin.manageusers') }}";
+    var locations = {{ locations|safe }};
+    var languages = {{ languages|safe }};
+    var userTypes = {{ user_types|safe }};
+    var timezones = {{ timezones|safe }};
+</script>
+{% block extrajs %}
+{% include "admin/js/user_info_search.js" %}
+{% endblock %}
+{% endblock %}

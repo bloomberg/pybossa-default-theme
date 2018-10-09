@@ -59,4 +59,80 @@
 </div>
 {% endmacro -%}
 
+{%- macro render_project_card_subadmin_user(user, upload_method, title, explanation, link, link_action_text, background=False, download=False, nofollow=False, link_class=None, id=None, icon=None, link_two=None, link_action_text_two=None) %}
+<div {%if id%}id="{{id}}"{% endif %} class="thumbnail card">
+    <div class="post-pic" style="background: rgb(0, 151, 167) {%- if background %}url({{helper.render_user_avatar_src(user, upload_method)}}){% endif -%} no-repeat center top; background-size: cover;">
+        {% if not background %}
+            {% if icon %}
+            <div class="row">
+                <div class="col-xs-8">
+                    <h3>{{user.fullname}}</h3>
+                </div>
+                <div class="col-xs-3">
+                    <i class="fa fa-{{icon}} fa-fw fa-4x"></i>
+                </div>
+            </div>
+            {% else %}
+                <h3>{{user.fullname}}</h3>
+            {% endif %}
+        {% endif %}
+    </div>
+    <div class="caption">
+        {% if background %}
+        <h3>{{user.fullname}}</h3>
+        {% endif %}
+        <p>{{user.name}}</p>
+        {% if user.subadmin %}
+        <p class="readmore"><a href="{{url_for('admin.del_subadmin', user_id=user.id)}}">
+            {{ _('Remove from subadmin group') }}</a>
+        </p>
+        {% else %}
+        <p class="readmore">
+        <a href="{{url_for('admin.add_subadmin', user_id=user.id)}}">
+            {{ _('Add to subadmin group') }}</a>
+        </p>
+        {% endif %}
+    </div>
+</div>
+{% endmacro -%}
 
+{%- macro render_project_card_manage_users(user, upload_method, title, explanation, link, link_action_text, background=False, download=False, nofollow=False, link_class=None, id=None, icon=None, link_two=None, link_action_text_two=None) %}
+<div {%if id%}id="{{id}}"{% endif %} class="thumbnail card">
+    <a href="{{url_for('account.profile', name=user.name)}}">
+      <div class="post-pic" style="background: rgb(0, 151, 167) {%- if background %}url({{helper.render_user_avatar_src(user, upload_method)}}){% endif -%} no-repeat center top; background-size: cover;">
+          {% if not background %}
+              {% if icon %}
+              <div class="row">
+                  <div class="col-xs-8">
+                      <h3>{{user.fullname}}</h3>
+                  </div>
+                  <div class="col-xs-3">
+                      <i class="fa fa-{{icon}} fa-fw fa-4x"></i>
+                  </div>
+              </div>
+              {% else %}
+                  <h3>{{user.fullname}}</h3>
+              {% endif %}
+          {% endif %}
+      </div>
+    </a>
+    <div class="caption">
+        {% if background %}
+        <a href="{{url_for('account.profile', name=user.name)}}">
+          <h3>{{user.fullname}}</h3>
+        </a>
+        {% endif %}
+        <p>{{user.name}}</p>
+        {% if user.enabled %}
+        <p class="readmore"><a href="{{url_for('admin.disable_user', user_id=user.id)}}">
+            {{ _('Disable user account') }}</a>
+        </p>
+        {% else %}
+        <p class="readmore">
+        <a href="{{url_for('admin.enable_user', user_id=user.id)}}">
+            {{ _('Enable user account') }}</a>
+        </p>
+        {% endif %}
+    </div>
+</div>
+{% endmacro -%}

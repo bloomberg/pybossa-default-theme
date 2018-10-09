@@ -7,18 +7,18 @@
 {% from "projects/_helpers.html" import render_project_admin_featured, broken_image %}
 
 {% block content %}
-<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-<script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+<script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 <style>
     .ct-bar, .ct-line, .ct-point {
         stroke: #3AB0D5 !important;
     }
 </style>
 <div class="container">
-    <div class="col-md-10">
+    <div class="col-md-10" style="margin-top:30px;">
         <h1><strong>{{ _('Dashboard last 7 days') }}</strong></h1>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2" style="margin-top:30px;">
         <h1><a href="{{url_for('admin.dashboard', refresh='1')}}" class="btn btn-default">{{ _('Refresh') }}</a></h1>
     </div>
 </div>
@@ -129,10 +129,10 @@ new Chartist.Bar('#dashboard_week_returning_users', data, options);
                 {% endif %}
                 {% if u.action_updated == 'UserContribution' %}
                 <p>{{ helper.render_avatar(u, upload_method, class='img-circle', width='30px')}}
-                <a href="{{url_for('account.profile', name=u.name)}}">{{u.fullname}}</a> {{ _('has contributed to') }} 
+                <a href="{{url_for('account.profile', name=u.name)}}">{{u.fullname}}</a> {{ _('has contributed to') }}
                 <a href="{{url_for('project.details', short_name=u.project_short_name)}}">
                     <span class="hidden-xs">{{u.project_name | truncate(28)}}</span>
-                    <span class="visible-xs-fullnames">{{u.project_name | truncate(10)}}</span></a> 
+                    <span class="visible-xs-fullnames">{{u.project_name | truncate(10)}}</span></a>
                 {{u.updated | pretty_date}}</p>
                 {% endif %}
                 {% if u.action_updated == 'User' %}

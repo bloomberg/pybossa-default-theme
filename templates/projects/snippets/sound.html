@@ -1,5 +1,5 @@
 <!--
-    Task DOM for loading the Sound Cloud iframe 
+    Task DOM for loading the Sound Cloud iframe
     It uses the class="skeleton" to identify the elements that belong to the
     task.
 -->
@@ -24,7 +24,7 @@
         <div class="progress progress-striped">
             <div id="progress" rel="tooltip" title="#" class="progress-bar" style="width: 0%;"></div>
         </div>
-        <!-- 
+        <!--
             This project uses Disqus to allow users to provide some feedback.
             The next section includes a button that when a user clicks on it will
             load the comments, if any, for the given task
@@ -59,7 +59,7 @@
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
-<script type="text/javascript" src="/static/js/pybossa-player/dist/pybossa-player.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/pybossa-player/dist/pybossa-player.min.js') }}"></script>
 <script type="text/javascript">
 (function() {
 function loadUserProgress() {
@@ -67,7 +67,7 @@ function loadUserProgress() {
         var pct = Math.round((data.done*100)/data.total);
         $("#progress").css("width", pct.toString() +"%");
         $("#progress").attr("title", pct.toString() + "% completed!");
-        $("#progress").tooltip({'placement': 'left'}); 
+        $("#progress").tooltip({'placement': 'left'});
         $("#total").text(data.total);
         $("#done").text(data.done);
     });

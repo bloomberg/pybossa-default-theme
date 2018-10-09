@@ -3,53 +3,245 @@
 {% set active_project  = "all" %}
 {% set active_link = "tasks" %}
 {% set section = _('Browse tasks') %}
+{% import "projects/_helpers.html" as project_helper %}
 
 {% block projectcontent %}
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+{% assets output="css/gen/taskbrowse.min.css",
+          "vendor/slider/css/slider.css",
+          "css/task_browse.css",
+          "css/select2.min.css"
+%}
+    <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">
+{% endassets %}
+
 <div class="row">
     <div class="col-md-12">
-        <p>{{_('This page shows all the available tasks for this project')}}.</p> 
+        <p>{{_('This page shows all the available tasks for this project')}}.</p>
         <p>{{_('For each task, you can find the following information')}}:
         <ul>
             <li><strong>{{_('Task')}} </strong><span class="label label-info">#0000</span> {{_('This number identifies the task for the project and it is unique')}}</li>
-            <li><strong>0 of 30</strong>: {{_('The first number shows how many answers have been submitted for the task and the')}} <a data-placement="top" rel="tooltip" href="#" data-original-title="{{_('This redundancy method will help to detect errors, typos, data forging, etc. when the task has been completed')}}">{{_('second number')}}</a> {{_('how many need to be obtained to mark the task as')}} <strong>{{_('completed')}}</strong>. </li>
-            <li><strong>{{_('Progress Bar')}}</strong>: {{_('The progress progress-bar will the percentage that has been completed for the task')}}.</li>
+            <li><strong>0 of 30</strong>: {{_('The first number shows how many answers have been submitted for the task and the')}} {{_('second number')}} {{_('how many need to be obtained to mark the task as')}} <strong>{{_('completed')}}</strong>. </li>
+            <li><strong>{{_('Priority')}}</strong>: {{_('Shows the priority of the task, priority ranges from 0.0 (lowest value) to 1.0 (highest priority)')}}.</li>
+            <li><strong>%{{_('Complete')}}</strong>: {{_('Shows the percentage that has been completed of the task')}}.</li>
+            <li><strong>{{_('Created')}}</strong>: {{_('When the task was created')}}.</li>
+            <li><strong>{{_('Completed')}}</strong>: {{_('When the task became fully completed')}}.</li>
+            <li><strong>{{_('Actions')}}</strong>: {{_('Download or view task results')}}.</li>
         </ul>
         </p>
     </div>
 </div>
-{% for t in tasks %}
-{% set task_pct = t.pct_status*100 %}
-<div class="row">
-    <div class="col-md-3">
-        {% if task_pct >= 100 %}
-        {{_('Task')}} <span class="label label-success">#{{ t.id }}</span>
-        {% else %}
-        {{_('Task')}} <span class="label label-info">#{{ t.id }}</span>
+<div id='tasksBrowseControls' class="collapse navbar-collapse">
+    <ul>
+        <li>
+        <b>
+        {{ _('Displaying') }} {{ pagination.total_count if pagination.total_count < pagination.per_page else pagination.per_page }} {{ _(' of') }} {{ pagination.total_count }}
+        </b>
+        </li>
+        <br>
+        <li>
+            <button id='btnRefresh' type="button" data-toggle="popover" data-trigger="focus" data-placement="top" data-constraints='focus' data-content="{{_('Please refresh the results after setting the desired filters.')}}" title="{{_('Search')}}">
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+        </li>
+        <li class="dropdown">
+            <button class="dropdown-toggle" type="button" id="btnDownload" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Export tasks/task runs"><span class="fa fa-cloud-download"></span><span class="caret"></span></button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
+                <li><a href="#" class='download-type' id='task-csv'>Tasks CSV</a></li>
+                <li><a href="#" class='download-type' id='task-json'>Tasks JSON</a></li>
+                <li><a href="#" class='download-type' id='task_run-csv'>Task Runs CSV</a></li>
+                <li><a href="#" class='download-type' id='task_run-json'>Task Runs JSON</a></li>
+                <li><a href="#" class='download-type' id='task_run-csv-meta'>Task Runs with Metadata CSV</a></li>
+                <li><a href="#" class='download-type' id='task_run-json-meta'>Task Runs with Metadata JSON</a></li>
+                <li><a href="#" class='download-type' id='consensus-csv'>Consensus CSV</a></li>
+                <li><a href="#" class='download-type' id='consensus-json'>Consensus JSON</a></li>
+                <li><a href="#" class='download-type' id='consensus-csv-meta'>Consensus with Metadata CSV</a></li>
+                <li><a href="#" class='download-type' id='consensus-json-meta'>Consensus with Metadata JSON</a></li>
+           </ul>
+        </li>
+        <li class="dropdown">
+            <button class="dropdown-toggle" type="button" id="btnRpp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Tasks per page">{{records_per_page}}<span class="caret"></span></button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
+                {% for num in allowed_records_per_page %}
+                    <li><a href="#" class='records_per_page'>{{num}}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li class="dropdown" id="columnsSettings">
+            <button class="dropdown-toggle" type="button" id="btnColumnsSettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Columns"><span class="fa fa-cog"><span class="caret"></span></button>
+            <ul class="dropdown-menu" aria-labelledby="btnColumnsSettings">
+                <li><a href="#" class="columns_settings" data-value="task_id" tabIndex="-1"><input type="checkbox" {{ "checked" if "task_id" in filter_data.display_columns }} disabled="disabled" />&nbsp;Task Id</a></li>
+                <li><a href="#" class="columns_settings" data-value="priority" tabIndex="-1"><input type="checkbox" {{ "checked" if "priority" in filter_data.display_columns }}/>&nbsp;Priority</a></li>
+                <li><a href="#" class="columns_settings" data-value="pcomplete" tabIndex="-1"><input type="checkbox" {{ "checked" if "pcomplete" in filter_data.display_columns }}/>&nbsp;%Complete</a></li>
+                <li><a href="#" class="columns_settings" data-value="created" tabIndex="-1"><input type="checkbox" {{ "checked" if "created" in filter_data.display_columns }}/>&nbsp;Created</a></li>
+                <li><a href="#" class="columns_settings" data-value="finish_time" tabIndex="-1"><input type="checkbox" {{ "checked" if "finish_time" in filter_data.display_columns }}/>&nbsp;Completed</a></li>
+                <li><a href="#" class="columns_settings" data-value="actions" tabIndex="-1"><input type="checkbox" {{ "checked" if "actions" in filter_data.display_columns }}/>&nbsp;Actions</a></li>
+            </ul>
+        </li>
+        {% if filter_columns %}
+        <li class="dropdown" id="info-columns">
+            <button class="dropdown-toggle" type="button" id="btn-filter-columns" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Display task info"><span class="fa fa-database"><span class="caret"></span></button>
+            <ul class="dropdown-menu" aria-labelledby="btn-filter-columns">
+                {% for column_name in filter_columns %}
+                    <li><a href="#" class="info_columns_settings" data-value={{column_name}} tabIndex='-1'><input type="checkbox" {{ "checked" if column_name in info_columns }}/>&nbsp; {{column_name}}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li>
+            <button id='btnFilter' type="button" data-target="#filterModal" data-toggle="modal" title="Filter by request fields">
+                <i class="fa fa-filter" aria-hidden="true"></i>
+            </button>
+        </li>
         {% endif %}
-        {{ t.n_task_runs }} {{_('of')}} {{ t.n_answers }}
-    </div>
-    <div class="col-md-5">
-        <div class="progress"> 
-            <div class="progress-bar" role="progressbar" aria-valuenow="{{task_pct}}" aria-valuemin="0" aria-valuemax="100" style="width: {{task_pct}}%;">
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        {% if task_pct >= 100 %}
-        <a id="fulldownload" rel="nofollow" class="btn btn-success btn-xs" href="{{ url_for('project.export', 
-            short_name=project.short_name,
-            task_id=t.id) }}"><i class="fa fa-cloud-download"></i> {{_('Download Task Results')}}</a>
-        {% elif task_pct > 0 and task_pct < 100 %}
-        <a id="partialdownload" rel="nofollow" class="btn btn-info btn-xs" href="{{ url_for('project.export', 
-            short_name=project.short_name,
-            task_id=t.id) }}"><i class="fa fa-cloud-download"></i> {{_('Download Partial results')}}</a>
-
-        {% else %}
-        <a id="nothingtodownload" rel="nofollow" class="btn btn-info btn-xs disabled" href="#"><i class="fa fa-cloud-download"></i> {{_('Nothing to download yet')}}</a>
+        <!-- Project owner, subadmin that are project co-owners and admins can edit/delete task properties -->
+        {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
+        <li class="dropdown" id="edit-tasks">
+            <button class="dropdown-toggle" type="button" id="btn-edit-tasks" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Edit priority/redundancy"><span class="fa fa-edit"><span class="caret"></span></button>
+            <ul class="dropdown-menu" aria-labelledby="btn-edit-tasks">
+                <li><a href="#" id="btn-edit-redundancy" data-value="task-redundancy" tabIndex="-1">Edit redundancy</a></li>
+                <li><a href="#" id="btn-edit-priority" data-value="task-priority" tabIndex="-1">Edit priority</a></li>
+            </ul>
+        </li>
+        <li>
+            <button id='btn-delete-tasks' type="button" data-target="#delete-tasks-modal" data-toggle="modal" title="Delete tasks">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
+        </li>
         {% endif %}
-    </div>
+        {% if language_options %}
+        <li>
+            <button id='btn-filter-user-pref' type="button" data-target="#filter-upref-modal" data-toggle="modal" title="Filter by user preference">
+                <i class="fa fa-user" aria-hidden="true"></i>
+            </button>
+        </li>
+        {% endif %}
+    </ul>
 </div>
-{% endfor %}
+<div>
+    <table width="100%" id="tasksGrid">
+        <thead>
+            <tr>
+                {% if 'task_id' in filter_data.display_columns %}
+                <th class="{{'sort-asc' if filter_data.order_by['task_id'] == 'asc'}} {{'sort-desc' if filter_data.order_by['task_id'] == 'desc'}} sortable" data-sort="task_id">Task#</th>
+                {% endif %}
+                {% if 'priority' in filter_data.display_columns %}
+                <th class="{{'sort-asc' if filter_data.order_by['priority'] == 'asc'}} {{'sort-desc' if filter_data.order_by['priority'] == 'desc'}} sortable" data-sort="priority">Priority</th>
+                {% endif %}
+                {% if 'pcomplete' in filter_data.display_columns %}
+                <th class="{{'sort-asc' if filter_data.order_by['pcomplete'] == 'asc'}} {{'sort-desc' if filter_data.order_by['pcomplete'] == 'desc'}} sortable" data-sort="pcomplete">%Complete</th>
+                {% endif %}
+                {% if 'created' in filter_data.display_columns %}
+                <th class="{{'sort-asc' if filter_data.order_by['created'] == 'asc'}} {{'sort-desc' if filter_data.order_by['created'] == 'desc'}} sortable" data-sort="created">Created</th>
+                {% endif %}
+                {% if 'finish_time' in filter_data.display_columns %}
+                <th class="{{'sort-asc' if filter_data.order_by['finish_time'] == 'asc'}} {{'sort-desc' if filter_data.order_by['finish_time'] == 'desc'}} sortable" data-sort="finish_time">Completed</th>
+                {% endif %}
+                {% if 'actions' in filter_data.display_columns %}
+                <th>Actions</th>
+                {% endif %}
+                {% for column_name in info_columns %}
+                <th>{{ column_name }}</th>
+                {% endfor %}
+            </tr>
+            <tr>
+                {% if 'task_id' in filter_data.display_columns %}
+                <th>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">#</div>
+                        <input class="form-control input-sm" type="number" value="{{ filter_data.task_id or '' }}" min="{{ first_task_id or 0 }}" id="task_id" style="width: 100px;">
+                    </div>
+                    </div>
+                </th>
+                {% endif %}
+                {% if 'priority' in filter_data.display_columns %}
+                <th>
+                    <div>
+                        <input id="priority" type="text" class="span2" value="" data-slider-min="0" data-slider-max="1" data-slider-step="0.05" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" />
+                    </div>
+                </th>
+                {% endif %}
+                {% if 'pcomplete' in filter_data.display_columns %}
+                <th>
+                    <div>
+                        <input id="pcomplete" type="text" class="span2" value="" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" />
+                    </div>
+                </th>
+                {% endif %}
+                {% if 'created' in filter_data.display_columns %}
+                <th>
+                   <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dateModal" data-info="created">Select date range</button>
+                </th>
+                {% endif %}
+                {% if 'finish_time' in filter_data.display_columns %}
+                <th>
+                   <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dateModal" data-info="ftime">Select date range</button>
+                </th>
+                {% endif %}
+                {% if 'actions' in filter_data.display_columns %}
+                <th>&nbsp;</th>
+                {% endif %}
+                {% for column_name in info_column %}
+                <th>&nbsp;</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in tasks %}
+            {% set task_pct = t.pct_status*100 %}
+            <tr class="task-row">
+                {% if 'task_id' in filter_data.display_columns %}
+                <td>
+                    {% if task_pct >= 100 %}
+                        <a class="label label-success" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id) }}">#{{ t.id }}</a>
+                    {% else %}
+                        <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id) }}">#{{ t.id }}</a>
+                    {% endif %}
+                    {{ t.n_task_runs|int }} {{_('of')}} {{ t.n_answers }}
+                </td>
+                {% endif %}
+                {% if 'priority' in filter_data.display_columns %}
+                <td>{{ t.priority_0 }}</td>
+                {% endif %}
+                {% if 'pcomplete' in filter_data.display_columns %}
+                <td>{{ (task_pct|round(2, 'floor')|string).rstrip('0').rstrip('.') }}</td>
+                {% endif %}
+                {% if 'created' in filter_data.display_columns %}
+                <td>{{ t.created }}</td>
+                {% endif %}
+                {% if 'finish_time' in filter_data.display_columns %}
+                <td>{{ t.finish_time or '' }}</td>
+                {% endif %}
+                {% if 'actions' in filter_data.display_columns %}
+                <td style="width: 100px;">
+                    <div style="width: 100px;">
+                      {% if task_pct >= 100 %}
+                      <a id="fulldownload" rel="nofollow" class="btn btn-success btn-xs fa fa-cloud-download" href="{{ url_for('project.export', short_name=project.short_name, task_id=t.id) }}">&nbsp;</a> <button type="button" class="btn btn-success btn-xs fa fa-eye" data-toggle="modal" data-target="#infoModal" data-info="{{ url_for('project.export', short_name=project.short_name, task_id=t.id) }}"></button>
+                      {% elif task_pct > 0 and task_pct < 100 %}
+                      <a id="partialdownload" rel="nofollow" class="btn btn-info btn-xs fa fa-cloud-download" href="{{ url_for('project.export', short_name=project.short_name, task_id=t.id) }}">&nbsp;</a> <button type="button" class="btn btn-success btn-xs fa fa-eye" data-toggle="modal" data-target="#infoModal" data-info="{{ url_for('project.export', short_name=project.short_name, task_id=t.id) }}"></button>
+                      {% else %}
+                      <a id="nothingtodownload" rel="nofollow" class="btn btn-info btn-xs disabled fa fa-cloud-download" href="#">&nbsp;</a> <a rel="nofollow" class="btn btn-success btn-xs disabled fa fa-eye" href="#"></a>
+                      {% endif %}
+                      <button type="button"
+                              class="btn btn-success btn-xs fa fa-users"
+                              data-toggle="modal"
+                              data-target="#taskRunStatusModal"
+                              data-info="{{ url_for('project.export_statuses',
+                                                    short_name=project.short_name,
+                                                    task_id=t.id) }}">
+                      </button>
+                    </div>
+                </td>
+                {% endif %}
+                {% for column_name in info_columns %}
+                <td>{{ t.info[column_name] }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% if pagination.pages > 1 %}
 <div class="row">
     <div class="col-md-12 text-center">
@@ -57,4 +249,299 @@
     </div>
 </div>
 {% endif %}
+
+<!-- Date Modal -->
+<div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="dateModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="dateModalLabel">Edit date range</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon" style="width: 70px;">From:</div>
+                <input class="form-control input-sm datepicker" type="text" id="date_from" style="width: 180px;" placeholder="YYYY-MM-DD"/>
+                <input class="form-control input-sm" type="time" id="time_from" style="width: 180px;" placeholder="00:00" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon" style="width: 70px;">To:</div>
+                <input class="form-control input-sm datepicker" type="text" id="date_to" style="width: 180px;" placeholder="YYYY-MM-DD"/>&nbsp;
+                <input class="form-control input-sm" type="time" id="time_to" style="width: 180px;" placeholder="23:59" />
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id='saveDateModal'>Search</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- View Info -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="infoModalLabel">View Task Info</h4>
+      </div>
+      <div class="modal-body">
+        <div id='loadingInfo' style="text-align: center;"><i class="fa fa-spinner fa-pulse fa-5x fa-fw"> </i></div>
+        <div id='taskInfo'>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="infoModalLabel">Filter By Task Request Fields</h4>
+      </div>
+      <div class="modal-body">
+        <div class="filter-rows">
+
+          <div class="row" style="margin-bottom: 5px">
+            <div class="form-inline col-xs-12">
+              <select class="form-group form-control filter-field-name" style="width: 150px">
+                <option value="" disabled selected>Field Name</option>
+                {% for column_name in filter_columns %}
+                  <option value="{{column_name}}">{{column_name}}</option>
+                {% endfor %}
+              </select>
+              <select class="form-group form-control filter-field-operator" disabled style="width: 100px">
+                {% for operator in ['equals', 'starts with', 'contains'] %}
+                  <option value="{{operator}}">{{operator}}</option>
+                {% endfor %}
+              </select>
+              <div class="form-group">
+                <input type="text" class="form-control filter-field-value" placeholder="Field Value" disabled style="width:214px"/>
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn btn-danger form-control remove-filter-button">Remove</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-xs-6">
+            <button type="button" class="btn btn-primary add-filter-row-button" name="button">Add Row</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id='saveFilterModal'>Search</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Task Run Status Info -->
+<div class="modal fade" id="taskRunStatusModal" tabindex="-1" role="dialog" aria-labelledby="taskRunStatusModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="taskRunStatusModalLabel">Task Run Status Info</h4>
+      </div>
+      <div class="modal-body">
+        <div id='loadingTaskRunStatusInfo' style="text-align: center;">
+            <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+        </div>
+        <div id='taskRunStatusInfo'></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+            Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Update Priority -->
+<div class="modal fade" id="update-priority-modal" tabindex="-1" role="dialog" aria-labelledby="update-priority-modal-label">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Update task priority</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label for="priority-value" class="col-sm-5 control-label">New priority</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" id="priority-value" placeholder="0.0 to 1.0"/>
+                </div>
+            </div>
+        </div>
+        <p>Note: if task is selected, change the priority for the selected
+            task in the current page; otherwise, change the priority of all the
+            task matched by the current filtering criteria (all pages).</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="save-priority-modal">Update</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Update Redundancy -->
+<div class="modal fade" id="update-redundancy-modal" tabindex="-1" role="dialog" aria-labelledby="update-redundancy-modal-label">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Update task redundancy</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label for="redundancy-value" class="col-sm-6 control-label">New redundancy</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="redundancy-value"/>
+                </div>
+            </div>
+        </div>
+        <p>
+          Note:
+          <br>
+          If task is selected, change the redundancy for the selected
+          task in the current page; otherwise, change the redundancy of all
+          the task matched by the current filtering criteria (all pages).
+          <br><br>
+          New redundancy won't be applied to tasks containing files and are
+          either completed or older than {{ rdancy_upd_exp }} days.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="save-redundancy-modal">Update</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delet Task -->
+<div class="modal fade" id="delete-tasks-modal" tabindex="-1" role="dialog" aria-labelledby="delete-tasks-modal-label">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close cancel-delete" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Delete tasks</h4>
+      </div>
+      <div class="modal-body">
+            <p></p>
+            <strong>Are you sure you want to proceed?</strong>
+        </p>
+        </p>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="save-delete-modal">Yes, delete!</button>
+        <button type="button" class="btn btn-default cancel-delete" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Filter by User Preference Modal -->
+<div class="modal fade" id="filter-upref-modal" tabindex="-1" role="dialog" aria-labelledby="filter-upref-modal-label">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="infoModalLabel">Filter Task By User Preference</h4>
+      </div>
+      <div class="modal-body">
+        {% if language_options %}
+          <label for="multiple-languages" class="control-label">Languages</label>
+          <select id="multiple-languages" class="js-states form-control" style="width: 100%" multiple>
+            {% for lang in language_options %}
+              <option value="{{lang}}">{{lang}}</option>
+            {% endfor %}
+          </select>
+          <br>
+          <br>
+        {% endif %}
+        {% if location_options %}
+          <label for="multiple-locations" class="control-label">Locations</label>
+          <select id="multiple-locations" class="js-states form-control" style="width: 100%" multiple>
+            {% for loc in location_options %}
+              <option value="{{loc}}">{{loc}}</option>
+            {% endfor %}
+          </select>
+        {% endif %}
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id='upref-filter-modal-search-button'>Search</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Project owner, subadmin that are project co-owners and admins can edit/delete task properties -->
+{% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
+<div id="context-menu" class="dropdown clearfix">
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-menu" style="display:block;position:absolute;">
+        <li><a href="#" id="edit-pri" data-value="task-priority">Edit Priority</a></li>
+        <li><a href="#" id="edit-red" data-value="task-redundancy">Edit Redundancy</a></li>
+        <li><a href="#" id="del-task" data-target="#delete-tasks-modal" data-toggle="modal">Delete Task</a></li>
+    </ul>
+</div>
+{% endif %}
+
+<script type="text/javascript">
+    var filter_data = {{ filter_data|tojson }};
+    var selectedTask;
+    var pybTaskBrowse = {
+        filterCount: {{ pagination.total_count }}
+    };
+    var first_page_url = "{{ url_for('project.tasks_browse', short_name=project.short_name) }}";
+    var records_per_page = {{ records_per_page if records_per_page != 10 else 'undefined'}};
+    var csrftoken = "{{ csrf_token() }}";
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    })
+</script>
+
+<div class="overlay">
+    <span class="spinner">
+        <i class="fa fa-spinner fa-spin fa-lg"></i>
+    </span>
+</div>
+
+{% assets filters="jsmin", output="js/gen/taskbrowse.min.js",
+          "js/vendor/jquery-ui-1.12.1.min.js",
+          "js/vendor/select2.min.js",
+          "vendor/slider/js/bootstrap-slider.js",
+          "js/tasks_browse.js"
+%}
+<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+
 {% endblock %}

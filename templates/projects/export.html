@@ -7,19 +7,30 @@
 {% from "projects/_helpers.html" import render_project_card_option %}
 
 {% block projectcontent %}
+{% if not current_user.id in project.owners_ids and not current_user.admin and not current_user.subadmin %}
+    {{ privacy.render_lock_page() }}
+{% else %}
 <p>{{ _('You can export and download') }} <strong>{{ _('all the available') }}</strong> {{ _('Tasks and Task Runs (the submitted answers by the users) in CSV or JSON formats.') }}</p>
 <div id="csv" class="row">
     <div class="col-md-12 text-center">
         <h3>{{_('Export in CSV format')}}</h3>
     </div>
     <div class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Tasks'), explanation=_('Export tasks in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='task', format='csv'), link_action_text=_('Export'), download=True, nofollow=True)}}
+        {{ render_project_card_option(project, upload_method, title=_('Tasks'), explanation=_('Export tasks in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='task', format='csv', expanded='False'), link_action_text=_('Export'), nofollow=True)}}
     </div>
     <div class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Task Runs'), explanation=_('Export task runs in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='task_run', format='csv'), link_action_text=_('Export'), download=True, nofollow=True)}}
+        {{ render_project_card_option(project, upload_method, title=_('Task Runs'), explanation=_('Export task runs in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='task_run', format='csv', expanded='False'), link_action_text=_('Export'), nofollow=True)}}
     </div>
     <div class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Results'), explanation=_('Export results in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='result', format='csv'), link_action_text=_('Export'), download=True, nofollow=True)}}
+        {{ render_project_card_option(project, upload_method, title=_('Task Runs with Metadata'), explanation=_('Export task runs with metadata in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='task_run', format='csv', expanded='True'), link_action_text=_('Export'), nofollow=True)}}
+    </div>
+</div>
+<div class="row">
+     <div class="col-md-4">
+        {{ render_project_card_option(project, upload_method, title=_('Consensus'), explanation=_('Export consensus in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='consensus', format='csv', expanded='False'), link_action_text=_('Export'), nofollow=True)}}
+    </div>
+    <div class="col-md-4">
+        {{ render_project_card_option(project, upload_method, title=_('Consensus with Metadata'), explanation=_('Export consensus with metadata in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='consensus', format='csv', expanded='True'), link_action_text=_('Export'), nofollow=True)}}
     </div>
 </div>
 <div id="json" class="row">
@@ -27,17 +38,25 @@
         <h3>{{_('Export in JSON format')}}</h3>
     </div>
     <div class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Tasks'), explanation=_('Export tasks in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='task', format='json'), link_action_text=_('Export'), download=True, nofollow=True)}}
+        {{ render_project_card_option(project, upload_method, title=_('Tasks'), explanation=_('Export tasks in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='task', format='json', expanded='False'), link_action_text=_('Export'), nofollow=True)}}
     </div>
     <div class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Task Runs'), explanation=_('Export task runs in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='task_run', format='json'), link_action_text=_('Export'), download=True, nofollow=True)}}
+        {{ render_project_card_option(project, upload_method, title=_('Task Runs'), explanation=_('Export task runs in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='task_run', format='json', expanded='False'), link_action_text=_('Export'), nofollow=True)}}
     </div>
     <div class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Results'), explanation=_('Export results in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='result', format='json'), link_action_text=_('Export'), download=True, nofollow=True)}}
+        {{ render_project_card_option(project, upload_method, title=_('Task Runs with Metadata'), explanation=_('Export task runs with metadata in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='task_run', format='json', expanded='True'), link_action_text=_('Export'), nofollow=True)}}
     </div>
-
 </div>
-{% if current_user.is_authenticated() and project.owner_id == current_user.id %}
+<div class="row">
+     <div class="col-md-4">
+        {{ render_project_card_option(project, upload_method, title=_('Consensus'), explanation=_('Export consensus in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='consensus', format='json', expanded='False'), link_action_text=_('Export'), nofollow=True)}}
+    </div>
+    <div class="col-md-4">
+        {{ render_project_card_option(project, upload_method, title=_('Consensus with Metadata'), explanation=_('Export consensus with metadata in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='consensus', format='json', expanded='True'), link_action_text=_('Export'), nofollow=True)}}
+    </div>
+</div>
+{% endif %}
+{% if current_user.is_authenticated() and (current_user.id in project.owners_ids) %}
 <div id="ckan" class="row">
     <div class="col-md-12 text-center">
         {% if ckan_name %}
@@ -50,10 +69,10 @@
     {% if current_user.ckan_api %}
     <div class="col-md-6">
 
-        {{ render_project_card_option(project, upload_method, title=_('Task'), explanation=_('Export tasks into a CKAN server '), link=url_for('project.export_to', short_name=project.short_name, type='task', format='ckan'), link_action_text=_('Export'), download=True, nofollow=True, id="ckan_task")}}
+        {{ render_project_card_option(project, upload_method, title=_('Task'), explanation=_('Export tasks into a CKAN server '), link=url_for('project.export_to', short_name=project.short_name, type='task', format='ckan'), link_action_text=_('Export'), nofollow=True, id="ckan_task")}}
     </div>
     <div class="col-md-6">
-        {{ render_project_card_option(project, upload_method, title=_('Task Runs'), explanation=_('Export task runs into a CKAN server'), link=url_for('project.export_to', short_name=project.short_name, type='task_run', format='ckan'), link_action_text=_('Export'), download=True, nofollow=True, id="ckan_task_run")}}
+        {{ render_project_card_option(project, upload_method, title=_('Task Runs'), explanation=_('Export task runs into a CKAN server'), link=url_for('project.export_to', short_name=project.short_name, type='task_run', format='ckan'), link_action_text=_('Export'), nofollow=True, id="ckan_task_run")}}
         {% else %}
         <p id="ckan_warning">{{ _("You don't have a Datahub.io API key in your") }} {{BRAND}} {{ _('account. Please,') }} <a href="http://datahub.io/user/register">{{ _('create an account') }}</a> {{ _('and copy/paste the API key in your profile in order to use this exporter') }}.</p>
         {% endif %}

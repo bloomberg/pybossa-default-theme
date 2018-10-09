@@ -1,0 +1,35 @@
+{% extends "admin/base.html" %}
+{% set active_page = "profile" %}
+{% set active_link = "admin" %}
+{% from "account/_helpers.html" import render_account_local_nav %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block rightbody %}
+<div id="userimport" class="col-md-9" style="margin-top:50px;">
+    <h3>{{_('Import Users')}}</h3>
+    <div class="row">
+        <div id="add" class="col-md-12">
+        <form method="POST" enctype="multipart/form-data" action="{{url_for('admin.userimport')}}">
+            {{form.hidden_tag()}}
+            <fieldset>
+                <p>Please choose local csv file with user information and press Import button</p>
+                <p><font color="red">Note: The csv should contain columns: name, fullname, email_addr, password and project_slugs(optional) for user to contribute.</font></p>
+                <div class="form-actions">
+                    <input type="file" name="file" accept=".csv"><br/><br/>
+                    <input id="submit" type="submit" value="{{_('Import')}}" class="btn btn-primary" >
+                    <a href="{{ url_for('admin.index') }}" class="btn btn-primary">{{_('Cancel')}}</a>
+                </div>
+            </fieldset>
+        </form>
+        </div>
+    </div>
+</div>    
+{% endblock %}
+{% block extrajs %}
+<script>
+    $("#submit").off('click').on('click', function(){
+            var msg = "{{_('Importing users...')}}";
+            pybossaNotify(msg, true, "loading");
+            });
+</script>
+{% endblock %}

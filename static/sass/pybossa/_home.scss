@@ -8,5 +8,30 @@ section.home.featured {
 section.home.projects {
     margin-top: 50px;
 }
-
-
+.home.intro {
+    padding-top: 60px;
+}
+.home.intro p {
+    margin:10px 0;
+}
+.home.intro, .home.intro p {
+    font-size:23px;
+    font-weight:200;
+}
+.home.intro ul li {
+    color:#546e7b;
+}
+.jumbotron {
+    background-color:#1e5c77;
+}
+.jumbotron, .jumbotron h1, .jumbotron p {
+    color:$white;
+}
+.jumbotron a {
+    color: $white;
+    text-decoration: underline;
+}
+.jumbotron a:hover {
+    color: $white;
+    text-decoration: none;
+}

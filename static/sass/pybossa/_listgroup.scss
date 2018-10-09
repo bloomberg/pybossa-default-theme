@@ -1,7 +1,14 @@
-li.list-group-item {
+a.list-group-item {
     border: 1px solid $bright-grey;
+    color: #3AB0D5;
+    i {color: black;}
 }
 
-li.list-group-item.active a {
+a.list-group-item.active a {
     color: $white;
+}
+
+.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
+	background-color:#3498db;
+	border-color:#3498db;
 }

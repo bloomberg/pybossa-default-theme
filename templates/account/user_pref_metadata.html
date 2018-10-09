@@ -14,6 +14,9 @@
         {% if form.data.user_type %}
             <p><strong>User Type:</strong> {{form.data.user_type}}</p>
         {% endif %}
+        {% if form.data.data_access %}
+            <p><strong>Access Levels:</strong> {{form.data.data_access|join(', ') }}</p>
+        {% endif %}
         {% if form.data.review %}
             <p><strong>Review:</strong> {{form.data.review}}</p>
         {% endif %}

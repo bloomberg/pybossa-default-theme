@@ -1,9 +1,54 @@
 {% with messages = get_flashed_messages(with_categories=True) %}
 {% if messages %}
-  {% for category, message in messages %}
+    {% for category, message in messages %}
+    {% if category != 'announcement' %}
     <script>
         pybossaNotify('{{message}}', true, "{{category}}");
     </script>
-  {% endfor %}
+    {% endif %}
+    {% endfor %}
+    {% with announcements = get_flashed_messages(category_filter=["announcement"]) %}
+    {% if announcements %}
+    {% for message in announcements %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/announcement.css')}}"/>
+    <div id="announcement-box-{{message.id}}" class="panel panel-warning announcement-box">
+        <div class="panel-heading">
+            <h5><strong>{{message.title}}</strong></h5>
+        </div>
+        <div class="panel-body" style="word-wrap: break-word;">
+            <p>
+            {{message.body | safe}}
+            </p>
+            <div>
+                <div class="btn btn-large btn-warning pull-right">Dismiss</div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <script>
+        (function() {
+            var announcements = [{% for message in announcements %}{
+                id: '#announcement-box-{{message.id}}',
+                key: 'pybossa_announcement_{{message.id}}_dismissed'
+            },{% endfor %}].filter(function (a) {
+                return !window.localStorage.getItem(a.key);
+            });
+
+            announcements.forEach(function (a, idx) {
+                $(a.id + ' .btn').on('click', function() {
+                    $(a.id).hide();
+                    window.localStorage.setItem(a.key, true);
+
+                    if (idx + 1 < announcements.length)
+                        $(announcements[idx + 1].id).show();
+                });
+            });
+
+            if (announcements.length)
+                $(announcements[0].id).show();
+        })();
+    </script>
+    {% endif %}
+    {% endwith %}
 {% endif %}
 {% endwith %}

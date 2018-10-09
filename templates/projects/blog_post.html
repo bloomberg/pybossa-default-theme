@@ -21,7 +21,7 @@
         <p>{{ blogpost.body | e | markdown }}</p>
     </body>
 </article>
-{% if current_user.is_authenticated() and current_user.id in project.owners_ids or current_user.admin %}
+{% if current_user.is_authenticated() and (current_user.id in project.owners_ids or current_user.admin) %}
 <form class="form-horizontal" method="post" action="{{ url_for('project.delete_blogpost', short_name=project.short_name, id=blogpost.id) }}" onsubmit="return confirm('Do you really want to delete the blog post?');">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
     <div class="form-actions">

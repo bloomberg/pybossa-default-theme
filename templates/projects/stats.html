@@ -18,11 +18,11 @@
 <script>
     var projectStats = {{projectStats|safe}};
 </script>
-        {% if enforce_privacy and (current_user.is_anonymous() or (current_user.is_authenticated and not current_user.admin)) %}
+
+        {% if enforce_privacy and (not (current_user.id in project.owners_ids) and not current_user.admin and not current_user.subadmin) %}
         {{ privacy.render_lock_page() }}
         {% else %}
         <br/>
-
             {% if private %}
             <div class="row">
                 <div class="alert alert-info">
@@ -32,19 +32,9 @@
             </div>
             {% endif %}
 
-            {% if pro_features['better_stats_enabled'] %}
-            <div id="card" class="row">
-                <div class="col-md-12">
-                    <h2>{{_('Average contribution time per task') }}:</h2>
-                    <p><span id="avgTime">{{ avg_contrib_time }}</span> {{ _('seconds') }}</p>
-                </div>
-            </div>
-            {% endif %}
-
             <!-- Hour Stats CARD -->
             <div id="card" class="row">
                 <div class="col-md-12">
-                    <h2>{{_('Distribution of Answers per Hour')}}</h2>
                     <div id="hourStats" style="margin:0;height:500px;">
                     </div>
                     <script>
@@ -57,12 +47,12 @@
                         return (parseInt(obj) + ":00");
                     }
                     var container = document.getElementById('hourStats');
-                    var graph = Flotr.draw(container, [{data: projectStats.hourStats[1]['values'], label:projectStats.hourStats[1]['label']},{ data:projectStats.hourStats[2]['values'],label:projectStats.hourStats[2]['label'] }], {
-                        bubbles : {show: true, baseRadius:5},
+                    var graph = Flotr.draw(container, [{ data:projectStats.hourStats[2]['values'],label:projectStats.hourStats[2]['label'] }], {
+                        title: "Distribution of Answers per Hour".fontsize(5.5),
+                        bubbles : {show: true, baseRadius:3},
                         xaxis   : {min: 0, max:24, tickFormatter: hours},
-                        yaxis   : {min: 0, max:_.max(projectStats.hourStats[0]), tickDecimals: 0 },
+                        yaxis   : {min: 0, max:_.max(projectStats.hourStats[0])+2, tickDecimals: 0 },
                         mouse   : {track: true, trackFormatter: answersPerHour},
-                        HtmlText: false,
                         legend  : {postion: 'nw'}
                     });
                     })();
@@ -74,11 +64,10 @@
             <!-- Day Stats Total CARD -->
             <div id="card" class="row">
                 <div  class="col-md-12">
-                    <h2>{{_('Completed Tasks in the last 15 days')}} </h2>
-                    <p>{{_('select an area to zoom, click to reset the chart')}}</p>
                     <div id="dayStatsTotal" style="margin:0;height:500px;"></div>
                     <script>
                     (function(){
+
                     function date(obj) {
                         var d = new Date(parseInt( obj ));
                         var year = d.getFullYear();
@@ -86,71 +75,58 @@
                         var day = d.getDate();
                         return(year + "-" + month + '-' + day)
                     }
-                    function answersPerDay(obj) {
-                        return ("Tasks: " + parseInt(obj.y));
-                    }
-                    var options = {
-                        xaxis   : {mode:'time'},
-                        yaxis   : {min:0, max: projectStats.dayStats[3]['values'][0][1] + 1, tickDecimals: 0},
-                        mouse   : {track: true, trackFormatter: answersPerDay},
-                        HtmlText: false,
-                        legend  : {postion: 'nw'},
-                        selection: {
-                            mode: 'x',
-                            fps: 30
-                        }
-                    };
 
                     var dayStatsTotalContainer = document.getElementById('dayStatsTotal');
 
-                    function drawGraph(opts) {
-                        // Clone the options, so the 'options' variable always keeps intact.
-                        var o = Flotr._.extend(Flotr._.clone(options), opts || {});
-                        
-                        // Return a new graph.
-                        return Flotr.draw(
-                        dayStatsTotalContainer, [{ data:projectStats.dayStats[3]['values'],label:projectStats.dayStats[3]['label']},  ], o);
-                    }
-                        
-                        // Actually draw the graph.
-                        graph = drawGraph();
-                        
-                        // Hook into the 'flotr:select' event.
-                        Flotr.EventAdapter.observe(dayStatsTotalContainer, 'flotr:select', function(area) {
-                        
-                            // Draw graph with new area
-                            graph = drawGraph({
-                                xaxis: {
-                                    mode: 'time',
-                                    min: area.x1,
-                                    max: area.x2
-                                },
-                                yaxis: {
-                                    min: area.y1,
-                                    max: area.y2
-                                }
-                            });
-                        });
+                    var maxY = Math.max.apply(null, projectStats.dayStats[3]['values'].map(function(elt) {
+                        return elt[1];
+                    }));
 
-                        // When graph is clicked, draw the graph with default area.
-                        Flotr.EventAdapter.observe(dayStatsTotalContainer, 'flotr:click', function() {
-                            drawGraph();
+                    function drawGraph(opts) {
+                        return Flotr.draw(
+                        dayStatsTotalContainer, [projectStats.dayStats[3]['values']], {
+                            title: "Completed Tasks in the last 15 days".fontsize(5.5),
+                            xaxis:{
+                                showMinorLabels: true,
+                                mode: 'time'
+                            },
+                            yaxis:{
+                                min:0,
+                                tickDecimals: 0,
+                                max:maxY+2
+                            },
+                            grid: {
+                                minorVerticalLines: true
+                            }
                         });
+                    }
+
+                    graph = drawGraph();
+
                     })();
                     </script>
                 </div>
             </div>
             <!-- END Day Stats CARD -->
 
-
             <!-- Day Stats CARD -->
             <div id="card" class="row">
                 <div  class="col-md-12">
-                    <h2>{{_('Answers per day')}}</h2>
-                    <p>{{_('select an area to zoom, click to reset the chart')}}</p>
                     <div id="dayStats" style="margin:0;height:500px;"></div>
                     <script>
                     (function(){
+                    var
+                        horizontal,
+                        bar = [],
+                        point,
+                        markers = {
+                                data: [],
+                                markers: {
+                                    show: true,
+                                    position: 'ct'
+                                }
+                        };
+
                     function date(obj) {
                         var d = new Date(parseInt( obj ));
                         var year = d.getFullYear();
@@ -161,207 +137,113 @@
                     function answersPerDay(obj) {
                         return (parseInt(obj.y) + " {{_('answers were submitted this day')}} " + date(obj.x));
                     }
-                    var options = {
-                        xaxis   : {mode:'time'},
-                        yaxis   : {min: 0, tickDecimals: 0},
-                        mouse   : {track: true, trackFormatter: answersPerDay},
-                        HtmlText: false,
-                        legend  : {postion: 'nw'},
-                        selection: {
-                            mode: 'x',
-                            fps: 30
-                        }
-                    };
-
                     var dayStatsContainer = document.getElementById('dayStats');
 
+                    projectStats.dayStats[2]['values'].forEach(function(elt) {
+                        point = [elt[0], elt[1]];
+                        bar.push(point);
+                        markers.data.push(point);
+                    });
+
                     function drawGraph(opts) {
-                        // Clone the options, so the 'options' variable always keeps intact.
-                        var o = Flotr._.extend(Flotr._.clone(options), opts || {});
-                        
                         // Return a new graph.
                         return Flotr.draw(
-                        dayStatsContainer, [{data: projectStats.dayStats[1]['values'], label:projectStats.dayStats[1]['label']},{ data:projectStats.dayStats[2]['values'],label:projectStats.dayStats[2]['label'] }, { data:projectStats.dayStats[0]['values'],label:projectStats.dayStats[0]['label']} ], o);
+                        dayStatsContainer, [bar, markers], {
+                            title: "Answers per day".fontsize(5.5),
+                            xaxis:{
+                                showMinorLabels: true,
+                                mode: 'time'
+                            },
+                            yaxis:{
+                                min: 0,
+                                tickDecimals: 0
+                            },
+                            bars:{
+                                show: true,
+                                horizontal: horizontal,
+                                barWidth: 35000000
+                            },
+                            mouse:{
+                                track: true,
+                                trackFormatter: function (e){return e.y;},
+                                relative: true,
+                                trackY: true,
+                                trackDecimals: 2,
+                                sensibility: 3
+                            }
+                        });
                     }
-                        
-                        // Actually draw the graph.
-                        graph = drawGraph();
-                        
-                        // Hook into the 'flotr:select' event.
-                        Flotr.EventAdapter.observe(dayStatsContainer, 'flotr:select', function(area) {
-                        
-                            // Draw graph with new area
-                            graph = drawGraph({
-                                xaxis: {
-                                    mode: 'time',
-                                    min: area.x1,
-                                    max: area.x2
-                                },
-                                yaxis: {
-                                    min: area.y1,
-                                    max: area.y2
-                                }
-                            });
-                        });
 
-                        // When graph is clicked, draw the graph with default area.
-                        Flotr.EventAdapter.observe(dayStatsContainer, 'flotr:click', function() {
-                            drawGraph();
-                        });
+                    // Actually draw the graph.
+                    graph = drawGraph();
                     })();
                     </script>
                 </div>
             </div>
             <!-- END Day Stats CARD -->
 
-
-            <!-- Number of answers CARD -->
+            <!-- Percentage of Tasks Completed CARD -->
             <div id="card" class="row">
-                <div id="dist-answers" class="col-md-12">
-                    <h2>{{_('Distribution of Answers')}}</h2>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <table class="table table-hover table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>{{_('Type')}}</th>
-                                        <th>{{_('Users')}}</th>
-                                        <th>{{_('Percentage')}}</th>
-                                    </tr>
-                                </thead>
-                            {% for k in userStats.keys() if k != 'geo' %}
-                                <tr>
-                                    <th>{{k | capitalize}}</th>
-                                    <th>{{userStats[k].taskruns}}</th>
-                                    <th>{{userStats[k].pct_taskruns}} %</th>
-                                </tr>
-                            {% endfor %}
-                            </table>
+                <div  class="col-md-12">
+                    <div id="perctTasks" style="margin:0;height:500px;position:relative;"></div>
+                    <script>
+                    (function(){
+                    var d1 = [[0,projectStats.n_completed_tasks]];
+                    var d2 = [[0,projectStats.n_pending_tasks]];
+                    var perctTasksContainer = document.getElementById('perctTasks');
 
-                        </div>
-                        <div id="userAnsStats" class="col-md-4" style="height: 250px; width:250px;">
-                        </div>
-                        <script>
-                        (function(){
-                        var container = document.getElementById('userAnsStats');
-                        var graph = Flotr.draw(container, [
-                            {data:[projectStats.userStats['values'][0]['value']], label:projectStats.userStats['values'][0]['label']},
-                            {data:[projectStats.userStats['values'][1]['value']],  label:projectStats.userStats['values'][1]['label']}], 
-                            {
-                            pie     : {show: true, explode: 2},
-                            grid    : {verticalLines: false, horizontalLines: false, outlineWidth: 0},
-                            HtmlText: false,
-                            xaxis   : {showLabels: false},
-                            yaxis   : {showLabels: false},
-                            legend  : {postion: 'nw'}
-                        });
-                        })();
-                        </script>
-                    </div>
-                </div>
-            </div>
-            <!-- END Number of Answers Stats CARD -->
-
-            <!-- Anon User Stats CARD -->
-            <div id="card" class="row">
-                <div id="dist-anon" class="col-md-12">
-                    <h2>{{_('Details about Anonymous Users')}}</h2>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <p><i class="icon-group"></i> <strong>{{userStats.anonymous.users}} </strong> {{_('anonymous users have')}} <strong>{{_('participated')}}</strong></p>
-                            {% if userStats.anonymous.top5 and userStats.geo %}
-                            <h3>Top 5 users</h3>
-                            <table class="table table-hover table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>{{_('Country')}}</th>
-                                        <th>{{_('City')}}</th>
-                                        <th>{{_('Tasks')}}</th>
-                                    </tr>
-                                </thead>
-                            {% for u in userStats.anonymous.top5 %}
-                                <tr>
-                                    <th>{{loop.index}}</th>
-                                    <th>{{u.loc.country_name}}</th>
-                                    <th>{{u.loc.city}}</th>
-                                    <th>{{u.tasks}}</th>
-                                </tr>
-                            {% endfor %}
-                            </table>
-                            {% endif %}
-                        </div>
-                        <div id="userAnonStats" class="col-md-12"  style='height:400px'>
-                        </div>
-                        <script>
-                        (function(){
-                        var container = document.getElementById('userAnonStats');
-                        var graph = Flotr.draw(container, [
-                            {data:[[0, projectStats.userAnonStats['top5'][0]['tasks'] ]],  label:'{{_('User')}} 1'},
-                            {data:[[0, projectStats.userAnonStats['top5'][1]['tasks'] ]],  label:'{{_('User')}} 2'}, 
-                            {data:[[0, projectStats.userAnonStats['top5'][2]['tasks'] ]],  label:'{{_('User')}} 3'}, 
-                            {data:[[0, projectStats.userAnonStats['top5'][3]['tasks'] ]],  label:'{{_('User')}} 4'}, 
-                            {data:[[0, projectStats.userAnonStats['top5'][4]['tasks'] ]],  label:'{{_('User')}} 5'}], 
-                            {
-                            pie     : {show: true, explode: 5},
-                            grid    : {verticalLines: false, horizontalLines: false, outlineWidth: 0},
-                            HtmlText: false,
-                            xaxis   : {showLabels: false},
-                            yaxis   : {showLabels: false},
-                            legend  : {postion: 'se'}
-                        });
-                        })();
-                        </script>
-                    </div>
-                    {% if userStats.geo %}
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div id="map" style="height:250px;"></div>
-                            <p class="note">{{_('This page includes GeoLite data created by MaxMind, available from')}}
-                            <a href="http://www.maxmind.com">http://www.maxmind.com</a></p>
-                        </div>
-                        <script>
-                            (function(){
-                            var map = L.map('map');
-                            map.fitWorld();
-                            map.setZoom(1);
-                            var url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-                            L.tileLayer(url, 
-                                {
-                                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-                                maxZoom: 18,
-                                minZoom:1
-                                }).addTo(map);
-
-                            var i = 0;
-                            var locations = projectStats.userAnonStats.locs;
-                            var l = locations.length;
-                            var markers = new L.MarkerClusterGroup();
-                            for (i;i<l;i++) {
-                                if (locations[i].loc != null) {
-                                    var lat = parseFloat(locations[i].loc.latitude);
-                                    var lng = parseFloat(locations[i].loc.longitude);
-                                    markers.addLayer(L.marker([lat,lng]));
-                                }
+                    function drawGraph(opts) {
+                        return Flotr.draw(
+                        perctTasksContainer, [{data:d1, label:'Completed'}, {data:d2, label:'Open'}], {
+                            title: "Percentage of Tasks Completed".fontsize(5.5),
+                            grid : {
+                                verticalLines : false,
+                                horizontalLines : false
+                            },
+                            xaxis : { showLabels : false },
+                            yaxis : { showLabels : false },
+                            pie : {
+                                show : true,
+                                explode : 6,
+                                labelFormatter: function(total, value){ return (100 * value / total).toFixed(0)+'%'}
+                            },
+                            mouse : {
+                                track : true,
+                                trackFormatter: function(obj){return 'Tasks: '+obj.y;},
+                                trackDecimals: 0
+                                },
+                            legend : {
+                                position : 'nw',
+                                backgroundColor : '#D2E8FF'
                             }
-                            map.addLayer(markers);
-                            })();
-                        </script>
-                    </div>
-                    {% endif %}
+                        });
+                    }
+
+                    graph = drawGraph();
+                    })();
+                    </script>
                 </div>
             </div>
-            <!-- END Anon User Stats CARD -->
+            <!-- END Percentage of Tasks Completed CARD -->
+
+            {% if pro_features['better_stats_enabled'] %}
+            <div id="card" class="row">
+                <div class="col-md-12">
+                    <h3>{{_('Average contribution time per task') }}:</h3>
+                    <p><span id="avgTime">{{ avg_contrib_time }}</span> {{ _('minutes') }}</p>
+                </div>
+            </div>
+            {% endif %}
 
             <!-- Auth User Stats CARD -->
             <div id="card" class="row">
                 <div id="dist-auth" class="col-md-12">
-                    <h2>{{_('Details about Authenticated Users')}}</h2>
+                    <h3>{{_('Details about Authenticated Users')}}</h3>
                     <div class="row">
                         <div class="col-md-12">
                             <p><i class="icon-group"></i> <strong>{{userStats.authenticated.users}}</strong> {{_('authenticated users have')}} <strong>{{_('participated')}}</strong>.</p>
-                            {% if userStats.authenticated.top5 %}
-                            <h3>{{_('Top 5 users')}}</h3>
+                            {% if userStats.authenticated.top10 %}
+                            <h4><strong>{{_('Top 10 users')}}</strong></h4>
                             <table class="table table-hover table-bordered table-striped">
                                 <thead>
                                     <tr>
@@ -370,7 +252,7 @@
                                         <th>{{_('Tasks')}}</th>
                                     </tr>
                                 </thead>
-                            {% for u in userStats.authenticated.top5 %}
+                            {% for u in userStats.authenticated.top10 %}
                                 <tr>
                                     <th>{{loop.index}}</th>
                                     <th><a href="{{url_for('account.profile', name=u.name)}}">{{u.fullname}}</a></th>
@@ -386,13 +268,18 @@
                         (function(){
                         var container = document.getElementById('userAuthStats');
                         var graph = Flotr.draw(container, [
-                            {data:[[0, projectStats.userAuthStats['top5'][0]['tasks'] ]],  label:projectStats.userAuthStats['top5'][0]['fullname']},
-                            {data:[[0, projectStats.userAuthStats['top5'][1]['tasks'] ]],  label:projectStats.userAuthStats['top5'][1]['fullname']}, 
-                            {data:[[0, projectStats.userAuthStats['top5'][2]['tasks'] ]],  label:projectStats.userAuthStats['top5'][2]['fullname']}, 
-                            {data:[[0, projectStats.userAuthStats['top5'][3]['tasks'] ]],  label:projectStats.userAuthStats['top5'][3]['fullname']}, 
-                            {data:[[0, projectStats.userAuthStats['top5'][4]['tasks'] ]],  label:projectStats.userAuthStats['top5'][4]['fullname']}], 
+                            {data:[[0, projectStats.userAuthStats['top10'][0]['tasks'] ]],  label:projectStats.userAuthStats['top10'][0]['fullname']},
+                            {data:[[0, projectStats.userAuthStats['top10'][1]['tasks'] ]],  label:projectStats.userAuthStats['top10'][1]['fullname']},
+                            {data:[[0, projectStats.userAuthStats['top10'][2]['tasks'] ]],  label:projectStats.userAuthStats['top10'][2]['fullname']},
+                            {data:[[0, projectStats.userAuthStats['top10'][3]['tasks'] ]],  label:projectStats.userAuthStats['top10'][3]['fullname']},
+                            {data:[[0, projectStats.userAuthStats['top10'][4]['tasks'] ]],  label:projectStats.userAuthStats['top10'][4]['fullname']},
+                            {data:[[0, projectStats.userAuthStats['top10'][5]['tasks'] ]],  label:projectStats.userAuthStats['top10'][5]['fullname']},
+                            {data:[[0, projectStats.userAuthStats['top10'][6]['tasks'] ]],  label:projectStats.userAuthStats['top10'][6]['fullname']},
+                            {data:[[0, projectStats.userAuthStats['top10'][7]['tasks'] ]],  label:projectStats.userAuthStats['top10'][7]['fullname']},
+                            {data:[[0, projectStats.userAuthStats['top10'][8]['tasks'] ]],  label:projectStats.userAuthStats['top10'][8]['fullname']},
+                            {data:[[0, projectStats.userAuthStats['top10'][9]['tasks'] ]],  label:projectStats.userAuthStats['top10'][9]['fullname']}],
                             {
-                            pie     : {show: true, explode: 5},
+                            pie     : {show: true, explode: 10},
                             grid    : {verticalLines: false, horizontalLines: false, outlineWidth: 0},
                             HtmlText: false,
                             xaxis   : {showLabels: false},

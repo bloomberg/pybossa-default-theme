@@ -7,11 +7,11 @@
 {% block content %}
 <div class="container">
     {% if project %}
-    <div class="col-sm-3 col-md-3">
-        {{ helper.render_project_local_nav(project, active_link, current_user, pro_features) }}
+    <div class="col-sm-3 col-md-3" style="margin-top:50px;">
+        {{ helper.render_project_local_nav(project, active_link, current_user, pro_features, upload_method) }}
     </div>
     <!-- Project -->
-    <div class="col-sm-9 col-md-9" style="min-height:400px">
+    <div class="col-sm-9 col-md-9" style="min-height:400px;margin-top:50px;">
         <div class="row">
             <div class="col-sm-8 col-md-8">
                 <h1>{{project.name}}</h1>
@@ -24,7 +24,7 @@
             </div>
         </div>
         {% if active_link == 'info' %}
-        <p><em>{{ overall_progress | round | int }}% {{_('completed')}}</em></p>
+        <p><strong>{{ overall_progress | round | int }}% {{_('completed')}}</strong></p>
         {% endif %}
         {% block projectcontent %}{% endblock %}
         <div id="ckan" style="display:none">

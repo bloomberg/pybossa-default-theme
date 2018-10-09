@@ -7,6 +7,7 @@ function pybossaNotify(msg, showNotification, type){
     close.addClass("fa fa-2x fa-close pull-right");
     close.on('click', function(){
         $("#pybossa-notification").addClass("hide-notification");
+        hidePybossaNotification();
     });
     if (type === undefined) {
         type = 'info';
@@ -49,5 +50,15 @@ function pybossaNotify(msg, showNotification, type){
     }
     else {
         $("#pybossa-notification").addClass("hide-notification");
+        hidePybossaNotification();
     }
+}
+
+function hidePybossaNotification() {
+    /*
+    a workaround to hide the notification after hide-notification animation.
+    The top margin for some pages is hardcoded to 30 or 50px, the browser mis-calulates
+    the margines when the notification area is present in the page, eventhough it's hidden.
+    */
+    setTimeout(function() { $("#pybossa-notification").remove() }, 500);
 }

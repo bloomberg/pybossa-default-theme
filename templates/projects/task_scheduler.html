@@ -2,31 +2,67 @@
 {% set active_page = "projects" %}
 {% set active_link  = "tasks" %}
 {% set section =  _('Task Scheduler')%}
-{% from "_formhelpers.html" import render_field %}
+{% from "_formhelpers.html" import render_field, render_checkbox_field %}
 
 {% block projectcontent %}
 <p>{{_('You can choose from the following schedulers')}}:</p>
 <ul>
     <li><strong>{{_('Default')}}</strong> {{_('or')}}
-    <strong>{{_('Depth First')}}</strong>: {{_('returns a task that
-    has not been completed (the value of number of answers has
-    not achieved) excluding the current user')}}.</li>
-    <li><strong>{{_('Breadth First')}}</strong>: {{_('returns a
-    task which has the least number of task runs (answers)
-    excluding the current user')}}.</li>
-    <li><strong>{{_('Depth First All')}}</strong>: {{_('returns a
-    task where the current user has not participated. It does not take into
-    account the task.state')}}.</li>
+    <strong>{{_('Locked')}}</strong>: {{_('returns a task that has not been
+    completed, but ensures that the same task is not returned to more users than
+    it is needed to reach its redundancy')}}
+    <li><strong>{{_('User Preference')}}</strong>: {{_('returns a
+    task that matches user preferences set in user profile, provided tasks are
+    configured with user preferences')}}.</li>
 </ul>
 
 <form id="task_scheduler" method="post" action="{{ url_for('project.task_scheduler', short_name=project.short_name) }}">
     {{ form.hidden_tag() }}
     <fieldset>
-        {{ render_field(form.sched, class_="span4", 
+        {{ render_field(form.sched, class_="span4",
         placeholder="Task scheduler for your project")}}
+        <div id="show-randomizable">
+            <p>{{_('You also have the following option(s)')}}:</p>
+            <ul>
+                <li><strong>{{_('Randomize Within Priority')}}</strong>:
+                {{_('The next task is randomly selected from the highest priority tasks
+                provided by the scheduler. When left unchecked, the old available task
+                within the highest priority is returned first.')  }}
+            </ul>
+            {{ render_checkbox_field(form.rand_within_priority) }}
+        </div>
         <div class="form-actions">
             <input type="submit" value={{_('Set redundancy')}} class="btn btn-primary" />
         </div>
     </fieldset>
 </form>
+<script>
+    $(document).ready(function () {
+        if (!selectedSchedulerIsRandomizable()) {
+            $('#show-randomizable').hide();
+        }
+
+        $('#sched').change(function () {
+            $('#rand_within_priority').prop('checked', false);
+
+            if (selectedSchedulerIsRandomizable()) {
+                $('#show-randomizable').show();
+            } else {
+                $('#show-randomizable').hide();
+            }
+        });
+    });
+
+    function selectedSchedulerIsRandomizable () {
+        return isRandomizableScheduler(selectedScheduler());
+    }
+
+    function selectedScheduler () {
+        return $('#sched').val();
+    }
+
+    function isRandomizableScheduler (s) {
+        return {{ randomizable_scheds | safe }}.indexOf(s) !== -1;
+    }
+</script>
 {% endblock %}

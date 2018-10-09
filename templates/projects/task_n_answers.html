@@ -5,10 +5,22 @@
 {% from "_formhelpers.html" import render_field %}
 
 {% block projectcontent %}
+<form id="task_default_redundancy" method="post" action="{{ url_for('project.task_n_answers', short_name=project.short_name) }}"
+    style="margin-bottom: 1em">
+    {{ default_form.hidden_tag() }}
+    <fieldset>
+        {{ render_field(default_form.default_n_answers, placeholder= _('Set the default number of answers for newly created tasks')) }}
+        <div class="form-actions">
+            <p>Current Value: {{default_task_redundancy}}</p>
+            <input type="submit" value={{_('Set default redundancy')}} class="btn btn-primary" />
+            <a href="{{url_for('project.tasks', short_name=project.short_name)}}" class="btn btn-default">{{_('Cancel')}}</a>
+        </div>
+    </fieldset>
+</form>
 <form id="task_redundancy" method="post" action="{{ url_for('project.task_n_answers', short_name=project.short_name) }}">
     {{ form.hidden_tag() }}
     <fieldset>
-        {{ render_field(form.n_answers, placeholder= _('The number of answers per tasks that you want for the project')) }}
+        {{ render_field(form.n_answers, placeholder= _('Change the number of required answers for all currently created tasks')) }}
         <div class="form-actions">
             <input type="submit" value={{_('Set redundancy')}} class="btn btn-primary" />
             <a href="{{url_for('project.tasks', short_name=project.short_name)}}" class="btn btn-default">{{_('Cancel')}}</a>

@@ -9,7 +9,7 @@
 </div>
 
 <div id="editorpybossa">
-    <Announcementimagecrop/>
+    <Announcementimagecrop :level-options="{{levelOptions}}"/>
 </div>
 
 

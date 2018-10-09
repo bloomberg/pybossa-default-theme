@@ -7,16 +7,16 @@
 {% block content %}
 <section class="account projects">
     <div class="container">
-            <div class="col-sm-3 col-md-3">
-                {{ helper.render_account_local_nav(current_user, active_link) }}
+            <div class="col-sm-3 col-md-3" style="margin-top:30px;">
+                {{ helper.render_account_local_nav(current_user, active_link, upload_method) }}
             </div>
-            <div class="col-sm-9 col-md-9" style="min-height:400px">
+            <div class="col-sm-9 col-md-9" style="min-height:400px" style="margin-top:30px;">
                 {% if projects_published or projects_draft %}
                     {% if projects_published %}
-                    {{ project_helper.render_grid_projects(projects_published,  _('Published Projects'), upload_method, title_class="col-md-12", container=False)}}
+                    {{ project_helper.render_grid_projects(projects_published,  _('Published Projects'), upload_method, current_user, title_class="col-md-12", container=False, show_ownership=True, show_sort_box=True, sort_options=sort_options)}}
                     {% endif %}
                     {% if projects_draft %}
-                    {{ project_helper.render_grid_projects(projects_draft,  _('Draft Projects'), upload_method, title_class="col-md-12", container=False)}}
+                    {{ project_helper.render_grid_projects(projects_draft,  _('Draft Projects'), upload_method, current_user, title_class="col-md-12", container=False, show_ownership=True)}}
                     {% endif %}
                  {% else %}
                  <h1>{{_('You have not created a project')}}</h1>
@@ -26,4 +26,9 @@
             </div>
     </div>
 </section>
+{% endblock %}
+{% block extrajs %}
+<script type="text/javascript">
+{% include "account/js/sort_projects.js" %}
+</script>
 {% endblock %}

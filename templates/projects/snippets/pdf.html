@@ -147,7 +147,7 @@ function loadUserProgress() {
         var pct = Math.round((data.done*100)/data.total);
         $("#progress").css("width", pct.toString() +"%");
         $("#progress").attr("title", pct.toString() + "% completed!");
-        $("#progress").tooltip({'placement': 'left'}); 
+        $("#progress").tooltip({'placement': 'left'});
         $("#total").text(data.total);
         $("#done").text(data.done);
     });
@@ -174,7 +174,7 @@ pybossa.taskLoaded(function(task, deferred){
             $('#answer').hide();
             $('#taskcompleted').show();
         }
-        // NOTE: 
+        // NOTE:
         // Modifying the URL below to another server will likely *NOT* work. Because of browser
         // security restrictions, we have to use a file server with special headers
         // (CORS) - most servers don't support cross-origin browser requests.
@@ -188,7 +188,7 @@ pybossa.taskLoaded(function(task, deferred){
         viewport.css("display", "none");
         viewport.append(canvas);
         $("#answer").append(viewport);
-        
+
         $('#viewport_' + task.id).dragscrollable({dragSelector:'#canvas_' + task.id});
         task.canvas = document.getElementById('canvas_' + task.id);
         task.ctx = document.getElementById("canvas_" + task.id).getContext('2d');

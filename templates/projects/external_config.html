@@ -1,0 +1,19 @@
+{% extends "projects/base.html" %}
+{% set active_page = "projects" %}
+{% set active_link  = "settings" %}
+{% set section = _('External Configurations') %}
+{% from "_formhelpers.html" import render_form %}
+
+{% block projectcontent %}
+{% if not forms %}
+<h3>{{_('No external services have been configured')}}</h3>
+{% else %}
+
+{% for (form_name, display, form) in forms %}
+    <h3>{{display}}</h3>
+    {{render_form(form, form_id=form_name, action_url=url_for('project.ext_config', short_name=project.short_name), action_text='Submit', class_='', btn_name=form_name, btn_class='btn btn-default', btn_value=None)}}
+{% endfor %}
+
+{% endif %}
+
+{% endblock %}

@@ -31,5 +31,16 @@
         {{ render_project_card_option(project, upload_method, title=_('Export Project Report'), explanation=_('Export project report'), link=url_for('project.export_project_report', short_name=project.short_name, type='project', format='csv'), link_action_text=_('CSV'), icon='cloud-download')}}
     </div>
 </div>
+
+<div class="row">
+    <div id="ext_configuration" class="col-md-6">
+        {{ render_project_card_option(project, upload_method, title=_('External Configurations'), explanation=_('Configuration for external services'), link=url_for('project.ext_config', short_name=project.short_name), link_action_text=_('Ext'), icon='cogs')}}
+    </div>
+    {% if private_instance %}
+    <div id="assign_users_to_project" class="col-md-6">
+        {{ render_project_card_option(project, upload_method, title=_('Assign Users To Project'), explanation=_('Assign users to project based on matching data access levels'), link=url_for('project.assign_users', short_name=project.short_name), link_action_text=_('Assign Users'), icon='users')}}
+    </div>
+    {% endif %}
+</div>
 {% endif %}
 {% endblock %}

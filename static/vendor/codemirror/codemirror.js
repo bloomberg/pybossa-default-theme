@@ -1,6 +1,6 @@
-// CodeMirror, copyright (c) by Marijn Haverbeke and others
-// Distributed under an MIT license: http://codemirror.net/LICENSE
-
+/*! CodeMirror, copyright (c) by Marijn Haverbeke and others
+Distributed under an MIT license: http://codemirror.net/LICENSE
+*/
 // This is CodeMirror (http://codemirror.net), a code editor
 // implemented in JavaScript on top of the browser's DOM.
 //

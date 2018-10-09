@@ -4,7 +4,7 @@
 {% import "projects/_helpers.html" as helper %}
 
 {% block projectcontent %}
-{% from "_formhelpers.html" import render_field, render_checkbox_field %}
+{% from "_formhelpers.html" import render_field, render_checkbox_field, render_select2_field %}
 <h2>{{_('Update the avatar')}}</h2>
 <form method="post" action="{{ url_for('project.update', short_name=project.short_name) }}" enctype="multipart/form-data">
     <fieldset>
@@ -33,16 +33,54 @@
         {{ render_field(form.description, class_="input-xlarge", placeholder=_('Give some details about the project')) }}
         {{ render_field(form.long_description, class_="input-xlarge", placeholder=_('Explain the project (use Markdown!)')) }}
         {{ render_field(form.category_id) }}
-        {{ render_checkbox_field(form.allow_anonymous_contributors, class_="", tooltip=_('Check if you want to allow anonymous users contribute to your project')) }}
-        {{ render_checkbox_field(form.zip_download, class_="", tooltip=_("Check if you want to disable anonymous users to download project's data")) }}
-        {{ render_checkbox_field(form.protect, id='protect') }}
-        <div id='password'>{{ render_field(form.password) }}</div>
+        {{ render_checkbox_field(form.allow_anonymous_contributors, tooltip=_('Check if you want to allow anonymous users contribute to your project')) }}
+        {{ render_checkbox_field(form.hidden, tooltip=_('Check if you want to hide your project'))}}
+        {{ render_checkbox_field(form.email_notif, tooltip=_('Check if you want to send email notifications to your workers when new tasks are loaded'))}}
+        {% if sync_enabled %}
+            {{ render_checkbox_field(form.sync_enabled, class_="", tooltip=_('Check if you want to enable project syncing')) }}
+        {% endif %}
+        <div id='password'>{{ render_field(form.password, placeholder="Leave blank to maintain set password") }}</div>
+        {% if 'data_access' in form %}
+            {{ render_select2_field(form.data_access) }}
+        {% endif %}
         {{ render_field(form.webhook) }}
         <div class="form-actions">
             <button type="submit" name='btn' value="Save the changes" class="btn btn-primary">{{_('Save the changes')}}</button>
         </div>
     </fieldset>
 </form>
+
+<h3>{{_('Project Sync')}}</h3>
+    {% if server_url != target_url and (current_user.admin or (current_user.subadmin and current_user.id in project.owners_ids)) %}
+        <form method="post" action="{{ url_for('project.sync_project', short_name = project.short_name) }}">
+            <fieldset>
+                {{ render_field(sync_form.target_key, placeholder=_('Enter your API key from ' + target_url)) }}
+                <div class="form-actions">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                    <button type="submit" name='btn' value="sync" class="btn btn-primary">
+                        {{_('Sync Project')}}
+                    </button>
+                    <button type="submit" name='btn' value="undo" class="btn btn-default">
+                        {{_('Undo Last Sync')}}
+                    </button>
+                </div>
+            </fieldset>
+            <p>
+                <span class="label label-info"><i class="fa fa-bullhorn"></i>{{_('Note')}}</span>&nbsp;
+                {{ _('  To get your API key follow: ') }}&nbsp;
+                <b>
+                    <a href="{{ target_url }}" target="_blank">{{ target_url }}</a>
+                    {{  _(' > My Profile > API Key ') }}
+                </b>
+            </p>
+        </form>
+    {% else %}
+        <p>
+            <span class="label label-info"><i class="fa fa-bullhorn"></i>{{_('Note')}}</span>&nbsp;
+            {{ _('  Project syncing from this domain is disabled.') }}
+        </p>
+    {% endif %}
+
 <h3>{{_('Project secret key')}}</h3>
 <div class="input-group">
     <input type="password" name="secret-key" class="form-control" id="project-secret-key" style="width:100%;" readonly value="{{project.secret_key}}">
@@ -86,30 +124,21 @@
 <link rel="stylesheet" href="{{url_for('static', filename='css/cropper.min.css')}}" type="text/css" />
 <script src="{{url_for('static', filename='js/image_crop.js')}}" type="text/javascript"></script>
 <script type="text/javascript">
-$(function() {
-        var passProtected = document.getElementById('protect').checked;
-        if (!passProtected) {
-        $('#password').hide();
-        }
-        $('#protect').on('change', function() {
-            $('#password').toggle();
-            });
+    //Show/hide secret key
+    $(window).load(function(){
+        $(".fa-eye-slash").hide();
+        $("#password-toggle").click(function(evt){
+            evt.preventDefault();
+            $(".password-toggle").toggle();
+            if ( $("#project-secret-key").attr("type") == 'password') {
+                $("#project-secret-key").attr("type", 'text');
+            }
+            else {
+                $("#project-secret-key").attr("type", 'password');
+            }
         });
-
-        //Show/hide secret key
-        $(window).load(function(){
-            $(".fa-eye-slash").hide();
-            $("#password-toggle").click(function(evt){
-                evt.preventDefault();
-                $(".password-toggle").toggle();
-                if ( $("#project-secret-key").attr("type") == 'password') {
-                    $("#project-secret-key").attr("type", 'text');
-                }
-                else {
-                    $("#project-secret-key").attr("type", 'password');
-                }
-            });
-        });
+    });
 </script>
+<link rel="stylesheet" href="{{url_for('static', filename='css/select2.min.css')}}"/>
+<script src="{{url_for('static', filename='js/vendor/select2.min.js')}}" type="text/javascript"></script>
 {% endblock %}
-

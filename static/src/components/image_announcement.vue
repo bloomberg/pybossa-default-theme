@@ -1,12 +1,12 @@
 <template>
     <div>
-        <div>
+    <!-- <div>
             <div class="file-upload-form">
                 Upload an image file:
                 <input type="file" @change="previewImage" accept="image/*">
             </div>
             <div id="cropit-ctn" v-if="src != null && src.length > 0">
-                <img id="cropit" class="preview" :src="src"/> 
+                <img id="cropit" class="preview" :src="src"/>
                 <div class="cropping-btns">
                     <button class="btn btn-info" v-on:click="createCropper" v-bind:class="{ disabled: isCropping}">Crop</button>
                     <button v-if="isCropping" class="btn btn-info" v-on:click="cropIt">Save</button>
@@ -15,8 +15,7 @@
             <div id="cropit-ctn" v-else>
                 <img class="preview" src="http://via.placeholder.com/675x379">
             </div>
-        </div>
-
+        </div> -->
         <div class="blogcover">
         </div>
         <div class="form-group">
@@ -24,8 +23,19 @@
             <input class="form-control" v-model="data.title" placeholder="Write a nice title" type="text">
         </div>
         <markdown-editor v-model="data.body"></markdown-editor/>
+        <div class="form-group">
+            <label for="level" class="control-label"><label for="level">Level</label></label>
+            <select class="form-control" v-model="data.info.level">
+              <option v-for="option in levelOptions" v-bind:value="option.value">
+                {{ option.text }}
+              </option>
+            </select>
+        </div>
         <div class="action-btns">
-            <button class="btn btn-warning" v-on:click="update">Save draft</button>
+            <div v-if="canSave">
+                <button v-if="announcement_id" class="btn btn-warning" v-on:click="update">Update</button>
+                <button v-else class="btn btn-warning" v-on:click="update">Save</button>
+            </div>
             <div v-if="canPublish">
                 <button v-if="this.data.published" class="btn btn-primary" v-on:click="publish(false)">Unpublish</button>
                 <button v-else class="btn btn-primary" v-on:click="publish(true)">Publish</button>
@@ -65,6 +75,9 @@ export default {
         //   'vue-core-image-upload': VueCoreImageUpload,
         'markdown-editor': markdownEditor,
     },
+    props: [
+        'levelOptions'
+    ],
     data() {
         return {
             src: '',
@@ -74,13 +87,16 @@ export default {
             data: {
                 title: '',
                 body: '',
+                info: {
+                    level: ''
+                },
                 published: false
             },
             file_name: null,
         }
     },
     created(){
-        var url = window.location.href 
+        var url = window.location.href
         var update = false
         if (url.indexOf('/update') !== -1) {
             var tmp = url.split('/')
@@ -105,6 +121,7 @@ export default {
           if (update) {
             self.data.title = response.data.title
             self.data.body = response.data.body
+            self.data.info.level = response.data.info.level
             self.src = response.data.media_url
             self.file_name = response.data.info.file_name
           }
@@ -147,12 +164,14 @@ export default {
                 formData.append('file', blob, self.file_name)
                 formData.append('title', self.data.title)
                 formData.append('body', self.data.body)
+                formData.append('info', JSON.stringify(self.data.info || {}))
                 console.log(self.puturl)
 
                 if (self.puturl === '/api/announcement') {
                     axios.post(self.puturl, formData).then(function(response){
                         self.data.title = response.data.title
                         self.data.body = response.data.body
+                        self.data.info.level = response.data.info.level
                         self.announcement_id = response.data.id
                         self.src = response.data.media_url + '?' + Date.now()
                         self.cropper.destroy()
@@ -164,6 +183,7 @@ export default {
                     axios.put(self.puturl, formData).then(function(response){
                         self.data.title = response.data.title
                         self.data.body = response.data.body
+                        self.data.info.level = response.data.info.level
                         self.announcement_id = response.data.id
                         self.src = response.data.media_url + '?' + Date.now()
                         self.cropper.destroy()
@@ -197,6 +217,7 @@ export default {
             }
             this.data.title = res.title
             this.data.body = res.body
+            this.data.info.level = res.level
             this.announcement_id = res.id
         },
         update(){
@@ -209,6 +230,7 @@ export default {
                     }
                     self.data.title = response.data.title
                     self.data.body = response.data.body
+                    self.data.info.level = response.data.info.level
                     self.announcement_id = response.data.id
 
                 })
@@ -229,10 +251,12 @@ export default {
             if (this.announcement_id) return '/api/announcement/' + this.announcement_id
             else return '/api/announcement'
         },
-            canPublish(){
-                if (this.data.title === '' || this.data.body === '') return false
-                else return true
-            }
+        canSave(){
+            return !(this.data.title === '' || this.data.body === '' || this.data.info.level === '');
+        },
+        canPublish(){
+            return !(!this.announcement_id || this.data.title === '' || this.data.body === '' || this.data.info.level === '');
+        }
     }
 }
 </script>

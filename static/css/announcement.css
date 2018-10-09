@@ -1,0 +1,8 @@
+.announcement-box {
+  position: fixed;
+  width: 25em;
+  bottom: 0;
+  right: 1em;
+  z-index: 3000;
+  display: none;
+}

@@ -30,8 +30,35 @@
     {% endfor %}
 {%- endmacro %}
 
+{% macro render_select2_field(field) -%}
+     <div class="form-group {% if field.errors %}has-error{% endif %} {{ kwargs.pop('class_', '') }}">
+        <style>
+            .select2-selection {
+                border: 2px solid #dce4ec !important
+            }
+        </style>
+        <label for="{{ field.id }}" class="control-label">{{ field.label }}</label>
+        {{ field(class_="js-states form-control", multiple="", style="width: 100%") }}
+        {% if field.errors %}
+            {% for e in field.errors %}
+                <p class="help-block">{{ e }}</p>
+            {% endfor %}
+        {% endif %}
+        <script>
+        $(document).ready(function() {
+            $("#{{ field.id }}").select2({ placeholder: "Select multiple" });
+        });
+        </script>
+    </div>
+{%- endmacro %}
+
 {% macro render_form(form, form_id="", action_url='', action_text='Submit', class_='', btn_class='btn btn-default', btn_name=None, btn_value=None) -%}
- 
+    {% for f in form if f.type == 'Select2Field' %}
+        {% if loop.first  %}
+        <link rel="stylesheet" href="{{url_for('static', filename='css/select2.min.css')}}"/>
+        <script src="{{url_for('static', filename='js/vendor/select2.min.js')}}" type="text/javascript"></script>
+        {% endif  %}
+    {% endfor %}
     <form id="{{form_id}}" method="POST" action="{{ action_url }}" role="form" class="{{ class_ }}">
         {{ form.hidden_tag() if form.hidden_tag }}
         {% if caller %}
@@ -42,6 +69,8 @@
                     {{ render_checkbox_field(f) }}
                 {% elif f.type == 'RadioField' %}
                     {{ render_radio_field(f) }}
+                {% elif f.type == 'Select2Field' %}
+                    {{ render_select2_field(f) }}
                 {% else %}
                     {{ render_field(f) }}
                 {% endif %}

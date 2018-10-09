@@ -1,0 +1,76 @@
+#tasksGrid th.sort-desc:after,
+#tasksGrid th.sort-asc:after{
+    content: '';
+    position: relative;
+    left: -20px;
+    float: right;
+    border: 7px solid transparent;
+}
+#tasksGrid th.sort-desc:after{
+    top: 10px;
+    border-top-color: silver;
+}
+#tasksGrid th.sort-asc:after{
+    border-bottom-color: silver;
+}
+#tasksGrid th.sort-desc,
+#tasksGrid th.sort-asc{
+    padding-left: 20px;
+}
+
+#tasksBrowseControls {
+    padding-left:0;
+}
+#tasksBrowseControls>ul {
+    list-style: none;
+    padding-left: 0;
+}
+#tasksBrowseControls>ul>li:not(:first-child) {
+    float:right;
+    padding-left: 5px;
+}
+#tasksBrowseControls>ul>li:first-child {
+    float:left;
+}
+#tasksGrid th.sortable {
+    cursor: pointer;
+}
+#date_from {
+    z-index: 1051;
+}
+#date_to {
+    z-index: 1051;
+}
+#context-menu {
+    position: absolute;
+    display:none;
+}
+tbody > tr:hover{
+    background-color: #ffff99;
+}
+.selected {
+    background-color: #ffff99;
+}
+#tasksBrowseControls button{
+    width:55px;
+    height:28px;
+}
+
+.overlay {
+    display: none;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 2000;
+    text-align: center;
+}
+
+.spinner {
+    color: #fff;
+    position:relative;
+    top:40%;
+    font-size: 32px;
+}

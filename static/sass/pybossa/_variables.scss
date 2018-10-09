@@ -15,7 +15,7 @@ $gray:                   #95a5a6 !default; // #555
 $gray-light:             #b4bcc2 !default;   // #999
 $gray-lighter:           #F5F7F7 !default; // #eee
 
-$brand-primary:         #546E7A !default;
+$brand-primary:         #a9a9a9 !default;
 $brand-success:         #3AB0D5 !default;
 $brand-info:            #3498DB !default;
 $brand-warning:         #F39C12 !default;
@@ -29,7 +29,7 @@ $brand-danger:          #E74C3C !default;
 //** Background color for `<body>`.
 $body-bg:               #fff !default;
 //** Global text color on `<body>`.
-$text-color:            $brand-primary !default;
+$text-color:            #000 !default;
 
 //** Global textual link color.
 $link-color:            $brand-success !default;
@@ -136,7 +136,7 @@ $table-bg-hover:                $gray-lighter !default;
 $table-bg-active:               $table-bg-hover !default;
 
 //** Border color for table and cell borders.
-$table-border-color:            $gray-lighter !default;
+$table-border-color:            $gray-dark !default;
 
 
 //== Buttons
@@ -625,11 +625,11 @@ $alert-padding:               15px !default;
 $alert-border-radius:         $border-radius-base !default;
 $alert-link-font-weight:      bold !default;
 
-$alert-success-bg:            $state-success-bg !default;
+$alert-success-bg:            #2793b5 !default;
 $alert-success-text:          $state-success-text !default;
 $alert-success-border:        $state-success-border !default;
 
-$alert-info-bg:               $state-info-bg !default;
+$alert-info-bg:               #2793b5 !default;
 $alert-info-text:             $state-info-text !default;
 $alert-info-border:           $state-info-border !default;
 

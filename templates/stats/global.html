@@ -22,7 +22,7 @@
 <section class="stats global">
     <div class="container">
         <div class="row">
-            <div class="col-md-offset-2 col-md-8">
+            <div class="col-md-offset-2 col-md-8" style="margin-top: 50px;">
                 {% if enforce_privacy and (current_user.is_anonymous() or (current_user.is_authenticated and not current_user.admin)) %}
                 {{ privacy.render_lock_page() }}
                 {% else %}
@@ -33,14 +33,14 @@
                         <h2>{{_('Number of Users')}}</h2>
                         <div class="row">
                             <div class="col-md-6">
-                                <h3>{{ _('Anonymous') }}</h3> 
+                                <h3>{{ _('Anonymous') }}</h3>
                                 <p>{{stats.n_anon}}</p>
                                 <h3>{{ _('Authenticated') }}</h3>
                                 <p>{{stats.n_auth}}</p>
-                                <h3>{{ _('Total') }}</h3> 
+                                <h3>{{ _('Total') }}</h3>
                                 <p>{{stats.n_total_users}}</p>
                                 <a class="btn btn-primary btn-sm" href="{{url_for('leaderboard.index')}}"><i class="fa fa-trophy" style="color:white"></i> {{ _('Leaderboard') }}</a>
-                    
+
                             </div>
                             <div id="users" class="col-md-6" style="height:400px;"></div>
                             <script>
@@ -49,7 +49,7 @@
                                  var container = document.getElementById('users');
                                  var graph = Flotr.draw(container, [
                                      {data:[data['values'][0]['value']], label:data['values'][0]['label']},
-                                     {data:[data['values'][1]['value']],  label:data['values'][1]['label']}], 
+                                     {data:[data['values'][1]['value']],  label:data['values'][1]['label']}],
                                      {
 pie     : {show: true, explode: 2},
 grid    : {verticalLines: false, horizontalLines: false, outlineWidth: 0},
@@ -81,11 +81,11 @@ legend  : {position: 'se'}
                         <h2>{{ _('Projects') }}</h2>
                         <div class="row">
                             <div class="col-md-6">
-                                <h3>{{ _('Published Projects') }}</h3> 
+                                <h3>{{ _('Published Projects') }}</h3>
                                 <p>{{stats.n_published_projects}}</p>
                                 <h3>{{ _('Draft Projects') }}</h3>
                                 <p>{{stats.n_draft_projects}}</p>
-                                <h3>{{ _('Total') }}</h3> 
+                                <h3>{{ _('Total') }}</h3>
                                 <p>{{stats.n_total_projects}}</p>
                             </div>
                             <div id="projects" class="col-md-6" style="height:400px;"></div>
@@ -95,7 +95,7 @@ legend  : {position: 'se'}
                                  var container = document.getElementById('projects');
                                  var graph = Flotr.draw(container, [
                                      {data:[data['values'][0]['value']], label:data['values'][0]['label']},
-                                     {data:[data['values'][1]['value']],  label:data['values'][1]['label']}], 
+                                     {data:[data['values'][1]['value']],  label:data['values'][1]['label']}],
                                      {
 pie     : {show: true, explode: 2},
 grid    : {verticalLines: false, horizontalLines: false, outlineWidth: 0},
@@ -130,7 +130,7 @@ legend  : {position: 'se'}
                         <h2>{{ _('Tasks and Answers') }}</h2>
                         <div class="row">
                             <div class="col-md-6">
-                                <h3>{{ _('Number of Tasks') }}</h3> 
+                                <h3>{{ _('Number of Tasks') }}</h3>
                                 <p>{{stats.n_tasks}}</p>
                                 <h3>{{ _('Number of Task Runs') }}</h3>
                                 <p>{{stats.n_task_runs}}</p>
@@ -142,7 +142,7 @@ legend  : {position: 'se'}
                                  var container = document.getElementById('tasks');
                                  var graph = Flotr.draw(container, [
                                      {data:[data['values'][0]['value']], label:data['values'][0]['label']},
-                                     {data:[data['values'][1]['value']],  label:data['values'][1]['label']}], 
+                                     {data:[data['values'][1]['value']],  label:data['values'][1]['label']}],
                                      {
 bars : {show: true},
 grid    : {verticalLines: true, horizontalLines: true},
@@ -172,7 +172,7 @@ legend  : {position: 'ne'}
                          map.fitWorld();
                          map.setZoom(1);
                          var url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-                         L.tileLayer(url, 
+                         L.tileLayer(url,
                              {
 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
 maxZoom: 18,
@@ -196,7 +196,7 @@ map.addLayer(markers);
                 </div>
                 {% endif %}
                 <!-- END Anonymous Users Map CARD -->
-                {% endif %} 
+                {% endif %}
             </div>
         </div>
     </div>

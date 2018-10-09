@@ -1,0 +1,42 @@
+.hidden{
+  display: none;
+}
+
+.help-tip{
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	text-align: center;
+	background-color: #BCDBEA;
+	border-radius: 50%;
+	width: 24px;
+	height: 24px;
+	font-size: 14px;
+	line-height: 26px;
+	cursor: default;
+}
+
+.help-tip:before{
+	content:'?';
+	font-weight: bold;
+	color:#fff;
+}
+
+.help-tip:hover p{
+	display:block;
+	transform-origin: 100% 0%;
+}
+
+.help-tip p{
+	display: none;
+	text-align: left;
+	background-color: #1E2021;
+	padding: 20px;
+	width: 300px;
+	position: absolute;
+	border-radius: 3px;
+	right: -4px;
+	color: #FFF;
+	font-size: 13px;
+	line-height: 2;
+}

@@ -16,8 +16,8 @@ module.exports = {
   entry: './editor.js',
   // where to place the compiled bundle
   output: {
-    path: '../js/',
-    publicPath: '/static/js/',
+    path: '../js/gen',
+    publicPath: '/static/js/gen',
     filename: 'editor.min.js'
   },
   module: {

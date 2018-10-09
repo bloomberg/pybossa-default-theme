@@ -12,7 +12,10 @@
 </div>
 {{ helper.render_project_summary(project, n_tasks, overall_progress, last_activity, current_user) }}
 <form class="form-horizontal" method="post" action="{{ url_for('project.delete_tasks', short_name = project.short_name) }}">
-    <h3><strong>{{_('Are you sure you want to delete ALL the project tasks and associated task runs?')}}</strong></h3>
+    <h3><strong>{{_('Are you sure you want to delete the incomplete project tasks and associated task runs?')}}</strong></h3>
+    <div>
+        <input type="checkbox" name="force_reset" value="true" /> {{_('Force remove completed tasks, taskruns and results.')}}
+    </div>
     <div class="form-actions">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
         <button type="submit" name='btn' class="btn btn-sm"

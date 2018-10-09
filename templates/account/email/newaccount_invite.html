@@ -1,0 +1,24 @@
+ {% block page_content %}
+    <h1>Account Registration</h1>
+    <p>Hello, {{user['fullname']}}!</p>
+    <p>Welcome to {{ config.BRAND }}
+    {% if is_qa %}
+    (QA Version)
+    {% endif %}
+    . Your account has been created on <a href={{ server_url }}>{{ server_url }}</a></p>
+
+    <p>Please login with your email: {{user['email_addr']}} and temporary password: {{user['password']}}</p>
+    <p>Upon login, you will be emailed a code that you will need to enter to verify your account</p>
+    {% if project_urls %}
+        <p>You can contribute to the following project(s):
+        <ul>
+        {% for project_url in project_urls %}
+            <li>{{project_url}}</li>
+        {% endfor %}
+        </ul>
+        </p>
+    {% endif %}
+    <br>
+    <p>Reference manual for {{ config.BRAND }} platform is available at <a href={{user_manual_url}}>{{user_manual_label}}</a></p>
+    <p>For more information about the processing of your personal data by {{ config.PARENT_BRAND or config.BRAND }}, please review our <a href="{{ config.PRIVACY_POLICY_PAGE }}">privacy policy</a>.</p>
+{% endblock %}

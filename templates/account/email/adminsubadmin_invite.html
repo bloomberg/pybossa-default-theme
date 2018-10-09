@@ -1,0 +1,9 @@
+{% block page_content %}
+    <h1>{{access_type}} access on {{ config.BRAND }}</h1>
+    <p>Hello, {{username}}!</p>
+    <p>You've been granted {{access_type}} privileges on {{ config.BRAND }}
+    {% if is_qa %}
+    (QA Version)
+    {% endif %} at <a href={{server_url}}>{{server_url}}</a>.</p>
+    <p>Reference manual for admins and subadmins on {{ config.BRAND }} platform is available at <a href={{admin_manual_url}}>{{admin_manual_label}}</a></p>
+{% endblock %}

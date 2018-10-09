@@ -21,11 +21,11 @@
                 {{ render_form(form, form_id="register", action_url=url_for('account.register'), btn_class="btn btn-primary btn-block" )}}
 
                 <p class="text-center text-sm" style="margin-top:5px;">
-                <span class="label label-warning"><i class="fa fa-bullhorn"></i> {{ _('Note') }}</span> 
-                {{ _('By click the') }} 
+                <span class="label label-warning"><i class="fa fa-bullhorn"></i> {{ _('Note') }}</span>
+                {{ _('By click the') }}
                 <strong>{{ _('Create account button') }}
                 </strong>{{ _('below you are agreeing to the') }}
-                <a target="blank" href={{terms_of_use | safe}}>{{ _('terms of use') }} </a>{{ _('and') }} 
+                <a target="blank" href={{terms_of_use | safe}}>{{ _('terms of use') }} </a>{{ _('and') }}
                 <a href={{data_use | safe}}>{{ _('data') }}</a>.
                 </p>
             </div>
@@ -91,6 +91,9 @@ function checkAge () {
 </script>
 <style>
 #register {
+    display: block;
+}
+#ageCheck {
     display: none;
 }
 </style>

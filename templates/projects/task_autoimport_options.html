@@ -7,7 +7,7 @@
 {% from "_formhelpers.html" import render_field %}
 <div class="container">
     <div class="col-md-3">
-        {{ helper.render_project_local_nav(project, 'tasks', current_user, pro_features)}}
+        {{ helper.render_project_local_nav(project, 'tasks', current_user, pro_features, upload_method)}}
     </div>
     <div class="col-md-9">
         {{ helper.render_project_title(project, subtitle=_('Setup task autoimporter'))}}

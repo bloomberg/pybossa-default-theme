@@ -13,7 +13,7 @@
 
     <!-- Le styles -->
     {% assets filters="libsass", output="css/gen/pybossa.min.css",
-              depends="sass/**/*.scss", 
+              depends="sass/**/*.scss",
               "sass/_pybossa.scss"%}
         <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">
     {% endassets %}
@@ -25,34 +25,45 @@
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="apple-touch-icon" sizes="57x57" href="/static/img/favicon/apple-touch-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/static/img/favicon/apple-touch-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/static/img/favicon/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/static/img/favicon/apple-touch-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/static/img/favicon/apple-touch-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/static/img/favicon/apple-touch-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/static/img/favicon/apple-touch-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/static/img/favicon/apple-touch-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/static/img/favicon/apple-touch-icon-180x180.png">
-    <link rel="icon" type="image/png" href="/static/img/favicon/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="/static/img/favicon/android-chrome-192x192.png" sizes="192x192">
-    <link rel="icon" type="image/png" href="/static/img/favicon/favicon-96x96.png" sizes="96x96">
-    <link rel="icon" type="image/png" href="/static/img/favicon/favicon-16x16.png" sizes="16x16">
-    <link rel="manifest" href="/static/img/favicon/manifest.json">
-    <link rel="mask-icon" href="/static/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="shortcut icon" href="/static/img/favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="57x57" href="{{ url_for('static', filename='img/favicon/apple-touch-icon-57x57.png') }}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{{ url_for('static', filename='img/favicon/apple-touch-icon-60x60.png') }}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ url_for('static', filename='img/favicon/apple-touch-icon-72x72.png') }}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ url_for('static', filename='img/favicon/apple-touch-icon-76x76.png') }}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ url_for('static', filename='img/favicon/apple-touch-icon-114x114.png') }}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ url_for('static', filename='img/favicon/apple-touch-icon-120x120.png') }}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{{ url_for('static', filename='img/favicon/apple-touch-icon-144x144.png') }}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ url_for('static', filename='img/favicon/apple-touch-icon-152x152.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/favicon/apple-touch-icon-180x180.png') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon/favicon-32x32.png') }}" sizes="32x32">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon/android-chrome-192x192.png') }}" sizes="192x192">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon/favicon-96x96.png') }}" sizes="96x96">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon/favicon-16x16.png') }}" sizes="16x16">
+    <link rel="manifest" href="{{ url_for('static', filename='img/favicon/manifest.json') }}">
+    <link rel="mask-icon" href="{{ url_for('static', filename='img/favicon/safari-pinned-tab.svg') }}" color="#5bbad5">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon/favicon.ico') }}">
     <meta name="msapplication-TileColor" content="#00aba9">
-    <meta name="msapplication-TileImage" content="/static/img/favicon/mstile-144x144.png">
-    <meta name="msapplication-config" content="/static/img/favicon/browserconfig.xml">
+    <meta name="msapplication-TileImage" content="{{url_for('static', filename='img/favicon/mstile-144x144.png')}}">
+    <meta name="msapplication-config" content="{{url_for('static', filename='img/favicon/browserconfig.xml')}}">
     <meta name="theme-color" content="#ffffff">
 
     <!-- Google Analytics or similar solutions -->
     {% include '_ga.html' ignore missing %}
     <!-- Google Custom Search -->
     {% include '_gcs.html' ignore missing %}
+    <!-- Le javascript -->
+    {% if not jstop %}
+    {% assets filters="jsmin", output="js/gen/default.min.js",
+              "js/vendor/jquery-2.2.3.js", "js/vendor/bootstrap.js",
+              "js/vendor/modernizr.min.js", "js/flashmessages.js",
+              "js/vendor/cookieconsent.min.js"
+              %}
+              <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+    {% endif %}
   </head>
 
   <body>
+    <article>
     {% set active_page = active_page | default('index') -%}
     {% set active_project  = active_project | default('none') -%}
     {% include "_navbar.html" %}
@@ -60,23 +71,15 @@
     <!-- checkpoint::logged-in::{{current_user.name}} -->
     {% endif %}
     {% block content %}{% endblock %}
-    {% include "_footer.html" %}
     <!-- Le javascript -->
     <script id="cookies_warning">
         window.cookieconsent_options = {"message":"Cookies help us to deliver our services. By using our services, you agree to our use of cookies.","dismiss":"Got it!","learnMore":"Learn More.","link":"{{url_for('help.cookies_policy')}}","theme":"dark-bottom"};
     </script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
-    {% if not jstop %}
-    {% assets filters="jsmin", output="js/gen/default.min.js",
-              "js/vendor/jquery-2.2.3.js", "js/vendor/bootstrap.js", 
-              "js/vendor/modernizr.min.js", "js/flashmessages.js", 
-              "js/vendor/cookieconsent.min.js"
-              %}
-              <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
-    {% endif %}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
     {% block extrajs %}
     {% endblock %}
     {% include "_flash_messages.html" %}
+    </article>
+    {% include "_footer.html" %}
   </body>
 </html>

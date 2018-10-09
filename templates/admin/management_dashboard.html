@@ -1,0 +1,127 @@
+{% extends "/base.html" %}
+{% set active_page = "profile" %}
+{% set active_link = "admin" %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+<script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+<style>
+    .ct-bar {
+        stroke: #aae266 !important;
+    }
+    .ct-line, .ct-point {
+        stroke: #3AB0D5 !important;
+    }
+</style>
+<div class="container">
+    <div class="col-md-12" style="margin-top:30px;">
+        <h1><strong>{{ _('Management Dashboard') }}</strong></h1>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-12">
+            <h2>{{ _('General platform usage' )}}</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th><p><strong>Last 30 days</strong></p></th>
+                        <th><p><strong>Last 60 days</strong></p></th>
+                        <th><p><strong>Last 90 days</strong></p></th>
+                        <th><p><strong>Last Year</strong></p></th>
+                        <th><p><strong>All time</strong></p></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stat, values in timed_stats.iteritems() %}
+                    <tr>
+                        <th><p><strong>{{ stat | replace('_', ' ') | capitalize }}</strong></p></th>
+                        <td><p>{{ values[30] }}</p></td>
+                        <td><p>{{ values[60] }}</p></td>
+                        <td><p>{{ values[90] }}</p></td>
+                        <td><p>{{ values[350] }}</p></td>
+                        <td><p>{{ values['all'] }}</p></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-6">
+        <h2>{{ _('Work on platform' )}}</h2>
+        <table class="table table-striped">
+            {% for stat_name, value in current_stats.iteritems() %}
+            <tr>
+                <td><p><strong>{{ stat_name }}<p><strong></td>
+                <td><p>{{ value | int }}</p></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-12">
+        <h2>{{ _('Number of projects') }}</h2>
+        <div id="project-chart"  class="ct-chart"></div>
+        <script>
+            var data = {{ project_chart | tojson | safe }};
+            var options = {
+                axisY: {
+                    onlyInteger: true
+                },
+                height: '30em'
+            };
+            new Chartist.Line('#project-chart', data, options);
+        </script>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-12">
+        <h2>{{ _('Number of categories') }}</h2>
+        <div id="category-chart"  class="ct-chart"></div>
+        <script>
+            var data = {{ category_chart | tojson | safe }};
+            var options = {
+                axisY: {
+                    onlyInteger: true
+                },
+                height: '30em'
+            };
+            new Chartist.Line('#category-chart', data, options);
+        </script>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-12">
+        <h2>{{ _('Number of tasks created') }}</h2>
+        <div id="task-chart"  class="ct-chart"></div>
+        <script>
+            var data = {{ task_chart | tojson | safe }};
+            var options = {
+                axisY: {
+                    onlyInteger: true
+                },
+                height: '30em'
+            };
+            new Chartist.Bar('#task-chart', data, options);
+        </script>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-12">
+        <h2>{{ _('Number of submissions') }}</h2>
+        <div id="submission-chart"  class="ct-chart"></div>
+        <script>
+            var data = {{ submission_chart | tojson | safe }};
+            var options = {
+                axisY: {
+                    onlyInteger: true
+                },
+                height: '30em'
+            };
+            new Chartist.Bar('#submission-chart', data, options);
+        </script>
+    </div>
+</div>
+{% endblock %}

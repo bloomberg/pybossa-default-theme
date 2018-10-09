@@ -1,10 +1,10 @@
 #pybossa-notification {
-  position: fixed;
+  position: relative;
   top:0;
   z-index: 100;
   width: 100%;
   text-align: center;
-  padding: 15px;
+  padding: 10px;
   color: white;
   text-transform: uppercase;
   transform: translateY(-150px);
@@ -24,10 +24,10 @@
 
 @keyframes slideDown {
     0% {transform: translateY(-150px);}
-    100% { transform: translateY(60px); }
+    100% { transform: translateY(40px); }
 }
 
 @keyframes slideUp {
-    0% {transform: translateY(60px);}
-    100% { transform: translateY(-150px); }
+    0% {transform: translateY(40px);}
+    99% { transform: translateY(-150px); }
 }

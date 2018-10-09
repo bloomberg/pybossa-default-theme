@@ -8,13 +8,15 @@
 {% from "_formhelpers.html" import render_field, render_form %}
 <section class="account update">
     <div class="container">
-        <div class="col-sm-3 col-md-3">
-            {{ helper.render_account_local_nav(current_user, active_link) }}
+        <div class="col-sm-3 col-md-3" style="margin-top:30px;">
+            {{ helper.render_account_local_nav(current_user, active_link, upload_method) }}
         </div>
-        <div class="col-sm-9 col-md-9">
+        <div class="col-sm-9 col-md-9" style="margin-top:30px;">
             <section class="account update profile">
                 <h1>{{ _('Update your profile') }}</h1>
-
+                {% if current_user.admin %}
+                  <p><font color="red">Updating email address may result in revoking your admin access.</font><p>
+                {% endif %}
                 {{ render_form(form, action_url=url_for('account.update_profile', name=current_user.name), action_text=_('Save the changes'), btn_class='btn btn-primary', btn_name='btn', btn_value='Profile')}}
 
             </section>
@@ -67,38 +69,11 @@
                     </div>
                 </form>
             </section>
-            <section class="account delete">
-                <h2>{{_('Export your data')}}</h2>
-                <p>
-                    {{ _('We will get an email when the data is available to download. You will get access to your personal data, your contributions and the projects you have created') }}
-                </p>
-                <div class="form-group">
-                    <a class="btn btn-primary" style="margin-top:10px;" href="{{url_for('account.start_export', name=current_user.name)}}">{{_('Export your data')}}</a>
-                </div>
-            </section>
-            <section class="account delete">
-                <h2>{{_('Delete your account')}}</h2>
-                <div class="alert alert-danger">
-                    <strong>{{ _('Danger Zone!') }}</strong> {{ _('By deleting your account, all your personal data will be removed from the server and third party services. Your contributions will be anonymized. This operation cannot be undone!') }}
-                </div>
-                <div class="form-group">
-                    <input onkeyup="checkEmail(this.value)" class="form-control" id="delete" placeholder="Type your email to confirm that you want to delete it.">
-                    <a id="deleteTrue"  class="btn btn-primary" style="margin-top:10px; display:none;" href="{{url_for('account.delete', name=current_user.name)}}">{{_('Delete')}}</a>
-                </div>
-            </section>
         </div>
     </div>
 </section>
 <script>
     var pybossaAvatarAspectRatio = 1 / 1;
-function checkEmail (txt) {
-    if (txt === '{{ current_user.email_addr}}') {
-        document.getElementById('deleteTrue').style.display='block';
-    } else {
-        document.getElementById('deleteTrue').style.display='none';
-    }
-}
-
 </script>
 <script src="{{url_for('static', filename='js/vendor/cropper.min.js')}}"></script>
 <link rel="stylesheet" href="{{url_for('static', filename='css/cropper.min.css')}}" type="text/css" />

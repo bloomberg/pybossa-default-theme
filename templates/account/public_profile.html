@@ -3,43 +3,88 @@
 {% import "account/_helpers.html" as helper %}
 {% from "projects/_helpers.html" import render_grid_projects, broken_image %}
 {% import "privacy/locked.html" as privacy %}
+{% from "_formhelpers.html" import render_form %}
 {% import "account/user_pref_metadata.html" as user_pref_metadata %}
-
 {% block content %}
-<section class="account public-profile">
     <div class="container">
         <div class="row">
             <div class="col-md-offset-2 col-md-8" style="margin-top:30px;">
-                {% if enforce_privacy and (current_user.is_anonymous() or (current_user.is_authenticated and not current_user.admin)) %}
+                {% if enforce_privacy and (current_user.is_anonymous() or (current_user.is_authenticated and not current_user.admin and not current_user.subadmin)) %}
                 {{ privacy.render_lock_page() }}
                 {% else %}
-                <div class="text-center">
+                <div class="text-center" style="margin-top:30px;">
                     {{helper.render_user_thumbnail(user, upload_method, class='col-xs-4 img-circle')}}
                 </div>
-                <div class="text-center">
+                <div class="text-center" style="margin-top:30px;">
                     <h1 id="user-data">{{user.fullname}}</h1>
                     {% if user.rank %}
                     <h2><i class="fa fa-trophy"></i> {{ _('Rank')}}: {{user.rank}}</h2>
                     {% endif %}
                 </div>
+                {% if current_user.admin or current_user.subadmin%}
+                <div class="col-md-offset-15 col-md-10 {% if input_form %} hidden {% endif %}" id="user-info" >
+                    <p><strong>{{ _('Total projects contributed:')}}</strong> {{total_projects_contributed}}</p>
+                    <p><strong>{{ _('Total tasks completed:')}}</strong> {{user.n_answers}}</p>
+                    <p><strong>{{ _('Percentage of tasks completed:')}}</strong> {{percentage_tasks_completed}}</p>
+                    <p><strong>{{ _('Last task submission date:')}}</strong> {{user.last_task_submission_on}}</p>
+                </div>
+                {% endif %}
             </div>
         </div>
-        {% if config.upref_mdata %}
+        {% if upref_mdata_enabled %}
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
+                {% if current_user.admin or current_user.subadmin%}
                 <div class="col-md-offset-15 col-md-10">
                     {{ user_pref_metadata.render_upref_mdata(user, form, can_update, input_form) }}
                 </div>
+                {% endif %}
             </div>
         </div>
         {% endif %}
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                {% if current_user.admin %}
+                  <section class="account delete">
+                      <h2>{{_('Export user data')}}</h2>
+                      <p>
+                          {{ _('You will get an email when the data is available to download.') }}
+                      </p>
+                      <div class="form-group">
+                          <a class="btn btn-primary" style="margin-top:10px;" href="{{url_for('account.start_export', name=user.name)}}">{{_('Export user data')}}</a>
+                      </div>
+                  </section>
+                  <section class="account delete">
+                      <h2>{{_('Delete this account')}}</h2>
+                      <div class="alert alert-danger">
+                          <strong>{{ _('Danger Zone!') }}</strong> {{ _('By deleting this account, all the personal data will be removed from the server and third party services. This operation cannot be undone!') }}
+                      </div>
+                      <div class="form-group">
+                          <input onkeyup="checkEmail(this.value)" class="form-control" id="delete" placeholder="Type your email to confirm that you want to delete it.">
+                          <a id="deleteTrue"  class="btn btn-primary" style="margin-top:10px; display:none;" href="{{url_for('account.delete', name=user.name)}}">{{_('Delete')}}</a>
+                      </div>
+                  </section>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </section>
+{% if current_user.admin %}
+<script>
+function checkEmail (txt) {
+    if (txt === '{{ user.email_addr }}') {
+        document.getElementById('deleteTrue').style.display='block';
+    } else {
+        document.getElementById('deleteTrue').style.display='none';
+    }
+}
+</script>
+{% endif %}
 {% if projects_created %}
-{{render_grid_projects(projects_created, "Created Projects", upload_method, id="created-projects")}}
+{{render_grid_projects(projects_created, "Projects Owned", upload_method, current_user, id="created-projects", show_ownership=True)}}
 {% endif %}
 {% if projects %}
-{{render_grid_projects(projects, "Contributions", upload_method, id="contributed-projects")}}
+{{render_grid_projects(projects, "Contributions", upload_method, current_user, id="contributed-projects", show_ownership=True)}}
 {% endif %}
 {% endif %}
 {{ broken_image() }}

@@ -1,8 +1,10 @@
 {% extends "admin/base.html" %}
 {% from "projects/_helpers.html" import render_project_card_option %}
-
 {% block rightbody %}
+<div class ="container">
+<div class="col-sm-9 col-md-9" style="margin-top:50px;">
 <h2>{{ _('Admin Site') }}</h2>
+{% if current_user.admin %}
 <div class="row">
     <div id="dashboard" class="col-md-6">
         {{ render_project_card_option(project, upload_method, title=_('Dashboard'), explanation=_('Internal statistics'), link=url_for('admin.dashboard'), link_action_text=_('Go'), icon='info')}}
@@ -23,13 +25,38 @@
     <div id="users" class="col-md-6">
         {{ render_project_card_option(project, upload_method, title=_('Administrators'), explanation=_('Manage administrators'), link=url_for('admin.users'), link_action_text=_('Manage'), icon='user')}}
     </div>
-    <div id="users-list" class="col-md-6">
-        {{ render_project_card_option(project, upload_method, title=_('Users'), explanation=_('Export a list of users'), link=url_for('admin.export_users', format='csv'), link_action_text=_('CSV'), link_two=url_for('admin.export_users', format='json'), link_action_text_two=_('JSON'), icon='user')}}
+    <div id="subadminusers" class="col-md-6">
+        {{ render_project_card_option(project, upload_method, title=_('Subadministrators'), explanation=_('Manage subadministrators'), link=url_for('admin.subadminusers'), link_action_text=_('Manage'), icon='user')}}
     </div>
 </div>
 <div class="row">
+    <div id="users-list" class="col-md-6">
+        {{ render_project_card_option(project, upload_method, title=_('Export Users'), explanation=_('Export a list of users'), link=url_for('admin.export_users', format='csv'), link_action_text=_('CSV'), link_two=url_for('admin.export_users', format='json'), link_action_text_two=_('JSON'), icon='user')}}
+    </div>
+    <div id="import-users" class="col-md-6">
+        {{ render_project_card_option(project, upload_method, title=_('Import Users'), explanation=_('Import bulk users with local csv file'), link=url_for('admin.userimport', type='usercsvimport'), link_action_text=_('Import'), icon='user')}}
+    </div>
+</div>
+{% endif %}
+<div class="row">
+    {% if current_user.admin %}
+    <div id="exportprojects" class="col-md-6">
+        {{ render_project_card_option(project, upload_method, title=_('Project Report'), explanation=_('Generate projects report'), link=url_for('project.export_projects', format='csv'), link_action_text=_('CSV'), icon='check') }}
+    </div>
+    {% endif %}
+    {% if current_user.admin or current_user.subadmin %}
+    <div id="manageusers" class="col-md-6">
+        {{ render_project_card_option(project, upload_method, title=_('Manage Users'), explanation=_('Enable/Disable Users'), link=url_for('admin.manageusers'), link_action_text=_('Manage'), icon='user')}}
+    </div>
+    {% endif %}
+</div>
+{% if current_user.admin %}
+<div class="row">
     <div id="users" class="col-md-6">
         {{ render_project_card_option(project, upload_method, title=_('Announcement'), explanation=_('Write new announcement'), link=url_for('admin.announcement'), link_action_text=_('Manage'), icon='user')}}
+    </div>
+    <div id="management-dashboard" class="col-md-6">
+        {{ render_project_card_option(project, upload_method, title=_('Management Dashboard'), explanation=_('Additional site-wide stats'), link=url_for('admin.management_dashboard'), link_action_text=_('Stats'), icon='info') }}
     </div>
 </div>
 <div class="row">
@@ -40,6 +67,8 @@
             <li><strong>{{new.updated[0:10]}}</strong> {% if 'github' in new.links[0].href %} <span class="label label-info">{{_('New PyBossa version')}}</span> {% else %} <span class="label label-default">{{_('New SciFabric Blog Post')}}</span> {% endif %}<a target="_blank" href="{{new.links[0].href}}">{{new.title}}</a></li>
             {% endfor %}
         </ul>
-    </div>
 </div>
+{% endif %}
+</div>
+</div> <!-- container -->
 {% endblock %}
