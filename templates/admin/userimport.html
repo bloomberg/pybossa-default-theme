@@ -13,7 +13,7 @@
             {{form.hidden_tag()}}
             <fieldset>
                 <p>Please choose local csv file with user information and press Import button</p>
-                <p><font color="red">Note: The csv should contain columns: name, fullname, email_addr, password and project_slugs(optional) for user to contribute.</font></p>
+                <p><font color="red">Note: The csv should contain columns: name, fullname, email_addr, password, project_slugs(optional) and metadata for user to contribute.</font></p>
                 <div class="form-actions">
                     <input type="file" name="file" accept=".csv"><br/><br/>
                     <input id="submit" type="submit" value="{{_('Import')}}" class="btn btn-primary" >
