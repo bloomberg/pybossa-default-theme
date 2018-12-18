@@ -22,11 +22,11 @@
             <label for="title" class="control-label"><label for="title">Title</label></label>
             <input class="form-control" v-model="data.title" placeholder="Write a nice title" type="text">
         </div>
-        <markdown-editor v-model="data.body"></markdown-editor/>
+        <markdown-editor v-model="data.body"></markdown-editor>
         <div class="form-group">
             <label for="level" class="control-label"><label for="level">Level</label></label>
             <select class="form-control" v-model="data.info.level">
-              <option v-for="option in levelOptions" v-bind:value="option.value">
+              <option v-for="option in levelOptions" v-bind:value="option.value" :key="option.value">
                 {{ option.text }}
               </option>
             </select>
@@ -46,7 +46,7 @@
 <script>
 import axios from 'axios'
 //import VueCoreImageUpload from 'vue-core-image-upload'
-import { markdownEditor } from 'vue-simplemde'
+import  { markdownEditor } from 'vue-simplemde'
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.min.css'
 
@@ -73,7 +73,7 @@ function cleanCropper(){
 export default {
     components: {
         //   'vue-core-image-upload': VueCoreImageUpload,
-        'markdown-editor': markdownEditor,
+        'markdown-editor': markdownEditor.default,
     },
     props: [
         'levelOptions'

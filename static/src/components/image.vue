@@ -23,7 +23,7 @@
             <label for="title" class="control-label"><label for="title">Title</label></label>
             <input class="form-control" v-model="data.title" placeholder="Write a nice title" type="text">
         </div>
-        <markdown-editor v-model="data.body"></markdown-editor/>
+        <markdown-editor v-model="data.body"></markdown-editor>
         <div class="action-btns">
             <button class="btn btn-warning" v-on:click="update">Save draft</button>
             <div v-if="canPublish">
@@ -63,7 +63,7 @@ function cleanCropper(){
 export default {
     components: {
         //   'vue-core-image-upload': VueCoreImageUpload,
-        'markdown-editor': markdownEditor,
+        'markdown-editor': markdownEditor.default,
     },
     data() {
         return {
@@ -81,6 +81,8 @@ export default {
         }
     },
     created(){
+            console.log(markdownEditor)
+
         var url = window.location.href 
         var update = false
         if (url.indexOf('/update') !== -1) {
