@@ -1,0 +1,8 @@
+{% block projectcontent %}
+{% from "_formhelpers.html" import render_field %}
+<div id="editorpybossa" class = "col-md-6">
+    <builder></builder>
+</div>    
+<script src="<%= htmlWebpackPlugin.files.chunks.editor.entry %>"></script>
+
+{% endblock %}

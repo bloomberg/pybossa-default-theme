@@ -1,0 +1,48 @@
+<template>
+  <div class = "row text-color">
+    <div
+      v-if="$route.name !== 'home'"
+      class="col-md-1 icon-back">
+      <i
+        class="fa fa-angle-double-left fa-w-14 fa-3x"
+        @click="navigateToHome"/>
+    </div>
+    <h3 class="col-md-11 pull-left">
+      {{ $route.params.header ? $route.params.header : 'Questions' }}
+    </h3>
+  </div>
+</template>
+
+<style>
+.text-color {
+    color:#3AB0D5;
+}
+.icon-back {
+    cursor: pointer;
+    color:#3AB0D5;
+    font-size: 20px;
+    padding-left: 20px;
+    padding-top: 5px;
+}
+</style>
+
+<script>
+import * as types from '../store/types'
+
+export default {
+    name: 'Header',
+    data () {
+        return {
+        }
+    },
+    methods: {
+        navigateToHome: function () {
+            this.$store.dispatch(types['CLEAR_' + this.$route.params.componentName + '_FORM'])
+            this.$router.push({ name: 'home' })
+        }
+    },
+    beforeRouteEnter (to, from, next) {
+        next()
+    }
+}
+</script>

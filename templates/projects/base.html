@@ -5,21 +5,36 @@
 {% from "account/_helpers.html" import render_pagination %}
 
 {% block content %}
-<div class="container">
+<style>
+.navigation-element {
+  margin-top: 25px;
+  border-radius: 5px;
+}
+</style>
+<script>
+
+</script>       
+<div class="container" id="main-container">
     {% if project %}
-    <div class="col-sm-3 col-md-3" style="margin-top:50px;">
-        {{ helper.render_project_local_nav(project, active_link, current_user, pro_features, upload_method) }}
+    <div id ="menu" class="col-sm-3 col-md-3" style="margin-top:50px;">
+            <div class="navigation-element">
+            {{ helper.render_project_local_nav(project, active_link, current_user, pro_features, upload_method) }}
+            </div>
     </div>
     <!-- Project -->
-    <div class="col-sm-9 col-md-9" style="min-height:400px;margin-top:50px;">
+    <div id="container-content" class="col-sm-9 col-md-9" style="min-height:400px;margin-top:50px;">
         <div class="row">
-            <div class="col-sm-8 col-md-8">
+            <div class="col-sm-12 col-md-12">
                 <h1>{{project.name}}</h1>
                 {% if section %}
                 <h2>{{section}}</h2>
                 {% endif %}
             </div>
-            {{helper.render_contribute_button(project, current_user, csrf_token())}}
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                {{helper.render_contribute_button(project, current_user, csrf_token())}}
+            </div>
         </div>
         {% if active_link == 'info' %}
         <p><strong>{{ overall_progress | round | int }}% {{_('completed')}}</strong></p>
