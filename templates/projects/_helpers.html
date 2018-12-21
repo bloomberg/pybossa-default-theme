@@ -219,7 +219,7 @@
 
 {% macro render_contribute_button(project, current_user, csrf_token) %}
     {% if project['contrib_button'] == 'completed' %}
-    <a href="{{url_for('project.tasks', short_name=project.short_name)}}" class="btn btn-lg btn-primary btn-contribute pull-right">{{ _('Done! View results') }}</a>
+    <a href="{{url_for('project.tasks', short_name=project.short_name)}}" class="btn btn-md btn-primary btn-contribute pull-right">{{ _('Done! View results') }}</a>
     {% endif %}
     {% if project['contrib_button'] == 'can_contribute' %}
     <div class="btn-group btn-contribute pull-right">
@@ -227,25 +227,25 @@
         <form class="form-horizontal" method="post" action="{{ url_for('project.publish', short_name=project.short_name, published=0) }}">
           <div class="form-actions">
               <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
-              <button type="submit" class="btn btn-lg btn-default"/>{{_('Unpublish Project')}}</button>
-              <a href="{{ url_for('project.presenter', short_name=project.short_name)}}" class="btn btn-lg btn-primary">{{ _('Start Contributing Now!') }}</a>
+              <button type="submit" class="btn btn-md btn-default"/>{{_('Unpublish Project')}}</button>
+              <a href="{{ url_for('project.presenter', short_name=project.short_name)}}" class="btn btn-md btn-primary">{{ _('Start Contributing Now!') }}</a>
           </div>
         </form>
         {% else %}
-        <a href="{{ url_for('project.presenter', short_name=project.short_name)}}" class="btn btn-lg btn-primary">{{ _('Start Contributing Now!') }}</a>
+        <a href="{{ url_for('project.presenter', short_name=project.short_name)}}" class="btn btn-md btn-primary">{{ _('Start Contributing Now!') }}</a>
         {% endif %}
     </div>
     {% endif %}
     {% if project['contrib_button'] == 'cannot_contribute' %}
-    <a href="{{url_for('project.details', short_name=project.short_name)}}" class="btn btn-lg btn-primary btn-contribute pull-right">{{ _('Thanks for contributing') }}</a>
+    <a href="{{url_for('project.details', short_name=project.short_name)}}" class="btn btn-md btn-primary btn-contribute pull-right">{{ _('Thanks for contributing') }}</a>
     {% endif %}
     {% if project['contrib_button'] == 'draft' %}
-    <a href="{{url_for('project.tasks', short_name=project.short_name)}}" class="btn btn-lg btn-primary btn-contribute pull-right">{{ _('Draft project, complete it!') }}</a>
+    <a href="{{url_for('project.tasks', short_name=project.short_name)}}" class="btn btn-md btn-primary btn-contribute pull-right">{{ _('Draft project, complete it!') }}</a>
     {% endif %}
     {% if project['contrib_button'] == 'publish' %}
     <div class="btn-group btn-contribute pull-right" role="group">
-        <a class="btn btn-lg btn-primary" role="button" href="{{url_for('project.presenter', short_name=project.short_name)}}">{{ _('Test it!') }}</a>
-        <a href="{{url_for('project.publish', short_name=project.short_name, published=1)}}" class="btn btn-lg btn-default">{{ _('Publish it') }}</a>
+        <a class="btn btn-md btn-primary" role="button" href="{{url_for('project.presenter', short_name=project.short_name)}}">{{ _('Test it!') }}</a>
+        <a href="{{url_for('project.publish', short_name=project.short_name, published=1)}}" class="btn btn-md btn-default">{{ _('Publish it') }}</a>
     </div>
         {% endif %}
 {% endmacro %}

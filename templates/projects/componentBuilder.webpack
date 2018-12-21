@@ -1,0 +1,9 @@
+{% block projectcontent %}
+{% from "_formhelpers.html" import render_field %}
+<div id="editorpybossa" class = "col-md-6">
+    <router-view></router-view>       
+</div>
+<% for(var i=0; i<htmlWebpackPlugin.files.js.length; i++) {%>
+   <script src="<%= htmlWebpackPlugin.files.js[i] %>"></script>
+<% } %>
+{% endblock %}

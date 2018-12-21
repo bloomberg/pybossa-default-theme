@@ -5,13 +5,75 @@
 {% from "account/_helpers.html" import render_pagination %}
 
 {% block content %}
-<div class="container">
+<style>
+.navigation-element {
+  margin-top: 50px;
+  border-radius: 5px;
+}
+</style>
+<script>
+
+ var main = function() {
+ var slide = $('.navigation-element');
+ var showVueComponent = $('#showVueComponent');
+ var hideVueComponent = $('#hideVueComponent');
+ var componentBuilderHideLink = document.getElementById("component-builder-hide");
+ var componentBuilderDescription = document.getElementById("component-builder-description");
+ var mainContainer =document.getElementById("main-container");
+ var containerContent = document.getElementById("container-content"); 
+ var vue = document.getElementById("editorpybossa");
+ var menu = document.getElementById("menu");
+ var mirror = document.getElementById("mirror");
+ componentBuilderHideLink.style.visibility = "hidden";
+ vue.style.visibility = "hidden";
+ vue.classList.toggle("col-md-0");
+
+ 
+ hideVueComponent.click(function() {
+    mainContainer.classList =[];
+    mainContainer.classList.toggle("container");
+    mirror.classList =[];
+    mirror.classList.toggle("col-md-12");
+    menu.classList =[];
+    menu.classList.toggle("col-md-3");
+    containerContent.classList =[];
+    containerContent.classList.toggle("col-md-9");
+    if(!containerContent.classList.contains("container-fluid")){
+        vue.style.visibility = "hidden";
+        componentBuilderHideLink.style.visibility = "hidden";
+        componentBuilderDescription.style.visibility = "visible";
+    }
+    slide.toggle('slow');            
+  });
+
+ showVueComponent.click(function() {
+    mainContainer.classList =[];
+    mainContainer.classList.toggle("container-fluid");
+    menu.classList =[];
+    menu.classList.toggle("col-md-0");
+    mirror.classList =[];
+    mirror.classList.toggle("col-md-6");
+    vue.classList =[];
+    vue.classList.toggle("col-md-6");
+    containerContent.classList =[];
+    containerContent.classList.toggle("col-md-12");
+    vue.style.visibility = "visible";
+    componentBuilderDescription.style.visibility = "hidden";
+    componentBuilderHideLink.style.visibility = "visible";
+    slide.toggle('slow');            
+ });
+}
+$(document).ready(main);
+</script>       
+<div class="container" id="main-container">
     {% if project %}
-    <div class="col-sm-3 col-md-3" style="margin-top:50px;">
-        {{ helper.render_project_local_nav(project, active_link, current_user, pro_features, upload_method) }}
+    <div id ="menu" class="col-sm-3 col-md-3" style="margin-top:50px;">
+            <div class="navigation-element">
+            {{ helper.render_project_local_nav(project, active_link, current_user, pro_features, upload_method) }}
+            </div>
     </div>
     <!-- Project -->
-    <div class="col-sm-9 col-md-9" style="min-height:400px;margin-top:50px;">
+    <div id="container-content" class="col-sm-9 col-md-9" style="min-height:400px;margin-top:50px;">
         <div class="row">
             <div class="col-sm-8 col-md-8">
                 <h1>{{project.name}}</h1>
@@ -19,7 +81,9 @@
                 <h2>{{section}}</h2>
                 {% endif %}
             </div>
-            {{helper.render_contribute_button(project, current_user, csrf_token())}}
+            <div class="col-sm-4 col-md-4">
+                {{helper.render_contribute_button(project)}}
+            </div>
         </div>
         {% if active_link == 'info' %}
         <p><strong>{{ overall_progress | round | int }}% {{_('completed')}}</strong></p>
