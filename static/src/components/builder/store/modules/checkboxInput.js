@@ -12,7 +12,8 @@ const initialState = () => {
         'pyb-answer': prop('', false),
         'label': prop('', false),
         'labelAdded': false,
-        'initial-value': {...prop(false, false)}
+        'initial-value': {...prop(false, false)},
+        'isValidForm': true
     }
 }
 
@@ -28,6 +29,9 @@ export const getters = {
     },
     [types.GET_CHECKBOX_INPUT_SNIPPET]: (state) => {
         return utils.getComponentCode(state.checkboxInput.form, 'CHECKBOX_INPUT')
+    },
+    [types.GET_CHECKBOX_INPUT_FORM_VALID]: (state) => {
+        return state.checkboxInput.form.isValidForm
     }
 }
 

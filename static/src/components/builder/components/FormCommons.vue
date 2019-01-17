@@ -41,9 +41,6 @@
 import * as types from '../store/types'
 export default {
     name: 'FormCommons',
-    data () {
-        return { }
-    },
     computed: {
         form: {
             get () {

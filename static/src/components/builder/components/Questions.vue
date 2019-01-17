@@ -19,6 +19,15 @@
           class="fa fa-chevron-right pull-right"
           style="color: #3AB0D5;"/>
       </router-link>
+      <router-link
+        :to="table"
+        tag="a"
+        class="list-group-item text-color">
+        Table
+        <i
+          class="fa fa-chevron-right pull-right"
+          style="color: #3AB0D5;"/>
+      </router-link>
     </div>
   </div>
 </template>
@@ -39,6 +48,12 @@ export default {
                 params: {
                     componentName: 'TEXT_INPUT',
                     header: 'Text Input' }
+            },
+            table: {
+                name: 'TABLE_FORM',
+                params: {
+                    componentName: 'TABLE',
+                    header: 'Table' }
             }
         }
     }

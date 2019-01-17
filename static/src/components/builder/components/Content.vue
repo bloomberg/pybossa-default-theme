@@ -21,7 +21,7 @@ export default {
     data () {
         return {
             toForm: this.getRouteInfo('_FORM'),
-            toView: this.getRouteInfo('_PREVIEW')
+            toView: this.getRouteInfo('_PREVIEW'),
         }
     },
     methods: {

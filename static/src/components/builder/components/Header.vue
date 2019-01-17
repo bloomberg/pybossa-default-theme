@@ -20,9 +20,9 @@
 .icon-back {
     cursor: pointer;
     color:#3AB0D5;
-    font-size: 20px;
+    font-size: 15px;
     padding-left: 20px;
-    padding-top: 5px;
+    padding-top:12px;
 }
 </style>
 
