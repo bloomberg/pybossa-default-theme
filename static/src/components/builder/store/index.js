@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import textInput from './modules/textInput'
 import checkboxInput from './modules/checkboxInput'
-
+import table from './modules/table'
 import getters from './getters'
 import mutations from './mutations'
 import actions from './actions'
@@ -16,5 +16,6 @@ export default new Vuex.Store({
     actions,
     modules: {
         checkboxInput,
-        textInput }
+        textInput,
+        table }
 })
