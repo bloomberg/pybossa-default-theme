@@ -11,7 +11,8 @@ const initialState = () => {
         'id': prop(utils.uniqueID(), false),
         'pyb-answer': prop('', false),
         'label': prop('', false),
-        'labelAdded': false
+        'labelAdded': false,
+        'isValidForm': true
     }
 }
 
@@ -27,6 +28,9 @@ export const getters = {
     },
     [types.GET_TEXT_INPUT_SNIPPET]: (state) => {
         return utils.getComponentCode(state.textInput.form, 'TEXT_INPUT')
+    },
+    [types.GET_TEXT_INPUT_FORM_VALID]: (state) => {
+        return state.textInput.form.isValidForm
     }
 }
 
