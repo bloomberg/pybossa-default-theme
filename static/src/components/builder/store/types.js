@@ -12,7 +12,6 @@ export const GET_TABLE_SNIPPET = 'table/SNIPPET'
 export const GET_TABLE_DATA_LIST = 'table/GET_TABLE_DATA_LIST'
 export const GET_TABLE_FORM_VALID = 'table/FORM_VALID'
 
-
 // Mutations
 export const MUTATE_TEXT_INPUT_FORM = 'testinput/MUTATE_FORM'
 export const MUTATE_CHECKBOX_INPUT_FORM = 'checkboxInput/MUTATE_FORM'
