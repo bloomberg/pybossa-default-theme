@@ -2,13 +2,16 @@
   <div class="row">
     <div class="col-md-12">
       <div class="row">
-        <div class="form-group">
+        <div
+          v-if="columnWithComponent"
+          class="form-group">
           <label for="add-label">* Table Answer field Name</label>
           <input
             id="table-name"
             v-model= "form.name.value"
             :class="{'form-control form-control-sm': true,
-                     'danger-validation': (form.name.value === '' && form.name.dirty) }"
+                     'danger-validation': ((form.name.value === '' && columnWithComponent)
+            || (form.name.value === '' && form.name.dirty)) }"
             type="text"
             @click="form.name.dirty =true"
             @blur="form.name.dirty =true">
@@ -17,7 +20,7 @@
         <label
           v-if="columnWithComponent"
           class= "col-form-label-md"
-        >* Select an unique id column </label>
+        >* Select a unique id column </label>
         <select
           v-if="columnWithComponent"
           v-model="columnId"
@@ -25,7 +28,7 @@
                    'danger-validation': (columnId === 'default' ) }">
           <option
             :value="null"
-            disabled>Select Column Id from all plain-text columns availables</option>
+            disabled>Select Column Id</option>
           <option
             v-for="e in columns"
             :key = "e"

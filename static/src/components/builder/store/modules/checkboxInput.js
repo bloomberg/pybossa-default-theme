@@ -28,10 +28,10 @@ export const getters = {
         return state.checkboxInput.form
     },
     [types.GET_CHECKBOX_INPUT_SNIPPET]: (state) => {
-        return utils.getComponentCode(state.checkboxInput.form, 'CHECKBOX_INPUT')
+        return utils.getCommonComponentsCode(state.checkboxInput.form, 'CHECKBOX_INPUT')
     },
     [types.GET_CHECKBOX_INPUT_FORM_VALID]: (state) => {
-        return state.checkboxInput.form.isValidForm
+        return true
     }
 }
 

@@ -5,7 +5,7 @@
         <div class="card-body">
           <h4>Task presenter code</h4>
           <span
-            v-if="!isValidForm"
+            v-if="!form.isValidForm"
             class="message-color">
             ** Component properties are not complete, please review form **
           </span>
@@ -13,7 +13,7 @@
           <br>
           <h4>Preview</h4>
           <form class="form-horizontal">
-            <label>{{ form.label.value }}</label>
+            <label v-if="form.label">{{ form.label.value }}</label>
             <ComponentRender
               :selected-component = "componentsNames[$route.params.componentName]"
               :form = "form"/>
@@ -37,6 +37,7 @@ import Prism from 'vue-prism-component'
 import ComponentRender from './ComponentRender'
 import components from 'test-component.vue'
 import * as types from '../store/types'
+import utils from '../utils'
 
 export default {
     components: {
@@ -48,30 +49,45 @@ export default {
         return {
             componentsNames: { TEXT_INPUT: 'text-input',
                 CHECKBOX_INPUT: 'checkbox-input',
-                TABLE: 'table-creator' }
+                TABLE: 'table-creator',
+                TIMER: 'static-task-timer',
+                TASK_PRESENTER: 'task-presenter',
+                CANCEL_BUTTON: 'cancel-button',
+                SUBMIT_BUTTON: 'submit-button',
+                BUTTON_ROW: 'button-row',
+                SUBMIT_LAST_BUTTON: 'submit-last-button'
+            }
         }
     },
     computed: {
+        isValidForm: {
+            get () {
+                const getFormValidType =
+                    types['GET_' + this.$route.params.componentName + '_FORM_VALID']
+                const isValidForm = getFormValidType ? this.$store.getters[getFormValidType] : true
+                return isValidForm
+            }
+        },
         form: {
             get () {
+                let form = { isValidForm: true }
                 const getFormType = types['GET_' + this.$route.params.componentName + '_FORM']
-                return this.$store.getters[getFormType]
+                if (getFormType) {
+                    form = {...this.$store.getters[getFormType], isValidForm: this.isValidForm}
+                }
+                return form
             }
         },
         snippet: {
             get () {
                 const getSnippetType = types['GET_' + this.$route.params.componentName + '_SNIPPET']
-                return this.$store.getters[getSnippetType]
+                if (getSnippetType) {
+                    return this.$store.getters[getSnippetType]
+                }
+                return utils.getHelperComponentCode(this.$route.params.componentName)
             }
-        },
-        isValidForm: {
-            get () {
-                const getFormValidType =
-                    types['GET_' + this.$route.params.componentName + '_FORM_VALID']
-                const isValidForm = this.$store.getters[getFormValidType]
-                return isValidForm
-            }
-        },
+        }
+
     }
 }
 </script>
