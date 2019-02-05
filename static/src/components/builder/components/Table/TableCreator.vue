@@ -6,8 +6,6 @@
       :columns="columns"
       :name="form.name"
       :options="form.options"
-      :column-id= "columnId.name"
-      :id-visible="columnId.idVisible"
     >
       <template
         v-for="(c,i) in form.columns"
@@ -30,7 +28,7 @@
 </template>
 
 <script>
-import components from 'test-component.vue'
+import components from '@dtwebservices/task-presenter-components'
 import ComponentColumns from './ComponentColumns.vue'
 import ComponentRender from '../ComponentRender.vue'
 export default {
@@ -56,16 +54,6 @@ export default {
         },
         data: function () {
             return this.form.data.isVariable ? [{}] : this.form.data.list
-        },
-        columnId: function () {
-            const columnId = {}
-            this.form.columns.forEach(function (col) {
-                if (col.isColumnId) {
-                    columnId.name = col.name
-                    columnId.idVisible = !col.hideColumnId
-                }
-            })
-            return columnId
         }
     }
 }

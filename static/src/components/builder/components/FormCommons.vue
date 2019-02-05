@@ -1,7 +1,6 @@
 <template>
   <div class="row">
     <div class="col-md-12">
-      <br>
       <div class= "row">
         <form >
           <div class="form-row">

@@ -1,33 +1,34 @@
 <script>
 import Vue from 'vue'
-import components from 'test-component.vue'
+import components from '@dtwebservices/task-presenter-components'
 import TableCreator from './Table/TableCreator.vue'
+import CheckboxCreator from './CheckboxInput/CheckboxCreator.vue'
 import { ClientTable } from 'vue-tables-2'
+
+Vue.component('static-task-timer', {
+    template: '<p>Time Remaining: 59 minute s, 43 seconds</p>'
+})
 
 Vue.use(ClientTable, { })
 export const getOptions = function (columnDetails) {
-    const options = {
-        filterByColumn: true,
-        headings: {},
-        sortable: [],
-        filterable: []
-    }
-
+    const options = {headings: {}}
+    options.filterByColumn = false
+    options.filterable = []
+    options.sortable = []
+    options.texts = { filter: '', count: '' }
     for (const col in columnDetails) {
         options.headings[col] = columnDetails.headings ? columnDetails.headings : col
-        if (columnDetails[col].filterable) { options.filterable.push(col) }
-        if (columnDetails[col].sortable) { options.sortable.push(col) }
     }
     return options
 }
 
 export default {
     name: 'ComponentRender',
-    components: {...components, TableCreator},
+    components: {...components, TableCreator, CheckboxCreator},
     props: {
         form: {
             type: Object,
-            default: null },
+            default: function () { return {label: {}, isValidForm: true} }},
         selectedComponent: {
             type: String,
             default: null }
@@ -36,20 +37,20 @@ export default {
         renderFunctions: function () {
             if (this.selectedComponent === 'text-input') {
                 return {
-                    name: 'TextInput',
+                    name: 'text-input',
                     attrs: { id: this.form.id.value },
                     props: { 'pyb-answer': this.form['pyb-answer'].value }
-
                 }
-            } else if (this.selectedComponent === 'checkbox-input') {
+            } else if (this.selectedComponent === 'checkbox-creator') {
+                console.log('form', this.form)
                 return {
-                    name: 'CheckboxInput',
-                    attrs: { id: this.form.id.value },
-                    props: { 'initial-value': 'true', 'pyb-answer': this.form['pyb-answer'].value }
+                    name: 'checkbox-creator',
+                    attrs: { id: 'test' },
+                    props: { checkboxList: this.form.checkboxList }
                 }
             } else if (this.selectedComponent === 'table-creator') {
                 return {
-                    name: 'TableCreator',
+                    name: 'table-creator',
                     props: {
                         form:
                             { columns: this.form.columns,
@@ -60,6 +61,7 @@ export default {
                     }
                 }
             }
+            return {}
         }
     },
     render (h) {

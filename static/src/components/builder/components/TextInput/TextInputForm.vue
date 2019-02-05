@@ -1,5 +1,7 @@
 <template>
   <div class="row">
+    <h4
+    >Text Input Settings</h4>
     <form-commons/>
   </div>
 </template>

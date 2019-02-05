@@ -1,8 +1,6 @@
 /* eslint-disable vue/require-prop-types */
 <template>
   <div class="row">
-    <label
-      class= "col-form-label-md">Add Static Data</label>
     <v-client-table
       ref ="staticDataTable"
       :data="form.data.list"
@@ -38,13 +36,14 @@
         slot = "hide-delete"
         slot-scope="props">
         <button
-          class="btn btn-link fa fa-trash"
+          class="btn btn-link fa fa-times"
           @click="removeRow(props.row)"/>
       </template>
     </v-client-table>
   </div>
 </template>
 <style>
+
 .vuetable th#_hide-delete {
     width: 10px;
 }
@@ -81,6 +80,10 @@ export default {
             get () {
                 const options = this.form.options.value
                 options.headings['hide-delete'] = 'Delete'
+                options.filterByColumn = false
+                options.filterable = []
+                options.sortable = []
+                options.texts = { filter: '', count: '' }
 
                 return options
             }
