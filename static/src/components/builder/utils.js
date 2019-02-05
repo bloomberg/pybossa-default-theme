@@ -5,6 +5,13 @@ import tableTemplate from './components/Table/TableTemplate.html'
 import labelTemplate from './components/templates/LabelTemplate.html'
 import textInputColumnTemplate from './components/Table/TextInputColumnTemplate.html'
 import checkboxInputColumnTemplate from './components/Table/CheckboxInputColumnTemplate.html'
+import timerTemplate from './components/helpers/timerTemplate.html'
+import taskPresenterTemplate from './components/helpers/taskPresenterTemplate.html'
+import cancelButtonTemplate from './components/helpers/cancelButtonTemplate.html'
+import buttonRowTemplate from './components/helpers/buttonRowTemplate.html'
+import submitButtonTemplate from './components/helpers/submitButtonTemplate.html'
+import submitLastButtonTemplate from './components/helpers/submitLastButtonTemplate.html'
+
 import slotTemplate from './components/Table/SlotTemplate.html'
 
 const templates = {
@@ -12,7 +19,13 @@ const templates = {
     CHECKBOX_INPUT: checkboxInputTemplate,
     TABLE: tableTemplate,
     TEXT_INPUT_COLUMN: textInputColumnTemplate,
-    CHECKBOX_INPUT_COLUMN: checkboxInputColumnTemplate
+    CHECKBOX_INPUT_COLUMN: checkboxInputColumnTemplate,
+    TIMER: timerTemplate,
+    TASK_PRESENTER: taskPresenterTemplate,
+    CANCEL_BUTTON: cancelButtonTemplate,
+    BUTTON_ROW: buttonRowTemplate,
+    SUBMIT_BUTTON: submitButtonTemplate,
+    SUBMIT_LAST_BUTTON: submitLastButtonTemplate
 }
 export default {
     uniqueID: () => {
@@ -78,15 +91,12 @@ export default {
         return output
     },
 
-    getComponentCode: function (form, component) {
-        if (component === 'TABLE') { return this.getComponentTableProps(form) } else {
-            return this.getCommonCoponentsCode(form, component)
-        }
+    getHelperComponentCode: function (component) {
+        return Mustache.render(templates[component], {})
     },
 
-    getCommonCoponentsCode: function (form, component) {
+    getCommonComponentsCode: function (form, component) {
         const formForTemplate = {}
-
         Object.keys(form).forEach((e) => {
             formForTemplate[e] = form[e].value
         })

@@ -1,6 +1,7 @@
 <template>
   <ul class="nav nav-pills tab-pills" >
     <router-link
+      v-if="!$route.path.includes('helper')"
       :to="toForm"
       tag="li"
       active-class="active"
@@ -14,7 +15,7 @@
       <a>Preview</a>
     </router-link>
     <li
-      v-if="$route.name.includes('FORM')"
+      v-if="$route.path.includes('form')"
       class="pull-right">
       <div>
         <button
@@ -73,7 +74,6 @@ button#copy:hover {
 
 <script>
 import * as types from '../store/types'
-import utils from '../utils'
 
 export default {
     name: 'TabSubHeader',
@@ -93,18 +93,9 @@ export default {
         }
     },
     computed: {
-        isValidForm: {
-            get () {
-                const getFormValidType =
-                    types['GET_' + this.$route.params.componentName + '_FORM_VALID']
-                const isValidForm = this.$store.getters[getFormValidType]
-                return isValidForm
-            }
-        },
         snippet: function () {
-            const getFormType = types['GET_' + this.$route.params.componentName + '_FORM']
-            const form = this.$store.getters[getFormType]
-            return utils.getComponentCode(form, this.$route.params.componentName)
+            const getFormType = types['GET_' + this.$route.params.componentName + '_SNIPPET']
+            return this.$store.getters[getFormType]
         }
     },
     methods: {

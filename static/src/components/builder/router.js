@@ -6,7 +6,6 @@ import TextInputForm from './components/TextInput/TextInputForm.vue'
 import TableForm from './components/Table/TableForm.vue'
 import PreviewCommons from './components/PreviewCommons.vue'
 
-
 export const routes = [
     { path: '/',
         name: 'home',
@@ -68,6 +67,43 @@ export const routes = [
                 components: { default: PreviewCommons }
             }
 
+        ]
+    },
+    { path: '/helper',
+        name: 'HELPER',
+        components: {default: Content,
+            header: Header },
+        children: [
+            {
+                path: '/helper/timer/preview',
+                name: 'TIMER_PREVIEW',
+                components: { default: PreviewCommons }
+            },
+            {
+                path: '/helper/buttonRow/preview',
+                name: 'BUTTON_ROW_PREVIEW',
+                components: { default: PreviewCommons }
+            },
+            {
+                path: '/helper/tasPresenter/preview',
+                name: 'TASK_PRESENTER_PREVIEW',
+                components: { default: PreviewCommons }
+            },
+            {
+                path: '/helper/cancelButton/preview',
+                name: 'CANCEL_BUTTON_PREVIEW',
+                components: { default: PreviewCommons }
+            },
+            {
+                path: '/helper/submitButton/preview',
+                name: 'SUBMIT_BUTTON_PREVIEW',
+                components: { default: PreviewCommons }
+            },
+            {
+                path: '/helper/submitLastButton/preview',
+                name: 'SUBMIT_LAST_BUTTON_PREVIEW',
+                components: { default: PreviewCommons }
+            }
         ]
     },
     { path: '/redirect-me', redirect: { name: 'home' } },

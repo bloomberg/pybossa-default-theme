@@ -4,6 +4,10 @@ import components from 'test-component.vue'
 import TableCreator from './Table/TableCreator.vue'
 import { ClientTable } from 'vue-tables-2'
 
+Vue.component('static-task-timer', {
+    template: '<p>Time Remaining: 59 minute s, 43 seconds</p>'
+})
+
 Vue.use(ClientTable, { })
 export const getOptions = function (columnDetails) {
     const options = {
@@ -27,7 +31,7 @@ export default {
     props: {
         form: {
             type: Object,
-            default: null },
+            default: function () { return {label: {}, isValidForm: true} }},
         selectedComponent: {
             type: String,
             default: null }
@@ -60,6 +64,7 @@ export default {
                     }
                 }
             }
+            return {}
         }
     },
     render (h) {
