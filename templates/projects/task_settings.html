@@ -27,5 +27,8 @@
     <div id="task_timeout" class="col-md-6">
         {{ render_project_card_option(project, upload_method, title=_('Task Timeout'), explanation=_('Change the max. time amount to complete a task'), link=url_for('project.task_timeout', short_name=project.short_name), link_action_text=_('Timeout'), icon='clock-o')}}
     </div>
+    <div id="answer_fields" class="col-md-6">
+        {{ render_project_card_option(project, upload_method, title=_('Answer Fields'), explanation=_('Configure Answer Fields'), link=url_for('project.answerfieldsconfig', short_name=project.short_name), link_action_text=_('Answer Fields'), icon='fa-pencil-square-o')}}
+    </div>
 </div>
 {% endblock %}

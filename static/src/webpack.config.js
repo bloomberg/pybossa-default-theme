@@ -12,7 +12,8 @@ module.exports = {
   mode: 'production',
   entry: {
     editor: './editor.js',
-    task_browse: './task_browse.js'
+    task_browse: './task_browse.js',
+    answerfieldsconfig: './answerfieldsconfig.js'
   },
   // where to place the compiled bundle
   output: {
@@ -79,6 +80,12 @@ module.exports = {
           hash: true,
           filename: '../../../templates/projects/tasks_browse.html',
           template: '../../templates/projects/tasks_browse.webpack.html'
+        }),
+        new htmlWebpackPlugin({
+          inject: false,
+          hash: true,
+          filename: '../../../templates/projects/answerfieldsconfig.html',
+          template: '../../templates/projects/answerfieldsconfig.webpack.html'
         }),
         new VueLoaderPlugin()
     ]
