@@ -1,7 +1,7 @@
 <script>
 /* eslint-disable vue/require-default-prop */
 import Vue from 'vue'
-import components from 'test-component.vue'
+import components from '@dtwebservices/task-presenter-components'
 import { ClientTable } from 'vue-tables-2'
 
 Vue.use(ClientTable, { })

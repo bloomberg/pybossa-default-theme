@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import components from 'test-component.vue'
+import components from '@dtwebservices/task-presenter-components'
 import ComponentColumns from './ComponentColumns.vue'
 import ComponentRender from '../ComponentRender.vue'
 export default {

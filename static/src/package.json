@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
+    "@dtwebservices/task-presenter-components": "0.2.0",
     "@vue/test-utils": "^1.0.0-beta.28",
     "axios": "^0.16.2",
     "babel-core": "^6.0.0",

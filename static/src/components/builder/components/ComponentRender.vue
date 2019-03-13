@@ -1,6 +1,6 @@
 <script>
 import Vue from 'vue'
-import components from 'test-component.vue'
+import components from '@dtwebservices/task-presenter-components'
 import TableCreator from './Table/TableCreator.vue'
 import { ClientTable } from 'vue-tables-2'
 
