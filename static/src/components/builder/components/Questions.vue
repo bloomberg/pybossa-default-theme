@@ -1,21 +1,40 @@
 <template>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
+      <custom-router-link :component="taskPresenter"/>
+      <custom-router-link :component="buttonRow"/>
+      <custom-router-link :component="submitButton"/>
+      <custom-router-link :component="submitLastButton"/>
+      <custom-router-link :component="cancelButton"/>
+      <custom-router-link :component="timer"/>
       <custom-router-link :component="textInput"/>
       <custom-router-link :component="checkboxInput"/>
       <custom-router-link :component="table"/>
-      <custom-router-link :component="timer"/>
-      <custom-router-link :component="taskPresenter"/>
-      <custom-router-link :component="cancelButton"/>
-      <custom-router-link :component="submitButton"/>
-      <custom-router-link :component="submitLastButton"/>
-      <custom-router-link :component="buttonRow"/>
     </div>
+    <div class="col-md-8">
+      <div class="row">
+        <h3 class="text-color">Guide</h3>
+        <a href="https://bbgithub.dev.bloomberg.com/GIGwork/gigwork.bbgithub.dev.bloomberg.com/blob/docs/engineering-documentation.rst">Components Documentation</a>
+        <p class="red-alert"> In order to use this tool your task presenter code must have the following template.</p>
+      </div>
+      <button
+        v-clipboard:copy="snippet"
+        id="copy"
+        class="btn btn-link fa fa-clipboard pull-right"
+        style="text-decoration: none"><span> Copy Code</span></button>
+    </div>
+    <prism language="html">{{ snippet }}</prism>
   </div>
 </template>
-
+<style>
+.red-alert{
+    color:#d9534f
+}</style>
 <script>
+
 import Vue from 'vue'
+import Prism from 'vue-prism-component'
+import utils from '.././utils'
 Vue.component('custom-router-link', {
     props: { component: {
         type: Object,
@@ -35,6 +54,7 @@ Vue.component('custom-router-link', {
 })
 export default {
     name: 'Questions',
+    components: {Prism},
     data () {
         return {
             checkboxInput: {
@@ -94,6 +114,11 @@ export default {
 
 
         }
-    }
+    },
+    computed: {
+        snippet: function () {
+            return utils.getHelperComponentCode('TASK_PRESENTER_START_TEMPLATE').trim()
+        }
+    },
 }
 </script>

@@ -9,11 +9,7 @@ export const getColumnObject = () => {
     return {
         name: '',
         header: '',
-        component: 'plain-text',
-        filterable: false,
-        sortable: false,
-        isColumnId: false,
-        hideColumnId: false
+        component: 'plain-text'
     }
 }
 
@@ -25,10 +21,7 @@ export const initialState = () => {
         'data': {...prop('', true), list: []},
         'columns': [getColumnObject()],
         'options': prop({
-            filterByColumn: true,
-            headings: { },
-            sortable: [],
-            filterable: []
+            headings: {},
         }, false)
     }
 }
@@ -49,9 +42,6 @@ export const getters = {
     [types.GET_TABLE_FORM_VALID]: (state) => {
         const table = state.table.form
 
-        const answerFieldColumnIdRequired = (table.columns.filter(
-            (col) => col.component !== 'plain-text').length > 0)
-
         const anyColumnNameEmpty = table.columns.filter((c) => (c.name === '')).length > 0
 
         const anyDirtyEmptyColumn = table.columns.filter((c) =>
@@ -61,16 +51,12 @@ export const getters = {
 
         const anyDirtyColumn = table.columns.filter((c) => (c.dirty)).length > 0
 
-        const columnIdExist = table.columns.filter((col) => col.isColumnId).length === 1
-
         const isFormUntouched = !table.name.dirty && !anyDirtyColumn
 
-        if ((isAnswerFieldDirty && answerFieldColumnIdRequired) || anyDirtyEmptyColumn) {
+        if (isAnswerFieldDirty || anyDirtyEmptyColumn) {
             return false
         } else if (
             table.data.list.length > 0 && anyColumnNameEmpty) {
-            return false
-        } else if (answerFieldColumnIdRequired && !columnIdExist) {
             return false
         } else if (isFormUntouched) {
             return false

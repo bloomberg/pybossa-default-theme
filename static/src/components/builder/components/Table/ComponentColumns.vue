@@ -38,7 +38,7 @@ export default {
     },
     render (h) {
         return h(this.selectedComponent, {
-            name: 'test',
+            name: 'ComponentColumns',
             ...this.renderFunctions()
         })
     }

@@ -7,12 +7,18 @@ const prop = (value, isVariable) => {
 }
 
 const initialState = () => {
+    return { label: prop('', false),
+        labelAdded: false,
+        checkboxList: [getCheckboxObject()]}
+}
+
+export const getCheckboxObject = () => {
     return {
         'id': prop(utils.uniqueID(), false),
         'pyb-answer': prop('', false),
         'label': prop('', false),
         'labelAdded': false,
-        'initial-value': {...prop(false, false)},
+        'initial-value': {...prop(false, true)},
         'isValidForm': true
     }
 }
@@ -28,7 +34,7 @@ export const getters = {
         return state.checkboxInput.form
     },
     [types.GET_CHECKBOX_INPUT_SNIPPET]: (state) => {
-        return utils.getCommonComponentsCode(state.checkboxInput.form, 'CHECKBOX_INPUT')
+        return utils.getCheckboxGroup(state.checkboxInput.form, 'CHECKBOX_INPUT')
     },
     [types.GET_CHECKBOX_INPUT_FORM_VALID]: (state) => {
         return true

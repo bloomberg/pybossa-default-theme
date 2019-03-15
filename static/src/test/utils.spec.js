@@ -17,38 +17,38 @@ test('getCommonComponentsCode for TEXT_INPUT', () => {
         textInput.form.id.value + '"')).toBeTruthy()
 })
 
-test('getCommonComponentsCode for CHECKBOX_INPUT', () => {
-    checkboxInput.form['pyb-answer'].value = 'answername'
-    checkboxInput.form['label'].value = 'labelName'
-    checkboxInput.form['initial-value'].value = true
-    const componentCode = utils.getCommonComponentsCode(checkboxInput.form, 'CHECKBOX_INPUT')
+// test('getCommonComponentsCode for CHECKBOX_INPUT', () => {
+//     checkboxInput.form['pyb-answer'].value = 'answername'
+//     checkboxInput.form['label'].value = 'labelName'
+//     checkboxInput.form['initial-value'].value = true
+//     const componentCode = utils.getCommonComponentsCode(checkboxInput.form, 'CHECKBOX_INPUT')
 
-    expect(componentCode.includes('<checkbox-input')).toBeTruthy()
-    expect(componentCode.includes('</checkbox-input>')).toBeTruthy()
-    expect(componentCode.includes('pyb-answer="' +
-    checkboxInput.form['pyb-answer'].value + '"')).toBeTruthy()
-    expect(componentCode.includes('id="' +
-    checkboxInput.form.id.value + '"')).toBeTruthy()
-    expect(componentCode.includes('initial-value="' +
-    checkboxInput.form['initial-value'].value + '"')).toBeTruthy()
-    expect(componentCode.includes(':initial-value="' +
-        checkboxInput.form['initial-value'].value + '"')).toBeFalsy()
-})
+//     expect(componentCode.includes('<checkbox-input')).toBeTruthy()
+//     expect(componentCode.includes('</checkbox-input>')).toBeTruthy()
+//     expect(componentCode.includes('pyb-answer="' +
+//     checkboxInput.form['pyb-answer'].value + '"')).toBeTruthy()
+//     expect(componentCode.includes('id="' +
+//     checkboxInput.form.id.value + '"')).toBeTruthy()
+//     expect(componentCode.includes('initial-value="' +
+//     checkboxInput.form['initial-value'].value + '"')).toBeTruthy()
+//     expect(componentCode.includes(':initial-value="' +
+//         checkboxInput.form['initial-value'].value + '"')).toBeFalsy()
+// })
 
 
-test('getCommonComponentsCode for CHECKBOX_INPUT with variable in initial-value', () => {
-    checkboxInput.form['pyb-answer'].value = 'answername'
-    checkboxInput.form['label'].value = 'labelName'
-    checkboxInput.form['initial-value'].isVariable = true
-    checkboxInput.form['initial-value'].value = 'variableName'
+// test('getCommonComponentsCode for CHECKBOX_INPUT with variable in initial-value', () => {
+//     checkboxInput.form['pyb-answer'].value = 'answername'
+//     checkboxInput.form['label'].value = 'labelName'
+//     checkboxInput.form['initial-value'].isVariable = true
+//     checkboxInput.form['initial-value'].value = 'variableName'
 
-    const componentCode = utils.getCommonComponentsCode(checkboxInput.form, 'CHECKBOX_INPUT')
-    expect(componentCode.includes('<checkbox-input')).toBeTruthy()
-    expect(componentCode.includes('</checkbox-input>')).toBeTruthy()
-    expect(componentCode.includes('pyb-answer="' +
-        checkboxInput.form['pyb-answer'].value + '"')).toBeTruthy()
-    expect(componentCode.includes('id="' +
-        checkboxInput.form.id.value + '"')).toBeTruthy()
-    expect(componentCode.includes(':initial-value="' +
-        checkboxInput.form['initial-value'].value + '"')).toBeTruthy()
-})
+//     const componentCode = utils.getCommonComponentsCode(checkboxInput.form, 'CHECKBOX_INPUT')
+//     expect(componentCode.includes('<checkbox-input')).toBeTruthy()
+//     expect(componentCode.includes('</checkbox-input>')).toBeTruthy()
+//     expect(componentCode.includes('pyb-answer="' +
+//         checkboxInput.form['pyb-answer'].value + '"')).toBeTruthy()
+//     expect(componentCode.includes('id="' +
+//         checkboxInput.form.id.value + '"')).toBeTruthy()
+//     expect(componentCode.includes(':initial-value="' +
+//         checkboxInput.form['initial-value'].value + '"')).toBeTruthy()
+// })

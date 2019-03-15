@@ -2,14 +2,24 @@
   <div class = "row text-color">
     <div
       v-if="$route.name !== 'home'"
-      class="col-md-1 icon-back">
+      class="col-md-12 icon-pointer">
       <i
-        class="fa fa-angle-double-left fa-w-14 fa-3x"
+        class="fa fa-angle-double-left fa-w-14 fa-1x"
+        style="text-decoration: none"
         @click="navigateToHome"/>
+      <span>{{ $route.params.header ? $route.params.header : 'Questions' }}</span>
     </div>
-    <h3 class="col-md-11 pull-left">
-      {{ $route.params.header ? $route.params.header : 'Questions' }}
-    </h3>
+
+    <div
+      v-if="$route.name == 'home'"
+      class="col-md-12 icon-pointer">
+      <i
+        class="fa fa-home fa-w-14 fa-1x"
+        style="text-decoration: none"
+        @click="navigateToHome"/>
+      <span>{{ 'Task Presenter Components' }}</span>
+    </div>
+
   </div>
 </template>
 
@@ -17,12 +27,10 @@
 .text-color {
     color:#3AB0D5;
 }
-.icon-back {
+.icon-pointer {
     cursor: pointer;
-    color:#3AB0D5;
-    font-size: 15px;
-    padding-left: 20px;
-    padding-top:12px;
+    font-size: 2em;
+    margin-left: 0.25em;
 }
 </style>
 

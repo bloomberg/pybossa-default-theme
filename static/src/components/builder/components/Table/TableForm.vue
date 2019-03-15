@@ -2,57 +2,15 @@
   <div class="row">
     <div class="col-md-12">
       <div class="row">
-        <div
-          v-if="columnWithComponent"
-          class="form-group">
-          <label for="add-label">* Table Answer field Name</label>
-          <input
-            id="table-name"
-            v-model= "form.name.value"
-            :class="{'form-control form-control-sm': true,
-                     'danger-validation': ((form.name.value === '' && columnWithComponent)
-            || (form.name.value === '' && form.name.dirty)) }"
-            type="text"
-            @click="form.name.dirty =true"
-            @blur="form.name.dirty =true">
-          <p v-if="form.name.value === '' && form.name.dirty">This field is required!</p>
-        </div>
-        <label
-          v-if="columnWithComponent"
-          class= "col-form-label-md"
-        >* Select a unique id column </label>
-        <select
-          v-if="columnWithComponent"
-          v-model="columnId"
-          :class="{'form-control form-control-sm': true,
-                   'danger-validation': (columnId === 'default' ) }">
-          <option
-            :value="null"
-            disabled>Select Column Id</option>
-          <option
-            v-for="e in columns"
-            :key = "e"
-            :value="e">
-            {{ e }}
-          </option>
-        </select>
-        <input
-          v-if="columnWithComponent"
-          v-model="hideColumnId"
-          type="checkbox">
-        <label v-if="columnWithComponent">Hide column Id </label>
         <div class="row">
           <div class="col-md-12">
-            <label>Columns Settings</label>
+            <h4>Columns Settings</h4>
             <span/>
           </div>
         </div>
-        <vue-custom-scrollbar
-          :settings="settings"
-          class="scroll-area">
+        <div class="scroll col-md-12">
           <div class="row">
-            <div class="col-md-1"/>
-            <div class="col-md-10">
+            <div class="col-md-12">
               <div
                 v-for="(col, index) in form.columns"
                 :key="index"
@@ -67,7 +25,6 @@
                   form.columns.length > 1"
                   id="column-delete"
                   class="btn btn-times-delete pull-right fa fa-times"
-                  style="text-decoration: none"
                   @click="removeColumn(col)"/><br>
                 <label class="col-lables">* Column Name</label>
                 <input
@@ -96,47 +53,78 @@
                     {{ component }}
                   </option>
                 </select>
-                <input
-                  v-model="col.filterable"
-                  type="checkbox">
-                <label class="col-lables" >Filterable</label>
-                <input
-                  v-model="col.sortable"
-                  type="checkbox">
-                <label class="col-lables">Sortable</label>
               </div>
+              <br>
             </div>
           </div>
-          <button
-            id="add"
-            class="btn btn-sm btn-default pull-right"
-            @click="addColumn">Add</button>
-        </vue-custom-scrollbar>
-        <hr>
-        <label
-          class= "col-form-label-md">* Table Data</label>
-        <div class="pull-right">
-          <input
-            id="table-data-isVariable"
-            v-model="form.data.isVariable"
-            type="checkbox">
-          <label
-            for="table-data-isVariable">Table data source is dynamic</label>
         </div>
-        <br>
-        <label
-          v-if="form.data.isVariable"
-          class= "col-form-label-md">Field Data Source Name</label>
-        <input
-          v-if="form.data.isVariable"
-          v-model= "form.data.value"
-          class="form-control form-control-sm"
-          type="text" >
-        <br>
+        <div class="col-sm-10 col-md-11"/>
+        <button
+          id="add"
+          class="btn btn-default btn-sm col-sm-2 col-md-1"
+          @click="addColumn">Add</button>
+
+        <div class="row">
+          <div class="col-md-12">
+            <hr>
+            <h4
+            >Table Settings</h4>
+            <div
+              v-if="columnWithComponent"
+              class="form-group">
+              <label for="add-label">* Table Answer field Name</label>
+              <input
+                id="table-name"
+                v-model= "form.name.value"
+                :class="{'form-control form-control-sm': true,
+                         'danger-validation': ((form.name.value === '' && columnWithComponent)
+                || (form.name.value === '' && form.name.dirty)) }"
+                type="text"
+                @click="form.name.dirty =true"
+                @blur="form.name.dirty =true">
+              <p v-if="form.name.value === '' && form.name.dirty">This field is required!</p>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <label>Data&nbsp;&nbsp;</label><br>
+                <input
+                  id="dynamic"
+                  v-model="form.data.isVariable"
+                  :value="true"
+                  type="radio">
+                <label
+                  class="col-lables"
+                  for="dynamic">Get table data from source&nbsp;&nbsp;</label>
+                <input
+                  id="static"
+                  v-model="form.data.isVariable"
+                  :value="false"
+                  type="radio">
+                <label
+                  class="col-lables"
+                  for="static">Enter table data manually</label>
+              </div>
+            </div>
+
+            <label
+              v-if="form.data.isVariable"
+              class= "col-form-label-md pull-left">Field Data Source Name</label>
+            <label
+              v-if="!form.data.isVariable"
+              class= "col-form-label-md">Add Table Data</label>
+            <input
+              v-if="form.data.isVariable"
+              v-model= "form.data.value"
+              class="form-control form-control-sm"
+              type="text" >
+            <br>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <static-data v-if="!form.data.isVariable"/>
+        </div>
       </div>
-    </div>
-    <div class="col-md-12">
-      <static-data v-if="!form.data.isVariable"/>
     </div>
   </div>
 </template>
@@ -147,26 +135,31 @@
     font-size: 16px;
     font-weight: 400;
 }
-.scroll-area {
-  position: relative;
-  margin: auto;
-  width: flex;
-  min-height: 300px;
-  max-height: 600px;
-}
+
 .btn-times-delete{
+    color:#d9534f
+}
+.btn-times-delete:hover{
     color:#d9534f
 }
 .danger-validation {
     border-color: #d9534f
 }
+.scroll{
+    width: flex;
+    max-height: 300px;
+    overflow-x: hidden;
+    max-height: 600px;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+}
+
 </style>
 
 <script>
 import Vue from 'vue'
 import FormCommons from '../FormCommons.vue'
 import StaticData from './StaticData.vue'
-import VueCustomScrollbar from 'vue-custom-scrollbar'
 import * as types from '../../store/types'
 import { ClientTable } from 'vue-tables-2'
 import { getColumnObject } from '../../store/modules/table'
@@ -175,14 +168,10 @@ Vue.use(ClientTable, { })
 
 export default {
     name: 'TableForms',
-    components: { FormCommons, VueCustomScrollbar, StaticData },
+    components: { FormCommons, StaticData },
     data () {
         return {
             columnsComponent: [ 'plain-text', 'text-input', 'checkbox-input' ],
-            settings: {
-                maxScrollbarLength: 60,
-                suppressScrollX: true
-            },
             row: {},
             isVariable: false,
             isFormValid: true
@@ -217,54 +206,39 @@ export default {
                 col.name !== '').map((col) => col.name)]
             }
         },
-        hideColumnId: {
-            get () {
-                const columnId = this.form.columns.filter((col) => col.isColumnId === true)
-                return columnId.length > 0 ? columnId[0].hideColumnId : false
-            },
-            set (value) {
-                const column = this.form.columns.filter((col) => col.isColumnId === true)
-                column[0].hideColumnId = value
-            }
-        },
-        columnId: {
-            get () {
-                const columnId = this.form.columns.filter((col) => col.isColumnId === true)
-                return columnId.length > 0 ? columnId[0].name : 'default'
-            },
-            set (value) {
-                this.form.columns.forEach((col) => {
-                    if (col.name === value) {
-                        col.isColumnId = true
-                    } else {
-                        col.isColumnId = false
-                    }
-                })
-            }
-        },
+    },
+    mounted () {
+        this.scrollToEnd()
+    },
+    updated () {
+        this.scrollToEnd()
     },
     methods: {
+
+        scrollToEnd () {
+            var container = document.querySelector('.scroll')
+            var scrollHeight = container.scrollHeight
+            container.scrollTop = scrollHeight
+        },
         updateColumns: function () {
             this.$store.dispatch(types.UPDATE_TABLE_COLUMNS_FORM, this.form)
         },
         addRow: function () {
             this.form.data.list.push(this.row)
             this.$store.dispatch(types.UPDATE_TABLE_FORM, this.form)
+            this.scrollToEnd()
         },
-        getColumnObject: function () {
-            return {
-                name: '',
-                header: '',
-                component: 'plain-text',
-                filterable: false,
-                sortable: false,
-                isColumnId: false,
-                hideColumnId: false
-            }
-        },
+        // getColumnObject: function () {
+        //     return {
+        //         name: '',
+        //         header: '',
+        //         component: 'plain-text',
+        //     }
+        // },
         addColumn: function () {
             this.form.columns.push(getColumnObject())
             this.$store.dispatch(types.UPDATE_TABLE_FORM, this.form)
+            this.scrollToEnd()
         },
         removeColumn: function (colToRemove) {
             this.form.columns = this.form.columns.filter((col) => col !== colToRemove)

@@ -6,7 +6,7 @@
       tag="li"
       active-class="active"
       exact>
-      <a>Form</a>
+      <a>Settings</a>
     </router-link>
     <router-link
       :to="toView"
@@ -19,9 +19,10 @@
       class="pull-right">
       <div>
         <button
-          class="btn btn-link fa fa-trash"
+          id="clear"
+          class="btn btn-link fa fa-eraser"
           style="text-decoration: none"
-          @click="clearForm"/>
+          @click="clearForm"><span> Clear Settings</span></button>
       </div>
     </li>
     <li
@@ -29,10 +30,9 @@
       class="pull-right">
       <button
         v-clipboard:copy="snippet"
-        v-clipboard:success="onCopied"
         id="copy"
         class="btn btn-link fa fa-clipboard"
-        style="text-decoration: none"/>
+        style="text-decoration: none"><span> Copy Code</span></button>
       <div class="pull-left pad">
         {{ copyMessage }}
       </div>
@@ -55,7 +55,7 @@
     border: none
  }
 
- button#copy:hover {
+ button#clear:hover {
     background-color: #F5F7F7;
     border-radius: 4px;
     padding: 11px 15px;
@@ -74,7 +74,7 @@ button#copy:hover {
 
 <script>
 import * as types from '../store/types'
-
+import utils from '../utils'
 export default {
     name: 'TabSubHeader',
     props: {
@@ -94,20 +94,17 @@ export default {
     },
     computed: {
         snippet: function () {
-            const getFormType = types['GET_' + this.$route.params.componentName + '_SNIPPET']
-            return this.$store.getters[getFormType]
+            const getSnippetType = types['GET_' + this.$route.params.componentName + '_SNIPPET']
+            if (getSnippetType) {
+                return this.$store.getters[getSnippetType]
+            }
+            return utils.getHelperComponentCode(this.$route.params.componentName)
         }
     },
     methods: {
         clearForm: function () {
             this.$store.dispatch(
                 types['CLEAR_' + this.$route.params.componentName + '_FORM'])
-        },
-        onCopied () {
-            this.copyMessage = 'Copied'
-            setTimeout(() => {
-                this.copyMessage = ''
-            }, 1000)
         }
     }
 }

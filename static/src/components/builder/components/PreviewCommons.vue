@@ -13,11 +13,12 @@
           <br>
           <h4>Preview</h4>
           <form class="form-horizontal">
-            <label v-if="form.label">{{ form.label.value }}</label>
-            <ComponentRender
-              :selected-component = "componentsNames[$route.params.componentName]"
-              :form = "form"/>
-          </form>
+            <div class="col-md-12">
+              <label v-if="form.label">{{ form.label.value }}</label>
+              <ComponentRender
+                :selected-component = "componentsNames[$route.params.componentName]"
+                :form = "form"/>
+          </div></form>
         </div>
       </div>
     </div>
@@ -48,7 +49,7 @@ export default {
     data () {
         return {
             componentsNames: { TEXT_INPUT: 'text-input',
-                CHECKBOX_INPUT: 'checkbox-input',
+                CHECKBOX_INPUT: 'checkbox-creator',
                 TABLE: 'table-creator',
                 TIMER: 'static-task-timer',
                 TASK_PRESENTER: 'task-presenter',
