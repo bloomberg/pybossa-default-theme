@@ -1,0 +1,21 @@
+{% extends "projects/base.html" %}
+{% set active_page = "projects" %}
+{% set active_link  = "settings" %}
+{% set section = _('Answer Fields Configuration') %}
+{% from "_formhelpers.html" import render_form %}
+
+{% block projectcontent %}
+
+<div id="answerfieldsconfig">
+    <fields-config></fields-config>
+</div>
+
+<script src="/static/js/gen/answerfieldsconfig.min.js?2a8c9e707c3aef6f9ca0"></script>
+
+<script>
+answerFields.setData({
+    csrf: '{{csrf}}',
+    answerFields: {{answer_fields | safe}}
+});
+</script>
+{% endblock %}

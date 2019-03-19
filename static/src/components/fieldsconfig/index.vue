@@ -20,7 +20,8 @@
             <div v-if="!Object.keys(answerFields).length">
                 <p>No fields currently configured.</p>
             </div>
-            <div v-else v-for="(field, name) in answerFields">
+            <div class="field-config"
+                 v-else v-for="(field, name) in answerFields" :key="name">
                 <component
                         :is="labelTypes.config[field.type].component"
                         :key="name"
@@ -104,4 +105,7 @@ export default {
 }
 </script>
 <style>
+.field-config {
+    margin-bottom: 0.5em
+}
 </style>
