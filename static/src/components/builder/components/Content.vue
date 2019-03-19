@@ -4,7 +4,8 @@
       <div class="panel panel-default">
         <tab-sub-header
           :to-form="toForm"
-          :to-view="toView"/>
+          :to-view="toView"
+          :to-code="toCode"/>
         <div class="col-md-12">
           <router-view/>
         </div>
@@ -22,6 +23,7 @@ export default {
         return {
             toForm: this.getRouteInfo('_FORM'),
             toView: this.getRouteInfo('_PREVIEW'),
+            toCode: this.getRouteInfo('_CODE'),
         }
     },
     methods: {

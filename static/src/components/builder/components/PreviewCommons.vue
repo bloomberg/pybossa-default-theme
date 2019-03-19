@@ -1,8 +1,11 @@
 <template>
   <div class = "row">
     <div class="col-md-12">
-      <div class="card">
-        <div class="card-body">
+      <div
+        class="card">
+        <div
+          v-if="$route.path.includes('code')"
+          class="card-body">
           <h4>Task presenter code</h4>
           <span
             v-if="!form.isValidForm"
@@ -10,11 +13,14 @@
             ** Component properties are not complete, please review form **
           </span>
           <prism language="html">{{ snippet }}</prism>
-          <br>
+        </div>
+        <div
+          v-if="$route.path.includes('preview')"
+          class="card-body">
           <h4>Preview</h4>
           <form class="form-horizontal">
             <div class="col-md-12">
-              <label v-if="form.label">{{ form.label.value }}</label>
+              <label v-if="form.labelAdded">{{ form.label.value }}</label>
               <ComponentRender
                 :selected-component = "componentsNames[$route.params.componentName]"
                 :form = "form"/>
@@ -64,7 +70,7 @@ export default {
         isValidForm: {
             get () {
                 const getFormValidType =
-                    types['GET_' + this.$route.params.componentName + '_FORM_VALID']
+                    types[`GET_${this.$route.params.componentName}_FORM_VALID`]
                 const isValidForm = getFormValidType ? this.$store.getters[getFormValidType] : true
                 return isValidForm
             }
@@ -72,7 +78,7 @@ export default {
         form: {
             get () {
                 let form = { isValidForm: true }
-                const getFormType = types['GET_' + this.$route.params.componentName + '_FORM']
+                const getFormType = types[`GET_${this.$route.params.componentName}_FORM`]
                 if (getFormType) {
                     form = {...this.$store.getters[getFormType], isValidForm: this.isValidForm}
                 }
@@ -81,11 +87,7 @@ export default {
         },
         snippet: {
             get () {
-                const getSnippetType = types['GET_' + this.$route.params.componentName + '_SNIPPET']
-                if (getSnippetType) {
-                    return this.$store.getters[getSnippetType]
-                }
-                return utils.getHelperComponentCode(this.$route.params.componentName)
+                return utils.getSnippet(this.$route.params.componentName, this.form)
             }
         }
 

@@ -15,7 +15,7 @@
       <template
         v-for="(c,i) in form.columns"
         slot-scope="props"
-        :slot = "c.name"
+        :slot = "c.id"
         class="col-md-12">
         <div
           v-if="c.component === 'plain-text'"
@@ -23,7 +23,7 @@
           class="">
           <input
             id="table-name"
-            v-model = "props.row[c.name]"
+            v-model = "props.row[c.id]"
             class="form-control form-control-sm"
             type="text"
             @input="editRow(props.row)" >
@@ -43,10 +43,6 @@
   </div>
 </template>
 <style>
-
-.vuetable th#_hide-delete {
-    width: 10px;
-}
 </style>
 
 <script>
@@ -90,7 +86,7 @@ export default {
         },
         columns: {
             get () {
-                return [...['hide-delete'], ...this.form.columns.map((col) => col.name)]
+                return [...['hide-delete'], ...this.form.columns.map((col) => col.id)]
             }
         }
 

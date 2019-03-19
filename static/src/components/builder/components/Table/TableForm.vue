@@ -19,7 +19,7 @@
                 <hr
                   v-if="index !=0"
                   size="100px">
-                <label>Column #{{ index + 1 }}</label>
+                <label> {{ col.id }}</label>
                 <button
                   v-if="
                   form.columns.length > 1"
@@ -30,7 +30,7 @@
                 <input
                   v-model= "col.name"
                   :class="{'form-control form-control-sm': true,
-                           'danger-validation': (col.name === '' && col.dirty) }"
+                           'danger-validation': invalidColumn(col)}"
                   name="name"
                   type="text"
                   @blur="col.dirty =true"
@@ -45,7 +45,7 @@
                 <select
                   v-model= "col.component"
                   class="form-control form-control-sm"
-                  @change="updateColumns">
+                >
                   <option
                     v-for="component in columnsComponent"
                     :key = "component"
@@ -63,7 +63,6 @@
           id="add"
           class="btn btn-default btn-sm col-sm-2 col-md-1"
           @click="addColumn">Add</button>
-
         <div class="row">
           <div class="col-md-12">
             <hr>
@@ -77,25 +76,23 @@
                 id="table-name"
                 v-model= "form.name.value"
                 :class="{'form-control form-control-sm': true,
-                         'danger-validation': ((form.name.value === '' && columnWithComponent)
-                || (form.name.value === '' && form.name.dirty)) }"
+                         'danger-validation': (form.name.value === '') }"
                 type="text"
                 @click="form.name.dirty =true"
                 @blur="form.name.dirty =true">
               <p v-if="form.name.value === '' && form.name.dirty">This field is required!</p>
             </div>
-
             <div class="row">
               <div class="col-sm-12">
-                <label>Data&nbsp;&nbsp;</label><br>
+                <label >Data</label><br>
                 <input
                   id="dynamic"
                   v-model="form.data.isVariable"
                   :value="true"
                   type="radio">
                 <label
-                  class="col-lables"
-                  for="dynamic">Get table data from source&nbsp;&nbsp;</label>
+                  class="col-lables right-padding-radio"
+                  for="dynamic">Get table data from source</label>
                 <input
                   id="static"
                   v-model="form.data.isVariable"
@@ -106,10 +103,9 @@
                   for="static">Enter table data manually</label>
               </div>
             </div>
-
             <label
               v-if="form.data.isVariable"
-              class= "col-form-label-md pull-left">Field Data Source Name</label>
+              class= "col-form-label-md pull-left">* Field Data Source Name</label>
             <label
               v-if="!form.data.isVariable"
               class= "col-form-label-md">Add Table Data</label>
@@ -153,12 +149,14 @@
     overflow-y: scroll;
     margin-bottom: 20px;
 }
+.right-padding-radio{
+  padding-right: 10px;
+}
 
 </style>
 
 <script>
 import Vue from 'vue'
-import FormCommons from '../FormCommons.vue'
 import StaticData from './StaticData.vue'
 import * as types from '../../store/types'
 import { ClientTable } from 'vue-tables-2'
@@ -168,13 +166,11 @@ Vue.use(ClientTable, { })
 
 export default {
     name: 'TableForms',
-    components: { FormCommons, StaticData },
+    components: { StaticData },
     data () {
         return {
-            columnsComponent: [ 'plain-text', 'text-input', 'checkbox-input' ],
-            row: {},
-            isVariable: false,
-            isFormValid: true
+            columnsComponent: [ 'plain-text', 'text-input', 'checkbox-input' ]
+
         }
     },
     computed: {
@@ -214,40 +210,33 @@ export default {
         this.scrollToEnd()
     },
     methods: {
-
         scrollToEnd () {
             var container = document.querySelector('.scroll')
             var scrollHeight = container.scrollHeight
             container.scrollTop = scrollHeight
         },
-        updateColumns: function () {
-            this.$store.dispatch(types.UPDATE_TABLE_COLUMNS_FORM, this.form)
-        },
         addRow: function () {
-            this.form.data.list.push(this.row)
+            this.form.data.list.push({})
             this.$store.dispatch(types.UPDATE_TABLE_FORM, this.form)
             this.scrollToEnd()
         },
-        // getColumnObject: function () {
-        //     return {
-        //         name: '',
-        //         header: '',
-        //         component: 'plain-text',
-        //     }
-        // },
         addColumn: function () {
-            this.form.columns.push(getColumnObject())
+            this.form.colCounter++
+            this.form.columns.push(getColumnObject(this.form.colCounter))
             this.$store.dispatch(types.UPDATE_TABLE_FORM, this.form)
             this.scrollToEnd()
         },
         removeColumn: function (colToRemove) {
             this.form.columns = this.form.columns.filter((col) => col !== colToRemove)
             this.form.data.list.forEach(function (row) {
-                delete row[colToRemove.name]
+                delete row[colToRemove.id]
             })
             this.$store.dispatch(types.UPDATE_TABLE_FORM, this.form)
         },
-
+        invalidColumn: function (col) {
+            const cols = this.form.columns.filter((c) => c.name === col.name)
+            return (cols.length > 1) || (this.form.columns.length > 1 && col.name === '') || (col.name === '' && col.dirty)
+        }
     }
 
 }

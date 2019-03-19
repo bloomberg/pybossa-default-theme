@@ -25,9 +25,6 @@ export const getters = {
     [types.GET_TEXT_INPUT_FORM]: (state) => {
         return state.textInput.form
     },
-    [types.GET_TEXT_INPUT_SNIPPET]: (state) => {
-        return utils.getCommonComponentsCode(state.textInput.form, 'TEXT_INPUT')
-    },
     [types.GET_TEXT_INPUT_FORM_VALID]: (state) => {
         return true
     }

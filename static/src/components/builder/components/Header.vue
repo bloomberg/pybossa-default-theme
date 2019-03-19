@@ -9,7 +9,6 @@
         @click="navigateToHome"/>
       <span>{{ $route.params.header ? $route.params.header : 'Questions' }}</span>
     </div>
-
     <div
       v-if="$route.name == 'home'"
       class="col-md-12 icon-pointer">
@@ -19,7 +18,6 @@
         @click="navigateToHome"/>
       <span>{{ 'Task Presenter Components' }}</span>
     </div>
-
   </div>
 </template>
 
@@ -45,7 +43,7 @@ export default {
     },
     methods: {
         navigateToHome: function () {
-            const getClearType = types['CLEAR_' + this.$route.params.componentName + '_FORM']
+            const getClearType = types[`CLEAR_${this.$route.params.componentName}_FORM`]
             if (getClearType) {
                 this.$store.dispatch(getClearType)
             }

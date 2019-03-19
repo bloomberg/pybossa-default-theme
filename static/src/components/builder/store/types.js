@@ -1,14 +1,11 @@
 // Getters
 export const GET_TEXT_INPUT_FORM = 'testinput/FORM'
-export const GET_TEXT_INPUT_SNIPPET = 'testinput/SNIPPET'
 export const GET_TEXT_INPUT_FORM_VALID = 'testinput/FORM_VALID'
 
 export const GET_CHECKBOX_INPUT_FORM = 'checkboxinput/FORM'
-export const GET_CHECKBOX_INPUT_SNIPPET = 'checkboxinput/SNIPPET'
 export const GET_CHECKBOX_INPUT_FORM_VALID = 'checkboxinput/FORM_VALID'
 
 export const GET_TABLE_FORM = 'table/FORM'
-export const GET_TABLE_SNIPPET = 'table/SNIPPET'
 export const GET_TABLE_DATA_LIST = 'table/GET_TABLE_DATA_LIST'
 export const GET_TABLE_FORM_VALID = 'table/FORM_VALID'
 

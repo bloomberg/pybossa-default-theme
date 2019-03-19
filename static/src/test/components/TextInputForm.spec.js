@@ -3,7 +3,7 @@
 import Vuex from 'vuex'
 import { mount, createLocalVue } from '@vue/test-utils'
 import { __createMocks as createStoreMocks } from '../../components/builder/store'
-import FormCommons from '../../components/builder/components/FormCommons'
+import TextInput from '../../components/builder/components/TextInput/TextInputForm'
 import * as types from '../../components/builder/store/types'
 
 jest.mock('../../components/builder/store')
@@ -11,7 +11,7 @@ jest.mock('../../components/builder/store')
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
-describe('FormCommons', () => {
+describe('TextInput', () => {
     let storeMocks
     let wrapper
 
@@ -19,7 +19,7 @@ describe('FormCommons', () => {
         const freshLocalVue = createLocalVue()
         storeMocks = { ...createStoreMocks(),
             dispatch: jest.fn()}
-        wrapper = mount(FormCommons, {
+        wrapper = mount(TextInput, {
             freshLocalVue,
             mocks: {
                 $route: {

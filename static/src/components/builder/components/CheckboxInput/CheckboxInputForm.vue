@@ -26,31 +26,32 @@
             <hr
               v-if="index !=0"
               size="100px">
-            <label>Checkbox #{{ index + 1 }}</label>
+            <label>Checkbox {{ index + 1 }}</label>
             <button
               v-if="
               form.checkboxList.length > 1"
               id="column-delete"
               class="btn btn-times-delete pull-right fa fa-times"
               @click="removeCheckbox(checkbox)"/><br>
-
-            <h5 for="component-label">Checkbox Description Label</h5>
+            <label
+              class="col-lables"
+              for="component-label">Checkbox Description Label</label>
             <input
               id="component-label"
               v-model= "checkbox.label.value"
               class="form-control form-control-sm"
               type="text" >
-            <h5
-              for = "pyb-answer"
-              class= "col-form-label-sm" >Answer field name</h5>
+            <label
+              class="col-lables"
+              for = "pyb-answer">Answer field name</label>
             <input
               id="pyb-answer"
               v-model= "checkbox['pyb-answer'].value"
               class="form-control form-control-sm"
               type="text">
-            <h5
-              class= "col-form-label-md"
-              for = "initial-value" >Initial Value</h5>
+            <label
+              class="col-lables"
+              for = "initial-value" >Initial Value</label>
             <select
               id ="initial-value"
               v-model= "checkbox['initial-value'].value"
@@ -110,11 +111,6 @@ export default {
             },
             set (value) {
                 this.$store.dispatch(types.UPDATE_CHECKBOX_INPUT_FORM, value)
-            }
-        },
-        snippet: {
-            get () {
-                return this.$store.getters[types.GET_CHECKBOX_INPUT_SNIPPET]
             }
         }
     },
