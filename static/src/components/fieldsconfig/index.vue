@@ -84,8 +84,12 @@ export default {
                     },
                     body: JSON.stringify(this.answerFields)
                 });
-                const data = await res.json();
-                pybossaNotify(data.flash, true, data.status);
+                if (res.ok) {
+                    const data = await res.json();
+                    pybossaNotify(data.flash, true, data.status);
+                } else {
+                    pybossaNotify('An error occurred.', true, 'error');
+                }
             }
             catch(error) {
                 console.warn(error);
