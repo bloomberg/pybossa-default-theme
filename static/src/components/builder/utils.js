@@ -12,7 +12,6 @@ import cancelButtonTemplate from './components/helpers/cancelButtonTemplate.html
 import buttonRowTemplate from './components/helpers/buttonRowTemplate.html'
 import submitButtonTemplate from './components/helpers/submitButtonTemplate.html'
 import submitLastButtonTemplate from './components/helpers/submitLastButtonTemplate.html'
-import taskPresenterStartTemplate from './components/taskPresenterStartTemplate.html'
 import slotTemplate from './components/Table/slotTemplate.html'
 
 const templates = {
@@ -27,7 +26,6 @@ const templates = {
     BUTTON_ROW: buttonRowTemplate,
     SUBMIT_BUTTON: submitButtonTemplate,
     SUBMIT_LAST_BUTTON: submitLastButtonTemplate,
-    TASK_PRESENTER_START_TEMPLATE: taskPresenterStartTemplate
 }
 export default {
     uniqueID: () => {
@@ -43,13 +41,53 @@ export default {
         })
         return options
     },
-    getComponentTableProps: function (form) {
-        const columns = form.columns.map((col) => col.name)
-        const data = form.data.list.map(function (item) {
+    getTableData: function (form) {
+        const columnsObjects = form.columns.map((col) => { return {id: col.id, name: col.name} })
+        const cleanData = form.data.list.map(function (obj) {
+            const item = {...obj}
+
             delete item.staticDataId
             delete item['hide-delete']
+            columnsObjects.forEach((e) => {
+                item[e.name] = item[e.id]
+                delete item[e.id]
+            })
             return item
         })
+        return cleanData
+    },
+    getSnippet: function (component, form) {
+        if (component === 'TABLE') {
+            return this.getTableCode(form)
+        } else if (component === 'CHECKBOX_INPUT') {
+            return this.getCheckboxInputCode(form, component)
+        } else if (component === 'TEXT_INPUT') {
+            return this.getTextInputCode(form, component)
+        } else {
+            return this.getHelperComponentCode(component)
+        }
+    },
+    addBindSymbolIfNeedIt (obj, output) {
+        Object.keys(obj).forEach((e) => {
+            if (obj[e].isVariable) {
+                output = output.replace(`${e}=`, `:${e}=`)
+            }
+        })
+
+        return output
+    },
+
+    getValuesForTemplate (obj) {
+        const values = {}
+        Object.keys(obj).forEach((e) => {
+            values[e] = obj[e].value
+        })
+
+        return values
+    },
+    getTableCode: function (form) {
+        const columns = form.columns.map((col) => col.name)
+        const data = this.getTableData(form)
         const formForTemplate = {
             name: form.name.value,
             data:
@@ -85,23 +123,16 @@ export default {
         return Mustache.render(templates[component], {})
     },
 
-    getCheckboxGroup: function (form, component) {
+    getCheckboxInputCode: function (form, component) {
         const checkboxList = []
 
-        form.checkboxList.forEach(function (checkbox) {
-            const formForTemplate = {}
-
-            Object.keys(checkbox).forEach((e) => {
-                formForTemplate[e] = checkbox[e].value
-            })
+        form.checkboxList.forEach((checkbox) => {
+            const formForTemplate = this.getValuesForTemplate(checkbox)
             let checkboxOutput = Mustache.render(templates[component], formForTemplate).trim()
-            Object.keys(checkbox).forEach((e) => {
-                if (checkbox[e].isVariable) {
-                    checkboxOutput = checkboxOutput.replace(e + '=', ':' + e + '=')
-                }
-            })
+            checkboxOutput = this.addBindSymbolIfNeedIt(checkbox, checkboxOutput)
             checkboxList.push(checkboxOutput)
         })
+
         const idCheckboxGroup = this.uniqueID()
         let output = Mustache.render(checkboxGroupTemplate, {id: idCheckboxGroup, checkboxList})
         if (form.labelAdded) {
@@ -111,15 +142,11 @@ export default {
             output = Mustache.render(labelTemplate, label).trim()
         }
 
-
         return output
     },
 
-    getCommonComponentsCode: function (form, component) {
-        const formForTemplate = {}
-        Object.keys(form).forEach((e) => {
-            formForTemplate[e] = form[e].value
-        })
+    getTextInputCode: function (form, component) {
+        const formForTemplate = this.getValuesForTemplate(form)
 
         let output = Mustache.render(templates[component], formForTemplate)
         if (form.labelAdded) {
@@ -128,13 +155,9 @@ export default {
                 label: formForTemplate['label'] }
             output = Mustache.render(labelTemplate, label)
         }
-
-        Object.keys(form).forEach((e) => {
-            if (form[e].isVariable) {
-                output = output.replace(e + '=', ':' + e + '=')
-            }
-        })
+        output = this.addBindSymbolIfNeedIt(form, output)
 
         return output
     }
 }
+

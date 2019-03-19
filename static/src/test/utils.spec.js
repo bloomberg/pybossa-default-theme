@@ -1,13 +1,11 @@
 /* eslint-disable no-undef */
 import utils from '../components/builder/utils'
 import { state } from '../components/builder/store/modules/textInput'
-import { state as checkboxState } from '../components/builder/store/modules/checkboxInput'
 const { textInput } = state
-const { checkboxInput } = checkboxState
 test('getCommonComponentsCode for TEXT_INPUT', () => {
     textInput.form['pyb-answer'].value = 'answername'
     textInput.form['label'].value = 'labelName'
-    const componentCode = utils.getCommonComponentsCode(textInput.form, 'TEXT_INPUT')
+    const componentCode = utils.getTextInputCode(textInput.form, 'TEXT_INPUT')
 
     expect(componentCode.includes('<text-input')).toBeTruthy()
     expect(componentCode.includes('</text-input>')).toBeTruthy()

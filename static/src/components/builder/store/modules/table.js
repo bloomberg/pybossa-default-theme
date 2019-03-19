@@ -5,11 +5,12 @@ const prop = (value, isVariable) => {
     return { value,
         isVariable }
 }
-export const getColumnObject = () => {
+export const getColumnObject = (id) => {
     return {
         name: '',
         header: '',
-        component: 'plain-text'
+        component: 'plain-text',
+        id: `Columns ${id}`
     }
 }
 
@@ -19,10 +20,11 @@ export const initialState = () => {
         'label': prop('', false),
         'name': prop('', false),
         'data': {...prop('', true), list: []},
-        'columns': [getColumnObject()],
+        'columns': [getColumnObject(1)],
         'options': prop({
             headings: {},
-        }, false)
+        }, false),
+        'colCounter': 1
     }
 }
 
@@ -36,29 +38,24 @@ export const getters = {
     [types.GET_TABLE_FORM]: (state) => {
         return state.table.form
     },
-    [types.GET_TABLE_SNIPPET]: (state) => {
-        return utils.getComponentTableProps(state.table.form)
-    },
+
     [types.GET_TABLE_FORM_VALID]: (state) => {
+        /* Determine if Table Form is valid*/
         const table = state.table.form
-
         const anyColumnNameEmpty = table.columns.filter((c) => (c.name === '')).length > 0
-
         const anyDirtyEmptyColumn = table.columns.filter((c) =>
             ((c.name === '' && c.dirty))).length > 0
-
-        const isAnswerFieldDirty = table.name.value === '' && table.name.dirty
-
+        const isAnswerFieldDirty = (table.name.value === '' && table.isVariable) ||
+        (table.name.value === '' && table.name.dirty)
         const anyDirtyColumn = table.columns.filter((c) => (c.dirty)).length > 0
-
         const isFormUntouched = !table.name.dirty && !anyDirtyColumn
+        const anyColumnComponent = table.columns.filter(
+            (col) => col.component !== 'plain-text').length > 0
+        const repeatedColName = table.columns.length !== [...new Set(table.columns.map((c) => c.name))].length
+        const isDataNameEmptyAndRequired = table.data.isVariable && table.data.value === ''
+        const isAnswerFieldRequired = anyColumnComponent && table.name.value === ''
 
-        if (isAnswerFieldDirty || anyDirtyEmptyColumn) {
-            return false
-        } else if (
-            table.data.list.length > 0 && anyColumnNameEmpty) {
-            return false
-        } else if (isFormUntouched) {
+        if (isFormUntouched || isDataNameEmptyAndRequired || isAnswerFieldRequired || anyColumnNameEmpty || isAnswerFieldDirty || anyDirtyEmptyColumn || repeatedColName) {
             return false
         } else {
             return true
@@ -82,23 +79,6 @@ export const actions = {
     },
     [types.CLEAR_TABLE_FORM]: ({ commit }) => {
         commit(types.MUTATE_TABLE_FORM, initialState())
-    },
-    [types.UPDATE_TABLE_COLUMNS_FORM]: ({ commit, state }, payload) => {
-        let inputColumns = false
-        payload.columns.forEach(function (col) {
-            if (col.component !== 'plain-text') {
-                col.isColumnId = false
-                inputColumns = true
-            }
-        })
-        if (!inputColumns) {
-            payload.name.value = ''
-            payload.columns.forEach(function (col) {
-                col.isColumnId = false
-            })
-        }
-
-        commit(types.MUTATE_TABLE_FORM, state.table.form)
     }
 }
 

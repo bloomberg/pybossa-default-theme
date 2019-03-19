@@ -33,9 +33,6 @@ export const getters = {
     [types.GET_CHECKBOX_INPUT_FORM]: (state) => {
         return state.checkboxInput.form
     },
-    [types.GET_CHECKBOX_INPUT_SNIPPET]: (state) => {
-        return utils.getCheckboxGroup(state.checkboxInput.form, 'CHECKBOX_INPUT')
-    },
     [types.GET_CHECKBOX_INPUT_FORM_VALID]: (state) => {
         return true
     }

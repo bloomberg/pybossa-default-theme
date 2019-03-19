@@ -14,27 +14,60 @@
     <div class="col-md-8">
       <div class="row">
         <h3 class="text-color">Guide</h3>
-        <a href="https://bbgithub.dev.bloomberg.com/GIGwork/gigwork.bbgithub.dev.bloomberg.com/blob/docs/engineering-documentation.rst">Components Documentation</a>
-        <p class="red-alert"> In order to use this tool your task presenter code must have the following template.</p>
+        <a
+          href="https://bbgithub.dev.bloomberg.com/GIGwork/pybossa-vue/wiki/Pybossa-Presenter-Components#include-the-files"
+          target="_blank">Components Documentation</a>
+        <p class="red-alert"> In order to use this tool task presenter code must have the following template.</p>
       </div>
-      <button
-        v-clipboard:copy="snippet"
-        id="copy"
-        class="btn btn-link fa fa-clipboard pull-right"
-        style="text-decoration: none"><span> Copy Code</span></button>
+      <div class="row">
+        <button
+          v-clipboard:copy="snippet"
+          v-if="!error && !loading"
+          id="copy"
+          class="btn btn-link fa fa-clipboard pull-right"
+          style="text-decoration: none"><span class="copy-font"> Copy Code</span>
+      </button></div>
+      <div class="row">
+        <prism
+          v-if="!loading"
+          language="html">{{ snippet }}</prism>
+      </div>
+      <div
+        v-if="loading"
+        class="row">
+        <div class="loader"/>
+      </div>
     </div>
-    <prism language="html">{{ snippet }}</prism>
   </div>
 </template>
 <style>
 .red-alert{
     color:#d9534f
-}</style>
+}
+
+.copy-font {
+    font-family:"Source Sans Pro",sans-serif;
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 75px;
+  height: 75px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+</style>
 <script>
 
 import Vue from 'vue'
 import Prism from 'vue-prism-component'
-import utils from '.././utils'
 Vue.component('custom-router-link', {
     props: { component: {
         type: Object,
@@ -57,6 +90,9 @@ export default {
     components: {Prism},
     data () {
         return {
+            loading: false,
+            error: false,
+            snippet: '',
             checkboxInput: {
                 name: 'CHECKBOX_INPUT_FORM',
                 params: {
@@ -111,14 +147,32 @@ export default {
                     componentName: 'CANCEL_BUTTON',
                     header: 'Cancel Button' }
             }
-
-
         }
     },
-    computed: {
-        snippet: function () {
-            return utils.getHelperComponentCode('TASK_PRESENTER_START_TEMPLATE').trim()
-        }
+    mounted: function () {
+        this.loading = true
+        this.getTaskPresenterTemplate()
     },
+    methods: {
+        async getTaskPresenterTemplate () {
+            await fetch(`${window.location.pathname}?template=helper-components`, {
+                method: 'GET',
+                headers: {
+                    'content-type': 'application/json',
+                    'X-CSRFToken': this.csrfToken
+                }
+            }).then((res) => {
+                if (res.ok) {
+                    res.json().then((body) => { this.snippet = body.form.editor })
+                    this.loading = false
+                } else {
+                    console.warn(res)
+                    this.loading = false
+                    this.error = true
+                    this.snippet = 'Currently unable to show a start template.'
+                }
+            })
+        }
+    }
 }
 </script>

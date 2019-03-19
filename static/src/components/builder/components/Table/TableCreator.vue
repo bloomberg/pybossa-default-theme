@@ -5,8 +5,7 @@
       :data="data"
       :columns="columns"
       :name="form.name"
-      :options="form.options"
-    >
+      :options="form.options">
       <template
         v-for="(c,i) in form.columns"
         slot-scope="props"
@@ -46,14 +45,11 @@ export default {
         }
     },
     computed: {
-        formTest: function () {
-            return {name: 'TEXT_INPUT'}
-        },
         columns: function () {
             return this.form.columns.map((col) => col.name)
         },
         data: function () {
-            return this.form.data.isVariable ? [{}] : this.form.data.list
+            return this.form.data.isVariable ? [{}] : this.form.data
         }
     }
 }

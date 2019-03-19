@@ -4,6 +4,7 @@ import components from '@dtwebservices/task-presenter-components'
 import TableCreator from './Table/TableCreator.vue'
 import CheckboxCreator from './CheckboxInput/CheckboxCreator.vue'
 import { ClientTable } from 'vue-tables-2'
+import utils from '../utils'
 
 Vue.component('static-task-timer', {
     template: '<p>Time Remaining: 59 minute s, 43 seconds</p>'
@@ -11,14 +12,12 @@ Vue.component('static-task-timer', {
 
 Vue.use(ClientTable, { })
 export const getOptions = function (columnDetails) {
-    const options = {headings: {}}
+    const options = utils.getOptions(columnDetails)
     options.filterByColumn = false
     options.filterable = []
     options.sortable = []
     options.texts = { filter: '', count: '' }
-    for (const col in columnDetails) {
-        options.headings[col] = columnDetails.headings ? columnDetails.headings : col
-    }
+
     return options
 }
 
@@ -42,21 +41,21 @@ export default {
                     props: { 'pyb-answer': this.form['pyb-answer'].value }
                 }
             } else if (this.selectedComponent === 'checkbox-creator') {
-                console.log('form', this.form)
                 return {
                     name: 'checkbox-creator',
                     attrs: { id: 'test' },
                     props: { checkboxList: this.form.checkboxList }
                 }
             } else if (this.selectedComponent === 'table-creator') {
+                const data = this.form.data.isVariable ? [{}] : utils.getTableData(this.form)
                 return {
                     name: 'table-creator',
                     props: {
                         form:
                             { columns: this.form.columns,
-                                data: this.form.data,
+                                data,
                                 options: getOptions(this.form.columns),
-                                name: this.form.name.value ? this.form.name.value : 'tableName'
+                                name: 'TableCreator'
                             },
                     }
                 }

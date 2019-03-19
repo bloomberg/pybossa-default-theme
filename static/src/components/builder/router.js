@@ -29,6 +29,11 @@ export const routes = [
                 path: '/textinput/preview',
                 name: 'TEXT_INPUT_PREVIEW',
                 components: { default: PreviewCommons }
+            },
+            {
+                path: '/textinput/code',
+                name: 'TEXT_INPUT_CODE',
+                components: { default: PreviewCommons }
             }
 
         ]
@@ -47,6 +52,11 @@ export const routes = [
                 path: '/checkboxinput/preview',
                 name: 'CHECKBOX_INPUT_PREVIEW',
                 components: { default: PreviewCommons }
+            },
+            {
+                path: '/checkboxinput/code',
+                name: 'CHECKBOX_INPUT_CODE',
+                components: { default: PreviewCommons }
             }
 
         ]
@@ -64,6 +74,11 @@ export const routes = [
             {
                 path: '/table/preview',
                 name: 'TABLE_PREVIEW',
+                components: { default: PreviewCommons }
+            },
+            {
+                path: '/table/code',
+                name: 'TABLE_CODE',
                 components: { default: PreviewCommons }
             }
 
@@ -103,7 +118,38 @@ export const routes = [
                 path: '/helper/submitLastButton/preview',
                 name: 'SUBMIT_LAST_BUTTON_PREVIEW',
                 components: { default: PreviewCommons }
+            },
+            {
+                path: '/helper/timer/code',
+                name: 'TIMER_CODE',
+                components: { default: PreviewCommons }
+            },
+            {
+                path: '/helper/buttonRow/code',
+                name: 'BUTTON_ROW_CODE',
+                components: { default: PreviewCommons }
+            },
+            {
+                path: '/helper/tasPresenter/code',
+                name: 'TASK_PRESENTER_CODE',
+                components: { default: PreviewCommons }
+            },
+            {
+                path: '/helper/cancelButton/code',
+                name: 'CANCEL_BUTTON_CODE',
+                components: { default: PreviewCommons }
+            },
+            {
+                path: '/helper/submitButton/code',
+                name: 'SUBMIT_BUTTON_CODE',
+                components: { default: PreviewCommons }
+            },
+            {
+                path: '/helper/submitLastButton/code',
+                name: 'SUBMIT_LAST_BUTTON_CODE',
+                components: { default: PreviewCommons }
             }
+
         ]
     },
     { path: '/redirect-me', redirect: { name: 'home' } },

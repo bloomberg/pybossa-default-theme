@@ -14,6 +14,12 @@
       active-class="active">
       <a>Preview</a>
     </router-link>
+    <router-link
+      :to="toCode"
+      tag="li"
+      active-class="active">
+      <a>Code</a>
+    </router-link>
     <li
       v-if="$route.path.includes('form')"
       class="pull-right">
@@ -22,20 +28,17 @@
           id="clear"
           class="btn btn-link fa fa-eraser"
           style="text-decoration: none"
-          @click="clearForm"><span> Clear Settings</span></button>
+          @click="clearForm"><span class="copy-font"> Clear Settings</span></button>
       </div>
     </li>
     <li
-      v-else
+      v-if="$route.path.includes('code')"
       class="pull-right">
       <button
         v-clipboard:copy="snippet"
         id="copy"
         class="btn btn-link fa fa-clipboard"
-        style="text-decoration: none"><span> Copy Code</span></button>
-      <div class="pull-left pad">
-        {{ copyMessage }}
-      </div>
+        style="text-decoration: none"><span class="copy-font"> Copy Code</span></button>
     </li>
   </ul>
 </template>
@@ -59,6 +62,9 @@
     background-color: #F5F7F7;
     border-radius: 4px;
     padding: 11px 15px;
+}
+.copy-font {
+    font-family:"Source Sans Pro",sans-serif;
 }
 .pad {
        padding: 11px 15px;
@@ -85,26 +91,33 @@ export default {
         toView: {
             required: true,
             type: Object,
+            default: null },
+        toCode: {
+            required: true,
+            type: Object,
             default: null }
     },
-    data () {
-        return {
-            copyMessage: ''
-        }
-    },
     computed: {
-        snippet: function () {
-            const getSnippetType = types['GET_' + this.$route.params.componentName + '_SNIPPET']
-            if (getSnippetType) {
-                return this.$store.getters[getSnippetType]
+        form: {
+            get () {
+                let form = {}
+                const getFormType = types[`GET_${this.$route.params.componentName}_FORM`]
+                if (getFormType) {
+                    form = this.$store.getters[getFormType]
+                }
+                return form
             }
-            return utils.getHelperComponentCode(this.$route.params.componentName)
+        },
+        snippet: {
+            get () {
+                return utils.getSnippet(this.$route.params.componentName, this.form)
+            }
         }
     },
     methods: {
         clearForm: function () {
             this.$store.dispatch(
-                types['CLEAR_' + this.$route.params.componentName + '_FORM'])
+                types[`CLEAR_${this.$route.params.componentName}_FORM`])
         }
     }
 }
