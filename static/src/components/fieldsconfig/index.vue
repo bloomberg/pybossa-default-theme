@@ -12,7 +12,7 @@
                                 :value="type">{{conf.display}}</option>
                     </select>
                     <button class="btn btn-sm btn-primary"
-                        :disabled="!fieldName.length"
+                        :disabled="!fieldName"
                         @click="_addField">Add Field</button>
                     <span v-if="error" class="help-block">{{error}}</span>
                 </div>
