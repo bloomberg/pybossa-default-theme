@@ -9,11 +9,11 @@
 <div id="performancestats">
     <performance-stats
         :project-id="{{project.id}}"
-        :users="{{users | tojson | forceescape}}"
+        :users="{{contributors | tojson | forceescape}}"
         :fields="{{answer_fields | tojson | forceescape}}">
     </performance-stats>
 </div>
 
-<script src="/static/js/gen/performancestats.min.js?6e09bb144e402432d475"></script>
+<script src="/static/js/gen/performancestats.min.js?f5c900ef7339239e3b57"></script>
 {{ helper.broken_image() }}
 {% endblock %}

@@ -9,7 +9,7 @@
 <div id="performancestats">
     <performance-stats
         :project-id="{{project.id}}"
-        :users="{{users | tojson | forceescape}}"
+        :users="{{contributors | tojson | forceescape}}"
         :fields="{{answer_fields | tojson | forceescape}}">
     </performance-stats>
 </div>
