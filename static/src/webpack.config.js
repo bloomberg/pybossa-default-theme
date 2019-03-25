@@ -13,7 +13,8 @@ module.exports = {
   entry: {
     editor: './editor.js',
     task_browse: './task_browse.js',
-    answerfieldsconfig: './answerfieldsconfig.js'
+    answerfieldsconfig: './answerfieldsconfig.js',
+    performancestats: './performancestats.js'
   },
   // where to place the compiled bundle
   output: {
@@ -86,6 +87,12 @@ module.exports = {
           hash: true,
           filename: '../../../templates/projects/answerfieldsconfig.html',
           template: '../../templates/projects/answerfieldsconfig.webpack.html'
+        }),
+        new htmlWebpackPlugin({
+          inject: false,
+          hash: true,
+          filename: '../../../templates/projects/performancestats.html',
+          template: '../../templates/projects/performancestats.webpack.html'
         }),
         new VueLoaderPlugin()
     ]
