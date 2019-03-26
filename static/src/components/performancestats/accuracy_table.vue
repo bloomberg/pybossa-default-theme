@@ -23,7 +23,9 @@
 </template>
 <script>
 export default {
-    props: ['stats'],
+    props: {
+        stats: Array
+    },
 
     computed: {
         numRight () {

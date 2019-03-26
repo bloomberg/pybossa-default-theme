@@ -45,7 +45,10 @@ function matrixSum(a, b) {
 }
 
 export default {
-    props: ['stats', 'labels'],
+    props: {
+        stats: Array,
+        labels: Array
+    },
 
     mounted () {
         this.showMatrix();
