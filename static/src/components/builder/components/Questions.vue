@@ -17,7 +17,7 @@
         <a
           href="https://bbgithub.dev.bloomberg.com/GIGwork/pybossa-vue/wiki/Pybossa-Presenter-Components#include-the-files"
           target="_blank">Components Documentation</a>
-        <p class="red-alert"> In order to use this tool task presenter code must have the following template.</p>
+        <p> In order to use this tool task presenter code must have the following template.</p>
       </div>
       <div class="row">
         <button
@@ -41,9 +41,6 @@
   </div>
 </template>
 <style>
-.red-alert{
-    color:#d9534f
-}
 
 .copy-font {
     font-family:"Source Sans Pro",sans-serif;
@@ -155,23 +152,30 @@ export default {
     },
     methods: {
         async getTaskPresenterTemplate () {
-            await fetch(`${window.location.pathname}?template=helper-components`, {
-                method: 'GET',
-                headers: {
-                    'content-type': 'application/json',
-                    'X-CSRFToken': this.csrfToken
-                }
-            }).then((res) => {
-                if (res.ok) {
-                    res.json().then((body) => { this.snippet = body.form.editor })
-                    this.loading = false
+            try {
+                const url = new URL(window.location.href)
+                url.searchParams.set('template', 'helper-components')
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                })
+                if (response.ok) {
+                    response.json().then((body) => {
+                        this.snippet = body.form.editor
+                        this.loading = false
+                    })
                 } else {
-                    console.warn(res)
+                    console.warn(response)
                     this.loading = false
                     this.error = true
                     this.snippet = 'Currently unable to show a start template.'
                 }
-            })
+            } catch (error) {
+                console.warn(error)
+                pybossaNotify('An error occurred.', true, 'error')
+            }
         }
     }
 }

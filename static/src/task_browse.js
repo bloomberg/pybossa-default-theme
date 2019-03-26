@@ -1,12 +1,11 @@
-/* eslint-disable no-new */
+'use strict';
 
-
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
 import TaskBrowse from './components/task_browse/task_browse'
 import FiltersModal from './components/task_browse/filters_modal'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 
 const store = new Vuex.Store({
@@ -15,17 +14,17 @@ const store = new Vuex.Store({
     },
 
     getters: {
-        getFilters (state) {
-            return state.filters
+        getFilters(state) {
+            return state.filters;
         }
     },
 
     mutations: {
-        setFilters (state, filters) {
-            state.filters = JSON.parse(JSON.stringify(filters))
+        setFilters(state, filters) {
+            state.filters = JSON.parse(JSON.stringify(filters));
         }
     }
-})
+});
 
 new Vue({
     el: '#task-browse',
@@ -34,7 +33,7 @@ new Vue({
         TaskBrowse,
         FiltersModal
     }
-})
+});
 
 window.taskBrowse = {
     setFilters: store.commit.bind(null, 'setFilters')
