@@ -1,4 +1,5 @@
 'use strict';
+import * as d3 from 'd3';
 
 export default function Matrix(options) {
     const margin = {top: 50, right: 50, bottom: 100, left: 100},
@@ -31,7 +32,7 @@ export default function Matrix(options) {
         .attr('width', '100%')
         .attr('height', height + margin.top + margin.bottom)
         .append('g')
-        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     const background = svg.append('rect')
         .style('stroke', 'black')
@@ -56,7 +57,7 @@ export default function Matrix(options) {
         .enter().append('g')
         .attr('class', 'row')
         .attr('transform', function(d, i) {
-            return 'translate(0,' + y(i) + ')';
+            return `translate(0, ${y(i)})`;
         });
 
     const cell = row.selectAll('.cell')
@@ -66,7 +67,7 @@ export default function Matrix(options) {
         .enter().append('g')
         .attr('class', 'cell')
         .attr('transform', function(d, i) {
-            return 'translate(' + x(i) + ', 0)';
+            return `translate(${x(i)}, 0)`;
         });
 
     cell.append('rect')
@@ -100,7 +101,7 @@ export default function Matrix(options) {
         .enter().append('g')
         .attr('class', 'column-label')
         .attr('transform', function(d, i) {
-            return 'translate(' + x(i) + ',' + height + ')';
+            return `translate(${x(i)}, ${height})`;
         });
 
     columnLabels.append('line')
@@ -126,7 +127,7 @@ export default function Matrix(options) {
         .enter().append('g')
         .attr('class', 'row-label')
         .attr('transform', function(d, i) {
-            return 'translate(' + 0 + ',' + y(i) + ')';
+            return `translate(0, ${y(i)})`;
         });
 
     rowLabels.append('line')
@@ -175,7 +176,7 @@ export default function Matrix(options) {
     .attr('width', widthLegend/2-10)
     .attr('height', height)
     .style('fill', 'url(#gradient)')
-    .attr('transform', 'translate(0,' + margin.top + ')');
+    .attr('transform', `translate(0, ${margin.top})`);
 
     y = d3.scale.linear()
     .range([height, 0])
@@ -187,6 +188,6 @@ export default function Matrix(options) {
 
     key.append('g')
     .attr('class', 'y axis')
-    .attr('transform', 'translate(41,' + margin.top + ')')
+    .attr('transform', `translate(41, ${margin.top})`)
     .call(yAxis)
 }

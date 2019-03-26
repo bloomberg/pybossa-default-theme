@@ -74,6 +74,7 @@
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-cli": "^3.0.8",
     "webpack-merge": "~3.0.0",
-    "xregexp": "^3.1.1"
+    "xregexp": "^3.1.1",
+    "d3": "~3.5.17"
   }
 }
