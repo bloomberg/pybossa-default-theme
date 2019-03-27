@@ -1,13 +1,13 @@
 <script>
 /* eslint-disable vue/require-default-prop */
-import Vue from "vue";
-import components from "@dtwebservices/task-presenter-components";
-import { ClientTable } from "vue-tables-2";
+import Vue from 'vue';
+import components from '@dtwebservices/task-presenter-components';
+import { ClientTable } from 'vue-tables-2';
 
 Vue.use(ClientTable, {});
 
 export default {
-  name: "ComponentColumns",
+  name: 'ComponentColumns',
   components: { ...components },
   props: {
     form: {
@@ -20,31 +20,31 @@ export default {
     }
   },
   methods: {
-    renderFunctions: function() {
-      if (this.selectedComponent === "text-input") {
+    renderFunctions: function () {
+      if (this.selectedComponent === 'text-input') {
         return {
-          name: "TextInput",
+          name: 'TextInput',
           attrs: { id: this.form.id },
           props: {
-            row: this.form["row"],
-            "pyb-table-answer": this.form["pyb-table-answer"]
+            row: this.form['row'],
+            'pyb-table-answer': this.form['pyb-table-answer']
           }
         };
-      } else if (this.selectedComponent === "checkbox-input") {
+      } else if (this.selectedComponent === 'checkbox-input') {
         return {
           attrs: { id: this.form.id },
           props: {
-            row: this.form["row"],
-            "initial-value": "true",
-            "pyb-table-answer": this.form["pyb-table-answer"]
+            row: this.form['row'],
+            'initial-value': 'true',
+            'pyb-table-answer': this.form['pyb-table-answer']
           }
         };
       }
     }
   },
-  render(h) {
+  render (h) {
     return h(this.selectedComponent, {
-      name: "ComponentColumns",
+      name: 'ComponentColumns',
       ...this.renderFunctions()
     });
   }

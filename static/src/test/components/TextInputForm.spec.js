@@ -1,56 +1,59 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-import Vuex from 'vuex'
-import { mount, createLocalVue } from '@vue/test-utils'
-import { __createMocks as createStoreMocks } from '../../components/builder/store'
-import TextInput from '../../components/builder/components/TextInput/TextInputForm'
-import * as types from '../../components/builder/store/types'
+import Vuex from 'vuex';
+import { mount, createLocalVue } from '@vue/test-utils';
+import { __createMocks as createStoreMocks } from '../../components/builder/store';
+import TextInput from '../../components/builder/components/TextInput/TextInputForm';
+import * as types from '../../components/builder/store/types';
 
-jest.mock('../../components/builder/store')
+jest.mock('../../components/builder/store');
 
-const localVue = createLocalVue()
-localVue.use(Vuex)
+const localVue = createLocalVue();
+localVue.use(Vuex);
 
 describe('TextInput', () => {
-    let storeMocks
-    let wrapper
+  let storeMocks;
+  let wrapper;
 
-    beforeEach(() => {
-        const freshLocalVue = createLocalVue()
-        storeMocks = { ...createStoreMocks(),
-            dispatch: jest.fn()}
-        wrapper = mount(TextInput, {
-            freshLocalVue,
-            mocks: {
-                $route: {
-                    params: {
-                        componentName: 'TEXT_INPUT',
-                        header: 'Text Input'
-                    }
-                }
-            },
-            store: storeMocks.store
-        })
-    })
+  beforeEach(() => {
+    const freshLocalVue = createLocalVue();
+    storeMocks = { ...createStoreMocks(), dispatch: jest.fn() };
+    wrapper = mount(TextInput, {
+      freshLocalVue,
+      mocks: {
+        $route: {
+          params: {
+            componentName: 'TEXT_INPUT',
+            header: 'Text Input'
+          }
+        }
+      },
+      store: storeMocks.store
+    });
+  });
 
-    test('It should get form from store', () => {
-        expect(storeMocks.getters[types.GET_TEXT_INPUT_FORM]).toBeCalled()
-        expect(wrapper.vm.form['pyb-answer'].value).toBe('pybanswer')
-    })
+  test('It should get form from store', () => {
+    expect(storeMocks.getters[types.GET_TEXT_INPUT_FORM]).toBeCalled();
+    expect(wrapper.vm.form['pyb-answer'].value).toBe('pybanswer');
+  });
 
-    test('It should update form data.', () => {
-        const input = wrapper.find('input[type="text"]')
-        input.element.value = 'anschanged'
-        input.trigger('input')
-        expect(wrapper.vm.form['pyb-answer'].value).toBe('anschanged')
-        expect(storeMocks.getters[types.GET_TEXT_INPUT_FORM]).toHaveBeenCalledTimes(2)
-    })
+  test('It should update form data.', () => {
+    const input = wrapper.find('input[type="text"]');
+    input.element.value = 'anschanged';
+    input.trigger('input');
+    expect(wrapper.vm.form['pyb-answer'].value).toBe('anschanged');
+    expect(storeMocks.getters[types.GET_TEXT_INPUT_FORM]).toHaveBeenCalledTimes(
+      2
+    );
+  });
 
-    test('Label should be hide until it is clicked.', () => {
-        expect(wrapper.vm.form.labelAdded).toBe(false)
-        const checkbox = wrapper.find('input[type="checkbox"]')
-        checkbox.trigger('click')
-        expect(wrapper.vm.form.labelAdded).toBe(true)
-        expect(storeMocks.getters[types.GET_TEXT_INPUT_FORM]).toHaveBeenCalledTimes(3)
-    })
-})
+  test('Label should be hide until it is clicked.', () => {
+    expect(wrapper.vm.form.labelAdded).toBe(false);
+    const checkbox = wrapper.find('input[type="checkbox"]');
+    checkbox.trigger('click');
+    expect(wrapper.vm.form.labelAdded).toBe(true);
+    expect(storeMocks.getters[types.GET_TEXT_INPUT_FORM]).toHaveBeenCalledTimes(
+      3
+    );
+  });
+});

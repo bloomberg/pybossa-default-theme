@@ -1,18 +1,18 @@
-import Mustache from "mustache";
-import textInputTemplate from "./components/TextInput/textInputTemplate.html";
-import checkboxInputTemplate from "./components/CheckboxInput/checkboxInputTemplate.html";
-import checkboxGroupTemplate from "./components/CheckboxInput/checkboxGroupTemplate.html";
-import tableTemplate from "./components/Table/tableTemplate.html";
-import labelTemplate from "./components/templates/labelTemplate.html";
-import textInputColumnTemplate from "./components/Table/textInputColumnTemplate.html";
-import checkboxInputColumnTemplate from "./components/Table/checkboxInputColumnTemplate.html";
-import timerTemplate from "./components/helpers/timerTemplate.html";
-import taskPresenterTemplate from "./components/helpers/taskPresenterTemplate.html";
-import cancelButtonTemplate from "./components/helpers/cancelButtonTemplate.html";
-import buttonRowTemplate from "./components/helpers/buttonRowTemplate.html";
-import submitButtonTemplate from "./components/helpers/submitButtonTemplate.html";
-import submitLastButtonTemplate from "./components/helpers/submitLastButtonTemplate.html";
-import slotTemplate from "./components/Table/slotTemplate.html";
+import Mustache from 'mustache';
+import textInputTemplate from './components/TextInput/textInputTemplate.html';
+import checkboxInputTemplate from './components/CheckboxInput/checkboxInputTemplate.html';
+import checkboxGroupTemplate from './components/CheckboxInput/checkboxGroupTemplate.html';
+import tableTemplate from './components/Table/tableTemplate.html';
+import labelTemplate from './components/templates/labelTemplate.html';
+import textInputColumnTemplate from './components/Table/textInputColumnTemplate.html';
+import checkboxInputColumnTemplate from './components/Table/checkboxInputColumnTemplate.html';
+import timerTemplate from './components/helpers/timerTemplate.html';
+import taskPresenterTemplate from './components/helpers/taskPresenterTemplate.html';
+import cancelButtonTemplate from './components/helpers/cancelButtonTemplate.html';
+import buttonRowTemplate from './components/helpers/buttonRowTemplate.html';
+import submitButtonTemplate from './components/helpers/submitButtonTemplate.html';
+import submitLastButtonTemplate from './components/helpers/submitLastButtonTemplate.html';
+import slotTemplate from './components/Table/slotTemplate.html';
 
 const templates = {
   TEXT_INPUT: textInputTemplate,
@@ -30,13 +30,13 @@ const templates = {
 export default {
   uniqueID: () => {
     return (
-      "_" +
+      '_' +
       Math.random()
         .toString(36)
         .substr(2, 9)
     );
   },
-  getOptions: function(columns) {
+  getOptions: function (columns) {
     const options = {
       headings: {}
     };
@@ -46,15 +46,15 @@ export default {
     });
     return options;
   },
-  getTableData: function(form) {
+  getTableData: function (form) {
     const columnsObjects = form.columns.map(col => {
       return { id: col.id, name: col.name };
     });
-    const cleanData = form.data.list.map(function(obj) {
+    const cleanData = form.data.list.map(function (obj) {
       const item = { ...obj };
 
       delete item.staticDataId;
-      delete item["hide-delete"];
+      delete item['hide-delete'];
       columnsObjects.forEach(e => {
         item[e.name] = item[e.id];
         delete item[e.id];
@@ -63,18 +63,18 @@ export default {
     });
     return cleanData;
   },
-  getSnippet: function(component, form) {
-    if (component === "TABLE") {
+  getSnippet: function (component, form) {
+    if (component === 'TABLE') {
       return this.getTableCode(form);
-    } else if (component === "CHECKBOX_INPUT") {
+    } else if (component === 'CHECKBOX_INPUT') {
       return this.getCheckboxInputCode(form, component);
-    } else if (component === "TEXT_INPUT") {
+    } else if (component === 'TEXT_INPUT') {
       return this.getTextInputCode(form, component);
     } else {
       return this.getHelperComponentCode(component);
     }
   },
-  addBindSymbolIfNeedIt(obj, output) {
+  addBindSymbolIfNeedIt (obj, output) {
     Object.keys(obj).forEach(e => {
       if (obj[e].isVariable) {
         output = output.replace(`${e}=`, `:${e}=`);
@@ -84,7 +84,7 @@ export default {
     return output;
   },
 
-  getValuesForTemplate(obj) {
+  getValuesForTemplate (obj) {
     const values = {};
     Object.keys(obj).forEach(e => {
       values[e] = obj[e].value;
@@ -92,7 +92,7 @@ export default {
 
     return values;
   },
-  getTableCode: function(form) {
+  getTableCode: function (form) {
     const columns = form.columns.map(col => col.name);
     const data = this.getTableData(form);
     const formForTemplate = {
@@ -100,19 +100,19 @@ export default {
       data: !form.data.isVariable
         ? JSON.stringify(data)
         : form.data.value
-        ? form.data.value
-        : "",
+          ? form.data.value
+          : '',
       columns: JSON.stringify(columns),
-      options: JSON.stringify(this.getOptions(form.columns), null, "\t")
+      options: JSON.stringify(this.getOptions(form.columns), null, '\t')
     };
 
     const slotColumns = form.columns.filter(
-      col => col.component !== "plain-text"
+      col => col.component !== 'plain-text'
     );
     const slots = [];
     let isInputTable = false;
-    slotColumns.forEach(function(col) {
-      if (col.component === "checkbox-input") {
+    slotColumns.forEach(function (col) {
+      if (col.component === 'checkbox-input') {
         const columnComponent = Mustache.render(
           checkboxInputColumnTemplate,
           col
@@ -124,7 +124,7 @@ export default {
           })
         );
         isInputTable = true;
-      } else if (col.component === "text-input") {
+      } else if (col.component === 'text-input') {
         const columnComponent = Mustache.render(textInputColumnTemplate, col);
         slots.push(
           Mustache.render(slotTemplate, {
@@ -136,7 +136,7 @@ export default {
       }
     });
     const tableTemplate = !isInputTable
-      ? templates.TABLE.replace("name='{{name}}'\n  ", "")
+      ? templates.TABLE.replace("name='{{name}}'\n  ", '')
       : templates.TABLE;
     const output = Mustache.render(tableTemplate, {
       ...formForTemplate,
@@ -146,11 +146,11 @@ export default {
     return output;
   },
 
-  getHelperComponentCode: function(component) {
+  getHelperComponentCode: function (component) {
     return Mustache.render(templates[component], {});
   },
 
-  getCheckboxInputCode: function(form, component) {
+  getCheckboxInputCode: function (form, component) {
     const checkboxList = [];
 
     form.checkboxList.forEach(checkbox => {
@@ -180,15 +180,15 @@ export default {
     return output;
   },
 
-  getTextInputCode: function(form, component) {
+  getTextInputCode: function (form, component) {
     const formForTemplate = this.getValuesForTemplate(form);
 
     let output = Mustache.render(templates[component], formForTemplate);
     if (form.labelAdded) {
       const label = {
-        for: formForTemplate["id"],
+        for: formForTemplate['id'],
         component: output,
-        label: formForTemplate["label"]
+        label: formForTemplate['label']
       };
       output = Mustache.render(labelTemplate, label);
     }

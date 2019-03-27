@@ -1,60 +1,60 @@
 /* eslint-disable no-undef */
 // webpack.config.js
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { VueLoaderPlugin } = require("vue-loader");
-const path = require("path");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { VueLoaderPlugin } = require('vue-loader');
+const path = require('path');
 
-function resolve(dir) {
-  return path.join(__dirname, "", dir);
+function resolve (dir) {
+  return path.join(__dirname, '', dir);
 }
 
 module.exports = {
   // entry point of our application
-  mode: "production",
+  mode: 'production',
   entry: {
-    editor: "./editor.js",
-    component_helper: "./component_helper.js",
-    task_browse: "./task_browse.js"
+    editor: './editor.js',
+    component_helper: './component_helper.js',
+    task_browse: './task_browse.js'
   },
   // where to place the compiled bundle
   output: {
-    path: resolve("../js/gen"),
-    publicPath: "/static/js/gen",
-    filename: "[name].min.[hash].js"
+    path: resolve('../js/gen'),
+    publicPath: '/static/js/gen',
+    filename: '[name].min.[hash].js'
   },
 
   resolve: {
-    extensions: [".js", ".vue", ".json"],
+    extensions: ['.js', '.vue', '.json'],
     alias: {
-      vue$: "vue/dist/vue.esm.js"
+      vue$: 'vue/dist/vue.esm.js'
     }
   },
   module: {
     rules: [
       {
         test: /\.html/,
-        loader: "html-loader"
+        loader: 'html-loader'
       },
       {
         test: /\.vue$/,
-        loader: "vue-loader"
+        loader: 'vue-loader'
       },
       {
         test: /\.js$/,
-        loader: "babel-loader",
+        loader: 'babel-loader',
         include: [
-          resolve("src"),
-          resolve("node_modules/webpack-dev-server/client")
+          resolve('src'),
+          resolve('node_modules/webpack-dev-server/client')
         ]
       },
       {
         test: /\.css$/,
-        loader: "style-loader!css-loader"
+        loader: 'style-loader!css-loader'
       },
       {
         test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
         loader:
-          "file-loader?outputPath=../img/search/&publicPath=../img/search/"
+          'file-loader?outputPath=../img/search/&publicPath=../img/search/'
       }
     ]
   },
@@ -64,36 +64,36 @@ module.exports = {
     setImmediate: false,
     // prevent webpack from injecting mocks to Node native modules
     // that does not make sense for the client
-    dgram: "empty",
-    fs: "empty",
-    net: "empty",
-    tls: "empty",
-    child_process: "empty"
+    dgram: 'empty',
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
+    child_process: 'empty'
   },
   plugins: [
     new HtmlWebpackPlugin({
       inject: false,
       hash: false,
-      filename: "../../../templates/projects/new_blogpost.html",
-      template: "../../templates/projects/new_blogpost.webpack.ejs"
+      filename: '../../../templates/projects/new_blogpost.html',
+      template: '../../templates/projects/new_blogpost.webpack.ejs'
     }),
     new HtmlWebpackPlugin({
       inject: false,
       hash: false,
-      filename: "../../../templates/admin/new_announcement.html",
-      template: "../../templates/admin/new_announcement.webpack.ejs"
+      filename: '../../../templates/admin/new_announcement.html',
+      template: '../../templates/admin/new_announcement.webpack.ejs'
     }),
     new HtmlWebpackPlugin({
       inject: false,
       hash: false,
-      filename: "../../../templates/projects/tasks_browse.html",
-      template: "../../templates/projects/tasks_browse.webpack.ejs"
+      filename: '../../../templates/projects/tasks_browse.html',
+      template: '../../templates/projects/tasks_browse.webpack.ejs'
     }),
     new HtmlWebpackPlugin({
       inject: false,
       hash: false,
-      filename: "../../../templates/projects/component_helper.html",
-      template: "../../templates/projects/component_helper.webpack.ejs"
+      filename: '../../../templates/projects/component_helper.html',
+      template: '../../templates/projects/component_helper.webpack.ejs'
     }),
     new VueLoaderPlugin()
   ]

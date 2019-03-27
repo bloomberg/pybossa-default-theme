@@ -1,9 +1,9 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import textInput from "./modules/textInput";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import textInput from './modules/textInput';
 
 Vue.use(Vuex);
-export function __createMocks(
+export function __createMocks (
   custom = { getters: {}, mutations: {}, actions: {}, state: {} }
 ) {
   const mockGetters = Object.assign({}, textInput.getters, custom.getters);

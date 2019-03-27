@@ -5,7 +5,10 @@
         <router-view name="header" />
       </div>
       <div class="panel-body">
-        <transition name="slide" mode="out-in">
+        <transition
+          name="slide"
+          mode="out-in"
+        >
           <router-view />
         </transition>
       </div>
@@ -49,11 +52,11 @@
 </style>
 
 <script>
-import { routes } from "./builder/router";
-import store from "./builder/store";
-import Vue from "vue";
-import VueClipboard from "vue-clipboard2";
-import VueRouter from "vue-router";
+import { routes } from './builder/router';
+import store from './builder/store';
+import Vue from 'vue';
+import VueClipboard from 'vue-clipboard2';
+import VueRouter from 'vue-router';
 Vue.use(VueClipboard);
 Vue.config.productionTip = false;
 
@@ -61,16 +64,16 @@ Vue.use(VueRouter);
 
 const router = new VueRouter({
   routes,
-  mode: "abstract"
+  mode: 'abstract'
 });
 
 export default {
-  name: "Builder",
+  name: 'Builder',
   router,
   store,
-  data() {
+  data () {
     return {};
   }
 };
-router.push("/");
+router.push('/');
 </script>

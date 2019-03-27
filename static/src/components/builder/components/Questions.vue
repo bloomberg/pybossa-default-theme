@@ -13,12 +13,15 @@
     </div>
     <div class="col-md-8">
       <div class="row">
-        <h3 class="text-color">Guide</h3>
+        <h3 class="text-color">
+          Guide
+        </h3>
         <a
           href="https://bbgithub.dev.bloomberg.com/GIGwork/pybossa-vue/wiki/Pybossa-Presenter-Components#include-the-files"
           target="_blank"
-          >Components Documentation</a
         >
+          Components Documentation
+        </a>
         <p>
           In order to use this tool task presenter code must have the following
           template.
@@ -26,19 +29,29 @@
       </div>
       <div class="row">
         <button
-          v-clipboard:copy="snippet"
           v-if="!error && !loading"
           id="copy"
+          v-clipboard:copy="snippet"
           class="btn btn-link fa fa-clipboard pull-right"
           style="text-decoration: none"
         >
-          <span class="copy-font"> Copy Code</span>
+          <span class="copy-font">
+            Copy Code
+          </span>
         </button>
       </div>
       <div class="row">
-        <prism v-if="!loading" language="html">{{ snippet }}</prism>
+        <prism
+          v-if="!loading"
+          language="html"
+        >
+          {{ snippet }}
+        </prism>
       </div>
-      <div v-if="loading" class="row">
+      <div
+        v-if="loading"
+        class="row"
+      >
         <div class="loader" />
       </div>
     </div>
@@ -68,9 +81,9 @@
 }
 </style>
 <script>
-import Vue from "vue";
-import Prism from "vue-prism-component";
-Vue.component("custom-router-link", {
+import Vue from 'vue';
+import Prism from 'vue-prism-component';
+Vue.component('custom-router-link', {
   props: {
     component: {
       type: Object,
@@ -89,91 +102,91 @@ Vue.component("custom-router-link", {
       </router-link>`
 });
 export default {
-  name: "Questions",
+  name: 'Questions',
   components: { Prism },
-  data() {
+  data () {
     return {
       loading: false,
       error: false,
-      snippet: "",
+      snippet: '',
       checkboxInput: {
-        name: "CHECKBOX_INPUT_FORM",
+        name: 'CHECKBOX_INPUT_FORM',
         params: {
-          componentName: "CHECKBOX_INPUT",
-          header: "Checkbox Input"
+          componentName: 'CHECKBOX_INPUT',
+          header: 'Checkbox Input'
         }
       },
       textInput: {
-        name: "TEXT_INPUT_FORM",
+        name: 'TEXT_INPUT_FORM',
         params: {
-          componentName: "TEXT_INPUT",
-          header: "Text Input"
+          componentName: 'TEXT_INPUT',
+          header: 'Text Input'
         }
       },
       table: {
-        name: "TABLE_FORM",
+        name: 'TABLE_FORM',
         params: {
-          componentName: "TABLE",
-          header: "Table"
+          componentName: 'TABLE',
+          header: 'Table'
         }
       },
       timer: {
-        name: "TIMER_PREVIEW",
+        name: 'TIMER_PREVIEW',
         params: {
-          componentName: "TIMER",
-          header: "Timer"
+          componentName: 'TIMER',
+          header: 'Timer'
         }
       },
       taskPresenter: {
-        name: "TASK_PRESENTER_PREVIEW",
+        name: 'TASK_PRESENTER_PREVIEW',
         params: {
-          componentName: "TASK_PRESENTER",
-          header: "Task Presenter"
+          componentName: 'TASK_PRESENTER',
+          header: 'Task Presenter'
         }
       },
       submitButton: {
-        name: "SUBMIT_BUTTON_PREVIEW",
+        name: 'SUBMIT_BUTTON_PREVIEW',
         params: {
-          componentName: "SUBMIT_BUTTON",
-          header: "Submit Button"
+          componentName: 'SUBMIT_BUTTON',
+          header: 'Submit Button'
         }
       },
       buttonRow: {
-        name: "BUTTON_ROW_PREVIEW",
+        name: 'BUTTON_ROW_PREVIEW',
         params: {
-          componentName: "BUTTON_ROW",
-          header: "All buttons"
+          componentName: 'BUTTON_ROW',
+          header: 'All buttons'
         }
       },
       submitLastButton: {
-        name: "SUBMIT_LAST_BUTTON_PREVIEW",
+        name: 'SUBMIT_LAST_BUTTON_PREVIEW',
         params: {
-          componentName: "SUBMIT_LAST_BUTTON",
-          header: "Submit and Leave Button"
+          componentName: 'SUBMIT_LAST_BUTTON',
+          header: 'Submit and Leave Button'
         }
       },
       cancelButton: {
-        name: "CANCEL_BUTTON_PREVIEW",
+        name: 'CANCEL_BUTTON_PREVIEW',
         params: {
-          componentName: "CANCEL_BUTTON",
-          header: "Cancel Button"
+          componentName: 'CANCEL_BUTTON',
+          header: 'Cancel Button'
         }
       }
     };
   },
-  mounted: function() {
+  mounted: function () {
     this.loading = true;
     this.getTaskPresenterTemplate();
   },
   methods: {
-    async getTaskPresenterTemplate() {
+    async getTaskPresenterTemplate () {
       try {
         const url = new URL(window.location.href);
-        url.searchParams.set("template", "helper-components");
+        url.searchParams.set('template', 'helper-components');
         const response = await fetch(url, {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "content-type": "application/json"
+            'content-type': 'application/json'
           }
         });
         if (response.ok) {
@@ -185,11 +198,12 @@ export default {
           console.warn(response);
           this.loading = false;
           this.error = true;
-          this.snippet = "Currently unable to show a start template.";
+          this.snippet = 'Currently unable to show a start template.';
         }
       } catch (error) {
         console.warn(error);
-        pybossaNotify("An error occurred.", true, "error");
+        // eslint-disable-next-line no-undef
+        pybossaNotify('An error occurred.', true, 'error');
       }
     }
   }

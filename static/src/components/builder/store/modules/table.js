@@ -1,14 +1,14 @@
-import * as types from "../types";
-import utils from "../../utils";
+import * as types from '../types';
+import utils from '../../utils';
 
 const prop = (value, isVariable) => {
   return { value, isVariable };
 };
 export const getColumnObject = id => {
   return {
-    name: "",
-    header: "",
-    component: "plain-text",
+    name: '',
+    header: '',
+    component: 'plain-text',
     id: `Columns ${id}`
   };
 };
@@ -16,9 +16,9 @@ export const getColumnObject = id => {
 export const initialState = () => {
   return {
     id: prop(utils.uniqueID(), false),
-    label: prop("", false),
-    name: prop("", false),
-    data: { ...prop("", true), list: [] },
+    label: prop('', false),
+    name: prop('', false),
+    data: { ...prop('', true), list: [] },
     columns: [getColumnObject(1)],
     options: prop(
       {
@@ -42,25 +42,25 @@ export const getters = {
   },
 
   [types.GET_TABLE_FORM_VALID]: state => {
-    /* Determine if Table Form is valid*/
+    /* Determine if Table Form is valid */
     const table = state.table.form;
     const anyColumnNameEmpty =
-      table.columns.filter(c => c.name === "").length > 0;
+      table.columns.filter(c => c.name === '').length > 0;
     const anyDirtyEmptyColumn =
-      table.columns.filter(c => c.name === "" && c.dirty).length > 0;
+      table.columns.filter(c => c.name === '' && c.dirty).length > 0;
     const isAnswerFieldDirty =
-      (table.name.value === "" && table.isVariable) ||
-      (table.name.value === "" && table.name.dirty);
+      (table.name.value === '' && table.isVariable) ||
+      (table.name.value === '' && table.name.dirty);
     const anyDirtyColumn = table.columns.filter(c => c.dirty).length > 0;
     const isFormUntouched = !table.name.dirty && !anyDirtyColumn;
     const anyColumnComponent =
-      table.columns.filter(col => col.component !== "plain-text").length > 0;
+      table.columns.filter(col => col.component !== 'plain-text').length > 0;
     const repeatedColName =
       table.columns.length !==
       [...new Set(table.columns.map(c => c.name))].length;
     const isDataNameEmptyAndRequired =
-      table.data.isVariable && table.data.value === "";
-    const isAnswerFieldRequired = anyColumnComponent && table.name.value === "";
+      table.data.isVariable && table.data.value === '';
+    const isAnswerFieldRequired = anyColumnComponent && table.name.value === '';
 
     if (
       isFormUntouched ||

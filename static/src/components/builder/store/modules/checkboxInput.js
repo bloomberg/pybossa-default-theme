@@ -1,5 +1,5 @@
-import * as types from "../types";
-import utils from "../../utils";
+import * as types from '../types';
+import utils from '../../utils';
 
 const prop = (value, isVariable) => {
   return { value, isVariable };
@@ -7,7 +7,7 @@ const prop = (value, isVariable) => {
 
 const initialState = () => {
   return {
-    label: prop("", false),
+    label: prop('', false),
     labelAdded: false,
     checkboxList: [getCheckboxObject()]
   };
@@ -16,10 +16,10 @@ const initialState = () => {
 export const getCheckboxObject = () => {
   return {
     id: prop(utils.uniqueID(), false),
-    "pyb-answer": prop("", false),
-    label: prop("", false),
+    'pyb-answer': prop('', false),
+    label: prop('', false),
     labelAdded: false,
-    "initial-value": { ...prop(false, true) },
+    'initial-value': { ...prop(false, true) },
     isValidForm: true
   };
 };

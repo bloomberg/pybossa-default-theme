@@ -1,19 +1,23 @@
 /* eslint-disable no-undef */
-import utils from '../components/builder/utils'
-import { state } from '../components/builder/store/modules/textInput'
-const { textInput } = state
+import utils from '../components/builder/utils';
+import { state } from '../components/builder/store/modules/textInput';
+const { textInput } = state;
 test('getCommonComponentsCode for TEXT_INPUT', () => {
-    textInput.form['pyb-answer'].value = 'answername'
-    textInput.form['label'].value = 'labelName'
-    const componentCode = utils.getTextInputCode(textInput.form, 'TEXT_INPUT')
+  textInput.form['pyb-answer'].value = 'answername';
+  textInput.form['label'].value = 'labelName';
+  const componentCode = utils.getTextInputCode(textInput.form, 'TEXT_INPUT');
 
-    expect(componentCode.includes('<text-input')).toBeTruthy()
-    expect(componentCode.includes('</text-input>')).toBeTruthy()
-    expect(componentCode.includes('pyb-answer="' +
-        textInput.form['pyb-answer'].value + '"')).toBeTruthy()
-    expect(componentCode.includes('id="' +
-        textInput.form.id.value + '"')).toBeTruthy()
-})
+  expect(componentCode.includes('<text-input')).toBeTruthy();
+  expect(componentCode.includes('</text-input>')).toBeTruthy();
+  expect(
+    componentCode.includes(
+      'pyb-answer="' + textInput.form['pyb-answer'].value + '"'
+    )
+  ).toBeTruthy();
+  expect(
+    componentCode.includes('id="' + textInput.form.id.value + '"')
+  ).toBeTruthy();
+});
 
 // test('getCommonComponentsCode for CHECKBOX_INPUT', () => {
 //     checkboxInput.form['pyb-answer'].value = 'answername'
@@ -32,7 +36,6 @@ test('getCommonComponentsCode for TEXT_INPUT', () => {
 //     expect(componentCode.includes(':initial-value="' +
 //         checkboxInput.form['initial-value'].value + '"')).toBeFalsy()
 // })
-
 
 // test('getCommonComponentsCode for CHECKBOX_INPUT with variable in initial-value', () => {
 //     checkboxInput.form['pyb-answer'].value = 'answername'

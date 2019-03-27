@@ -9,13 +9,24 @@
     >
       <a>Settings</a>
     </router-link>
-    <router-link :to="toView" tag="li" active-class="active">
+    <router-link
+      :to="toView"
+      tag="li"
+      active-class="active"
+    >
       <a>Preview</a>
     </router-link>
-    <router-link :to="toCode" tag="li" active-class="active">
+    <router-link
+      :to="toCode"
+      tag="li"
+      active-class="active"
+    >
       <a>Code</a>
     </router-link>
-    <li v-if="$route.path.includes('form')" class="pull-right">
+    <li
+      v-if="$route.path.includes('form')"
+      class="pull-right"
+    >
       <div>
         <button
           id="clear"
@@ -23,18 +34,25 @@
           style="text-decoration: none"
           @click="clearForm"
         >
-          <span class="copy-font"> Clear Settings</span>
+          <span class="copy-font">
+            Clear Settings
+          </span>
         </button>
       </div>
     </li>
-    <li v-if="$route.path.includes('code')" class="pull-right">
+    <li
+      v-if="$route.path.includes('code')"
+      class="pull-right"
+    >
       <button
-        v-clipboard:copy="snippet"
         id="copy"
+        v-clipboard:copy="snippet"
         class="btn btn-link fa fa-clipboard"
         style="text-decoration: none"
       >
-        <span class="copy-font"> Copy Code</span>
+        <span class="copy-font">
+          Copy Code
+        </span>
       </button>
     </li>
   </ul>
@@ -78,10 +96,10 @@ button#copy:hover {
 </style>
 
 <script>
-import * as types from "../store/types";
-import utils from "../utils";
+import * as types from '../store/types';
+import utils from '../utils';
 export default {
-  name: "TabSubHeader",
+  name: 'TabSubHeader',
   props: {
     toForm: {
       required: true,
@@ -101,7 +119,7 @@ export default {
   },
   computed: {
     form: {
-      get() {
+      get () {
         let form = {};
         const getFormType =
           types[`GET_${this.$route.params.componentName}_FORM`];
@@ -112,13 +130,13 @@ export default {
       }
     },
     snippet: {
-      get() {
+      get () {
         return utils.getSnippet(this.$route.params.componentName, this.form);
       }
     }
   },
   methods: {
-    clearForm: function() {
+    clearForm: function () {
       this.$store.dispatch(
         types[`CLEAR_${this.$route.params.componentName}_FORM`]
       );

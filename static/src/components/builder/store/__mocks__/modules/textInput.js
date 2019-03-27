@@ -1,12 +1,12 @@
 /* eslint-disable no-undef */
-import * as types from "../../types";
+import * as types from '../../types';
 
 export const state = {
   textInput: {
     form: {
-      id: { value: "1", isVariable: false },
-      "pyb-answer": { value: "pybanswer", isVariable: false },
-      label: { value: "label", isVariable: false },
+      id: { value: '1', isVariable: false },
+      'pyb-answer': { value: 'pybanswer', isVariable: false },
+      label: { value: 'label', isVariable: false },
       labelAdded: false
     }
   }
@@ -14,9 +14,9 @@ export const state = {
 
 export const getters = {
   [types.GET_TEXT_INPUT_FORM]: jest.fn().mockReturnValue({
-    id: { value: "1", isVariable: false },
-    "pyb-answer": { value: "pybanswer", isVariable: false },
-    label: { value: "label", isVariable: false },
+    id: { value: '1', isVariable: false },
+    'pyb-answer': { value: 'pybanswer', isVariable: false },
+    label: { value: 'label', isVariable: false },
     labelAdded: false
   })
 };

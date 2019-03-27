@@ -2,7 +2,11 @@
   <div class="row">
     <div class="col-md-12">
       <div class="panel panel-default">
-        <tab-sub-header :to-form="toForm" :to-view="toView" :to-code="toCode" />
+        <tab-sub-header
+          :to-form="toForm"
+          :to-view="toView"
+          :to-code="toCode"
+        />
         <div class="col-md-12">
           <router-view />
         </div>
@@ -12,19 +16,19 @@
 </template>
 
 <script>
-import TabSubHeader from "./TabSubHeader.vue";
+import TabSubHeader from './TabSubHeader.vue';
 
 export default {
   components: { TabSubHeader },
-  data() {
+  data () {
     return {
-      toForm: this.getRouteInfo("_FORM"),
-      toView: this.getRouteInfo("_PREVIEW"),
-      toCode: this.getRouteInfo("_CODE")
+      toForm: this.getRouteInfo('_FORM'),
+      toView: this.getRouteInfo('_PREVIEW'),
+      toCode: this.getRouteInfo('_CODE')
     };
   },
   methods: {
-    getRouteInfo(tab) {
+    getRouteInfo (tab) {
       return {
         name: this.$route.params.componentName + tab,
         params: {
