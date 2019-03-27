@@ -1,56 +1,58 @@
 <template>
-  <div
-    class="row">
+  <div class="row">
     <table-element
       :data="data"
       :columns="columns"
       :name="form.name"
-      :options="form.options">
+      :options="form.options"
+    >
       <template
-        v-for="(c,i) in form.columns"
+        v-for="(c, i) in form.columns"
         slot-scope="props"
-        :slot = "c.name"
-        class="form-group col-md-12">
+        :slot="c.name"
+        class="form-group col-md-12"
+      >
         <ComponentColumns
           v-if="c.component !== 'plain-text'"
-          :key = "i"
-          :selected-component = "c.component"
-          :form = "{row:
-                      props.row,'pyb-table-answer': props.row,
-                    'initial-value': false}"/>
-        <div
-          v-else
-          :key = "i">{{ props.row[c.name] }}</div>
+          :key="i"
+          :selected-component="c.component"
+          :form="{
+            row: props.row,
+            'pyb-table-answer': props.row,
+            'initial-value': false
+          }"
+        />
+        <div v-else :key="i">{{ props.row[c.name] }}</div>
       </template>
     </table-element>
   </div>
 </template>
 
 <script>
-import components from '@dtwebservices/task-presenter-components'
-import ComponentColumns from './ComponentColumns.vue'
-import ComponentRender from '../ComponentRender.vue'
+import components from "@dtwebservices/task-presenter-components";
+import ComponentColumns from "./ComponentColumns.vue";
+import ComponentRender from "../ComponentRender.vue";
 export default {
-    name: 'TableCreator',
-    components: { ...components, ComponentColumns, ComponentRender },
-    props: {
-        form: {
-            type: Object,
-            default: null
-        }
-    },
-    data () {
-        return {
-            columnsDetails: {name: 'text-input', link: 'checkbox-input'}
-        }
-    },
-    computed: {
-        columns: function () {
-            return this.form.columns.map((col) => col.name)
-        },
-        data: function () {
-            return this.form.data.isVariable ? [{}] : this.form.data
-        }
+  name: "TableCreator",
+  components: { ...components, ComponentColumns, ComponentRender },
+  props: {
+    form: {
+      type: Object,
+      default: null
     }
-}
+  },
+  data() {
+    return {
+      columnsDetails: { name: "text-input", link: "checkbox-input" }
+    };
+  },
+  computed: {
+    columns: function() {
+      return this.form.columns.map(col => col.name);
+    },
+    data: function() {
+      return this.form.data.isVariable ? [{}] : this.form.data;
+    }
+  }
+};
 </script>
