@@ -43,6 +43,7 @@
     {% if current_user.admin or current_user.subadmin or current_user.id in project.owners_ids %}
     <a class="list-group-item {% if active_link=='tasks'%}active{% endif %}" href="{{url_for('project.tasks', short_name=project.short_name)}}">{{_('Tasks')}} {{daniel}}{% if task_subsection_1_text %}<a href="{{task_subsection_1}}">{{task_subsection_1_text}}</a>{% endif %}<i class="fa fa-chevron-right pull-right"></i></a>
     <a class="list-group-item {% if active_link=='stats'%}active{% endif %}" href="{{url_for('project.show_stats', short_name=project.short_name)}}">{{_('Statistics')}}<i class="fa fa-chevron-right pull-right"></i></a>
+    <a class="list-group-item {% if active_link=='performancestats'%}active{% endif %}" href="{{url_for('project.show_performance_stats', short_name=project.short_name)}}">{{_('Performance Stats')}}<i class="fa fa-chevron-right pull-right"></i></a>
     {% endif %}
     {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
     <a class="list-group-item {% if active_link=='settings'%}active{% endif %}" href="{{url_for('project.settings', short_name=project.short_name)}}">{{_('Settings')}}<i class="fa fa-chevron-right pull-right"></i></a>

@@ -12,13 +12,16 @@
                         <option value="" disabled selected>Select Field</option>
                         <option v-for="field in selectedFields" :key="field" :value="field">{{field}}</option>
                     </select>
-                    <button class="btn btn-primary btn-sm" @click="show(selectedField, user, projectId)">Show</button>
+                    <button class="btn btn-primary btn-sm"
+                            :disabled="waiting || !user || !selectedField"
+                            @click="show(selectedField, user, projectId)">Show</button>
                 </div>
             </div>
         </div>
-        <div class="row" v-if="visible && stats.length">
+        <div class="row" v-if="waiting || stats.length">
             <div class="col-xs-12">
-                <component
+                <gig-spinner v-if="waiting"></gig-spinner>
+                <component v-else
                     :is="displayComponent"
                     v-bind="fields[activeField].config"
                     :stats="stats">
@@ -30,6 +33,7 @@
 <script>
 import ConfusionMatrix from './confusion_matrix.vue'
 import AccuracyTable from './accuracy_table.vue'
+import GigSpinner from '../common/gig_spinner.vue'
 
 export default {
     props: {
@@ -48,8 +52,8 @@ export default {
             selectedField: '',
             activeField: '',
             stats: [],
-            visible: false,
-            displayComponent: null
+            displayComponent: null,
+            waiting: false
         };
     },
 
@@ -61,7 +65,7 @@ export default {
 
     methods: {
         async show (selectedField, user, projectId) {
-            this.toggleShow(false);
+            this.waiting = true;
             this.activeField = selectedField;
 
             const pullProject = (user === 'project');
@@ -71,26 +75,32 @@ export default {
             }
             url.searchParams.append('field', selectedField);
             url.searchParams.append('project_id', projectId);
-            const res = await fetch(url);
-            this.stats = await res.json();
-
-            this.toggleShow(true);
+            try {
+                const res = await fetch(url);
+                this.stats = await res.json();
+            }
+            catch {
+                this.stats = [];
+                pybossaNotify('An Error Occurred.', true, 'error');
+            }
+            finally {
+                this.waiting = false;
+            }
+            this.showStats();
         },
 
-        toggleShow (visible) {
-            this.visible = visible;
-            if (visible) {
-                this.displayComponent = {
-                    'categorical': 'ConfusionMatrix',
-                    'freetext': 'AccuracyTable'
-                }[this.fields[this.selectedField].type]
-            }
+        showStats () {
+            this.displayComponent = {
+                'categorical': 'ConfusionMatrix',
+                'freetext': 'AccuracyTable'
+            }[this.fields[this.selectedField].type]
         }
     },
 
     components: {
         ConfusionMatrix,
-        AccuracyTable
+        AccuracyTable,
+        GigSpinner
     }
 }
 </script>
