@@ -13,9 +13,9 @@
           >
             ** Component properties are not complete, please review form **
           </span>
-          <prism language="html">
-            {{ snippet }}
-          </prism>
+          <!-- This line is space sensives it can lose the code format  -->
+          <!-- eslint-disable-next-line vue/singleline-html-element-content-newline -->
+          <prism language="html">{{ snippet }}</prism>
         </div>
         <div
           v-if="$route.path.includes('preview')"

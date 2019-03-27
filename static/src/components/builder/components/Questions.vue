@@ -1,4 +1,6 @@
 <template>
+  <!-- eslint-disable vue/multiline-html-element-content-newline  -->
+
   <div class="row">
     <div class="col-md-4">
       <custom-router-link :component="taskPresenter" />
@@ -40,13 +42,13 @@
           </span>
         </button>
       </div>
-      <div class="row">
-        <prism
-          v-if="!loading"
-          language="html"
-        >
-          {{ snippet }}
-        </prism>
+      <div
+        v-if="!loading"
+        class="row"
+      >
+        <!-- This line is space sensives it can lose the code format  -->
+        <!-- eslint-disable-next-line vue/singleline-html-element-content-newline -->
+        <prism language="html">{{ snippet }}</prism>
       </div>
       <div
         v-if="loading"
@@ -81,6 +83,7 @@
 }
 </style>
 <script>
+
 import Vue from 'vue';
 import Prism from 'vue-prism-component';
 Vue.component('custom-router-link', {

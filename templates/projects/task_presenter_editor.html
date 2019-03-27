@@ -47,7 +47,7 @@
     </div>
 </div>
             <div class="row ">
-                <div  id="mirror" class="col-md-12"> 
+                <div  id="mirror" class="col-md-12">
                     <h2>Task Presenter</h2>
                     <form class="col-md-12" method="post"
                          action="{{ url_for('project.task_presenter_editor', short_name=project.short_name) }}">
@@ -70,12 +70,12 @@
                         </fieldset>
                     </form>
                 </div>
-                
+
                     <p id = "component-builder-hide">
                         <a class="pull-right text-right hide-text cursor-link" id = "hide-builder">Hide Graphical Component Builder</a>
                     </p>
-                    {% include "projects/componentBuilder.html" %}
-            
+                    {% include "projects/component_helper.html" %}
+
             </div>
             <div class="row">
                     <div class="col-md-12">
@@ -100,7 +100,7 @@
                         {% endif %}
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-md-12">
                         <h2>Latest Project Sync Info</h2>
@@ -263,14 +263,14 @@ var main = function() {
  var componentBuilderHideLink = document.getElementById("component-builder-hide");
  var componentBuilderDescription = document.getElementById("component-builder-description");
  var mainContainer =document.getElementById("main-container");
- var containerContent = document.getElementById("container-content"); 
- var vue = document.getElementById("editorpybossa");
+ var containerContent = document.getElementById("container-content");
+ var vue = document.getElementById("component-helper");
  var menu = document.getElementById("menu");
  var mirror = document.getElementById("mirror");
  componentBuilderHideLink.style.visibility = "hidden";
  vue.style.visibility = "hidden";
  vue.classList.toggle("col-md-0");
- 
+
  hideVueComponent.click(function() {
     mainContainer.classList =[];
     mainContainer.classList.toggle("container");
@@ -285,7 +285,7 @@ var main = function() {
         componentBuilderHideLink.style.visibility = "hidden";
         componentBuilderDescription.style.visibility = "visible";
     }
-    slide.toggle('slow');            
+    slide.toggle('slow');
   });
 
  showVueComponent.click(function() {
@@ -302,7 +302,7 @@ var main = function() {
     vue.style.visibility = "visible";
     componentBuilderDescription.style.visibility = "hidden";
     if (componentBuilderHideLink) componentBuilderHideLink.style.visibility = "visible" ;
-    slide.toggle('slow');            
+    slide.toggle('slow');
  });
 }
 $(document).ready(main);

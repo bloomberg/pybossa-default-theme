@@ -160,7 +160,7 @@ export default {
         formForTemplate
       ).trim();
       checkboxOutput = this.addBindSymbolIfNeedIt(checkbox, checkboxOutput);
-      checkboxList.push(checkboxOutput);
+      checkboxList.push(checkboxOutput.trim());
     });
 
     const idCheckboxGroup = this.uniqueID();
@@ -174,7 +174,7 @@ export default {
         component: output,
         label: form.label.value
       };
-      output = Mustache.render(labelTemplate, label).trim();
+      output = Mustache.render(labelTemplate, label);
     }
 
     return output;
