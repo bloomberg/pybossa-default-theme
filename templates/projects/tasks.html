@@ -53,7 +53,7 @@
     <div class="row">
         <!-- Project owner, any co-owner(subadmin or regular user), subadmins and admins can browse tasks -->
         {% if current_user.id in project.owners_ids or current_user.subadmin or current_user.admin %}
-        <div id="task_browse" class="col-md-6">
+        <div id="export_project" class="col-md-6">
             {{ render_project_card_option(project, upload_method, title=_('Export Project Report'), explanation=_('Export project report for this project'), link=url_for('project.export_project_report', short_name=project.short_name, type='project', format='csv'), link_action_text=_('CSV'), icon='cloud-download')}}
         </div>
         {% endif %}
