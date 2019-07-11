@@ -1,0 +1,81 @@
+<div id="task-app">
+  <task-presenter>
+  <div class="container-fluid">
+      <div class="row">
+        <blockquote>
+
+        <h4>Rating Topic Relevancy</h4>
+        <p>This template may be used to rate the relevancy of queries against a topic. The user is presented with a list of queries and can choose "relevant" or "irrelevant" with regard to the topic.</p>
+
+        <h5>Input</h5>
+        <p>Tasks can be imported by creating a CSV file containing 2 columns: topic, queries.</p>
+        <p>The field "topic" represents the subject for the particular task to rate the relevancy upon. The field "queries" is a comma-separated string of queries, from which the user may rate the relevancy against each topic.</p>
+
+        <h5>Output</h5>
+        <p>The output from the task will contain a response of "relevant" or "irrelevant" for each query, with regard to the topic.</p>
+</blockquote>
+
+        <p>Below you will find search results from a query. Please rate each search result as either relevant or irrelevant, according to the topic displayed.</p>
+      </div>
+      <div class="row">
+          <h2>Topic: "{{task.info.topic}}"</h2>
+          <hr/>
+
+          <table class="table table-condensed table-striped table-hover">
+              <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Relevancy</th>
+                <th scope="col">Query</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in task.info.queries">
+                <th scope="row">{{index + 1}}</th>
+                <td class="col-sm-3">
+                  <div :id="task.id"class="form-group">
+                    <label class="radio-inline">
+                      <radio-input :key="task.id + '-' + index" :name="'relevanceOption' + index" value="relevant" :pyb-answer="'result' + index"></radio-input> Relevant
+                    </label>
+                    <label class="radio-inline">
+                      <radio-input :key="task.id + '-' + index" :name="'relevanceOption' + index" value="irrelevant" :pyb-answer="'result' + index"></radio-input> Irrelevant
+                    </label>
+                  </div>
+                </td>
+                <td class="col-sm-9">{{item}}</td>
+                </tr>
+              </tbody>
+          </table>
+        <div class="form-group">
+          <label for="feedback">
+            Additional feedback for this query?
+          </label>
+          <text-input id="feedback" pyb-answer="feedback"></text-input>
+        </div>
+      </div>
+  </div>
+  </task-presenter>
+</div>
+
+<link href="https://s3.amazonaws.com/cf-s3uploads/pybv/0.1.2/app.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script type="text/javascript" src="//s3.amazonaws.com/cf-s3uploads/pybv/0.1.2/app.js"></script>
+<script type="text/javascript">
+(function() {
+  pybossa.beforePresent(function(vueDataBind) {
+    task = vueDataBind;
+    task.info.queries = task.info.queries.split(',');
+  });
+
+  pybossa.beforeSubmit(function(answer, task) {
+    Object.keys(answer).forEach(function(p) {
+      // If no answer is selected for this query, set the result to null.
+      answer[p] = answer[p] || null;
+    });
+
+    console.log(answer);
+
+    return answer;
+  });
+})();
+</script>
