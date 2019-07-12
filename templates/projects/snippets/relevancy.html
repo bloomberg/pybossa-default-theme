@@ -8,8 +8,8 @@
         <p>This template may be used to rate the relevancy of queries against a topic. The user is presented with a list of queries and can choose "relevant" or "irrelevant" with regard to the topic.</p>
 
         <h5>Input</h5>
-        <p>Tasks can be imported by creating a CSV file containing 2 columns: topic, queries.</p>
-        <p>The field "topic" represents the subject for the particular task to rate the relevancy upon. The field "queries" is a comma-separated string of queries, from which the user may rate the relevancy against each topic.</p>
+        <p>Tasks can be imported by creating a CSV <a href="https://bbgithub.dev.bloomberg.com/gist/kbecker42/c3f2c64297169023d6126fa306e8b507" target="_blank">file</a> containing one column for "topic" and a variable number of columns for queries.</p>
+        <p>The field "topic" represents the subject for the particular task to rate the relevancy upon. The query columns represent one column for each query, from which the user may rate the relevancy against each topic. Query columns should be named using the format of query1,query2,query3,etc.</p>
 
         <h5>Output</h5>
         <p>The output from the task will contain a response of "relevant" or "irrelevant" for each query, with regard to the topic.</p>
@@ -57,14 +57,24 @@
   </task-presenter>
 </div>
 
-<link href="https://s3.amazonaws.com/cf-s3uploads/pybv/0.1.2/app.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
 <script type="text/javascript" src="//s3.amazonaws.com/cf-s3uploads/pybv/0.1.2/app.js"></script>
 <script type="text/javascript">
 (function() {
   pybossa.beforePresent(function(vueDataBind) {
     task = vueDataBind;
-    task.info.queries = task.info.queries.split(',');
+
+    task.info.queries = [];
+    let index = 1;
+    let query = task.info['query' + index];
+
+    while (query) {
+      // Add query to task list.
+      task.info.queries.push(query);
+
+      // Get next query (if one exists).
+      index++;
+      query = task.info['query' + index];
+    }
   });
 
   pybossa.beforeSubmit(function(answer, task) {
