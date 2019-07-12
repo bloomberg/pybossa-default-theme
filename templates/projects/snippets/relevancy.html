@@ -18,7 +18,7 @@
         <p>Below you will find search results from a query. Please rate each search result as either relevant or irrelevant, according to the topic displayed.</p>
       </div>
       <div class="row">
-          <h2>Topic: "{{task.info.topic}}"</h2>
+          <h2>Topic: {% raw %}{{task.info.topic}}{% endraw %}</h2>
           <hr/>
 
           <table class="table table-condensed table-striped table-hover">
@@ -31,7 +31,7 @@
               </thead>
               <tbody>
                 <tr v-for="(item, index) in task.info.queries">
-                <th scope="row">{{index + 1}}</th>
+                <th scope="row">{% raw %}{{index + 1}}{% endraw %}</th>
                 <td class="col-sm-3">
                   <div :id="task.id"class="form-group">
                     <label class="radio-inline">
@@ -42,7 +42,7 @@
                     </label>
                   </div>
                 </td>
-                <td class="col-sm-9">{{item}}</td>
+                <td class="col-sm-9">{% raw %}{{item}}{% endraw %}</td>
                 </tr>
               </tbody>
           </table>
