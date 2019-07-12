@@ -66,7 +66,7 @@
     // Load query columns, any column name can be used.
     const queries = [];
     Object.keys(task.info).forEach(column => {
-      column !== 'topic' && queries.push(task.info[column]);
+      column.toLowerCase() !== 'topic' && queries.push(task.info[column]);
     });
 
     task.info.queries = queries;
