@@ -63,18 +63,13 @@
   pybossa.beforePresent(function(vueDataBind) {
     task = vueDataBind;
 
-    task.info.queries = [];
-    let index = 1;
-    let query = task.info['query' + index];
+    // Load query columns, any column name can be used.
+    const queries = [];
+    Object.keys(task.info).forEach(column => {
+      queries.push(task.info[column]);
+    });
 
-    while (query) {
-      // Add query to task list.
-      task.info.queries.push(query);
-
-      // Get next query (if one exists).
-      index++;
-      query = task.info['query' + index];
-    }
+    task.info.queries = queries;
   });
 
   pybossa.beforeSubmit(function(answer, task) {
