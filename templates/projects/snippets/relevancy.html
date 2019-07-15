@@ -41,7 +41,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(item, index) in task.info.queries">
+                <tr v-for="(item, index) in queries">
                 <th scope="row">{% raw %}{{index + 1}}{% endraw %}</th>
                 <td class="col-sm-3">
                   <div :id="task.id"class="form-group">
@@ -70,17 +70,17 @@
 
 <script type="text/javascript" src="//s3.amazonaws.com/cf-s3uploads/pybv/0.1.2/app.js"></script>
 <script type="text/javascript">
+// List of queries to be rated by relevance.
+const queries = [];
+
 (function() {
   pybossa.beforePresent(function(vueDataBind) {
     task = vueDataBind;
 
     // Load query columns, named with the starting text "query". Example: query1, query2, query3.
-    const queries = [];
     Object.keys(task.info).forEach(key => {
       key.toLowerCase().startsWith('query') && queries.push({ key, value: task.info[key] });
     });
-
-    task.info.queries = queries;
   });
 
   pybossa.beforeSubmit(function(answer, task) {
