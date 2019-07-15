@@ -74,10 +74,10 @@
   pybossa.beforePresent(function(vueDataBind) {
     task = vueDataBind;
 
-    // Load query columns, any column name can be used.
+    // Load query columns, named with the starting text "query". Example: query1, query2, query3.
     const queries = [];
-    Object.keys(task.info).forEach(column => {
-      column.toLowerCase().startsWith('query') && queries.push({ key: column, value: task.info[column] });
+    Object.keys(task.info).forEach(key => {
+      key.toLowerCase().startsWith('query') && queries.push({ key, value: task.info[key] });
     });
 
     task.info.queries = queries;
