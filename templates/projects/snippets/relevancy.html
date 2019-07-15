@@ -23,7 +23,7 @@
           </tbody>
         </table>
         <h4>Output</h4>
-        <p>The output from the task will contain a response of "relevant" or "irrelevant" for each query, with regard to the topic.</p>
+        <p>The <a href="https://bbgithub.dev.bloomberg.com/gist/kbecker42/52a792eabf3307db849cfb9d5bce7cce" target="_blank">output</a> from the task will contain a response of "relevant" or "irrelevant" for each query, with regard to the topic.</p>
 </blockquote>
 
         <p>Below you will find search results from a query. Please rate each search result as either relevant or irrelevant, according to the topic displayed.</p>
@@ -46,10 +46,10 @@
                 <td class="col-sm-3">
                   <div :id="task.id"class="form-group">
                     <label class="radio-inline">
-                      <radio-input :key="task.id + '-' + index" :name="'relevanceOption' + index" value="relevant" :pyb-answer="'result' + index"></radio-input> Relevant
+                      <radio-input :key="task.id + '-' + index" :name="'relevanceOption' + index" value="relevant" :pyb-answer="'query' + (index + 1)"></radio-input> Relevant
                     </label>
                     <label class="radio-inline">
-                      <radio-input :key="task.id + '-' + index" :name="'relevanceOption' + index" value="irrelevant" :pyb-answer="'result' + index"></radio-input> Irrelevant
+                      <radio-input :key="task.id + '-' + index" :name="'relevanceOption' + index" value="irrelevant" :pyb-answer="'query' + (index + 1)"></radio-input> Irrelevant
                     </label>
                   </div>
                 </td>
