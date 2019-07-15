@@ -46,14 +46,14 @@
                 <td class="col-sm-3">
                   <div :id="task.id"class="form-group">
                     <label class="radio-inline">
-                      <radio-input :key="task.id + '-' + index" :name="'relevanceOption' + index" value="relevant" :pyb-answer="'query' + (index + 1)"></radio-input> Relevant
+                      <radio-input :key="task.id + '-' + index" :name="'relevanceOption' + index" value="relevant" :pyb-answer="item.key"></radio-input> Relevant
                     </label>
                     <label class="radio-inline">
-                      <radio-input :key="task.id + '-' + index" :name="'relevanceOption' + index" value="irrelevant" :pyb-answer="'query' + (index + 1)"></radio-input> Irrelevant
+                      <radio-input :key="task.id + '-' + index" :name="'relevanceOption' + index" value="irrelevant" :pyb-answer="item.key"></radio-input> Irrelevant
                     </label>
                   </div>
                 </td>
-                <td class="col-sm-9">{% raw %}{{item}}{% endraw %}</td>
+                <td class="col-sm-9">{% raw %}{{item.value}}{% endraw %}</td>
                 </tr>
               </tbody>
           </table>
@@ -77,7 +77,7 @@
     // Load query columns, any column name can be used.
     const queries = [];
     Object.keys(task.info).forEach(column => {
-      column.toLowerCase().startsWith('query') && queries.push(task.info[column]);
+      column.toLowerCase().startsWith('query') && queries.push({ key: column, value: task.info[column] });
     });
 
     task.info.queries = queries;
@@ -89,6 +89,7 @@
       answer[p] = answer[p] || null;
     });
 
+    console.log(answer);
     return answer;
   });
 })();
