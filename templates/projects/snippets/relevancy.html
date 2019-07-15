@@ -78,6 +78,7 @@ const queries = [];
     task = vueDataBind;
 
     // Load query columns, named with the starting text "query". Example: query1, query2, query3.
+    queries.length = 0;
     Object.keys(task.info).forEach(key => {
       key.toLowerCase().startsWith('query') && queries.push({ key, value: task.info[key] });
     });
