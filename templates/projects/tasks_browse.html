@@ -220,9 +220,9 @@
             <tr class="task-row">
                 {% if 'task_id' in filter_data.display_columns %}
                 <td>
-                    {% if t.calibration %}
+                    {% if can_know_task_is_gold and t.calibration %}
                         <a class="label label-warning" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id) }}">#{{ t.id }}</a>
-                    {% elif task_pct >= 100 %}
+                    {% elif can_know_task_is_gold and task_pct >= 100 %}
                         <a class="label label-success" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id) }}">#{{ t.id }}</a>
                     {% else %}
                         <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id) }}">#{{ t.id }}</a>
@@ -593,7 +593,7 @@
 </div>
 </div>
 
-<script src="/static/js/gen/task_browse.min.d84f1b9a3b42a483ceb5.js"></script>
+<script src="/static/js/gen/task_browse.min.0122c1da442d3fec1c80.js"></script>
 <script type="text/javascript">
     var filter_data = {{ filter_data|tojson }};
     taskBrowse.setFilters(filter_data);
