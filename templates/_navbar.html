@@ -1,9 +1,11 @@
 <div class="navbar navbar-default navbar-fixed-top">
-    <div id="top-nav-bar" class="navbar-inner" style="min-height:100px;">
-        <div id="platform-identifier"></div>
+    <div class="navbar-inner" style="min-height:100px;">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="{{ url_for('home.home') }}"><img src="{{url_for('static',filename='img/' + logo)}}" alt="{{brand}}"></a>
+            <a class="navbar-brand" href="{{ url_for('home.home') }}">
+                <img src="{{url_for('static',filename='img/' + logo)}}" alt="{{brand}}">
+                <div id="platform-identifier"></div>
+            </a>
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
                 {{_('Menu')}}
             </button>
@@ -54,33 +56,24 @@
 <script>
 $(function() {
   let platform;
-  let color;
-  let padding = '3px';
 
   const url = document.URL.toLowerCase();
   if (url.includes('qa.gigwork.net')) {
     platform = 'Public QA';
-    color = 'lightgreen';
   }
   else if (url.includes('qa-gigwork.prod')) {
     platform = 'Private QA';
-    color = 'red';
   }
   else if (url.includes('gigwork.prod')) {
     platform = 'Private Production';
-    color = 'red';
-    padding = null;
   }
   else if (url.includes('gigwork.net')) {
-    // No swatch or label.
-    color = null;
+    // No label.
   }
   else {
     platform = 'Development QA';
-    color = 'lightgreen';
   }
 
-  $('#platform-identifier').text(platform).css('padding-top', padding);
-  $('#top-nav-bar').css('border-left', `5px solid ${color}`);
+  $('#platform-identifier').text(platform);
 });
 </script>
