@@ -4,7 +4,7 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="{{ url_for('home.home') }}">
                 <img src="{{url_for('static',filename='img/' + logo)}}" alt="{{brand}}">
-                <div id="platform-identifier"></div>
+                <div id="platform-identifier">{{ config.SERVER_TYPE }}</div>
             </a>
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
                 {{_('Menu')}}
@@ -53,27 +53,3 @@
 
 }
 </style>
-<script>
-$(function() {
-  let platform;
-
-  const url = document.URL.toLowerCase();
-  if (url.includes('qa.gigwork.net')) {
-    platform = 'Public QA';
-  }
-  else if (url.includes('qa-gigwork.prod')) {
-    platform = 'Private QA';
-  }
-  else if (url.includes('gigwork.prod')) {
-    platform = 'Private Production';
-  }
-  else if (url.includes('gigwork.net')) {
-    // No label.
-  }
-  else {
-    platform = 'Development QA';
-  }
-
-  $('#platform-identifier').text(platform);
-});
-</script>
