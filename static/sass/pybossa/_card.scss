@@ -108,7 +108,7 @@ $lines-to-show: 2;
 
         h3 {
             margin: 0;
-            font-size: 20px;
+            font-size: 24px;
         }
 
         .col-xs-8 {
@@ -123,7 +123,8 @@ $lines-to-show: 2;
     .thumbnail.card {
         .post-pic {
             h3, i {
-                padding-top: 26px;
+                padding-top: 0;
+                margin-top: 30px;
             }
         }
     }
@@ -132,11 +133,6 @@ $lines-to-show: 2;
 /* Large devices (1200px and up) */
 @media (min-width: 1200px) {
     .col-md-4 .post-pic {
-        h3 {
-            margin: 0;
-            font-size: 24px;
-        }
-
         .fa-4x {
             font-size: 50px;
         }

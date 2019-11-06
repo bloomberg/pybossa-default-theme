@@ -25,10 +25,10 @@
         {{ render_project_card_option(project, upload_method, title=_('Export Project Report'), explanation=_('Export project report'), link=url_for('project.export_project_report', short_name=project.short_name, type='project', format='csv'), link_action_text=_('CSV'), icon='cloud-download')}}
     </div>
     <div id="ext_configuration" class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('External Configurations'), explanation=_('Configuration for external services'), link=url_for('project.ext_config', short_name=project.short_name), link_action_text=_('Ext'), icon='cogs')}}
+        {{ render_project_card_option(project, upload_method, title=_('External Settings'), explanation=_('Configuration for external services'), link=url_for('project.ext_config', short_name=project.short_name), link_action_text=_('Ext'), icon='cogs')}}
     </div>
     <div id="annotation_config" class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Annotation Configuration'), explanation=_('Configure parameters related to annotation'), link=url_for('project.annotation_config', short_name=project.short_name), link_action_text=_('Annotation'), icon='cogs')}}
+        {{ render_project_card_option(project, upload_method, title=_('Annotation Settings'), explanation=_('Configure parameters related to annotation'), link=url_for('project.annotation_config', short_name=project.short_name), link_action_text=_('Annotation'), icon='cogs')}}
     </div>
     {% if private_instance %}
     <div id="assign_users_to_project" class="col-md-4">
