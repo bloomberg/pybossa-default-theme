@@ -79,34 +79,18 @@ $lines-to-show: 2;
     }
 }
 
-
 /* XS devices */
-.post-pic{
-    height: 195px;
-}
-
-/* Small devices (tablets, 768px and up) */
-@media (min-width: 768px) {
+.project-tiles {
     .col-md-4 {
-        .post-pic {
-            height: 253px;
-        }
-    }
+        float: left;
+        width: 50%;
 
-    .card-fix-p {
-        margin-bottom: 32px;
-    }
-}
-
-
-/* Medium devices (992px and up) */
-@media (min-width: 992px) {
-    .col-md-4 {
         .post-pic {
             height: 130px;
 
-            h3 {
-                margin: 0;
+            h3, i {
+                padding-top: 0;
+                margin-top: 30px;
                 font-size: 24px;
             }
 
@@ -119,13 +103,39 @@ $lines-to-show: 2;
             }
         }
     }
+}
 
-    .thumbnail {
-        &.card {
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .project-tiles {
+        .col-md-4 {
             .post-pic {
-                h3, i {
-                    padding-top: 0;
-                    margin-top: 30px;
+                .fa-4x {
+                    font-size: 50px;
+                }
+            }
+        }
+    }
+
+    .card-fix-p {
+        margin-bottom: 32px;
+    }
+}
+
+
+/* Medium devices (992px and up) */
+@media (min-width: 992px) {
+    .project-tiles {
+        .col-md-4 {
+            width: 33.333333%;
+        }
+    }
+
+    .project-tiles {
+        .col-md-4 {
+            .post-pic {
+                .fa-4x {
+                    font-size: 40px;
                 }
             }
         }
@@ -134,10 +144,22 @@ $lines-to-show: 2;
 
 /* Large devices (1200px and up) */
 @media (min-width: 1200px) {
-    .col-md-4 {
-        .post-pic {
-            .fa-4x {
-                font-size: 50px;
+    .project-tiles {
+        .col-md-4 {
+            width: 25%;
+
+            .post-pic {
+                h3, i {
+                    font-size: 21px;
+                }
+
+                .col-xs-8 {
+                    width: 53%;
+                }
+
+                .fa-4x {
+                    font-size: 36px;
+                }
             }
         }
     }

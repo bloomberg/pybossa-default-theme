@@ -9,7 +9,7 @@
     <hr>
         {{ helper.render_overall_progress(project, n_tasks, overall_progress, show_contribute_btn=False, show_n_tasks=True) }}
     <hr>
-    <div class="row">
+    <div class="row project-tiles">
         <!-- Project owner, subadmins that are project co-owners and admins can import tasks to project -->
         {% if  (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
         <div id="import_tasks" class="col-md-4">

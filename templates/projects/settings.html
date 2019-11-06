@@ -4,7 +4,7 @@
 {% from "projects/_helpers.html" import render_project_card_option %}
 
 {% block projectcontent %}
-<div class="row">
+<div class="row project-tiles">
     <div id="project_details" class="col-md-4">
         {{ render_project_card_option(project, upload_method, title=_('Project Details'), explanation=_('Edit the name, description, etc.'), link=url_for('project.update', short_name=project.short_name), link_action_text=_('Edit'), icon='info-circle')}}
     </div>
