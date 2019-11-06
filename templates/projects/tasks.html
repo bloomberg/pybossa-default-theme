@@ -12,40 +12,36 @@
     <div class="row">
         <!-- Project owner, subadmins that are project co-owners and admins can import tasks to project -->
         {% if  (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
-        <div id="import_tasks" class="col-md-6">
+        <div id="import_tasks" class="col-md-4">
             {{ render_project_card_option(project, upload_method, title=_('Import Tasks'), explanation=_('Import tasks from CSV'), link=url_for('project.import_task', short_name=project.short_name), link_action_text=_('Import'), icon='cloud-upload', published=project.published)}}
         </div>
         {% endif %}
         <!-- Project owner, any project co-owner(subadmin or regular user), subadmins and admins can export tasks to project -->
         {% if current_user.id in project.owners_ids or current_user.subadmin or current_user.admin %}
-        <div id="export_tasks" class="col-md-6">
+        <div id="export_tasks" class="col-md-4">
             {{ render_project_card_option(project, upload_method, title=_('Export Tasks'), explanation=_('Export tasks to JSON, CSV or a CKAN server'), link=url_for('project.export_to', short_name=project.short_name), link_action_text=_('Export'), icon='cloud-download')}}
         </div>
         {% endif %}
-    </div>
-    <div class="row">
         <!-- subadmin and admin can access task presenter code -->
         {% if current_user.subadmin or current_user.admin %}
-        <div id="task_presenter" class="col-md-6">
+        <div id="task_presenter" class="col-md-4">
             {{ render_project_card_option(project, upload_method, title=_('Task Presenter'), explanation=_('Edit the task presenter'), link=url_for('project.task_presenter_editor', short_name=project.short_name), link_action_text=_('Editor'), icon='pencil')}}
         </div>
         {% endif %}
         <!-- Project owner, subadmin that are project co-owners and admins can view/edit settings -->
         {% if  (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
-        <div id="task_settings" class="col-md-6">
+        <div id="task_settings" class="col-md-4">
             {{ render_project_card_option(project, upload_method, title=_('Task Settings'), explanation=_('Configure the task scheduler, redundancy, etc.'), link=url_for('project.task_settings', short_name=project.short_name), link_action_text=_('Settings'), icon='cogs')}}
         </div>
         {% endif %}
-    </div>
-    <div class="row">
         <!-- Project owner, any co-owner(subadmin or regular user), subadmins and admins can browse tasks -->
         {% if current_user.id in project.owners_ids or current_user.subadmin or current_user.admin %}
-        <div id="task_browse" class="col-md-6">
+        <div id="task_browse" class="col-md-4">
             {{ render_project_card_option(project, upload_method, title=_('Browse'), explanation=_('Check the status of the tasks'), link=url_for('project.tasks_browse', short_name=project.short_name), link_action_text=_('Browse'), icon='compass')}}
         </div>
         {% endif %}
         {% if autoimporter_enabled and current_user.admin %}
-        <div id="autoimport_tasks" class="col-md-6">
+        <div id="autoimport_tasks" class="col-md-4">
             {{ render_project_card_option(project, upload_method, title=_('Auto-import Tasks'), explanation=_('Import tasks regularly and automatically'), link=url_for('project.setup_autoimporter', short_name=project.short_name), link_action_text=_('Setup'), icon='magic')}}
         </div>
         {% endif %}
