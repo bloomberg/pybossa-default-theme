@@ -12,21 +12,29 @@
     }
 
     .caption {
+        height: 120px;
         padding-left: 20px;
         padding-right: 20px;
         padding-bottom: 10px;
 
         p {
             display: block;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            height: 68px;
         }
 
         br{display: block;}
 
         span {
             text-decoration: underline;
+        }
+
+        .readmore {
+            a {
+                color: $blue-link;
+                text-transform: uppercase;
+                font-weight: 600;
+                cursor: pointer;
+            }
         }
     }
 
@@ -67,15 +75,6 @@ $lines-to-show: 2;
 
     h3.small-space {
         min-height: 23px;
-    }
-}
-
-.readmore {
-    a {
-        color: $blue-link;
-        text-transform: uppercase;
-        font-weight: 600;
-        cursor: pointer;
     }
 }
 
