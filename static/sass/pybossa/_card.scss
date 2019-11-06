@@ -104,7 +104,8 @@ $lines-to-show: 2;
 /* Medium devices (992px and up) */
 @media (min-width: 992px) {
     .col-md-4 .post-pic {
-        height: 200px;
+        height: 130px;
+
         h3 {
             margin: 0;
             font-size: 20px;
@@ -118,20 +119,22 @@ $lines-to-show: 2;
             font-size: 40px;
         }
     }
+
+    .thumbnail.card {
+        .post-pic {
+            h3, i {
+                padding-top: 26px;
+            }
+        }
+    }
 }
 
-/* Large devices (992px and up) */
+/* Large devices (1200px and up) */
 @media (min-width: 1200px) {
     .col-md-4 .post-pic {
-        height: 200px;
-
         h3 {
             margin: 0;
             font-size: 24px;
-        }
-
-        .col-xs-8 {
-            width: 55%;
         }
 
         .fa-4x {
