@@ -6,9 +6,11 @@
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
     margin-bottom: 20px;
     img,
+
     div {
         border-radius: 2px 2px 0px 0px;
     }
+
     .caption {
         padding-left: 20px;
         padding-right: 20px;
@@ -26,7 +28,6 @@
         span {
             text-decoration: underline;
         }
-
     }
 
     .post-pic h3,
@@ -36,6 +37,7 @@
         padding-right: 20px;
         color: $white;
     }
+
     .post-pic i {
         color: rgba(0,0,0,0.3);
     }
@@ -66,22 +68,16 @@ $lines-to-show: 2;
     h3.small-space {
         min-height: 23px;
     }
-
 }
 
 .readmore {
-
-
     a {
         color: $blue-link;
         text-transform: uppercase;
         font-weight: 600;
         cursor: pointer;
     }
-
 }
-
-
 
 
 /* XS devices */
@@ -91,8 +87,10 @@ $lines-to-show: 2;
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
-    .post-pic {
-        height: 253px;
+    .col-md-4 {
+        .post-pic {
+            height: 253px;
+        }
     }
 
     .card-fix-p {
@@ -103,28 +101,32 @@ $lines-to-show: 2;
 
 /* Medium devices (992px and up) */
 @media (min-width: 992px) {
-    .col-md-4 .post-pic {
-        height: 130px;
+    .col-md-4 {
+        .post-pic {
+            height: 130px;
 
-        h3 {
-            margin: 0;
-            font-size: 24px;
-        }
+            h3 {
+                margin: 0;
+                font-size: 24px;
+            }
 
-        .col-xs-8 {
-            width: 55%;
-        }
+            .col-xs-8 {
+                width: 55%;
+            }
 
-        .fa-4x {
-            font-size: 40px;
+            .fa-4x {
+                font-size: 40px;
+            }
         }
     }
 
-    .thumbnail.card {
-        .post-pic {
-            h3, i {
-                padding-top: 0;
-                margin-top: 30px;
+    .thumbnail {
+        &.card {
+            .post-pic {
+                h3, i {
+                    padding-top: 0;
+                    margin-top: 30px;
+                }
             }
         }
     }
@@ -132,9 +134,11 @@ $lines-to-show: 2;
 
 /* Large devices (1200px and up) */
 @media (min-width: 1200px) {
-    .col-md-4 .post-pic {
-        .fa-4x {
-            font-size: 50px;
+    .col-md-4 {
+        .post-pic {
+            .fa-4x {
+                font-size: 50px;
+            }
         }
     }
 }
