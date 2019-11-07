@@ -1,0 +1,13 @@
+{% extends "/projects/base.html" %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block projectcontent %}
+
+<div id="project-clone" class = "col-md-12">
+        <project-clone :form="{{form | tojson | forceescape}}" :csrf='{{csrf | tojson | forceescape}}' :hidden-inputs='{{hidden_inputs | tojson | forceescape}}'></project-clone>
+</div>
+<script src="/static/js/gen/project_clone.min.10fec6c2a6e7ce743a80.js"></script>
+
+{% endblock %}
+
+

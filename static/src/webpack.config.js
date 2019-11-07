@@ -19,7 +19,9 @@ module.exports = {
     task_browse: './task_browse.js',
     userprofile: './userprofile.js',
     wizard: './wizard.js',
-    setting: './setting.js'
+    setting: './setting.js',
+    project_clone: './project_clone.js'
+
   },
   // where to place the compiled bundle
   output: {
@@ -129,6 +131,12 @@ module.exports = {
       hash: false,
       filename: '../../../templates/projects/summary.html',
       template: '../../templates/projects/summary.webpack.ejs'
+    }),
+    new HtmlWebpackPlugin({
+      inject: false,
+      hash: false,
+      filename: '../../../templates/projects/clone.html',
+      template: '../../templates/projects/clone.webpack.ejs'
     }),
     new VueLoaderPlugin()
   ]

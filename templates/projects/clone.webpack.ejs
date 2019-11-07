@@ -1,0 +1,13 @@
+{% extends "/projects/base.html" %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block projectcontent %}
+
+<div id="project-clone" class = "col-md-12">
+        <project-clone :form="{{form | tojson | forceescape}}" :csrf='{{csrf | tojson | forceescape}}' :hidden-inputs='{{hidden_inputs | tojson | forceescape}}'></project-clone>
+</div>
+<script src="<%= htmlWebpackPlugin.files.chunks.project_clone.entry %>"></script>
+
+{% endblock %}
+
+

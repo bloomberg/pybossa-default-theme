@@ -38,7 +38,7 @@
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <script>
 import './vfg-custom-components.css';
-import VueFormGenerator from './quiz_form_validators';
+import VueFormGenerator from '../form_validators';
 import Vue from 'vue';
 import Multiselect from 'vue-multiselect';
 import TableQuiz from './quiz_result_table.vue';
