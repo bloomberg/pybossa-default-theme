@@ -46,7 +46,7 @@
         {{ render_project_card_option(project, upload_method, title=_('Notices'), explanation=_('Write new announcement'), link=url_for('admin.announcement'), link_action_text=_('Manage'), icon='user')}}
     </div>
     <div id="management-dashboard" class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Stat Dashboard'), explanation=_('Additional site-wide stats'), link=url_for('admin.management_dashboard'), link_action_text=_('Stats'), icon='info') }}
+        {{ render_project_card_option(project, upload_method, title=_('Stats Dashboard'), explanation=_('Additional site-wide stats'), link=url_for('admin.management_dashboard'), link_action_text=_('Stats'), icon='info') }}
     </div>
     {% endif %}
 </div>
