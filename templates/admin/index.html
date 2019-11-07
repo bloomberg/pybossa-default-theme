@@ -4,61 +4,53 @@
 <div class ="container">
 <div class="col-sm-9 col-md-9" style="margin-top:50px;">
 <h2>{{ _('Admin Site') }}</h2>
-{% if current_user.admin %}
-<div class="row">
-    <div id="dashboard" class="col-md-6">
+<div class="row project-tiles">
+    {% if current_user.admin %}
+    <div id="dashboard" class="col-md-4">
         {{ render_project_card_option(project, upload_method, title=_('Dashboard'), explanation=_('Internal statistics'), link=url_for('admin.dashboard'), link_action_text=_('Go'), icon='info')}}
     </div>
-    <div id="backgroundjobs" class="col-md-6">
+    <div id="backgroundjobs" class="col-md-4">
         {{ render_project_card_option(project, upload_method, title=_('Background Jobs'), explanation=_('Monitor background jobs'), link=url_for('rq_dashboard.overview'), link_action_text=_('Monitor'), icon='search')}}
     </div>
-</div>
-<div class="row">
-    <div id="featured-apps" class="col-md-6">
+    <div id="featured-apps" class="col-md-4">
         {{ render_project_card_option(project, upload_method, title=_('Featured Projects'), explanation=_('Show projects on the front page'), link=url_for('admin.featured'), link_action_text=_('Manage'), icon='star')}}
     </div>
-    <div id="categories" class="col-md-6">
+    <div id="categories" class="col-md-4">
         {{ render_project_card_option(project, upload_method, title=_('Categories'), explanation=_('Manage project categories'), link=url_for('admin.categories'), link_action_text=_('Manage'), icon='check')}}
     </div>
-</div>
-<div class="row">
-    <div id="users" class="col-md-6">
-        {{ render_project_card_option(project, upload_method, title=_('Administrators'), explanation=_('Manage administrators'), link=url_for('admin.users'), link_action_text=_('Manage'), icon='user')}}
+    <div id="users" class="col-md-4">
+        {{ render_project_card_option(project, upload_method, title=_('Admins'), explanation=_('Manage administrators'), link=url_for('admin.users'), link_action_text=_('Manage'), icon='user')}}
     </div>
-    <div id="subadminusers" class="col-md-6">
-        {{ render_project_card_option(project, upload_method, title=_('Subadministrators'), explanation=_('Manage subadministrators'), link=url_for('admin.subadminusers'), link_action_text=_('Manage'), icon='user')}}
+    <div id="subadminusers" class="col-md-4">
+        {{ render_project_card_option(project, upload_method, title=_('Subadmins'), explanation=_('Manage subadministrators'), link=url_for('admin.subadminusers'), link_action_text=_('Manage'), icon='user')}}
     </div>
-</div>
-<div class="row">
-    <div id="users-list" class="col-md-6">
+    <div id="users-list" class="col-md-4">
         {{ render_project_card_option(project, upload_method, title=_('Export Users'), explanation=_('Export a list of users'), link=url_for('admin.export_users', format='csv'), link_action_text=_('CSV'), link_two=url_for('admin.export_users', format='json'), link_action_text_two=_('JSON'), icon='user')}}
     </div>
-    <div id="import-users" class="col-md-6">
+    <div id="import-users" class="col-md-4">
         {{ render_project_card_option(project, upload_method, title=_('Import Users'), explanation=_('Import bulk users with local csv file'), link=url_for('admin.userimport', type='usercsvimport'), link_action_text=_('Import'), icon='user')}}
     </div>
-</div>
-{% endif %}
-<div class="row">
+    {% endif %}
     {% if current_user.admin %}
-    <div id="exportprojects" class="col-md-6">
+    <div id="exportprojects" class="col-md-4">
         {{ render_project_card_option(project, upload_method, title=_('Project Report'), explanation=_('Generate projects report'), link=url_for('project.export_projects', format='csv'), link_action_text=_('CSV'), icon='check') }}
     </div>
     {% endif %}
     {% if current_user.admin or current_user.subadmin %}
-    <div id="manageusers" class="col-md-6">
+    <div id="manageusers" class="col-md-4">
         {{ render_project_card_option(project, upload_method, title=_('Manage Users'), explanation=_('Enable/Disable Users'), link=url_for('admin.manageusers'), link_action_text=_('Manage'), icon='user')}}
+    </div>
+    {% endif %}
+    {% if current_user.admin %}
+    <div id="users" class="col-md-4">
+        {{ render_project_card_option(project, upload_method, title=_('Notices'), explanation=_('Write new announcement'), link=url_for('admin.announcement'), link_action_text=_('Manage'), icon='user')}}
+    </div>
+    <div id="management-dashboard" class="col-md-4">
+        {{ render_project_card_option(project, upload_method, title=_('Stat Dashboard'), explanation=_('Additional site-wide stats'), link=url_for('admin.management_dashboard'), link_action_text=_('Stats'), icon='info') }}
     </div>
     {% endif %}
 </div>
 {% if current_user.admin %}
-<div class="row">
-    <div id="users" class="col-md-6">
-        {{ render_project_card_option(project, upload_method, title=_('Announcement'), explanation=_('Write new announcement'), link=url_for('admin.announcement'), link_action_text=_('Manage'), icon='user')}}
-    </div>
-    <div id="management-dashboard" class="col-md-6">
-        {{ render_project_card_option(project, upload_method, title=_('Management Dashboard'), explanation=_('Additional site-wide stats'), link=url_for('admin.management_dashboard'), link_action_text=_('Stats'), icon='info') }}
-    </div>
-</div>
 <div class="row">
     <div class="col-md-12">
         <h4>{{_('Latest news from PyBossa')}}</h4>
