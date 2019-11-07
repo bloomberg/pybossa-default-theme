@@ -15,12 +15,12 @@
         padding-left: 20px;
         padding-right: 20px;
         padding-bottom: 10px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
 
         p {
             display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         br{display: block;}
@@ -112,11 +112,11 @@ $lines-to-show: 2;
         &.card {
             .caption {
                 height: 120px;
-                white-space: unset;
-                overflow: unset;
-                text-overflow: unset;
 
                 p {
+                    white-space: unset;
+                    overflow: unset;
+                    text-overflow: unset;
                     height: 68px;
                     clear: both;
                 }
