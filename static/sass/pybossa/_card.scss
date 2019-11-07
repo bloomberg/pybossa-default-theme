@@ -12,14 +12,15 @@
     }
 
     .caption {
-        height: 120px;
         padding-left: 20px;
         padding-right: 20px;
         padding-bottom: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
 
         p {
             display: block;
-            height: 68px;
         }
 
         br{display: block;}
@@ -79,6 +80,10 @@ $lines-to-show: 2;
 }
 
 /* XS devices */
+.post-pic {
+    height: 195px;
+}
+
 .project-tiles {
     .col-md-4 {
         float: left;
@@ -102,10 +107,29 @@ $lines-to-show: 2;
             }
         }
     }
+
+    .thumbnail {
+        &.card {
+            .caption {
+                height: 120px;
+                white-space: unset;
+                overflow: unset;
+                text-overflow: unset;
+
+                p {
+                    height: 68px;
+                }
+            }
+        }
+    }
 }
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
+    .post-pic {
+        height: 253px;
+    }
+
     .project-tiles {
         .col-md-4 {
             .post-pic {
@@ -124,6 +148,14 @@ $lines-to-show: 2;
 
 /* Medium devices (992px and up) */
 @media (min-width: 992px) {
+    .col-md-6 .post-pic {
+        height: 202px;
+    }
+
+    .col-md-4 .post-pic {
+        height: 202px;
+    }
+
     .project-tiles {
         .col-md-4 {
             width: 33.333333%;
@@ -143,6 +175,14 @@ $lines-to-show: 2;
 
 /* Large devices (1200px and up) */
 @media (min-width: 1200px) {
+    .col-md-6 .post-pic {
+        height: 250px;
+    }
+
+    .col-md-4 .post-pic {
+        height: 160px;
+    }
+
     .project-tiles {
         .col-md-4 {
             width: 25%;
