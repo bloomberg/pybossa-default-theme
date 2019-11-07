@@ -11,48 +11,44 @@
     {{ privacy.render_lock_page() }}
 {% else %}
 <p>{{ _('You can export and download') }} <strong>{{ _('all the available') }}</strong> {{ _('Tasks and Task Runs (the submitted answers by the users) in CSV or JSON formats.') }}</p>
-<div id="csv" class="row">
+<div id="csv" class="row project-tiles">
     <div class="col-md-12 text-center">
         <h3>{{_('Export in CSV format')}}</h3>
     </div>
     <div class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Tasks'), explanation=_('Export tasks in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='task', format='csv', expanded='False'), link_action_text=_('Export'), nofollow=True)}}
+        {{ render_project_card_option(project, upload_method, title=_('Tasks'), explanation=_('Export tasks in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='task', format='csv', expanded='False'), link_action_text=_('Export'), icon='cloud-download', nofollow=True)}}
     </div>
     <div class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Task Runs'), explanation=_('Export task runs in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='task_run', format='csv', expanded='False'), link_action_text=_('Export'), nofollow=True)}}
+        {{ render_project_card_option(project, upload_method, title=_('Task Runs'), explanation=_('Export task runs in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='task_run', format='csv', expanded='False'), link_action_text=_('Export'), icon='cloud-download', nofollow=True)}}
     </div>
     <div class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Task Runs with Metadata'), explanation=_('Export task runs with metadata in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='task_run', format='csv', expanded='True'), link_action_text=_('Export'), nofollow=True)}}
+        {{ render_project_card_option(project, upload_method, title=_('Task Runs with Metadata'), explanation=_('Export task runs with metadata in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='task_run', format='csv', expanded='True'), link_action_text=_('Export'), icon='cloud-download', nofollow=True)}}
     </div>
-</div>
-<div class="row">
      <div class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Consensus'), explanation=_('Export consensus in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='consensus', format='csv', expanded='False'), link_action_text=_('Export'), nofollow=True)}}
+        {{ render_project_card_option(project, upload_method, title=_('Consensus'), explanation=_('Export consensus in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='consensus', format='csv', expanded='False'), link_action_text=_('Export'), icon='cloud-download', nofollow=True)}}
     </div>
     <div class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Consensus with Metadata'), explanation=_('Export consensus with metadata in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='consensus', format='csv', expanded='True'), link_action_text=_('Export'), nofollow=True)}}
+        {{ render_project_card_option(project, upload_method, title=_('Consensus with Metadata'), explanation=_('Export consensus with metadata in CSV format'), link=url_for('project.export_to', short_name=project.short_name, type='consensus', format='csv', expanded='True'), link_action_text=_('Export'), icon='cloud-download', nofollow=True)}}
     </div>
 </div>
-<div id="json" class="row">
+<div id="json" class="row project-tiles">
     <div class="col-md-12 text-center">
         <h3>{{_('Export in JSON format')}}</h3>
     </div>
     <div class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Tasks'), explanation=_('Export tasks in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='task', format='json', expanded='False'), link_action_text=_('Export'), nofollow=True)}}
+        {{ render_project_card_option(project, upload_method, title=_('Tasks'), explanation=_('Export tasks in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='task', format='json', expanded='False'), link_action_text=_('Export'), icon='cloud-download', nofollow=True)}}
     </div>
     <div class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Task Runs'), explanation=_('Export task runs in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='task_run', format='json', expanded='False'), link_action_text=_('Export'), nofollow=True)}}
+        {{ render_project_card_option(project, upload_method, title=_('Task Runs'), explanation=_('Export task runs in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='task_run', format='json', expanded='False'), link_action_text=_('Export'), icon='cloud-download', nofollow=True)}}
     </div>
     <div class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Task Runs with Metadata'), explanation=_('Export task runs with metadata in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='task_run', format='json', expanded='True'), link_action_text=_('Export'), nofollow=True)}}
+        {{ render_project_card_option(project, upload_method, title=_('Task Runs with Metadata'), explanation=_('Export task runs with metadata in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='task_run', format='json', expanded='True'), link_action_text=_('Export'), icon='cloud-download', nofollow=True)}}
     </div>
-</div>
-<div class="row">
      <div class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Consensus'), explanation=_('Export consensus in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='consensus', format='json', expanded='False'), link_action_text=_('Export'), nofollow=True)}}
+        {{ render_project_card_option(project, upload_method, title=_('Consensus'), explanation=_('Export consensus in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='consensus', format='json', expanded='False'), link_action_text=_('Export'), icon='cloud-download', nofollow=True)}}
     </div>
     <div class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Consensus with Metadata'), explanation=_('Export consensus with metadata in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='consensus', format='json', expanded='True'), link_action_text=_('Export'), nofollow=True)}}
+        {{ render_project_card_option(project, upload_method, title=_('Consensus with Metadata'), explanation=_('Export consensus with metadata in JSON format'), link=url_for('project.export_to', short_name=project.short_name, type='consensus', format='json', expanded='True'), link_action_text=_('Export'), icon='cloud-download', nofollow=True)}}
     </div>
 </div>
 {% endif %}
