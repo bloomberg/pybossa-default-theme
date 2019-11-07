@@ -113,7 +113,7 @@ export default {
         formOptions: {
                       validateAfterLoad: true,
                       validateAfterChanged: true,
-                      validationErrorClass: 'error'
+                      validationErrorClass: 'has-error'
         }
       };
   },

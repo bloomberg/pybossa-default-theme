@@ -5,7 +5,7 @@
       Clone a job will copy all aspects of the current project except tasks.
     </p>
     <vue-form-generator
-      ref="quizForm"
+      ref="cloneForm"
       :schema="schema"
       :model="model"
       :options="formOptions"
@@ -56,7 +56,7 @@ export default {
                         label: 'Name',
                         model: 'name',
                         required: true,
-                        validator: ['serverValidation'],
+                        validator: ['serverValidation', VueFormGenerator.validators.string],
                         onChanged: function (model, newVal, oldVal, field) {
                           model.errors[field.model] = [];
                         } },
@@ -66,7 +66,7 @@ export default {
                         label: 'Short Name',
                         model: 'short_name',
                         required: true,
-                        validator: ['serverValidation'],
+                        validator: ['serverValidation', VueFormGenerator.validators.string],
                         onChanged: function (model, newVal, oldVal, field) {
                           model.errors[field.model] = [];
                         } },
@@ -75,7 +75,6 @@ export default {
                         inputType: 'password',
                         label: 'Project Password',
                         model: 'password',
-                        min: 5,
                         required: true,
                         placeholder: 'Password must contain at least one uppercase, one lowercase, one numeric character.',
                         validator: ['serverValidation', VueFormGenerator.validators.string],
@@ -100,7 +99,7 @@ export default {
         formOptions: {
                       validateAfterLoad: true,
                       validateAfterChanged: true,
-                      validationErrorClass: 'error'
+                      validationErrorClass: 'has-error'
         }
       };
   },
@@ -129,7 +128,7 @@ export default {
     },
 
     runValidationOnFields (fields) {
-        this.$refs.quizForm.$children.forEach(function (input) {
+        this.$refs.cloneForm.$children.forEach(function (input) {
           if (fields.includes(input.field.model)) {
             input.$children[0].validate();
         }
@@ -158,13 +157,12 @@ export default {
         });
         if (res.ok) {
           const data = await res.json();
-
-          if (data.cloned) {
+          // if no errors
+          if (Object.keys(data.form.errors).length === 0) {
             window.location = `/project/${data.form.short_name}/`;
           }
 
           this.initialize(data);
-
           this.runValidationOnFields(['short_name', 'name', 'password']);
           window.pybossaNotify(data['flash'], true, data['status']);
         } else {
