@@ -11,3 +11,21 @@
     width: 100%;
   }
 }
+
+#create-project-form {
+    input:invalid, textarea:invalid, select:invalid {
+        border: 1px solid red;
+        outline: none;
+        transition: border-color .5s ease-out;
+    }
+
+    .form-group.password {
+      margin-bottom: 0;
+    }
+
+    #password-requirements {
+      font-size: 14px;
+      font-style: italic;
+      margin: 5px 5px 10px 5px;
+    }
+}
