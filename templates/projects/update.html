@@ -25,7 +25,7 @@
 
 <!-- Update form for project data-->
 <h2>{{_('Update project details')}}</h2>
-<form method="post" action="{{ url_for('project.update', short_name = project.short_name) }}">
+<form id="create-project-form" method="post" action="{{ url_for('project.update', short_name = project.short_name) }}">
     <fieldset>
         {{ form.hidden_tag() }}
         {{ render_field(form.name, class_="input-xlarge", placeholder=_('The name of the project')) }}
@@ -46,7 +46,8 @@
             <h3>{{_('Enable project syncing')}}</h3>
             {{ render_checkbox_field(form.sync_enabled, class_="", tooltip=_('Check if you want to enable project syncing')) }}
         {% endif %}
-        {{ render_field(form.password, placeholder="Leave blank to maintain set password") }}
+        {{ render_field(form.password, class_="password", placeholder="Leave blank to maintain set password") }}
+        <div id="password-requirements">Minimum length 5 characters, 1 uppercase, 1 lowercase, and 1 numeric.</div>
         {% if 'data_access' in form %}
             {{ render_select2_field(form.data_access) }}
         {% endif %}
