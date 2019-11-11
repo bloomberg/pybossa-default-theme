@@ -28,7 +28,7 @@
 
 (you can use Markdown to give format to your description!)')) }}
             {{ render_field(form.password, class_="span4 password", placeholder=_('Enter project password')) }}
-            <div id="password-requirements">Minimum length 5 characters, 1 uppercase, 1 lowercase, and 1 numeric.</div>
+            <div id="password-requirements">{{ form.password.render_kw.placeholder }}</div>
             {{ render_field(form.product) }}
             {{ render_field(form.subproduct) }}
             {{ render_field(form.kpi) }}
