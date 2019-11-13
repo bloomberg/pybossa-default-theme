@@ -18,22 +18,22 @@
         <form id="create-project-form" method="post" action="{{ url_for('project.new')}}" enctype="multipart/form-data"}}>
         {{ form.hidden_tag() }}
         <fieldset>
-            {{ render_field(form.name, class_="span4", placeholder=_('The name of the project')) }}
-            {{ render_field(form.short_name, class_="span4", placeholder=_('Short name or slug for the project'), label_text=_('Project slug:')) }}
+            {{ render_field(form.name, class_="span4", placeholder=_('The name of the project'), required=true) }}
+            {{ render_field(form.short_name, class_="span4", placeholder=_('Short name or slug for the project'), label_text=_('Project slug:'), required=true) }}
             {{ render_field(form.long_description, class_="span4", rows="13", placeholder=_('Explain your project
 · Why? Why you are creating this project, what you want to achieve with it
 · How? Explain how your project works
 · How you can help: Explain to the volunteers how they can help and contribute to the goal of your project
 · Will you help make a difference? Explain to the volunteers why their contribution is essential and how the result of your project can help change things!
 
-(you can use Markdown to give format to your description!)')) }}
-            {{ render_field(form.password, class_="span4 password", placeholder=_('Enter project password')) }}
+(you can use Markdown to give format to your description!)'), required=true) }}
+            {{ render_field(form.password, class_="span4 password", placeholder=_('Enter project password'), required=true) }}
             <div id="password-requirements">{{ form.password.render_kw.placeholder }}</div>
-            {{ render_field(form.product) }}
-            {{ render_field(form.subproduct) }}
-            {{ render_field(form.kpi) }}
+            {{ render_field(form.product, required=true) }}
+            {{ render_field(form.subproduct, required=true) }}
+            {{ render_field(form.kpi, required=true) }}
             {% if 'data_access' in form %}
-                {{ render_select2_field(form.data_access) }}
+                {{ render_select2_field(form.data_access, required=true) }}
             {% endif %}
             {% if 'amp_store' in form %}
                 {{ render_checkbox_field(form.amp_store, tooltip=_('Opt in to store annotations on Annotation Management Platform')) }}
