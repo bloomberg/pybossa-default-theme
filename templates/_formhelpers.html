@@ -1,5 +1,5 @@
-{% macro render_field(field, label_visible=true, required=false) -%}
-     <div class="form-group {% if field.errors %}has-error{% endif %} {% if required %}required{% endif %} {{ kwargs.pop('class_', '') }}">
+{% macro render_field(field, label_visible=true) -%}
+     <div class="form-group {% if field.errors %}has-error{% endif %} {% if field.flags.required %}required{% endif %} {{ kwargs.pop('class_', '') }}">
         {% if field.type != 'HiddenField' and field.type != 'CSRFTokenField' and label_visible and field.name != 'id' and field.name != 'form_name' %}
             <label for="{{ field.id }}" class="control-label">{{ field.label }}</label>
         {% endif %}
@@ -33,7 +33,7 @@
 {%- endmacro %}
 
 {% macro render_select2_field(field) -%}
-     <div class="form-group {% if field.errors %}has-error{% endif %} {% if required %}required{% endif %} {{ kwargs.pop('class_', '') }}">
+     <div class="form-group {% if field.errors %}has-error{% endif %} {% if field.flags.required %}required{% endif %} {{ kwargs.pop('class_', '') }}">
         <style>
             .select2-selection {
                 border: 2px solid #dce4ec !important

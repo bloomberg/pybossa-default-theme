@@ -8,6 +8,12 @@
   margin-top: 0;
 }
 
+.required .control-label:after {
+  margin-left: 3px;
+  content: '*';
+  color: red;
+}
+
 #main-container {
   #percent-completed {
     height: 20px;
