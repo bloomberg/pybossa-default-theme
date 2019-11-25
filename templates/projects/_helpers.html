@@ -479,3 +479,33 @@
     })();
 </script>
 {% endmacro -%}
+
+{% macro chat(owner, current_user, project, n_tasks, num_expected_task_runs, num_remaining_task_runs, n_available_tasks_for_user, n_completed_tasks_by_user) -%}
+<script type="text/javascript">
+    window._chatlio = window._chatlio||[];
+    !function(){ var t=document.getElementById("chatlio-widget-embed");if(t&&window.ChatlioReact&&_chatlio.init)return void _chatlio.init(t,ChatlioReact);for(var e=function(t){return function(){_chatlio.push([t].concat(arguments)) }},i=["configure","identify","track","show","hide","isShown","isOnline", "page", "open", "showOrHide"],a=0;a<i.length;a++)_chatlio[i[a]]||(_chatlio[i[a]]=e(i[a]));var n=document.createElement("script"),c=document.getElementsByTagName("script")[0];n.id="chatlio-widget-embed",n.src="https://w.chatlio.com/w.chatlio-widget.js",n.async=!0,n.setAttribute("data-embed-version","2.3");
+       n.setAttribute('data-widget-id','a871bdf3-f391-4d9b-5d32-6d0666287a34');
+       c.parentNode.insertBefore(n,c);
+    }();
+  document.addEventListener('chatlio.ready', function (e) {
+    console.log("[chatlio.ready] e: %o", e);
+    var chatlioNode = e.target;
+    console.log("[chatlio.ready] widget DOM node: %s (children: %d)", chatlioNode, chatlioNode.childNodes.length);
+
+    _chatlio.identify('{{ current_user.id }}', {
+        name: '{{ project.short_name + '-' + current_user.name }}',
+        admin: {{ current_user.admin|lower }},
+        subadmin: {{ current_user.subadmin|lower }},
+        projectId: '{{ project.id }}',
+        projectShortName: '{{ project.short_name }}',
+        projectName: '{{ project.name }}',
+        projectOwner: '{{ owner.fullname }}',
+        totalTasks: {{n_tasks or 0}},
+        totalTaskRuns: {{num_expected_task_runs or 0}},
+        remainingTasksRuns: {{num_remaining_task_runs or 0}},
+        tasksAvailableUser: {{n_available_tasks_for_user or 0}},
+        tasksCompletedUser: {{n_completed_tasks_by_user or 0}}
+      });
+  }, false);
+</script>
+{% endmacro %}

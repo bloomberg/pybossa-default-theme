@@ -60,4 +60,7 @@
     </div>
     {% endif %}
 </div>
+{% if config.ENABLE_CHAT %}
+    {{ helper.chat(owner, current_user, project, n_tasks, num_expected_task_runs, num_remaining_task_runs, n_available_tasks_for_user, n_completed_tasks_by_user) }}
+{% endif %}
 {% endblock %}
