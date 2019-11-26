@@ -494,6 +494,7 @@
 
     _chatlio.identify('{{ current_user.id }}', {
         name: '{{ project.short_name + '-' + current_user.name }}',
+        user_email: '{{ current_user.email_addr }}',
         admin: {{ current_user.admin|lower }},
         subadmin: {{ current_user.subadmin|lower }},
         projectId: '{{ project.id }}',
@@ -507,5 +508,16 @@
         tasksCompletedUser: {{n_completed_tasks_by_user or 0}}
       });
   }, false);
+
+  document.addEventListener("chatlio.firstMessageSent", function (e) {
+    console.log('Send an email to project owners and co-owners. Message: ' + e.data.body);
+    $.ajax({
+        type: 'POST',
+        url: '/api/project/{{ project.short_name }}/chat',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify({ message: e.data.body })
+    });
+  });
 </script>
 {% endmacro %}
