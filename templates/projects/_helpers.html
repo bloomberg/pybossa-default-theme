@@ -510,7 +510,7 @@
   }, false);
 
   document.addEventListener("chatlio.firstMessageSent", function (e) {
-    console.log('Send an email to project owners and co-owners. Message: ' + e.data.body);
+    console.log("[chatlio.firstMessageSent] %s", e.data.body);
     $.ajax({
         type: 'POST',
         url: '/api/project/{{ project.short_name }}/chat',
