@@ -511,12 +511,14 @@
 
   document.addEventListener("chatlio.firstMessageSent", function (e) {
     console.log("[chatlio.firstMessageSent] %s", e.data.body);
+
     $.ajax({
         type: 'POST',
         url: '/api/project/{{ project.short_name }}/chat',
         dataType: 'json',
         contentType: 'application/json',
-        data: JSON.stringify({ message: e.data.body })
+        data: JSON.stringify({ message: e.data.body }),
+        beforeSend: function(xhr) { xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token() }}") }
     });
   });
 </script>
