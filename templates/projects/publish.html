@@ -23,7 +23,7 @@
         <strong>{{ _('Unpublish project from ') }} {{ server_type }}</strong>
         <p>{{ _('You are about to unpublish your project. Once your project has been unpublished, people will not be able to contribute to it. ') }}</p>
 
-        <form class="form-horizontal" method="post" action="{{ url_for('project.publish', short_name=project.short_name, published=0) }}">
+        <form class="form-horizontal" method="post" action="{{ url_for('project.publish', short_name=project.short_name) }}">
             <div class="form-actions">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <input type="submit" class="btn btn-md btn-primary" value="{{ _('Unpublish') }}"/>
@@ -36,7 +36,7 @@
         <p>
             {{ _('You are about to publish your project in ') }} {{server_type}} {{_(' Gigwork environment. Once your project is published, it can be tested by other users with ')}} {{server_type}} {{ _(' GIGwork accounts.') }}
             {{ _('This action will not push your project to the production environment. To do this, please use the Sync Project to Production tab so that your workforce can access it.')}}</p>
-        <form class="form-horizontal" method="post" action="{{ url_for('project.publish', short_name = project.short_name, published=1) }}">
+        <form class="form-horizontal" method="post" action="{{ url_for('project.publish', short_name = project.short_name) }}">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <label >
                     <input type="checkbox" name="force_reset"> {{_('Force remove taskruns and results when publish.')}}
