@@ -106,7 +106,12 @@
                       <fieldset>
                   </form>
               </div>
-              <div id="guidelines-github-panels" class="row">
+
+              <div class="row">
+                <div class="col-md-12">&nbsp;</div>
+            </div>
+
+            <div id="guidelines-github-panels" class="row" style="margin-left:-30px">
                 <div class="col-md-6">
                   <div class="panel panel-info">
                     {% set github = project.info.github %}
@@ -118,6 +123,7 @@
                         <span>Latest GitHub Push Details</span>
                       </a>
                     </div>
+
                     <div id="panel-guidelines-github" class="panel-body collapse {{ 'in' if guidelines_github_exists else '' }}">
                       {% if guidelines_github_exists %}
                           <table class="table table-hover table-condensed" >
