@@ -106,6 +106,45 @@
                       <fieldset>
                   </form>
               </div>
+              <div id="guidelines-github-panels" class="row">
+                <div class="col-md-6">
+                  <div class="panel panel-info">
+                    {% set github = project.info.github %}
+                    {% set guidelines_github = github and github.task_guidelines %}
+                    {% set guidelines_github_exists = guidelines_github and guidelines_github.pusher and guidelines_github.timestamp and guidelines_github.ref_url and guidelines_github.ref %}
+                    <div class="panel-heading">
+                      <a class="accordion-panel {{ 'collapsed' if not guidelines_github_exists else '' }}" role="button" data-toggle="collapse" data-parent="#guidelines-github-panels" href="#panel-guidelines-github" aria-expanded="true" aria-controls="panel-guidelines-github">
+                        <i class="fa fa-github-square" style='margin-right: 5px;'></i>
+                        <span>Latest GitHub Push Details</span>
+                      </a>
+                    </div>
+                    <div id="panel-guidelines-github" class="panel-body collapse {{ 'in' if guidelines_github_exists else '' }}">
+                      {% if guidelines_github_exists %}
+                          <table class="table table-hover table-condensed" >
+                            <tr>
+                                <td ><p>Author:</p></td>
+                                <td><p>{{ guidelines_github.pusher }}</p></td>
+                            </tr>
+                            <tr>
+                                <td><p>Message:</p></td>
+                                <td><p>{{ guidelines_github.message }}</p></td>
+                            </tr>
+                            <tr>
+                                <td><p>Last Updated:</p></td>
+                                <td><p>{{ guidelines_github.timestamp }}</p></td>
+                            </tr>
+                            <tr>
+                                <td><p>Last Commit:</p></td>
+                                <td class="ref-details"><a href={{ guidelines_github.ref_url }} target="_blank">{{ guidelines_github.ref }}</a></td>
+                            </tr>
+                          </table>
+                      {% else %}
+                          <p class="message">Project guidelines were not updated via GitHub.</p>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
           </div>
           <div role="tabpanel" id="tab-content-presenter" class="tab-pane fade in col-md-12" id="presenter">
 
@@ -155,31 +194,32 @@
               <div id="sync-panels" class="row">
                 <div class="col-md-6">
                   <div class="panel panel-info">
-                    {% set github_data_exists = project.info.pusher and project.info.timestamp and project.info.ref_url and project.info.ref %}
+                    {% set task_presenter_github = github and github.task_presenter %}
+                    {% set task_presenter_github_exists = task_presenter_github and task_presenter_github.pusher and task_presenter_github.timestamp and task_presenter_github.ref_url and task_presenter_github.ref %}
                     <div class="panel-heading">
-                      <a class="accordion-panel {{ 'collapsed' if not github_data_exists else '' }}" role="button" data-toggle="collapse" data-parent="#sync-panels" href="#panel-github" aria-expanded="true" aria-controls="panel-github">
+                      <a class="accordion-panel {{ 'collapsed' if not task_presenter_github_exists else '' }}" role="button" data-toggle="collapse" data-parent="#sync-panels" href="#panel-taskpresenter-github" aria-expanded="true" aria-controls="panel-taskpresenter-github">
                         <i class="fa fa-github-square" style='margin-right: 5px;'></i>
                         <span>Latest GitHub Push Details</span>
                       </a>
                     </div>
-                    <div id="panel-github" class="panel-body collapse {{ 'in' if github_data_exists else '' }}">
+                    <div id="panel-taskpresenter-github" class="panel-body collapse {{ 'in' if task_presenter_github_exists else '' }}">
                       {% if github_data_exists %}
                           <table class="table table-hover table-condensed" >
                             <tr>
                                 <td ><p>Author:</p></td>
-                                <td><p>{{ project.info.pusher }}</p></td>
+                                <td><p>{{ task_presenter_github.pusher }}</p></td>
                             </tr>
                             <tr>
                                 <td><p>Message:</p></td>
-                                <td><p>{{ project.info.message }}</p></td>
+                                <td><p>{{ task_presenter_github.message }}</p></td>
                             </tr>
                             <tr>
                                 <td><p>Last Updated:</p></td>
-                                <td><p>{{ project.info.timestamp }}</p></td>
+                                <td><p>{{ task_presenter_github.timestamp }}</p></td>
                             </tr>
                             <tr>
                                 <td><p>Last Commit:</p></td>
-                                <td class="ref-details"><a href={{ project.info.ref_url }} target="_blank">{{ project.info.ref }}</a></td>
+                                <td class="ref-details"><a href={{ task_presenter_github.ref_url }} target="_blank">{{ task_presenter_github.ref }}</a></td>
                             </tr>
                           </table>
                       {% else %}
