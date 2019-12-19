@@ -200,7 +200,7 @@
               <div id="sync-panels" class="row">
                 <div class="col-md-6">
                   <div class="panel panel-info">
-                    {% set task_presenter_github = github and github.task_presenter %}
+                    {% set task_presenter_github = github and github.task_presenter or project.info %}
                     {% set task_presenter_github_exists = task_presenter_github and task_presenter_github.pusher and task_presenter_github.timestamp and task_presenter_github.ref_url and task_presenter_github.ref %}
                     <div class="panel-heading">
                       <a class="accordion-panel {{ 'collapsed' if not task_presenter_github_exists else '' }}" role="button" data-toggle="collapse" data-parent="#sync-panels" href="#panel-taskpresenter-github" aria-expanded="true" aria-controls="panel-taskpresenter-github">
