@@ -3,7 +3,7 @@
 }
 
 .nav-tabs>li>a, .nav-tabs>li>a:hover, .nav-tabs>li>a:focus {
-  color: #c0c0c0;
+  color: #606060;
   border: 1px solid #f0f0f0;
   border-bottom: none;
 }
@@ -15,12 +15,5 @@
 }
 
 li.tab-nav-collapse-expand.tab-link a {
-  color: #3AB0D5;
   border: none;
-
-  a:hover {
-    cursor: pointer;
-    text-decoration: none;
-    background-color: #F5F7F7;
-  }
 }
