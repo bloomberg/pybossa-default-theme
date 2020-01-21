@@ -40,7 +40,7 @@
               :check="user.quiz.config.enabled"
               type="checkbox"
               @change="checkEnable($event, user.id)"
-            >{{ user.quiz.config.enabled ? ' Must pass' : ' No quiz' }}
+            >
           </td>
           <td>{{ user.fullname }}</td>
           <td :class="{'bg-success': !user.quiz.config.reset && user.quiz.status == 'passed', 'bg-danger': !user.quiz.config.reset && user.quiz.status == 'failed' }">

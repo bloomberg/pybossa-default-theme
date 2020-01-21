@@ -67,7 +67,8 @@ export default {
               fields: [
                 {
                         type: 'switch',
-                        label: 'Make workers have to pass the quizzes to proceed',
+                        label: 'Turn quiz mode on or off',
+                        hint: 'When quiz mode is on, all new workers will take a quiz. See the table below to configure individual workers. To turn quiz mode off for a worker, uncheck the box next to their name and click the Reset button. Make sure their name is enabled if you want them to take the quiz.',
                         model: 'enabled',
                         multi: true,
                         default: false,
