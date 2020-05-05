@@ -19,19 +19,20 @@
                 </li>
                 <li><strong>{{_('Webhook URL')}}</strong> (Optional):
                     {{_('A POST request will be sent to the URL provided with details of the project and number of remaining tasks.')}}
-                    <a id="show-code">See example payload</a>
-                    <pre id="code-example" hide><code>
-data = {
-    'project_id': __project_id__,
-    'project_name': __project_name__,
-    'remaining_tasks': __the_number_of_remaining_tasks__,
-    'target_remaining': __the_number_you_entered_above__
+                    <a id="show-code" class="pointer">See example payload</a>
+                    <pre id="code-example" style="display: none;"><code>Headers
+{
+  'Content-type': 'application/json',
+  'Accept': 'text/plain'
 }
-headers = {
-    'Content-type': 'application/json',
-    'Accept': 'text/plain'
-}
-                    </code></pre>
+
+Data
+{
+  'project_id': 1234,
+  'project_name': 'my-example-project',
+  'remaining_tasks': 8,
+  'target_remaining': 10
+}</code></pre>
                 </li>
             </ul>
         </div>
@@ -41,34 +42,10 @@ headers = {
     </fieldset>
 </form>
 <script>
-    $(document).ready(function () {
-        $('#code-example').hide();
-
-        if (!notificationEnabled()) {
-            $('#notif-options').hide();
-        }
-
-        $('#remaining').change(function () {
-            if (notificationEnabled()) {
-                $('#notif-options').show();
-            } else {
-                $('#notif-options').hide();
-            }
-        });
-
-        $('#show-code').on('click', function() {
-            if (document.getElementById('code-example').style.display === "none") {
-                $('#code-example').show();
-            }
-            else {
-                $('#code-example').hide();
-            }
-        })
+$(function() {
+    $('#show-code').on('click', function() {
+        $('#code-example').toggle();
     });
-
-    function notificationEnabled () {
-        let val = $('#remaining').val();
-        return val !== undefined && val !== null && val !== '';
-    }
+});
 </script>
 {% endblock %}
