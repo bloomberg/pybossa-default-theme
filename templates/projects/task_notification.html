@@ -9,7 +9,7 @@
 <form id="task_notification" method="post" action="{{ url_for('project.task_notification', short_name=project.short_name) }}">
     {{ form.hidden_tag() }}
     <fieldset>
-        {{ render_field(form.remaining, placeholder= _('10')) }}
+        {{ render_field(form.remaining, type="number", placeholder= _('10')) }}
         <div id="notif-options">
             {{ render_field(form.webhook)}}
             <p>{{_('The following options are available:')}}</p>
