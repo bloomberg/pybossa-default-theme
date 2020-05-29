@@ -220,7 +220,7 @@ export default {
         if (JSON.parse(dataProjConfig.data_access).length > 0) {
             this.dataAccessConfigured = true;
         }
-        if (this.dataAccessConfigured) {
+        if (this.dataAccessConfigured && this.validAccessLevels.length > 0) {
             this.accessLevels = this.getAccessLevels(dataProjConfig.data_access);
             const res = await fetch(this.getURL('assign-users'), {
             method: 'GET',
@@ -240,18 +240,10 @@ export default {
     },
 
     async save () {
-        let access = [];
-        for (let [key, value] of Object.entries(this.accessLevels)) {
-            if (value) {
-                access.push(key);
-            }
-        }
-
         let data = {};
-        if (this.dataAccessConfigured) {
+        if (this.dataAccessConfigured && this.validAccessLevels.length > 0) {
             data = {
                 config: this.externalConfigDict,
-                data_access: access,
                 select_users: this.assignee
             };
         } else {
@@ -279,7 +271,7 @@ export default {
                 }
             }
 
-            if (this.dataAccessConfigured) {
+            if (this.dataAccessConfigured && this.validAccessLevels.length > 0) {
                 const assignRes = await fetch(this.getURL('assign-users'), {
                     method: 'POST',
                     headers: {
@@ -297,7 +289,6 @@ export default {
                     }
                 }
             }
-
             if (validConfig) {
                 window.pybossaNotify('Configuration updated successfully', true, 'success');
             } else {
