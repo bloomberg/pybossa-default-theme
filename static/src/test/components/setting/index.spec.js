@@ -166,7 +166,7 @@ it('load empty data', () => {
     saveButton.trigger('click');
     await localVue.nextTick();
     await localVue.nextTick();
-    expect(fetch.mock.calls).toHaveLength(3);
-    expect(notify.mock.calls).toHaveLength(4);
+    expect(fetch.mock.calls).toHaveLength(2);
+    expect(notify.mock.calls).toHaveLength(3);
   });
 });

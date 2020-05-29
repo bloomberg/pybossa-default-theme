@@ -129,7 +129,6 @@ export default {
       csrfToken: null,
       assignee: [],
       users: {},
-      accessLevels: {},
       dataAccessConfigured: false,
       validAccessLevels: [],
       search: '',
@@ -145,15 +144,6 @@ export default {
   methods: {
     hasLevel (level) {
       return this.dataAccessConfig.includes(level);
-    },
-
-    getAccessLevels (dataAccessConfig) {
-      let levels = {};
-      let access = dataAccessConfig;
-      this.validAccessLevels.forEach(function (level) {
-        levels[level[0]] = access.includes(level[0]);
-      });
-      return levels;
     },
 
     getAssignedUsers (assignedUsers) {
@@ -221,7 +211,6 @@ export default {
             this.dataAccessConfigured = true;
         }
         if (this.dataAccessConfigured && this.validAccessLevels.length > 0) {
-            this.accessLevels = this.getAccessLevels(dataProjConfig.data_access);
             const res = await fetch(this.getURL('assign-users'), {
             method: 'GET',
             headers: {
