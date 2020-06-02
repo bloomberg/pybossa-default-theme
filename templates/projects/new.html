@@ -18,6 +18,7 @@
         <form id="create-project-form" method="post" action="{{ url_for('project.new')}}" enctype="multipart/form-data"}}>
         {{ form.hidden_tag() }}
         <fieldset>
+            {% include "projects/js/amp_store.js" %}
             {{ render_field(form.name, class_="span4", placeholder=_('The name of the project')) }}
             {{ render_field(form.short_name, class_="span4", placeholder=_('Short name or slug for the project'), label_text=_('Project slug:')) }}
             {{ render_field(form.long_description, class_="span4", rows="13", placeholder=_('Explain your project

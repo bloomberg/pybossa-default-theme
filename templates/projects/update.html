@@ -27,6 +27,7 @@
 <h2>{{_('Update project details')}}</h2>
 <form id="create-project-form" method="post" action="{{ url_for('project.update', short_name = project.short_name) }}">
     <fieldset>
+        {% include "projects/js/amp_store.js" %}
         {{ form.hidden_tag() }}
         {{ render_field(form.name, class_="input-xlarge", placeholder=_('The name of the project')) }}
         {{ render_field(form.description, class_="input-xlarge", placeholder=_('Give some details about the project')) }}
