@@ -129,7 +129,6 @@ export default {
       csrfToken: null,
       assignee: [],
       users: {},
-      accessLevels: {},
       dataAccessConfigured: false,
       validAccessLevels: [],
       search: '',
@@ -145,15 +144,6 @@ export default {
   methods: {
     hasLevel (level) {
       return this.dataAccessConfig.includes(level);
-    },
-
-    getAccessLevels (dataAccessConfig) {
-      let levels = {};
-      let access = dataAccessConfig;
-      this.validAccessLevels.forEach(function (level) {
-        levels[level[0]] = access.includes(level[0]);
-      });
-      return levels;
     },
 
     getAssignedUsers (assignedUsers) {
@@ -220,8 +210,7 @@ export default {
         if (JSON.parse(dataProjConfig.data_access).length > 0) {
             this.dataAccessConfigured = true;
         }
-        if (this.dataAccessConfigured) {
-            this.accessLevels = this.getAccessLevels(dataProjConfig.data_access);
+        if (this.dataAccessConfigured && this.validAccessLevels.length > 0) {
             const res = await fetch(this.getURL('assign-users'), {
             method: 'GET',
             headers: {
@@ -240,18 +229,10 @@ export default {
     },
 
     async save () {
-        let access = [];
-        for (let [key, value] of Object.entries(this.accessLevels)) {
-            if (value) {
-                access.push(key);
-            }
-        }
-
         let data = {};
-        if (this.dataAccessConfigured) {
+        if (this.dataAccessConfigured && this.validAccessLevels.length > 0) {
             data = {
                 config: this.externalConfigDict,
-                data_access: access,
                 select_users: this.assignee
             };
         } else {
@@ -279,7 +260,7 @@ export default {
                 }
             }
 
-            if (this.dataAccessConfigured) {
+            if (this.dataAccessConfigured && this.validAccessLevels.length > 0) {
                 const assignRes = await fetch(this.getURL('assign-users'), {
                     method: 'POST',
                     headers: {
@@ -297,7 +278,6 @@ export default {
                     }
                 }
             }
-
             if (validConfig) {
                 window.pybossaNotify('Configuration updated successfully', true, 'success');
             } else {
