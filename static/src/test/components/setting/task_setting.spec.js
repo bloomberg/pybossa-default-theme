@@ -103,6 +103,7 @@ describe('taskConfig', () => {
     wrapper.vm._data.timeoutMinute = 'str';
     wrapper.vm._data.timeoutSecond = 10;
     wrapper.vm._data.defaultRedundancy = 2;
+    wrapper.vm._data.currentRedundancy = 4;
     const saveButton = wrapper.findAll('button').at(0);
     saveButton.trigger('click');
     await localVue.nextTick();
