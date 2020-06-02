@@ -45,7 +45,7 @@ describe('projectConfig', () => {
     wrapper.vm._data.searchResult = [{ id: 1, fullname: 'user1' }, { id: 2, fullname: 'user2' }];
     wrapper.vm._data.search = 'user2';
     const search = wrapper.findAll('input').at(0);
-    search.trigger('keyup.enter')
+    search.trigger('keyup.enter');
     expect(wrapper.vm._data.searchResult).toHaveLength(1);
   });
 
