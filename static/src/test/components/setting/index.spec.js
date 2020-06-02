@@ -1,5 +1,5 @@
 
-import { shallowMount, createLocalVue } from '@vue/test-utils';
+import { mount, shallowMount, createLocalVue } from '@vue/test-utils';
 import projectConfig from '../../../components/setting/index.vue';
 
 const localVue = createLocalVue();
@@ -36,6 +36,17 @@ describe('projectConfig', () => {
     expect(wrapper.vm._data.validAccessLevels).toEqual(VALID_ACCESS_LEVELS);
     expect(wrapper.vm._data.externalConfigDict).toEqual(EXT_CONF);
     expect(wrapper.vm._data.dataAccessConfigured).toEqual(true);
+  });
+
+  it('search users', async () => {
+    const wrapper = mount(projectConfig);
+    wrapper.vm._data.assignee = [];
+    wrapper.vm._data.users = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
+    wrapper.vm._data.searchResult = [{ id: 1, fullname: 'user1' }, { id: 2, fullname: 'user2' }];
+    wrapper.vm._data.search = 'user2';
+    const search = wrapper.findAll('input').at(0);
+    search.trigger('keyup.enter')
+    expect(wrapper.vm._data.searchResult).toHaveLength(1);
   });
 
   it('fetch assign-user data', async () => {
