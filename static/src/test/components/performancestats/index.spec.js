@@ -36,6 +36,28 @@ describe('performancestats', () => {
   it('displays data', async () => {
     fetch.mockImplementation(() => Promise.resolve({
       ok: true,
+      json: () => [{
+        info: {
+          wrong: 0,
+          right: 4
+        },
+        user_id: 1,
+        field: 'field_1',
+        project_id: 2,
+        stat_type: 'accuracy',
+        id: 3
+      }]
+    }));
+    const wrapper = shallowMount(PerformanceStats, { localVue, propsData });
+    wrapper.setData({ user: 'user_1', selectedField: 'field_1' });
+    const show = wrapper.find('button');
+    show.trigger('click');
+    await localVue.nextTick();
+  });
+
+  it('displays data error', async () => {
+    fetch.mockImplementation(() => Promise.resolve({
+      ok: true,
       json: () => { throw new Error('error'); }
     }));
     const wrapper = shallowMount(PerformanceStats, { localVue, propsData });
