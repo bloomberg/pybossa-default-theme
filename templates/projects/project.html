@@ -19,8 +19,12 @@
                 </tr>
                 {% if current_user.admin or current_user.subadmin or current_user.id in project.owners_ids %}
                 <tr>
-                    <td><p>Number of incomplete tasks:</p></td>
+                    <td><p>Number of tasks in queue:</p></td>
                     <td><p>{{n_available_tasks}}</p></td>
+                </tr>
+                <tr>
+                    <td><p>Number of priority 1 tasks in queue:</p></td>
+                    <td><p>{{n_priority_1_tasks}}</p></td>
                 </tr>
                 <tr>
                     <td><p>Number of tasks in progress:</p></td>
@@ -31,7 +35,7 @@
                     <td><p>{{num_expected_task_runs}}</p></td>
                 </tr>
                 <tr>
-                    <td><p>Number of incomplete task runs:</p></td>
+                    <td><p>Number of task runs in queue:</p></td>
                     <td><p>{{num_remaining_task_runs}}</p></td>
                 </tr>
                 <tr>
