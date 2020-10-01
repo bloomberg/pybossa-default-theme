@@ -8,7 +8,7 @@ matrix:
     before_install:
     - cd static/src && ls
     install:
-    - npm config set @dtwebservices:registry="https://api.bintray.com/npm/bloomberg/gigwork///"
+    - npm config set @dtwebservices:registry="https://artprod.dev.bloomberg.com/artifactory/api/npm/npm-repos"
     - yarn install
     - ls ./node_modules
     - yarn test
