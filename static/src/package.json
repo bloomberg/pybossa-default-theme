@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "editor.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bloomberg/pybossa-default-theme.git"
+  },
   "scripts": {
     "watch": "webpack -w -d",
     "test": "jest",

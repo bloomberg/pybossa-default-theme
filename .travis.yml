@@ -8,7 +8,8 @@ matrix:
     before_install:
     - cd static/src && ls
     install:
-    - npm config set @dtwebservices:registry="https://api.bintray.com/npm/bloomberg/gigwork///"
+    - TASK_PRESENTER_VERSION=$(node -p "require('./package.json').devDependencies['@dtwebservices/task-presenter-components']")
+    - npm install https://s3.amazonaws.com/cf-s3uploads/pybv/${TASK_PRESENTER_VERSION}/task-presenter-components.tgz
     - yarn install
     - ls ./node_modules
     - yarn test
