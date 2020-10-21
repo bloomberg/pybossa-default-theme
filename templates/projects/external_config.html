@@ -10,12 +10,14 @@
 {% else %}
 
 <p style="color:#FF0000";>{{_('WARNING: INVALID FILE LOCATION OR PERMISSIONS MAY RESULT IN <b>LOSS OF DATA</b>.')}}</p>
+{% if config.EXT_CONFIG_TIPS %}
 <p>{{_('Before starting your project please confirm the following:')}}</p>
-<ul>
-    <li>The bucket and/or directory you plan to access already exists ({{brand}} will not create this for you)</li>
-    <li>You have permission to access the directories and/or buckets you plan to use</li>
-    <li>You have spelled the bucket and/or directory name correctly</li>
-</ul>
+<ol>
+	{% for tip in config.EXT_CONFIG_TIPS %}
+    <li>{{tip}}</li>
+    {% endfor %}
+</ol>
+{% endif %}
 
 {% if config.EXT_CONFIG_DOCS %}
 <p>For more information on these settings, please consult the <a href={{config.EXT_CONFIG_DOCS}}>External Configurations documentation</a>.</p>
