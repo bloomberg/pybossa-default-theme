@@ -1,22 +1,62 @@
 <div class="row">
-<div class="span11">
-   <div class="col-md-offset-1 col-md-10" style="margin-top:30px;">
-    <h1>{{ _('About') }}</h1>
-    <p>
-    {{ config.BRAND }} {{ _(' is a crowd-sourcing, open-source platform that enables people to contribute to the projects that utilise online assistance in performing tasks that require human cognition. Anyone around the world with an internet connection can contribute.') }}</p>
-    <p>
-    {{ _('The way') }} {{ config.BRAND }} {{ _('projects work is:') }}
-    <ul>
-        <li>{{ _("Qualified users contribute to the projects as per their convenience") }}</li>
-        <li>{{ _('Upon login, users can contribute to the projects with the project credentials shared with them') }}</li>
-        <li>{{ _('There would be multiple users working on similar task in a project') }}</li>
-        <li>{{ _("Upon project completion, users will be credited for their efforts") }}</li>
-    </ul>
-    </p>
-    <h1 id="contact">{{ _('Contact information') }}</h1>
-    <ul>
-        <li>{{ _('For more info, send us an e-mail to: ') }}<a href="mailto:{{ config.CONTACT_EMAIL }}">{{ config.CONTACT_EMAIL }}</a>
-    </ul>
-   </div>
-</div>
+    <div class="container text-center firstfold">
+        <br/>
+        <br/>
+        <h1>{{_('About')}} {{brand}}</h1>
+    </div>
+    <section class="about">
+        <div>
+            <div class="container text-left firstfold">
+                <div class="row">
+                 <div class="col-md-12">
+                    <p style="text-align:center; margin-left: 130px; margin-right: 130px">{{brand}} {{ _('is a crowdsourcing platform based on <a href="https://pybossa.com">Pybossa</a>, an open source crowdsourcing platform developed by <a href="https://scifabric.com">Scifabric.</a>  GIGwork makes it easy to host, run, monitor and review/analyze quality for annotation projects. This makes it possible to quickly create new datasets with information that requires human cognition, knowledge, or intelligence to complete — such as text annotation, language translation, data collection/capture, and more!') }}</p>
+                 </div>
+                </div>
+              </br>
+                <div class="row">
+                  <div class="col-md-offset-3 col-md-3 text-center pagination-centered">
+                    <p><img src="{{ url_for('static', filename='img/unlocked.svg') }}" height="120"></p>
+                  </div>
+                  <div class="col-md-3 text-center pagination-centered">
+                    <p><img src="{{ url_for('static', filename='img/wink.svg') }}" height="120"></p>
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-md-offset-3 col-md-3 text-center">
+                    <p class="">{{ _('Unlocks the power<br />of global freelancers') }}</p>
+                  </div>
+                  <div class="col-md-3 text-center">
+                    <p class="">{{ _('Things computers<br />can\'t do') }}</p>
+                  </div>
+                </div>
+                <br/>
+                <p style="margin-left: 150px; margin-right: 130px">{{brand}} {{ _('also makes it easy for your tasks to leverage some of the most advanced annotation tools on the market to make the most of contributions from both human and machine intelligence. <br></br> Anyone with an authorized account can create a task. Anyone you want from around the world with can contribute. Both tasks and workforces can be configured in the way that best suits your task.', brand=brand) }}</p>
+                <br/>
+                <div class="row">
+                  <div class="col-md-12" style="margin-left: 150px; margin-right: 130px">
+                    {{ gettext('%(brand)s projects work as follows . . .', brand=brand) }}
+                    </br>
+                    </br>
+                    {{ _('. . . for requesters') }}
+                    <ul>
+                      <li>{{ _('Requesters can post tasks they created on their own, or using %(brand)s’s Task Wizard', brand=brand) }}</li>
+                      <li>{{ _('Requesters recruit qualified workers and share task credentials with them') }}</li>
+                      <li>{{ _('Requesters can define how many tasks need to be completed, and by whom') }}</li>
+                      <li>{{ _('Requesters can specify redundancy, quality control checks, and task order can be specified as needed') }}</li>
+                      <li>{{ _('When the work is done, requesters can download a report containing the data collected/created') }}</li>
+                    </ul>
+                    </br>
+                    {{ _('. . . for contributors') }} 
+                    <ul>
+                      <li>{{ _('Workers can log in to contribute to projects with the credentials shared with them') }}</li>
+                      <li>{{ _('Workers can contribute to the projects at their own convenience, when and where they want to') }}</li>
+                      <li>{{ _('Upon project completion, workers will be credited for their efforts') }}</li>
+                    </ul>
+                    </br>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
