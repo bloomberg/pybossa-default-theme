@@ -1,7 +1,10 @@
 <template>
   <div class="stats-config row">
     <GigSpinner v-if="waiting" />
-    <div class="col-md-12" v-bind:style="waiting && 'opacity: 0.5'">
+    <div
+      class="col-md-12"
+      :style="waiting && 'opacity: 0.5'"
+    >
       <div
         v-for="category in inputFields"
         :key="category.display"
@@ -141,7 +144,7 @@ export default {
       searchResult: this.users,
       inputFields: [],
       externalConfigDict: {},
-      waiting: false,
+      waiting: false
     };
   },
   created () {
@@ -233,8 +236,7 @@ export default {
         }
       } catch (error) {
         window.pybossaNotify('Error reading project config.', true, 'error');
-      }
-      finally {
+      } finally {
         this.waiting = false;
       }
     },
@@ -298,8 +300,7 @@ export default {
             }
         } catch (error) {
             window.pybossaNotify('An error occurred configuring project config.', true, 'error');
-        }
-        finally {
+        } finally {
           this.waiting = false;
         }
     }

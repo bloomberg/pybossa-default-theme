@@ -12,7 +12,8 @@
     "test": "jest",
     "test-update": "jest -u",
     "coveralls": "jest --coverage",
-    "lint": "eslint  './**/*.{js,vue}'"
+    "lint": "eslint  './**/*.{js,vue}'",
+    "lint-fix": "eslint './**/*.{js,vue}' --fix"
   },
   "author": "",
   "license": "ISC",

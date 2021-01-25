@@ -1,41 +1,43 @@
 /* eslint-disable vue/no-v-html */
 <template>
   <div>
-  <GigSpinner v-if="waiting" />
-  <div v-if="" v-bind:style="waiting && 'opacity: 0.5'">
-    <label>
-      Number of gold tasks: {{ model.n_gold_unexpired }}
-    </label>
-    <p>
-      In order to enable and configure quiz mode, this project must have at least one gold question. Please click
-      <a
-        :href="`/project/${getProjectName()}/make-random-gold`"
-      >here</a> to create gold questions.
-    </p>
-    <vue-form-generator
-      ref="quizForm"
-      :schema="schema"
-      :model="model"
-      :options="formOptions"
-      @validated="onValidated"
-      @model-updated="onModelUpdate"
-    />
-    <table-quiz
-      :users="users"
-      :model="model"
-      :quiz-mode-choices="quizModeChoices"
-      @updateUsers="updateUsers"
-    />
-    <div>
-      <button
-        :disabled="!validForm"
-        class="btn btn-sm btn-primary"
-        @click="save"
-      >
-        Save
-      </button>
+    <GigSpinner v-if="waiting" />
+    <div
+      :style="waiting && 'opacity: 0.5'"
+    >
+      <label>
+        Number of gold tasks: {{ model.n_gold_unexpired }}
+      </label>
+      <p>
+        In order to enable and configure quiz mode, this project must have at least one gold question. Please click
+        <a
+          :href="`/project/${getProjectName()}/make-random-gold`"
+        >here</a> to create gold questions.
+      </p>
+      <vue-form-generator
+        ref="quizForm"
+        :schema="schema"
+        :model="model"
+        :options="formOptions"
+        @validated="onValidated"
+        @model-updated="onModelUpdate"
+      />
+      <table-quiz
+        :users="users"
+        :model="model"
+        :quiz-mode-choices="quizModeChoices"
+        @updateUsers="updateUsers"
+      />
+      <div>
+        <button
+          :disabled="!validForm"
+          class="btn btn-sm btn-primary"
+          @click="save"
+        >
+          Save
+        </button>
+      </div>
     </div>
-  </div>
   </div>
 </template>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
@@ -205,8 +207,7 @@ export default {
         }
       } catch (error) {
         window.pybossaNotify('An error occurred on the server.', true, 'error');
-      }
-      finally {
+      } finally {
         this.waiting = false;
       }
     },
@@ -242,8 +243,7 @@ export default {
         }
       } catch (error) {
          window.pybossaNotify('An error occurred on the server.', true, 'error');
-      }
-      finally {
+      } finally {
         this.waiting = false;
       }
      }

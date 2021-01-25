@@ -1,7 +1,10 @@
 <template>
   <div class="stats-config row">
     <GigSpinner v-if="waiting" />
-    <div class="col-md-12" v-bind:style="waiting && 'opacity: 0.5'">
+    <div
+      class="col-md-12"
+      :style="waiting && 'opacity: 0.5'"
+    >
       <div class="form-group row">
         <div class="col-md-6">
           <p> Task Scheduler </p>
@@ -158,7 +161,7 @@ export default {
       currentRedundancy: null,
       goldtaskProbability: 0,
       remaining: 0,
-      webhook: null,
+      webhook: null
     };
   },
 
@@ -263,7 +266,7 @@ export default {
               rand_within_priority: this.random,
               gold_task_probability: this.goldtaskProbability
               };
-        const notification_data = {
+        const notificationData = {
           remaining: this.remaining,
           webhook: this.webhook
         };
@@ -310,7 +313,7 @@ export default {
             'X-CSRFToken': this.csrfToken
           },
           credentials: 'same-origin',
-          body: JSON.stringify(notification_data)
+          body: JSON.stringify(notificationData)
         });
         if (timeoutRes.ok && redundancyRes.ok && schedulerRes.ok && taskNotificationRes.ok) {
           const timeoutData = await timeoutRes.json();
@@ -333,8 +336,7 @@ export default {
         }
       } catch (error) {
         window.pybossaNotify('An error occurred configuring task config.', true, 'error');
-      }
-      finally {
+      } finally {
         this.waiting = false;
       }
     }

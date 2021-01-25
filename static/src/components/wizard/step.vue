@@ -1,5 +1,8 @@
 <template>
-  <div class="stepwizard-step" :class="activeClass">
+  <div
+    class="stepwizard-step"
+    :class="activeClass"
+  >
     <a
       role="button"
       :class="stepClass"

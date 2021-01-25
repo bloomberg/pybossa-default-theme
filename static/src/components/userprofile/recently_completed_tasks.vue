@@ -1,5 +1,8 @@
 <template>
-  <p style="cursor:default" title="Since 12AM in your browser's timezone.">
+  <p
+    style="cursor:default"
+    title="Since 12AM in your browser's timezone."
+  >
     <strong><i class="fa fa-list-ol" /> Tasks Completed Today:</strong>
     <span v-if="count !== -1 && !error">{{ count }}</span>
     <span v-if="count === -1 && !error">Loading...</span>
