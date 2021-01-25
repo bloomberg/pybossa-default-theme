@@ -10,6 +10,7 @@
   "scripts": {
     "watch": "webpack -w -d",
     "test": "jest",
+    "test-update": "jest -u",
     "coveralls": "jest --coverage",
     "lint": "eslint  './**/*.{js,vue}'"
   },
