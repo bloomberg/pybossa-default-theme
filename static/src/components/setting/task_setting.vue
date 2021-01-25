@@ -98,6 +98,14 @@
           >
         </div>
       </div>
+      <div class="form-group row">
+        <div class="col-md-6">
+          <p> Task Notification </p>
+        </div>
+        <div class="col-md-6 pull-right">
+            <a href="tasks/task_notification">Settings</a>
+        </div>
+      </div>
       <div>
         <button
           class="btn btn-sm btn-primary"
