@@ -1,6 +1,8 @@
 /* eslint-disable vue/no-v-html */
 <template>
-  <div v-if="dataLoaded">
+  <div>
+  <GigSpinner v-if="waiting" />
+  <div v-if="" v-bind:style="waiting && 'opacity: 0.5'">
     <label>
       Number of gold tasks: {{ model.n_gold_unexpired }}
     </label>
@@ -34,6 +36,7 @@
       </button>
     </div>
   </div>
+  </div>
 </template>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <script>
@@ -42,18 +45,23 @@ import VueFormGenerator from './quiz_form_validators';
 import Vue from 'vue';
 import Multiselect from 'vue-multiselect';
 import TableQuiz from './quiz_result_table.vue';
+import GigSpinner from '../common/gig_spinner.vue';
 
 Vue.component('multiselect', Multiselect);
 Vue.component('table-quiz', TableQuiz);
 
 export default {
   components: {
-        'vue-form-generator': VueFormGenerator.component },
+    'vue-form-generator': VueFormGenerator.component,
+    GigSpinner
+  },
+
   data () {
     return {
       csrfToken: null,
       users: {},
       dataLoaded: false,
+      waiting: false,
       validForm: false,
       quizModeChoices: {},
 
@@ -181,6 +189,7 @@ export default {
 
     async getData () {
       try {
+        this.waiting = true;
         const res = await fetch(this.getURL(), {
           method: 'GET',
           headers: {
@@ -197,10 +206,14 @@ export default {
       } catch (error) {
         window.pybossaNotify('An error occurred on the server.', true, 'error');
       }
+      finally {
+        this.waiting = false;
+      }
     },
     async save () {
       try {
         this.dataLoaded = false;
+        this.waiting = true;
         const res = await fetch(this.getURL(), {
           method: 'POST',
           headers: {
@@ -229,6 +242,9 @@ export default {
         }
       } catch (error) {
          window.pybossaNotify('An error occurred on the server.', true, 'error');
+      }
+      finally {
+        this.waiting = false;
       }
      }
   }

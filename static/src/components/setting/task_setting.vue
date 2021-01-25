@@ -1,6 +1,7 @@
 <template>
   <div class="stats-config row">
-    <div class="col-md-12">
+    <GigSpinner v-if="waiting" />
+    <div class="col-md-12" v-bind:style="waiting && 'opacity: 0.5'">
       <div class="form-group row">
         <div class="col-md-6">
           <p> Task Scheduler </p>
@@ -137,10 +138,16 @@
 </template>
 
 <script>
+import GigSpinner from '../common/gig_spinner.vue';
 
 export default {
+  components: {
+    GigSpinner
+  },
+
   data () {
     return {
+      waiting: false,
       csrfToken: '',
       sched: '',
       schedVariants: null,
@@ -173,6 +180,8 @@ export default {
     },
 
     async getData () {
+      this.waiting = true;
+
       try {
         const res = await fetch(this.getURL('tasks/redundancy'), {
           method: 'GET',
@@ -234,10 +243,14 @@ export default {
       } catch (error) {
         window.pybossaNotify('An error occurred.', true, 'error');
       }
+
+      this.waiting = false;
     },
 
     async save () {
       try {
+        this.waiting = true;
+
         let _defaultRedundancy = parseInt(this.defaultRedundancy);
         let _currentRedundancy = parseInt(this.currentRedundancy);
         let _minute = parseInt(this.timeoutMinute);
@@ -320,6 +333,9 @@ export default {
         }
       } catch (error) {
         window.pybossaNotify('An error occurred configuring task config.', true, 'error');
+      }
+      finally {
+        this.waiting = false;
       }
     }
   }

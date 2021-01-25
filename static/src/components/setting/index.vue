@@ -1,6 +1,7 @@
 <template>
   <div class="stats-config row">
-    <div class="col-md-12">
+    <GigSpinner v-if="waiting" />
+    <div class="col-md-12" v-bind:style="waiting && 'opacity: 0.5'">
       <div
         v-for="category in inputFields"
         :key="category.display"
@@ -122,8 +123,13 @@
 </template>
 
 <script>
+import GigSpinner from '../common/gig_spinner.vue';
 
 export default {
+  components: {
+    GigSpinner
+  },
+
   data () {
     return {
       csrfToken: null,
@@ -134,7 +140,8 @@ export default {
       search: '',
       searchResult: this.users,
       inputFields: [],
-      externalConfigDict: {}
+      externalConfigDict: {},
+      waiting: false,
     };
   },
   created () {
@@ -193,6 +200,7 @@ export default {
 
     async getData () {
       try {
+        this.waiting = true;
         const res = await fetch(this.getURL('project-config'), {
           method: 'GET',
           headers: {
@@ -226,6 +234,9 @@ export default {
       } catch (error) {
         window.pybossaNotify('Error reading project config.', true, 'error');
       }
+      finally {
+        this.waiting = false;
+      }
     },
 
     async save () {
@@ -241,6 +252,7 @@ export default {
             };
         }
         try {
+            this.waiting = true;
             let validConfig = true;
             const projectRes = await fetch(this.getURL('project-config'), {
                 method: 'POST',
@@ -286,6 +298,9 @@ export default {
             }
         } catch (error) {
             window.pybossaNotify('An error occurred configuring project config.', true, 'error');
+        }
+        finally {
+          this.waiting = false;
         }
     }
   }
