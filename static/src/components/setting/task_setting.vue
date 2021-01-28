@@ -267,7 +267,7 @@ export default {
               gold_task_probability: this.goldtaskProbability
               };
         const notificationData = {
-          remaining: this.remaining || "",
+          remaining: this.remaining || '',
           webhook: this.webhook
         };
         if (this.currentRedundancy !== null) {
