@@ -14,9 +14,6 @@
     <div id="task_priority" class="col-md-4">
         {{ render_project_card_option(project, upload_method, title=_('Task Priority'), explanation=_('Change the priority of the tasks'), link=url_for('project.task_priority', short_name=project.short_name), link_action_text=_('Priority'), icon='sort-numeric-asc')}}
     </div>
-    <div id="task_delete" class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Delete Tasks'), explanation=_('Delete all the tasks and associated answers'), link=url_for('project.delete_tasks', short_name=project.short_name), link_action_text=_('Delete'), icon='trash')}}
-    </div>
     <div id="task_redundancy" class="col-md-4">
         {{ render_project_card_option(project, upload_method, title=_('Tasks Redundancy'), explanation=_('Change the redundancy level for the tasks'), link=url_for('project.task_n_answers', short_name=project.short_name), link_action_text=_('Redundancy'), icon='repeat')}}
     </div>
