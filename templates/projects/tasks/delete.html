@@ -34,7 +34,7 @@
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
         <button type="submit" name='btn' class="btn btn-sm btn-danger" id="delete-btn"
             value="Yes" disabled>{{_('Yes')}}</button>
-        <a href="{{ url_for('project.settings', short_name = project.short_name) }}"
+        <a href="{{ url_for('project.tasks', short_name = project.short_name) }}"
             class="btn btn-lg btn-primary">{{_('No, do not delete
             anything!')}}</a>
     </div>
