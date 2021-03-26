@@ -18,12 +18,13 @@
           <p> Co-owners </p>
         </div>
         <div class="col-md-8 pull-right">
-          <div v-if="Object.keys(coowners).length">
-            <p style= "display: inline-block; word-break: normal;line-height: 35px;">
+          <div v-if="Object.keys(coowners).length" >
+            <p style= "display: inline-block; word-break: normal; line-height: 35px;">
               <span
                 v-for="u in coowners"
                 :key="u.name"
                 class=" label label-lg label-info"
+                style="display: inline-block"
               >
                 {{ u.fullname }}
                 <i
