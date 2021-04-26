@@ -30,6 +30,9 @@
     <div id="import-users" class="col-md-4">
         {{ render_project_card_option(project, upload_method, title=_('Import Users'), explanation=_('Import bulk users with local csv file'), link=url_for('admin.userimport', type='usercsvimport'), link_action_text=_('Import'), icon='user')}}
     </div>
+     <div id="create-users" class="col-md-4">
+        {{ render_project_card_option(project, upload_method, title=_('Create Users'), explanation=_('Create a new user'), link=url_for('account.register'), link_action_text=_('Create'), icon='user')}}
+    </div>
     {% endif %}
     {% if current_user.admin %}
     <div id="exportprojects" class="col-md-4">
