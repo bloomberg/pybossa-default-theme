@@ -103,9 +103,11 @@
 <script>
 $(function() {
   $('.btn-expand-collapse').click(function() {
-    $('#menu').toggleClass('collapsed');
-    $('#menu a.btn-expand-collapse i').toggleClass('fa-chevron-left fa-chevron-right');
-    $('#menu a.list-group-item i.pull-right').toggleClass('fa fa-chevron-right');
+    const menu = $('#menu');
+
+    menu.toggleClass('collapsed');
+    menu.find('a.btn-expand-collapse i').toggleClass('fa-chevron-left fa-chevron-right');
+    menu.find('a.list-group-item i.pull-right').toggleClass('fa fa-chevron-right');
     $('.container').toggleClass('w-100');
   });
 });
