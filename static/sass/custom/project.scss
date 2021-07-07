@@ -45,3 +45,40 @@ legend.import {
 .pointer {
   cursor: pointer;
 }
+
+.btn-expand-collapse {
+    text-align: center;
+}
+
+.fa.fa-angle-double-left,
+.fa.fa-angle-double-right {
+  font-size: 24px;
+}
+
+#menu {
+  overflow: hidden;
+  -webkit-transition: all 0.1s ease-in-out;
+  -moz-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+}
+
+#menu.collapsed {
+    width: 75px;
+}
+
+#menu.collapsed .nav-label {
+  display: none;
+}
+
+#menu i.nav-icon {
+  color: #3AB0D5;
+}
+
+.list-group-item.btn-expand-collapse i {
+    color: #c0c0c0;
+}
+
+.list-group-item.btn-expand-collapse:hover i,
+.list-group-item.btn-expand-collapse:focus i {
+    color: #666;
+}
