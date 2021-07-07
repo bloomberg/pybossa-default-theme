@@ -55,11 +55,22 @@ legend.import {
   font-size: 24px;
 }
 
+.container {
+  -webkit-transition: width 0.1s ease-in-out;
+  -moz-transition: width 0.1s ease-in-out;
+  transition: width 0.1s ease-in-out;
+}
+
+.w-100 {
+  width: 100%;
+}
+
 #menu {
   overflow: hidden;
   -webkit-transition: all 0.1s ease-in-out;
   -moz-transition: all 0.1s ease-in-out;
   transition: all 0.1s ease-in-out;
+  max-width: 250px;
 }
 
 #menu.collapsed {
