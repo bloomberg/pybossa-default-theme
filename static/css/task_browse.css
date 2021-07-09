@@ -74,3 +74,18 @@
     top:40%;
     font-size: 32px;
 }
+
+.task-pagination {
+    margin-left: 8px;
+    font-size: 12px;
+    color: #606060;
+}
+
+.table>thead>tr>th, .table>thead>tr>td, .table>tbody>tr>th, .table>tbody>tr>td, .table>tfoot>tr>th, .table>tfoot>tr>td {
+    padding: 0;
+}
+
+.make-gold-cell {
+    width: 104px;
+    margin-top: 4px;
+}
