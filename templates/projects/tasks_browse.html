@@ -126,7 +126,9 @@
     </ul>
     <div style="clear: both;"></div>
     <div class="task-pagination">
-        Displaying tasks {{ ((pagination.page - 1) * pagination.per_page) + 1 }}-{{ ((pagination.page) * pagination.per_page) }} of {{ pagination.total_count }}
+        <div>
+            Displaying tasks {{ ((pagination.page - 1) * pagination.per_page) + 1 }}-{{ ((pagination.page) * pagination.per_page) }} of {{ pagination.total_count }}
+        </div>
     </div>
 </div>
 <div>
