@@ -85,11 +85,13 @@ legend.import {
   -moz-transition: width 0.1s ease-in-out;
   transition: width 0.1s ease-in-out;
   max-width: 250px;
+  min-width: 220px;
 }
 
 #menu.collapsed {
     width: 75px;
-}
+    min-width: 75px;
+  }
 
 #menu.collapsed .nav-label {
   display: none;
@@ -103,6 +105,10 @@ legend.import {
   color: white;
 }
 
+#menu a.list-group-item .icon {
+  margin-top: 3px;
+}
+
 .list-group-item.btn-expand-collapse i {
     color: #c0c0c0;
 }
@@ -110,4 +116,8 @@ legend.import {
 .list-group-item.btn-expand-collapse:hover i,
 .list-group-item.btn-expand-collapse:focus i {
     color: #666;
+}
+
+.clear {
+  clear: both;
 }
