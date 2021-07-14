@@ -137,14 +137,43 @@
 </ul>
 <script>
 $(function() {
-  $('.btn-expand-collapse').click(function() {
-    const menu = $('#menu');
+  const leftNavCollapseKey = 'leftNavCollapse';
+  const menu = $('#menu');
+  const btnCollapse = menu.find('a.btn-expand-collapse');
 
+  const collapseLeftNav = () => {
+    // Toggle collapsed state of left-nav menu.
     menu.toggleClass('collapsed');
-    menu.find('a.btn-expand-collapse i').toggleClass('fa-chevron-left fa-chevron-right');
+    // Hide right chevrons of left-nav menu items.
     menu.find('a.list-group-item i.pull-right').toggleClass('fa fa-chevron-right');
+    // Toggle the chevron in the collapse button right/left or left/right.
+    btnCollapse.find('i').toggleClass('fa-chevron-left fa-chevron-right');
+    // Expand width of the page when left-nav is collapsed.
     $('.container').toggleClass('w-100');
-  });
+  };
+
+  const onCollapseLeftNav = () => {
+    // Event handler for clicking left-nav collapse button.
+    collapseLeftNav();
+    // Save settings.
+    localStorage[leftNavCollapseKey] = !JSON.parse(localStorage[leftNavCollapseKey] || '""');
+  };
+
+  const initializeLeftNav = () => {
+    // Initialize left-nav menu state.
+    JSON.parse(localStorage[leftNavCollapseKey] || '""') && collapseLeftNav();
+
+    // Setup event handler on left-nav collapse button click.
+    btnCollapse.click(onCollapseLeftNav);
+
+    // Enable animation effort on left-nav collapse.
+    setTimeout(() => {
+      menu.addClass('animated');
+      $('.container').addClass('animated');
+    }, 1);
+  };
+
+  initializeLeftNav();
 });
 </script>
 {% endmacro %}

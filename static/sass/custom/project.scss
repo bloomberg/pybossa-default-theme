@@ -55,7 +55,7 @@ legend.import {
   font-size: 24px;
 }
 
-.container {
+.container.animated, #menu.animated {
   -webkit-transition: width 0.1s ease-in-out;
   -moz-transition: width 0.1s ease-in-out;
   transition: width 0.1s ease-in-out;
@@ -67,41 +67,43 @@ legend.import {
 
 #menu {
   overflow: hidden;
-  -webkit-transition: width 0.1s ease-in-out;
-  -moz-transition: width 0.1s ease-in-out;
-  transition: width 0.1s ease-in-out;
   max-width: 250px;
   min-width: 220px;
-}
 
-#menu.collapsed {
+  &.collapsed {
     width: 75px;
     min-width: 75px;
+
+    .nav-label {
+      display: none;
+    }
   }
 
-#menu.collapsed .nav-label {
-  display: none;
+  i.nav-icon {
+    color: #3AB0D5;
+  }
+
+  a.active i.nav-icon {
+    color: white;
+  }
+
+  a.list-group-item .icon {
+    margin-top: 3px;
+  }
 }
 
-#menu i.nav-icon {
-  color: #3AB0D5;
-}
-
-#menu a.active i.nav-icon {
-  color: white;
-}
-
-#menu a.list-group-item .icon {
-  margin-top: 3px;
-}
-
-.list-group-item.btn-expand-collapse i {
+.list-group-item.btn-expand-collapse {
+  i {
     color: #c0c0c0;
-}
+  }
 
-.list-group-item.btn-expand-collapse:hover i,
-.list-group-item.btn-expand-collapse:focus i {
+  &:hover i {
     color: #666;
+  }
+
+  &:focus {
+    background-color: white;
+  }
 }
 
 .clear {
