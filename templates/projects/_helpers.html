@@ -148,6 +148,10 @@ $(function() {
     menu.find('a.list-group-item i.pull-right').toggleClass('fa fa-chevron-right');
     // Toggle the chevron in the collapse button right/left or left/right.
     btnCollapse.find('i').toggleClass('fa-chevron-left fa-chevron-right');
+    // Set the tooltip to show the menu item text.
+    menu.find('a.list-group-item').each((index, e) => {
+      $(e).attr('title', menu.hasClass('collapsed') ? $(e).text() : '');
+    });
     // Expand width of the page when left-nav is collapsed.
     $('.container').toggleClass('w-100');
   };
