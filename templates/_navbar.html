@@ -1,10 +1,6 @@
 <div class="navbar navbar-default navbar-fixed-top">
     <div class="navbar-inner" style="min-height:100px;">
-    {% if request.cookies.leftNavCollapse == "true" %}
-    <div class="container w-100">
-    {% else %}
-    <div class="container">
-    {% endif %}
+    <div class="container {{'w-100' if request.cookies.leftNavCollapse == 'true'}}">
         <div class="navbar-header">
             <a class="navbar-brand" href="{{ url_for('home.home') }}">
                 <img src="{{url_for('static',filename='img/' + logo)}}" alt="{{brand}}">
