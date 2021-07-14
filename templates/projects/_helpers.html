@@ -47,7 +47,7 @@
                 <span class='nav-label'>{{_('Info')}}</span>
             </div>
             <div class="icon">
-                <i class="fa fa-chevron-right pull-right"></i>
+                <i class="{{'fa fa-chevron-right' if request.cookies.leftNavCollapse != 'true'}} pull-right"></i>
             </div>
             <div class="clear"></div>
         </a>
@@ -60,7 +60,7 @@
                 </span>
             </div>
             <div class="icon">
-                <i class="fa fa-chevron-right pull-right"></i>
+                <i class="{{'fa fa-chevron-right' if request.cookies.leftNavCollapse != 'true'}} pull-right"></i>
             </div>
             <div class="clear"></div>
         </a>
@@ -73,7 +73,7 @@
                 <span class='nav-label'>{{_('Project Settings')}}</span>
             </div>
             <div class="icon">
-                <i class="fa fa-chevron-right pull-right"></i>
+                <i class="{{'fa fa-chevron-right' if request.cookies.leftNavCollapse != 'true'}} pull-right"></i>
             </div>
             <div class="clear"></div>
         </a>
@@ -86,7 +86,7 @@
                 <span class='nav-label'>{{_('Statistics')}}</span>
             </div>
             <div class="icon">
-                <i class="fa fa-chevron-right pull-right"></i>
+                <i class="{{'fa fa-chevron-right' if request.cookies.leftNavCollapse != 'true'}} pull-right"></i>
             </div>
             <div class="clear"></div>
         </a>
@@ -97,7 +97,7 @@
             <span class='nav-label'>{{_('Performance Stats')}}</span>
         </div>
         <div class="icon">
-            <i class="fa fa-chevron-right pull-right"></i>
+            <i class="{{'fa fa-chevron-right' if request.cookies.leftNavCollapse != 'true'}} pull-right"></i>
         </div>
         <div class="clear"></div>
     </a>
@@ -109,7 +109,7 @@
                 <span class='nav-label'>{{_('Audit Logs')}}</span>
             </div>
             <div class="icon">
-                <i class="fa fa-chevron-right pull-right"></i>
+                <i class="{{'fa fa-chevron-right' if request.cookies.leftNavCollapse != 'true'}} pull-right"></i>
             </div>
             <div class="clear"></div>
         </a>
@@ -122,14 +122,14 @@
                 <span class='nav-label'>{{_('Clone')}}</span>
             </div>
             <div class="icon">
-                <i class="fa fa-chevron-right pull-right"></i>
+                <i class="{{'fa fa-chevron-right' if request.cookies.leftNavCollapse != 'true'}} pull-right"></i>
             </div>
             <div class="clear"></div>
         </a>
     {% endif %}
 
     <a class="list-group-item btn-expand-collapse" href="#">
-        <i class="fa fa-chevron-left"></i>
+        <i class="fa {{'fa-chevron-left' if request.cookies.leftNavCollapse != 'true' else 'fa-chevron-right'}}"></i>
     </a>
 </div>
 <ul class="list-group" style="margin-top: 21px;">
@@ -162,11 +162,7 @@ $(function() {
     return null;
   }
 
-  const collapseLeftNav = () => {
-    // Hide right chevrons of left-nav menu items.
-    menu.find('a.list-group-item i.pull-right').toggleClass('fa fa-chevron-right');
-    // Toggle the chevron in the collapse button right/left or left/right.
-    btnCollapse.find('i').toggleClass('fa-chevron-left fa-chevron-right');
+  const leftNavTooltips = () => {
     // Set the tooltip to show the menu item text.
     menu.find('a.list-group-item').each((index, e) => {
       $(e).attr('title', menu.hasClass('collapsed') ? $(e).text() : '');
@@ -176,8 +172,12 @@ $(function() {
   const onCollapseLeftNav = () => {
     // Toggle collapsed state of left-nav menu.
     menu.toggleClass('collapsed');
-    // Event handler for clicking left-nav collapse button.
-    collapseLeftNav();
+    // Hide right chevrons of left-nav menu items.
+    menu.find('a.list-group-item i.pull-right').toggleClass('fa fa-chevron-right');
+    // Toggle the chevron in the collapse button right/left or left/right.
+    btnCollapse.find('i').toggleClass('fa-chevron-left fa-chevron-right');
+    // Set tooltips on left-nav menu.
+    leftNavTooltips();
     // Expand width of the page when left-nav is collapsed.
     $('.container').toggleClass('w-100');
     // Save settings, use a cookie for smooth rendering of page upon load from server.
@@ -188,7 +188,7 @@ $(function() {
   const initializeLeftNav = () => {
     // Initialize left-nav menu state.
     const isCollapse = getCookie('leftNavCollapse');
-    isCollapse && collapseLeftNav();
+    isCollapse && leftNavTooltips();
 
     // Setup event handler on left-nav collapse button click.
     btnCollapse.click(onCollapseLeftNav);
