@@ -16,23 +16,25 @@
 <div class="row">
     <div class="col-md-12">
         <p>{{_('This page shows all the available tasks for this project')}}.</p>
-        <p>{{_('For each task, you can find the following information')}}:
-        <ul>
-            <li><strong>{{_('Task')}} </strong><span class="label label-info">#0000</span> {{_('This number identifies the task for the project and it is unique')}}</li>
-            {% if can_know_task_is_gold %}
-            <li><strong>0 of 30</strong>: {{_('The first number shows how many answers have been submitted for the task and the')}} {{_('second number')}} {{_('how many need to be obtained to mark the task as')}} <strong>{{_('completed')}}</strong>.
-            {{_(' As gold tasks have no redundancy, this is marked as infinity total tasks for gold tasks')}}.</li>
-            {% endif %}
-            <li><strong>{{_('Priority')}}</strong>: {{_('Shows the priority of the task, priority ranges from 0.0 (lowest value) to 1.0 (highest priority)')}}.</li>
-            <li><strong>%{{_('Complete')}}</strong>: {{_('Shows the percentage that has been completed of the task')}}.{{_(' This would be blank for gold tasks as such tasks has no redundancy and would never complete')}}.</li>
-            <li><strong>{{_('Created')}}</strong>: {{_('When the task was created')}}.</li>
-            <li><strong>{{_('Completed')}}</strong>: {{_('When the task most recently became fully completed. The task may not be fully completed if the task has changed redundancy')}}.</li>
-            {% if can_know_task_is_gold %}
-            <li><strong>{{_('Gold Tasks')}}</strong>: {{_('Shows button to make a non-gold task gold or update a current gold task')}}.</li>
-            {% endif %}
-            <li><strong>{{_('Actions')}}</strong>: {{_('Three current actions: download, view, or get user info for task results')}}.</li>
-        </ul>
-        </p>
+        {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
+          <p>{{_('For each task, you can find the following information')}}:
+          <ul>
+              <li><strong>{{_('Task')}} </strong><span class="label label-info">#0000</span> {{_('This number identifies the task for the project and it is unique')}}</li>
+              {% if can_know_task_is_gold %}
+              <li><strong>0 of 30</strong>: {{_('The first number shows how many answers have been submitted for the task and the')}} {{_('second number')}} {{_('how many need to be obtained to mark the task as')}} <strong>{{_('completed')}}</strong>.
+              {{_(' As gold tasks have no redundancy, this is marked as infinity total tasks for gold tasks')}}.</li>
+              {% endif %}
+              <li><strong>{{_('Priority')}}</strong>: {{_('Shows the priority of the task, priority ranges from 0.0 (lowest value) to 1.0 (highest priority)')}}.</li>
+              <li><strong>%{{_('Complete')}}</strong>: {{_('Shows the percentage that has been completed of the task')}}.{{_(' This would be blank for gold tasks as such tasks has no redundancy and would never complete')}}.</li>
+              <li><strong>{{_('Created')}}</strong>: {{_('When the task was created')}}.</li>
+              <li><strong>{{_('Completed')}}</strong>: {{_('When the task most recently became fully completed. The task may not be fully completed if the task has changed redundancy')}}.</li>
+              {% if can_know_task_is_gold %}
+              <li><strong>{{_('Gold Tasks')}}</strong>: {{_('Shows button to make a non-gold task gold or update a current gold task')}}.</li>
+              {% endif %}
+              <li><strong>{{_('Actions')}}</strong>: {{_('Three current actions: download, view, or get user info for task results')}}.</li>
+          </ul>
+          </p>
+        {% endif %}
     </div>
 </div>
 <div id="tasksBrowseControls">

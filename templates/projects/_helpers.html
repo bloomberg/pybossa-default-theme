@@ -305,6 +305,9 @@
         {% else %}
         <a href="{{ url_for('project.presenter', short_name=project.short_name)}}" class="btn btn-lg btn-primary">{{ _('Start Contributing Now!') }}</a>
         {% endif %}
+        {% if project['enable_task_queue'] %}
+            <a class="btn btn-lg btn-primary" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}">{{ _('Task List') }}</a>
+        {% endif %}
     </div>
     {% endif %}
     {% if project['contrib_button'] == 'cannot_contribute' %}
@@ -319,7 +322,10 @@
         <a class="btn btn-lg btn-warning" role="button" href="{{url_for('project.make_random_task_gold', short_name=project.short_name)}}">{{ _('Create Gold Questions!') }}</a>
         <a href="{{url_for('project.publish', short_name=project.short_name, published=1)}}" class="btn btn-lg btn-default">{{ _('Publish it') }}</a>
     </div>
+        {% if project['enable_task_queue'] %}
+            <a class="btn btn-lg btn-primary" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}">{{ _('Task List') }}</a>
         {% endif %}
+    {% endif %}
 {% endmacro %}
 
 {% macro render_dropdown(id, class, entries, current_selection) %}
