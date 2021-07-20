@@ -6,13 +6,13 @@
 
 {% block content %}
 <div id="wizard-container">
-    <div class="container navigation-element">
-        {% include "projects/wizard.html" %}
+    <div class="container navigation-element {{'w-100' if request.cookies.leftNavCollapse == 'true'}}">
+    {% include "projects/wizard.html" %}
     </div>
 </div>
-<div id="main-container" class="container">
+<div id="main-container" class="container {{'w-100' if request.cookies.leftNavCollapse == 'true'}}">
     {% if project %}
-    <div id="menu" class="col-sm-3 col-md-3 navigation-element">
+    <div id="menu" class="col-sm-3 col-md-3 navigation-element animated {{'collapsed' if request.cookies.leftNavCollapse == 'true'}}">
         {{ helper.render_project_local_nav(project, active_link, current_user, pro_features, upload_method) }}
     </div>
     <!-- Project -->
