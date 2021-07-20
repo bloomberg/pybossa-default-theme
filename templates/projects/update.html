@@ -38,16 +38,16 @@
         {{ render_field(form.input_data_class, onchange="handleAmpStoreProps()") }}
         {{ render_field(form.output_data_class, onchange="handleAmpStoreProps()") }}
         {% if 'amp_store' in form %}
-            {{ render_checkbox_field(form.amp_store, checked=form.amp_store.data, onchange="onOptinClicked()", tooltip=_('Opt in to store annotations on Annotation Management Platform')) }}
+            {{ render_checkbox_field(form.amp_store, checked=form.amp_store.data, onchange="onOptinClicked()", title=_('Opt in to store annotations on Annotation Management Platform')) }}
             {{ render_field(form.amp_pvf, placeholder=_('PVF that should be used for annotation store')) }}
         {% endif %}
         {{ render_field(form.category_id) }}
-        {{ render_checkbox_field(form.allow_anonymous_contributors, tooltip=_('Check if you want to allow anonymous users contribute to your project')) }}
-        {{ render_checkbox_field(form.hidden, tooltip=_('Check if you want to hide your project'))}}
-        {{ render_checkbox_field(form.email_notif, tooltip=_('Check if you want to send email notifications to your workers when new tasks are loaded'))}}
+        {{ render_checkbox_field(form.allow_anonymous_contributors, title=_('Check if you want to allow anonymous users contribute to your project')) }}
+        {{ render_checkbox_field(form.hidden, title=_('Check if you want to hide your project'))}}
+        {{ render_checkbox_field(form.email_notif, title=_('Check if you want to send email notifications to your workers when new tasks are loaded'))}}
         {% if sync_enabled %}
             <h3>{{_('Enable project syncing')}}</h3>
-            {{ render_checkbox_field(form.sync_enabled, class_="", tooltip=_('Check if you want to enable project syncing')) }}
+            {{ render_checkbox_field(form.sync_enabled, class_="", title=_('Check if you want to enable project syncing')) }}
         {% endif %}
         <a name="data-access"></a>
         {{ render_field(form.password, type="password", class_="password", placeholder="Leave blank to maintain set password") }}
