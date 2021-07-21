@@ -36,8 +36,7 @@
     </div>
 </div>
 <div id="tasksBrowseControls">
-    <b> {{ _('Displaying') }} {{ pagination.curr_page_count }} {{ _(' of') }} {{ pagination.total_count }} </b>
-    <ul>
+    <ul class="pull-left">
         <li>
             <button class="btn btn-sm" id='btnRefresh' type="button" data-toggle="popover" data-trigger="focus" data-placement="top" data-constraints='focus' data-content="{{_('Please refresh the results after setting the desired filters.')}}" title="{{_('Search')}}">
                 <i class="fa fa-search" aria-hidden="true"></i>
@@ -125,13 +124,21 @@
         </li>
         {% endif %}
     </ul>
+    <div style="clear: both;"></div>
+    <div class="task-pagination">
+        <div>
+            Displaying tasks {{ ((pagination.page - 1) * pagination.per_page) + 1 }}-{{ ((pagination.page) * pagination.per_page) }} of {{ pagination.total_count }}
+</div>
+    </div>
 </div>
 <div>
-    <table width="100%" id="tasksGrid">
+    <table id="tasksGrid" class="table table-sm table-striped table-hover">
         <thead>
             <tr>
                 {% if 'task_id' in filter_data.display_columns %}
-                <th class="{{'sort-asc' if filter_data.order_by['task_id'] == 'asc'}} {{'sort-desc' if filter_data.order_by['task_id'] == 'desc'}} sortable" data-sort="task_id">Task#</th>
+                <th class="{{'sort-asc' if filter_data.order_by['task_id'] == 'asc'}} {{'sort-desc' if filter_data.order_by['task_id'] == 'desc'}} sortable" data-sort="task_id">
+                    Task #
+                </th>
                 {% endif %}
                 {% if 'priority' in filter_data.display_columns %}
                 <th class="{{'sort-asc' if filter_data.order_by['priority'] == 'asc'}} {{'sort-desc' if filter_data.order_by['priority'] == 'desc'}} sortable" data-sort="priority">Priority</th>
@@ -182,12 +189,12 @@
                 {% endif %}
                 {% if 'created' in filter_data.display_columns %}
                 <th>
-                   <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dateModal" data-info="created">Select date range</button>
+                   <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dateModal" data-info="created">Filter</button>
                 </th>
                 {% endif %}
                 {% if 'finish_time' in filter_data.display_columns %}
                 <th>
-                   <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dateModal" data-info="ftime">Select date range</button>
+                   <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dateModal" data-info="ftime">Filter</button>
                 </th>
                 {% endif %}
                 {% if 'gold_task' in filter_data.display_columns %}
@@ -244,34 +251,38 @@
                     {% endif %}
                 {% endif %}
                 {% if 'created' in filter_data.display_columns %}
-                <td>{{ t.created }}</td>
+                <td><div style="width: 100px;">{{ t.created }}</div></td>
                 {% endif %}
                 {% if 'finish_time' in filter_data.display_columns %}
-                <td>{{ t.finish_time or '' }}</td>
+                <td><div style="width: 100px;">{{ t.finish_time or '' }}</div></td>
                 {% endif %}
                 {% if 'gold_task' in filter_data.display_columns %}
                     {% if t.calibration %}
-                        <td style="width: 100%">
+                        <td>
+                            <div class="make-gold-cell">
                             <!-- Allow project owner, sub-admin co-owners, and admins to update Gold tasks -->
                             {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
                                 <a class="gold-task label label-warning" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='gold') }}">Update</a>
                             {% else %}
                                 <div class="gold-task label label-default" title="Only Project owners can update Gold tasks.">Update</div>
                             {% endif %}
+                            </div>
                         </td>
                     {% else %}
-                    <td style="width: 100%">
+                    <td>
+                        <div class="make-gold-cell">
                         <!-- Allow project owner, sub-admin co-owners, and admins to make Gold tasks -->
                         {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
                             <a class="gold-task label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='gold') }}">Make Gold</a>
                         {% else %}
                             <div class="gold-task label label-default" title="Only project owners can make Gold tasks.">Make Gold</div>
                         {% endif %}
+                        </div>
                     </td>
                     {% endif %}
                 {% endif %}
                 {% if 'actions' in filter_data.display_columns %}
-                <td style="width: 100px;">
+                <td>
                     <div style="width: 100px;">
                       {% if task_pct >= 100 %}
                       <a id="fulldownload" rel="nofollow" class="btn btn-success btn-xs fa fa-cloud-download" href="{{ url_for('project.export', short_name=project.short_name, task_id=t.id) }}">&nbsp;</a> <button type="button" class="btn btn-success btn-xs fa fa-eye" data-toggle="modal" data-target="#infoModal" data-info="{{ url_for('project.export', short_name=project.short_name, task_id=t.id) }}"></button>
