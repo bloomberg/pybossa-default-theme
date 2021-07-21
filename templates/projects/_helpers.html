@@ -42,100 +42,73 @@
 
     {% if is_admin_or_subadmin_or_owner %}
         <a class="list-group-item {% if active_link=='info'%}active{% endif %}" href="{{url_for('project.details', short_name=project.short_name)}}">
-            <div class="pull-left">
-                <i class='nav-icon fa fa-info-circle'></i>
-                <span class='nav-label'>{{_('Info')}}</span>
-            </div>
-            <div class="icon">
-                <i class="{{'fa fa-chevron-right' if request.cookies.leftNavCollapse != 'true'}} pull-right"></i>
-            </div>
-            <div class="clear"></div>
+            <i class='nav-icon fa fa-info-circle'></i>
+            <span class='nav-label'>{{_('Info')}}</span>
+            <i class="fa fa-chevron-right pull-right"></i>
         </a>
 
         <a class="list-group-item {% if active_link=='tasks'%}active{% endif %}" href="{{url_for('project.tasks', short_name=project.short_name)}}">
-            <div class="pull-left">
-                <i class='nav-icon fa fa-tasks'></i>
-                <span class='nav-label'>
-                    {{_('Tasks')}} {{daniel}}{% if task_subsection_1_text %}<a href="{{task_subsection_1}}">{{task_subsection_1_text}}</a>{% endif %}
-                </span>
-            </div>
-            <div class="icon">
-                <i class="{{'fa fa-chevron-right' if request.cookies.leftNavCollapse != 'true'}} pull-right"></i>
-            </div>
-            <div class="clear"></div>
+            <i class='nav-icon fa fa-tasks'></i>
+            <span class='nav-label'>
+                {{_('Tasks')}} {{daniel}}{% if task_subsection_1_text %}<a href="{{task_subsection_1}}">{{task_subsection_1_text}}</a>{% endif %}
+            </span>
+            <i class="fa fa-chevron-right pull-right"></i>
         </a>
     {% endif %}
 
     {% if is_subadmin_and_owner_or_admin %}
         <a class="list-group-item {% if active_link=='settings'%}active{% endif %}" href="{{url_for('project.settings', short_name=project.short_name)}}">
-            <div class="pull-left">
-                <i class='nav-icon fa fa-cog'></i>
-                <span class='nav-label'>{{_('Project Settings')}}</span>
-            </div>
-            <div class="icon">
-                <i class="{{'fa fa-chevron-right' if request.cookies.leftNavCollapse != 'true'}} pull-right"></i>
-            </div>
-            <div class="clear"></div>
+            <i class='nav-icon fa fa-cog'></i>
+            <span class='nav-label'>{{_('Project Settings')}}</span>
+            <i class="fa fa-chevron-right pull-right"></i>
         </a>
     {% endif %}
 
     {% if is_admin_or_subadmin_or_owner %}
         <a class="list-group-item {% if active_link=='stats'%}active{% endif %}" href="{{url_for('project.show_stats', short_name=project.short_name)}}">
-            <div class="pull-left">
-                <i class='nav-icon fa fa-signal'></i>
-                <span class='nav-label'>{{_('Statistics')}}</span>
-            </div>
-            <div class="icon">
-                <i class="{{'fa fa-chevron-right' if request.cookies.leftNavCollapse != 'true'}} pull-right"></i>
-            </div>
-            <div class="clear"></div>
+            <i class='nav-icon fa fa-signal'></i>
+            <span class='nav-label'>{{_('Statistics')}}</span>
+            <i class="fa fa-chevron-right pull-right"></i>
         </a>
     {% endif %}
     <a class="list-group-item {% if active_link=='performancestats'%}active{% endif %}" href="{{url_for('project.show_performance_stats', short_name=project.short_name)}}">
-        <div class="pull-left">
-            <i class='nav-icon fa fa-star'></i>
-            <span class='nav-label'>{{_('Performance Stats')}}</span>
-        </div>
-        <div class="icon">
-            <i class="{{'fa fa-chevron-right' if request.cookies.leftNavCollapse != 'true'}} pull-right"></i>
-        </div>
-        <div class="clear"></div>
+        <i class='nav-icon fa fa-star'></i>
+        <span class='nav-label'>{{_('Performance Stats')}}</span>
+        <i class="fa fa-chevron-right pull-right"></i>
     </a>
 
     {% if is_subadmin_and_owner_or_admin %}
         <a class="list-group-item {% if active_link=='auditlog'%}active{% endif %}" href="{{url_for('project.auditlog', short_name=project.short_name)}}">
-            <div class="pull-left">
-                <i class='nav-icon fa fa-file'></i>
-                <span class='nav-label'>{{_('Audit Logs')}}</span>
-            </div>
-            <div class="icon">
-                <i class="{{'fa fa-chevron-right' if request.cookies.leftNavCollapse != 'true'}} pull-right"></i>
-            </div>
-            <div class="clear"></div>
+            <i class='nav-icon fa fa-file'></i>
+            <span class='nav-label'>{{_('Audit Logs')}}</span>
+            <i class="fa fa-chevron-right pull-right"></i>
         </a>
     {% endif %}
 
     {% if is_subadmin_or_admin %}
         <a class="list-group-item {% if active_link=='clone'%}active{% endif %}" href="{{url_for('project.clone', short_name=project.short_name)}}">
-            <div class="pull-left">
-                <i class='nav-icon fa fa-clone'></i>
-                <span class='nav-label'>{{_('Clone')}}</span>
-            </div>
-            <div class="icon">
-                <i class="{{'fa fa-chevron-right' if request.cookies.leftNavCollapse != 'true'}} pull-right"></i>
-            </div>
-            <div class="clear"></div>
+            <i class='nav-icon fa fa-clone'></i>
+            <span class='nav-label'>{{_('Clone')}}</span>
+            <i class="fa fa-chevron-right pull-right"></i>
         </a>
     {% endif %}
 
     <a class="list-group-item btn-expand-collapse" href="#">
-        <i class="fa {{'fa-chevron-left' if request.cookies.leftNavCollapse != 'true' else 'fa-chevron-right'}}"></i>
+        <i class="fa fa-chevron-left"></i>
     </a>
 </div>
 <ul class="list-group" style="margin-top: 21px;">
     {{ render_project_thumbnail(project, upload_method, class="img-responsive thumbnail card") }}
 </ul>
-<script src='/static/js/nav.js'></script>
+<script>
+$(function() {
+  $('.btn-expand-collapse').click(function() {
+    $('#menu').toggleClass('collapsed');
+    $('#menu a.btn-expand-collapse i').toggleClass('fa-chevron-left fa-chevron-right');
+    $('#menu a.list-group-item i.pull-right').toggleClass('fa fa-chevron-right');
+  });
+});
+</script>
 {% endmacro %}
 
 {% macro render_project_summary(project, n_tasks, overall_progress, last_activity, current_user, upload_method) -%}

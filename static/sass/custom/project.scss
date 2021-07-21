@@ -69,65 +69,30 @@ legend.import {
   font-size: 24px;
 }
 
-.container.animated, #menu.animated {
-  -webkit-transition: width 0.1s ease-in-out;
-  -moz-transition: width 0.1s ease-in-out;
-  transition: width 0.1s ease-in-out;
-}
-
-.w-100 {
-  width: 100%;
-}
-
 #menu {
   overflow: hidden;
-  max-width: 250px;
-  min-width: 220px;
+  -webkit-transition: all 0.1s ease-in-out;
+  -moz-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+}
 
-  &.collapsed {
+#menu.collapsed {
     width: 75px;
-    min-width: 75px;
-
-    .nav-label {
-      display: none;
-    }
-  }
-
-  i.nav-icon {
-    color: #3AB0D5;
-  }
-
-  a.active i.nav-icon {
-    color: white;
-  }
-
-  a.list-group-item .icon {
-    margin-top: 3px;
-  }
 }
 
-.list-group-item.btn-expand-collapse {
-  i {
+#menu.collapsed .nav-label {
+  display: none;
+}
+
+#menu i.nav-icon {
+  color: #3AB0D5;
+}
+
+.list-group-item.btn-expand-collapse i {
     color: #c0c0c0;
-  }
+}
 
-  &:hover i {
+.list-group-item.btn-expand-collapse:hover i,
+.list-group-item.btn-expand-collapse:focus i {
     color: #666;
-  }
-
-  &:focus {
-    background-color: white;
-  }
-}
-
-.clear {
-  clear: both;
-}
-
-.pl-0, .checkbox span.pl-0 label {
-  padding-left: 0px;
-}
-
-.pl-20 {
-  padding-left: 20px;
 }
