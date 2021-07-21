@@ -44,21 +44,23 @@
                 <i class="fa fa-search" aria-hidden="true"></i>
             </button>
         </li>
-        <li class="dropdown">
-            <button class="dropdown-toggle btn btn-sm" type="button" id="btnDownload" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Export tasks/task runs"><span class="fa fa-cloud-download"></span><span class="caret"></span></button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
-                <li><a href="#" class='download-type' id='task-csv'>Tasks CSV</a></li>
-                <li><a href="#" class='download-type' id='task-json'>Tasks JSON</a></li>
-                <li><a href="#" class='download-type' id='task_run-csv'>Task Runs CSV</a></li>
-                <li><a href="#" class='download-type' id='task_run-json'>Task Runs JSON</a></li>
-                <li><a href="#" class='download-type' id='task_run-csv-meta'>Task Runs with Metadata CSV</a></li>
-                <li><a href="#" class='download-type' id='task_run-json-meta'>Task Runs with Metadata JSON</a></li>
-                <li><a href="#" class='download-type' id='consensus-csv'>Consensus CSV</a></li>
-                <li><a href="#" class='download-type' id='consensus-json'>Consensus JSON</a></li>
-                <li><a href="#" class='download-type' id='consensus-csv-meta'>Consensus with Metadata CSV</a></li>
-                <li><a href="#" class='download-type' id='consensus-json-meta'>Consensus with Metadata JSON</a></li>
-           </ul>
-        </li>
+        {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
+          <li class="dropdown">
+              <button class="dropdown-toggle btn btn-sm" type="button" id="btnDownload" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Export tasks/task runs"><span class="fa fa-cloud-download"></span><span class="caret"></span></button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
+                  <li><a href="#" class='download-type' id='task-csv'>Tasks CSV</a></li>
+                  <li><a href="#" class='download-type' id='task-json'>Tasks JSON</a></li>
+                  <li><a href="#" class='download-type' id='task_run-csv'>Task Runs CSV</a></li>
+                  <li><a href="#" class='download-type' id='task_run-json'>Task Runs JSON</a></li>
+                  <li><a href="#" class='download-type' id='task_run-csv-meta'>Task Runs with Metadata CSV</a></li>
+                  <li><a href="#" class='download-type' id='task_run-json-meta'>Task Runs with Metadata JSON</a></li>
+                  <li><a href="#" class='download-type' id='consensus-csv'>Consensus CSV</a></li>
+                  <li><a href="#" class='download-type' id='consensus-json'>Consensus JSON</a></li>
+                  <li><a href="#" class='download-type' id='consensus-csv-meta'>Consensus with Metadata CSV</a></li>
+                  <li><a href="#" class='download-type' id='consensus-json-meta'>Consensus with Metadata JSON</a></li>
+            </ul>
+          </li>
+        {% endif %}
         <li class="dropdown">
             <button class="dropdown-toggle btn btn-sm" type="button" id="btnRpp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Tasks per page">{{records_per_page}}<span class="caret"></span></button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
@@ -67,34 +69,38 @@
                 {% endfor %}
             </ul>
         </li>
-        <li class="dropdown" id="columnsSettings">
-            <button class="dropdown-toggle btn btn-sm" type="button" id="btnColumnsSettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Columns"><span class="fa fa-cog"><span class="caret"></span></button>
-            <ul class="dropdown-menu" aria-labelledby="btnColumnsSettings">
-                <li><a href="#" class="columns_settings" data-value="task_id" tabIndex="-1"><input type="checkbox" {{ "checked" if "task_id" in filter_data.display_columns }} disabled="disabled" />&nbsp;Task Id</a></li>
-                <li><a href="#" class="columns_settings" data-value="priority" tabIndex="-1"><input type="checkbox" {{ "checked" if "priority" in filter_data.display_columns }}/>&nbsp;Priority</a></li>
-                <li><a href="#" class="columns_settings" data-value="pcomplete" tabIndex="-1"><input type="checkbox" {{ "checked" if "pcomplete" in filter_data.display_columns }}/>&nbsp;%Complete</a></li>
-                <li><a href="#" class="columns_settings" data-value="created" tabIndex="-1"><input type="checkbox" {{ "checked" if "created" in filter_data.display_columns }}/>&nbsp;Created</a></li>
-                <li><a href="#" class="columns_settings" data-value="finish_time" tabIndex="-1"><input type="checkbox" {{ "checked" if "finish_time" in filter_data.display_columns }}/>&nbsp;Completed</a></li>
-                {% if can_know_task_is_gold %}
-                <li><a href="#" class="columns_settings" data-value="gold_task" tabIndex="-1"><input type="checkbox" {{ "checked" if "gold_task" in filter_data.display_columns }}/>&nbsp;Gold Task</a></li>
-                {% endif %}
-                <li><a href="#" class="columns_settings" data-value="actions" tabIndex="-1"><input type="checkbox" {{ "checked" if "actions" in filter_data.display_columns }}/>&nbsp;Actions</a></li>
-            </ul>
-        </li>
+        {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
+          <li class="dropdown" id="columnsSettings">
+              <button class="dropdown-toggle btn btn-sm" type="button" id="btnColumnsSettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Columns"><span class="fa fa-cog"><span class="caret"></span></button>
+              <ul class="dropdown-menu" aria-labelledby="btnColumnsSettings">
+                  <li><a href="#" class="columns_settings" data-value="task_id" tabIndex="-1"><input type="checkbox" {{ "checked" if "task_id" in filter_data.display_columns }} disabled="disabled" />&nbsp;Task Id</a></li>
+                  <li><a href="#" class="columns_settings" data-value="priority" tabIndex="-1"><input type="checkbox" {{ "checked" if "priority" in filter_data.display_columns }}/>&nbsp;Priority</a></li>
+                  <li><a href="#" class="columns_settings" data-value="pcomplete" tabIndex="-1"><input type="checkbox" {{ "checked" if "pcomplete" in filter_data.display_columns }}/>&nbsp;%Complete</a></li>
+                  <li><a href="#" class="columns_settings" data-value="created" tabIndex="-1"><input type="checkbox" {{ "checked" if "created" in filter_data.display_columns }}/>&nbsp;Created</a></li>
+                  <li><a href="#" class="columns_settings" data-value="finish_time" tabIndex="-1"><input type="checkbox" {{ "checked" if "finish_time" in filter_data.display_columns }}/>&nbsp;Completed</a></li>
+                  {% if can_know_task_is_gold %}
+                  <li><a href="#" class="columns_settings" data-value="gold_task" tabIndex="-1"><input type="checkbox" {{ "checked" if "gold_task" in filter_data.display_columns }}/>&nbsp;Gold Task</a></li>
+                  {% endif %}
+                  <li><a href="#" class="columns_settings" data-value="actions" tabIndex="-1"><input type="checkbox" {{ "checked" if "actions" in filter_data.display_columns }}/>&nbsp;Actions</a></li>
+              </ul>
+          </li>
+        {% endif %}
         {% if filter_columns %}
-        <li class="dropdown" id="info-columns">
-            <button class="dropdown-toggle btn btn-sm" type="button" id="btn-filter-columns" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Display task info"><span class="fa fa-database"><span class="caret"></span></button>
-            <ul class="dropdown-menu" aria-labelledby="btn-filter-columns">
-                {% for column_name in filter_columns %}
-                    <li><a href="#" class="info_columns_settings" data-value={{column_name}} tabIndex='-1'><input type="checkbox" {{ "checked" if column_name in info_columns }}/>&nbsp; {{column_name}}</a></li>
-                {% endfor %}
-            </ul>
-        </li>
-        <li>
-            <button class="btn btn-sm" id='btnFilter' type="button" data-target="#filterModal" data-toggle="modal" title="Filter by request fields">
-                <i class="fa fa-filter" aria-hidden="true"></i>
-            </button>
-        </li>
+          {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
+            <li class="dropdown" id="info-columns">
+                <button class="dropdown-toggle btn btn-sm" type="button" id="btn-filter-columns" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Display task info"><span class="fa fa-database"><span class="caret"></span></button>
+                <ul class="dropdown-menu" aria-labelledby="btn-filter-columns">
+                    {% for column_name in filter_columns %}
+                        <li><a href="#" class="info_columns_settings" data-value={{column_name}} tabIndex='-1'><input type="checkbox" {{ "checked" if column_name in info_columns }}/>&nbsp; {{column_name}}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+          {% endif %}
+          <li>
+              <button class="btn btn-sm" id='btnFilter' type="button" data-target="#filterModal" data-toggle="modal" title="Filter by request fields">
+                  <i class="fa fa-filter" aria-hidden="true"></i>
+              </button>
+          </li>
         {% endif %}
         <!-- Project owner, subadmin that are project co-owners and admins can edit/delete task properties -->
         {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
@@ -111,7 +117,7 @@
             </button>
         </li>
         {% endif %}
-        {% if language_options %}
+        {% if language_options and ((current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin) %}
         <li>
             <button id="btn-filter-user-pref" class="btn btn-sm" type="button" data-target="#filter-upref-modal" data-toggle="modal" title="Filter by user preference">
                 <i class="fa fa-user" aria-hidden="true"></i>

@@ -299,14 +299,14 @@
     <div class="btn-group btn-contribute">
         {% if current_user.admin or (current_user.subadmin and current_user.id in project.owners_ids) %}
         <div id="btn-contribute-now" class="btn-group btn-contribute" role="group">
-              <a class="btn btn-lg btn-primary" role="button" href="{{url_for('project.presenter', short_name=project.short_name)}}">{{ _('Start Contributing Now!') }}</a>
-              <a class="btn btn-lg btn-warning" role="button" href="{{url_for('project.make_random_task_gold', short_name=project.short_name)}}">{{ _('Create Gold Questions!') }}</a>
+              <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.presenter', short_name=project.short_name)}}">{{ _('Start Contributing Now!') }}</a>
+              <a class="btn btn-lg btn-warning btn-padding" role="button" href="{{url_for('project.make_random_task_gold', short_name=project.short_name)}}">{{ _('Create Gold Questions!') }}</a>
         </div>
         {% else %}
-        <a href="{{ url_for('project.presenter', short_name=project.short_name)}}" class="btn btn-lg btn-primary">{{ _('Start Contributing Now!') }}</a>
+        <a href="{{ url_for('project.presenter', short_name=project.short_name)}}" class="btn btn-lg btn-primary btn-padding">{{ _('Start Contributing Now!') }}</a>
         {% endif %}
         {% if project['enable_task_queue'] %}
-            <a class="btn btn-lg btn-primary" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}">{{ _('Task List') }}</a>
+    <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}">{{ _('Task List') }}</a>
         {% endif %}
     </div>
     {% endif %}
@@ -318,12 +318,12 @@
     {% endif %}
     {% if project['contrib_button'] == 'publish' %}
     <div id="btn-contribute-now" class="btn-group btn-contribute" role="group">
-        <a class="btn btn-lg btn-primary" role="button" href="{{url_for('project.presenter', short_name=project.short_name)}}">{{ _('Test it!') }}</a>
-        <a class="btn btn-lg btn-warning" role="button" href="{{url_for('project.make_random_task_gold', short_name=project.short_name)}}">{{ _('Create Gold Questions!') }}</a>
+        <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.presenter', short_name=project.short_name)}}">{{ _('Test it!') }}</a>
+        <a class="btn btn-lg btn-warning btn-padding" role="button" href="{{url_for('project.make_random_task_gold', short_name=project.short_name)}}">{{ _('Create Gold Questions!') }}</a>
         <a href="{{url_for('project.publish', short_name=project.short_name, published=1)}}" class="btn btn-lg btn-default">{{ _('Publish it') }}</a>
     </div>
         {% if project['enable_task_queue'] %}
-            <a class="btn btn-lg btn-primary" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}">{{ _('Task List') }}</a>
+            <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}">{{ _('Task List') }}</a>
         {% endif %}
     {% endif %}
 {% endmacro %}

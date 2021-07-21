@@ -87,6 +87,10 @@ a.btn {
 .btn-danger {
   @include button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border);
 }
+// add margin to buttons on front page
+.btn-padding {
+  margin-right: 3px !important;
+}
 
 
 // Link buttons
