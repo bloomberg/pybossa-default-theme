@@ -123,3 +123,11 @@ legend.import {
 .clear {
   clear: both;
 }
+
+.pl-0, .checkbox span.pl-0 label {
+  padding-left: 0px;
+}
+
+.pl-20 {
+  padding-left: 20px;
+}
