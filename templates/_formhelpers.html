@@ -17,7 +17,9 @@
 {% macro render_checkbox_field(field) -%}
     <div class="checkbox pl-20">
         {{ field(type='checkbox', **kwargs) }}
-        {{ field.label(title=kwargs['title'], class='pl-0') }}
+        <span class='pl-0'>
+            {{ field.label(title=kwargs.title) if kwargs else field.label }}
+        </span>
     </div>
 {%- endmacro %}
 
