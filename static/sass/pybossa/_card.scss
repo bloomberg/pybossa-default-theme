@@ -98,6 +98,7 @@ $lines-to-show: 3;
     .col-md-4 {
         float: left;
         width: 50%;
+        max-width: 250px;
 
         .post-pic {
             height: 130px;
@@ -129,6 +130,10 @@ $lines-to-show: 3;
                     text-overflow: unset;
                     height: 68px;
                     clear: both;
+
+                    &.draft {
+                        height: 46px;
+                    }
                 }
             }
         }

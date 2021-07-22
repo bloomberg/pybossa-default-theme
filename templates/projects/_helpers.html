@@ -483,7 +483,7 @@
         {% if published == False %}
         <span class="label label-info">DRAFT</span>
         {% endif %}
-        <p title="{{explanation}}">{{explanation}}</p>
+        <p title="{{explanation}}" class="{{ 'draft' if published == False else '' }}">{{explanation}}</p>
         {% if link_two %}
         <p class="readmore"><a {% if link_class %}class="{{link_class}}"{% endif %} {% if nofollow %}rel="nofollow"{% endif%} href="{{link}}" {% if download %}download{%endif%}>{{link_action_text}}</a> <a {% if link_class %}class="{{link_class}}"{% endif %} {% if nofollow %}rel="nofollow"{% endif%} href="{{link_two}}" {% if download %}download{%endif%}>{{link_action_text_two}}</a></p>
         {% else %}
