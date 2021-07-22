@@ -127,7 +127,12 @@
     <div style="clear: both;"></div>
     <div class="task-pagination">
         <div>
-            Displaying tasks {{ ((pagination.page - 1) * pagination.per_page) + 1 }}-{{ ((pagination.page) * pagination.per_page) }} of {{ pagination.total_count }}
+            Displaying tasks
+                {{ ((pagination.page - 1) * pagination.per_page) + 1 if ((pagination.page - 1) * pagination.per_page) + 1 <= pagination.total_count else pagination.total_count }}-{{(
+                   ((pagination.page) * pagination.per_page) if
+                   ((pagination.page) * pagination.per_page)
+                   <= pagination.total_count
+                   else pagination.total_count )}} of {{ pagination.total_count }}
         </div>
     </div>
 </div>
@@ -144,7 +149,7 @@
                 <th class="{{'sort-asc' if filter_data.order_by['priority'] == 'asc'}} {{'sort-desc' if filter_data.order_by['priority'] == 'desc'}} sortable" data-sort="priority">Priority</th>
                 {% endif %}
                 {% if 'pcomplete' in filter_data.display_columns %}
-                <th class="{{'sort-asc' if filter_data.order_by['pcomplete'] == 'asc'}} {{'sort-desc' if filter_data.order_by['pcomplete'] == 'desc'}} sortable" data-sort="pcomplete">% Complete</th>
+                <th class="{{'sort-asc' if filter_data.order_by['pcomplete'] == 'asc'}} {{'sort-desc' if filter_data.order_by['pcomplete'] == 'desc'}} sortable" data-sort="pcomplete">%Complete</th>
                 {% endif %}
                 {% if 'created' in filter_data.display_columns %}
                 <th class="{{'sort-asc' if filter_data.order_by['created'] == 'asc'}} {{'sort-desc' if filter_data.order_by['created'] == 'desc'}} sortable" data-sort="created">Created</th>
@@ -260,23 +265,23 @@
                     {% if t.calibration %}
                         <td>
                             <div class="make-gold-cell">
-                                <!-- Allow project owner, sub-admin co-owners, and admins to update Gold tasks -->
-                                {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
-                                    <a class="gold-task label label-warning" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='gold') }}">Update</a>
-                                {% else %}
-                                    <div class="gold-task label label-default" title="Only Project owners can update Gold tasks.">Update</div>
-                                {% endif %}
+                            <!-- Allow project owner, sub-admin co-owners, and admins to update Gold tasks -->
+                            {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
+                                <a class="gold-task label label-warning" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='gold') }}">Update</a>
+                            {% else %}
+                                <div class="gold-task label label-default" title="Only Project owners can update Gold tasks.">Update</div>
+                            {% endif %}
                             </div>
                         </td>
                     {% else %}
                     <td>
                         <div class="make-gold-cell">
-                            <!-- Allow project owner, sub-admin co-owners, and admins to make Gold tasks -->
-                            {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
-                                <a class="gold-task label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='gold') }}">Make Gold</a>
-                            {% else %}
-                                <div class="gold-task label label-default" title="Only project owners can make Gold tasks.">Make Gold</div>
-                            {% endif %}
+                        <!-- Allow project owner, sub-admin co-owners, and admins to make Gold tasks -->
+                        {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
+                            <a class="gold-task label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='gold') }}">Make Gold</a>
+                        {% else %}
+                            <div class="gold-task label label-default" title="Only project owners can make Gold tasks.">Make Gold</div>
+                        {% endif %}
                         </div>
                     </td>
                     {% endif %}
@@ -600,7 +605,7 @@
 </div>
 </div>
 
-<script src="/static/js/gen/task_browse.min.6d48bd77b9235ca8bf3a.js"></script>
+<script src="/static/js/gen/task_browse.min.f2b82fa5a0294afc4487.js"></script>
 <script type="text/javascript">
     var filter_data = {{ filter_data|tojson }};
     taskBrowse.setFilters(filter_data);
