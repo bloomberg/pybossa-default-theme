@@ -12,18 +12,20 @@
         margin-top: 50px
     }
 </style>
-<div class="container">
+<div class="container {{'w-100' if request.cookies.leftNavCollapse == 'true'}}">
     <div class="row navigation-element">
         <div class="col-md-12">
             {% include "projects/wizard.html" %}
         </div>
     </div>
-    <div class="row padding-top-wizard">
-        <div class="col-md-3">
+    <div class="row">
+        <div id="menu" class="col-sm-3 col-md-3 navigation-element animated {{'collapsed' if request.cookies.leftNavCollapse == 'true'}}" style="margin-top: 0; margin-left: 16px;">
             {{ helper.render_project_local_nav(project, active_link, current_user, pro_features, upload_method) }}
         </div>
-        <div class="col-md-9">
-            {% include "projects/snippets/options.html" %}
+        <div id="container-content" class="col-sm-9 col-md-9">
+            <div id="project-header">
+                {% include "projects/snippets/options.html" %}
+            </div>
         </div>
 </div>
 </div>

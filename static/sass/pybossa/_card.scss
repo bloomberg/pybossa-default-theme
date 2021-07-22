@@ -119,6 +119,12 @@ $lines-to-show: 3;
         }
     }
 
+    &.task-presenter {
+        .col-md-4 {
+            min-width: 325px;
+        }
+    }
+
     .thumbnail {
         &.card {
             .caption {
@@ -154,6 +160,12 @@ $lines-to-show: 3;
                 }
             }
         }
+
+        &.task-presenter {
+            .col-md-4 {
+                min-width: 325px;
+            }
+        }
     }
 
     .card-fix-p {
@@ -186,6 +198,12 @@ $lines-to-show: 3;
                 }
             }
         }
+
+        &.task-presenter {
+            .col-md-4 {
+                min-width: 325px;
+            }
+        }
     }
 }
 
@@ -215,6 +233,12 @@ $lines-to-show: 3;
                 .fa-4x {
                     font-size: 36px;
                 }
+            }
+        }
+
+        &.task-presenter {
+            .col-md-4 {
+                min-width: 325px;
             }
         }
     }

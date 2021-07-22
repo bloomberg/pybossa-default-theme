@@ -2,15 +2,17 @@
     <div class="col-md-12">
         <h1><strong>{{project.name}}</strong>: {{_('Task Presenter Editor')}}</h1>
         <p class="lead">{{_('Use one of the following available')}}
-        <strong>{{_('templates')}}</strong> {{_('for your project')}}
+            <strong>{{_('templates')}}</strong> {{_('for your project')}}
+        </p>
     </div>
 </div>
-{% for column in presenters | batch(2)%}
-<div class="row">
-    {% for presenter_tmpl in column %}
-    <div class="col-md-6">
-      {% include presenter_tmpl %}
-    </div>
+
+<div class="row project-tiles task-presenter">
+    {% for column in presenters | batch(2)%}
+        {% for presenter_tmpl in column %}
+        <div class="col-md-4">
+          {% include presenter_tmpl %}
+        </div>
+        {% endfor %}
     {% endfor %}
 </div>
-{% endfor %}
