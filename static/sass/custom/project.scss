@@ -1,5 +1,19 @@
 #container-content {
   min-height: 400px;
+  width: 75%;
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  #container-content {
+    width: 68%;
+  }
+}
+
+@media (min-width: 992px) {
+  #container-content {
+    width: 75%;
+  }
 }
 
 #project-grid {
