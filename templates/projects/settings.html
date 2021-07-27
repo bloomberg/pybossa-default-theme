@@ -9,7 +9,7 @@
         {{ render_project_card_option(project, upload_method, title=_('Project Details'), explanation=_('Edit the name, description, etc.'), link=url_for('project.update', short_name=project.short_name), link_action_text=_('Edit'), icon='info-circle')}}
     </div>
     <div id="task_settings" class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Task Settings'), explanation=_('Change the task settings: redundancy, priority, etc.'), link=url_for('project.task_settings', short_name=project.short_name), link_action_text=_('Settings'), icon='cog')}}
+        {{ render_project_card_option(project, upload_method, title=_('Task Settings'), explanation=_('Change settings for redundancy, priority, etc.'), link=url_for('project.task_settings', short_name=project.short_name), link_action_text=_('Settings'), icon='cog')}}
     </div>
 	{% if current_user.admin or current_user.id in project.owners_ids %}
     <div id="delete_project" class="col-md-4">
