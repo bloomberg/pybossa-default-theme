@@ -53,6 +53,10 @@
             $('#show-randomizable').hide();
         }
 
+        if (!selectSchedulerNeedsCustomizedColumns()) {
+            $('#show-customized').hide();
+        }
+
         $('#sched').change(function () {
             $('#rand_within_priority').prop('checked', false);
 
