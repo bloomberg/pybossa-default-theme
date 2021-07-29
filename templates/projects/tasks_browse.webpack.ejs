@@ -315,8 +315,16 @@
                     </div>
                 </td>
                 {% endif %}
-                {% for column_name in info_columns %}
-                <td>{{ t.info[column_name] }}</td>
+                 {% for column_name in info_columns %}
+                    {% if column_name in reserved_options %}
+                      <td>
+                        {% for i in t[column_name] %}
+                          {{ i }},
+                        {% endfor %}
+                      </td>
+                    {% else %}
+                      <td>{{ t.info[column_name] }}</td>
+                    {% endif %}
                 {% endfor %}
             </tr>
             {% endfor %}
