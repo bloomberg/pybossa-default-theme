@@ -88,11 +88,4 @@
 .make-gold-cell {
     width: 104px;
     margin-top: 4px;
-<<<<<<< HEAD
-}
-
-#tasksBrowseControls>ul>li:last-child {
-    padding-left: 0;
-=======
->>>>>>> 62f3265... Responsive sizing of browse tasks table.
 }
