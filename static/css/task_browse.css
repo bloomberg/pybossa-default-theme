@@ -76,8 +76,8 @@
 }
 
 .task-pagination {
+    margin-left: 8px;
     font-size: 12px;
-    margin-bottom: 3px;
     color: #606060;
 }
 
@@ -88,8 +88,11 @@
 .make-gold-cell {
     width: 104px;
     margin-top: 4px;
+<<<<<<< HEAD
 }
 
 #tasksBrowseControls>ul>li:last-child {
     padding-left: 0;
+=======
+>>>>>>> 62f3265... Responsive sizing of browse tasks table.
 }
