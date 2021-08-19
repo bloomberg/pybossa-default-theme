@@ -14,6 +14,9 @@
     {% if mode == 'read_only' %}
         window.pybossa.isReadOnly = true;
     {% endif %}
+    {% if mode == 'cherry_pick' %}
+        window.pybossa.isCherryPick = true;
+    {% endif %}
     {% if mode == 'gold' %}
         window.pybossa.isGoldMode = true;
         {% if bulk %}
