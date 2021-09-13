@@ -625,6 +625,33 @@
 
 <script src="<%= htmlWebpackPlugin.files.chunks.task_browse.entry %>"></script>
 <script type="text/javascript">
+    function autoRefresh() {
+      window.location = window.location.href;
+    }
+
+    const proj = {{ project |tojson }};
+    const worker = {{ for_worker |tojson }};
+    const enableAutoRefresh = (proj['enable_task_queue'] && worker);
+    const refreshInterval = 10000;
+    let refresh = null;
+
+    if (enableAutoRefresh) {
+      refresh = setInterval('autoRefresh()', refreshInterval);
+    }
+
+    $(window).focus(function() {
+      if (enableAutoRefresh && !refresh){
+        refresh = setInterval('autoRefresh()', refreshInterval);
+      }
+    });
+
+    $(window).blur(function() {
+      if (refresh) {
+        clearInterval(refresh);
+        refresh = 0;
+      }
+    });
+
     var filter_data = {{ filter_data|tojson }};
     taskBrowse.setFilters(filter_data);
     var selectedTask;
