@@ -16,7 +16,7 @@
 <div class="row">
     <div class="col-md-12">
         <p>{{_('This page shows all the available tasks for this project')}}.</p>
-        {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
+        {% if current_user.id in project.owners_ids or current_user.subadmin or current_user.admin %}
           <p>{{_('For each task, you can find the following information')}}:
           <ul>
               <li><strong>{{_('Task')}} </strong><span class="label label-info">#0000</span> {{_('This number identifies the task for the project and it is unique')}}</li>
@@ -44,7 +44,7 @@
                 <i class="fa fa-search" aria-hidden="true"></i>
             </button>
         </li>
-        {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
+        {% if  current_user.id in project.owners_ids or current_user.subadmin or current_user.admin %}
           <li class="dropdown">
               <button class="dropdown-toggle btn btn-sm" type="button" id="btnDownload" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Export tasks/task runs"><span class="fa fa-cloud-download"></span><span class="caret"></span></button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
@@ -69,7 +69,7 @@
                 {% endfor %}
             </ul>
         </li>
-        {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
+        {% if current_user.id in project.owners_ids or current_user.subadmin or current_user.admin %}
           <li class="dropdown" id="columnsSettings">
               <button class="dropdown-toggle btn btn-sm" type="button" id="btnColumnsSettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Columns"><span class="fa fa-cog"><span class="caret"></span></button>
               <ul class="dropdown-menu" aria-labelledby="btnColumnsSettings">
@@ -86,7 +86,7 @@
           </li>
         {% endif %}
         {% if filter_columns %}
-          {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
+          {% if current_user.id in project.owners_ids or current_user.subadmin or current_user.admin %}
             <li class="dropdown" id="info-columns">
                 <button class="dropdown-toggle btn btn-sm" type="button" id="btn-filter-columns" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Display task info"><span class="fa fa-database"><span class="caret"></span></button>
                 <ul class="dropdown-menu" aria-labelledby="btn-filter-columns">
@@ -117,7 +117,7 @@
             </button>
         </li>
         {% endif %}
-        {% if language_options and ((current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin) %}
+        {% if language_options and (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) %}
         <li>
             <button id="btn-filter-user-pref" class="btn btn-sm" type="button" data-target="#filter-upref-modal" data-toggle="modal" title="Filter by user preference">
                 <i class="fa fa-user" aria-hidden="true"></i>
@@ -240,7 +240,7 @@
                         <a class="label label-warning" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
                     {% elif can_know_task_is_gold and task_pct >= 100 %}
                         <a class="label label-success" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
-                    {% elif project.enable_task_queue and not ((current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin) %}
+                    {% elif project.enable_task_queue and not (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) %}
                         <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='cherry_pick') }}">#{{ t.id }}</a>
                     {% else %}
                         <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
