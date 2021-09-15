@@ -626,7 +626,7 @@
 <script src="<%= htmlWebpackPlugin.files.chunks.task_browse.entry %>"></script>
 <script type="text/javascript">
     function autoRefresh() {
-      window.location = window.location.href;
+      window.location.reload();
     }
 
     const proj = {{ project |tojson }};
@@ -641,7 +641,7 @@
 
     $(window).focus(function() {
       if (enableAutoRefresh && !refresh){
-        refresh = setInterval('autoRefresh()', refreshInterval);
+        autoRefresh();
       }
     });
 
