@@ -633,7 +633,7 @@
     const userId = {{ current_user.id |trim}}
     const adminPriv = {{ current_user.admin |tojson }} || {{ current_user.subadmin |tojson }}
     const enableAutoRefresh = (proj['enable_task_queue'] && !adminPriv && !(userId in proj["owners_ids"]))
-    const refreshInterval = 10000;
+    const refreshInterval = 60000;
     let refresh = null;
 
     if (enableAutoRefresh) {
