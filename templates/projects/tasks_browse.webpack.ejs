@@ -32,7 +32,7 @@
               <li><strong>{{_('Gold Tasks')}}</strong>: {{_('Shows button to make a non-gold task gold or update a current gold task')}}.</li>
               {% endif %}
               <li><strong>{{_('Actions')}}</strong>: {{_('Three current actions: download, view, or get user info for task results')}}.</li>
-              <li><strong>{{_('Locks')}}</strong>: {{_('Shows the user locked into the task')}}.</li>
+              <li><strong>{{_('Active Users')}}</strong>: {{_('List users working on the task')}}.</li>
           </ul>
           </p>
         {% endif %}
@@ -83,7 +83,7 @@
                   <li><a href="#" class="columns_settings" data-value="gold_task" tabIndex="-1"><input type="checkbox" {{ "checked" if "gold_task" in filter_data.display_columns }}/>&nbsp;Gold Task</a></li>
                   {% endif %}
                   <li><a href="#" class="columns_settings" data-value="actions" tabIndex="-1"><input type="checkbox" {{ "checked" if "actions" in filter_data.display_columns }}/>&nbsp;Actions</a></li>
-                  <li><a href="#" class="columns_settings" data-value="lock_status" tabIndex="-1"><input type="checkbox" {{ "checked" if "lock_status" in filter_data.display_columns }}/>&nbsp;Locks</a></li>
+                  <li><a href="#" class="columns_settings" data-value="lock_status" tabIndex="-1"><input type="checkbox" {{ "checked" if "lock_status" in filter_data.display_columns }}/>&nbsp;Active Users</a></li>
               </ul>
           </li>
         {% endif %}
@@ -177,7 +177,7 @@
                 <th>{{ column_name }}</th>
                 {% endfor %}
                 {% if 'lock_status' in filter_data.display_columns %}
-                <th class="{{'sort-asc' if filter_data.order_by['lock_status'] == 'asc'}} {{'sort-desc' if filter_data.order_by['lock_status'] == 'desc'}} sortable" data-sort="lock_status">Locks</th>
+                <th class="{{'sort-asc' if filter_data.order_by['lock_status'] == 'asc'}} {{'sort-desc' if filter_data.order_by['lock_status'] == 'desc'}} sortable" data-sort="lock_status">Active Users</th>
                 {% endif %}
             </tr>
             <tr>
