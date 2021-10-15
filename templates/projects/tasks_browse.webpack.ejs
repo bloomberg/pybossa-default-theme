@@ -328,9 +328,7 @@
                  {% for column_name in info_columns %}
                     {% if column_name in reserved_options %}
                       <td>
-                        {% for i in t[column_name] %}
-                          {{ i }},
-                        {% endfor %}
+                        {{ t[column_name] }}
                       </td>
                     {% else %}
                       <td>{{ t.info[column_name] }}</td>
@@ -338,9 +336,7 @@
                 {% endfor %}
                 {% if 'lock_status' in filter_data.display_columns %}
                 <td>
-                  {% for u in t.lock_users %}
-                    {{ u }},
-                  {% endfor %}
+                  {{ t.lock_users }}
                 </td>
                 {% endif %}
             </tr>
