@@ -33,7 +33,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for stat, values in timed_stats.iteritems() %}
+                    {% for stat, values in timed_stats.items() %}
                     <tr>
                         <th><p><strong>{{ stat | replace('_', ' ') | capitalize }}</strong></p></th>
                         <td><p>{{ values[30] }}</p></td>
@@ -51,7 +51,7 @@
     <div class="col-md-6">
         <h2>{{ _('Work on platform' )}}</h2>
         <table class="table table-striped">
-            {% for stat_name, value in current_stats.iteritems() %}
+            {% for stat_name, value in current_stats.items() %}
             <tr>
                 <td><p><strong>{{ stat_name }}<p><strong></td>
                 <td><p>{{ value | int }}</p></td>
