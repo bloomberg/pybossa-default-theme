@@ -281,6 +281,11 @@ $(document).ready(function() {
         showRedundancyUpdateModal()
     });
 
+    $('#btn-assign-worker').click(function() {
+        showAssignWorkerModal()
+    });
+
+
     $('#delete-tasks-modal .cancel-delete').on('click', function() {
         selectedTask = undefined;
     });
@@ -480,6 +485,39 @@ $(document).ready(function() {
         var data = getFilterObject();
         data.n_answers = redundancy;
         var url = getUrlFor('/redundancyupdate');
+        sendUpdateRequest(url, data).done(function(res) {
+            refresh();
+        });
+    }
+
+    function showAssignWorkerModal() {
+        $('#assign-worker-value').keypress(onEnterKey(updateAssignWorker));
+
+        $('#assign-worker-modal').click(function() {
+            updateAssignWorker();
+        });
+
+        $('#update-assign-worker-modal').on('shown.bs.modal', function () {
+            $('#assign-worker-value').focus()
+        })
+
+        $('#update-assign-worker-modal').modal('show');
+    }
+
+    function updateAssignWorker() {
+        var assign_workers = parseInt($('#assign-worker-value').val());
+        $('#update-assign-worker-modal').modal('hide');
+        // MAX_ALLOWED = 1000;
+        // MIN_ALLOWED = 1;
+        // window.scrollTo(0, 0);
+        // if (isNaN(assign-worker) || assign-worker < MIN_ALLOWED || assign-workers > MAX_ALLOWED) {
+        //     pybossaNotify('Invalid assign-workers: please enter a value between ' +
+        //                   MIN_ALLOWED + ' and ' + MAX_ALLOWED, true, 'warning');
+        //     return;
+        // }
+        var data = getFilterObject();
+        data.n_answers = assign-workers;
+        var url = getUrlFor('/assign-workersupdate');
         sendUpdateRequest(url, data).done(function(res) {
             refresh();
         });
