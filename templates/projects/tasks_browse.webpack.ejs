@@ -102,6 +102,7 @@
             <ul class="dropdown-menu" aria-labelledby="btn-edit-tasks">
                 <li><a href="#" id="btn-edit-redundancy" data-value="task-redundancy" tabIndex="-1">Edit redundancy</a></li>
                 <li><a href="#" id="btn-edit-priority" data-value="task-priority" tabIndex="-1">Edit priority</a></li>
+                <li><a href="#" id="btn-assign-worker" data-value="assign-worker" tabIndex="-1">Assign worker</a></li>
             </ul>
         </li>
         <li>
@@ -497,6 +498,42 @@
   </div>
 </div>
 
+<!-- Update assign worker -->
+<div class="modal fade" id="assign-worker-modal" tabindex="-1" role="dialog" aria-labelledby="assign-worker-modal-label">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Assign Workers to Task</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label for="assign-worker-value" class="col-sm-6 control-label">Assign Workers</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="assign-worker-value"/>
+                </div>
+            </div>
+        </div>
+        <p>
+          Note:
+          <br>
+          If task is selected, change the redundancy for the selected
+          task in the current page; otherwise, change the redundancy of all
+          the task matched by the current filtering criteria (all pages).
+          <br><br>
+          New redundancy won't be applied to tasks containing files and are
+          either completed or older than {{ rdancy_upd_exp }} days.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="save-redundancy-modal">Update</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Delete Task -->
 <div class="modal fade" id="delete-tasks-modal" tabindex="-1" role="dialog" aria-labelledby="delete-tasks-modal-label">
   <div class="modal-dialog modal-md" role="document">
@@ -577,6 +614,7 @@
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-menu" style="display:block;position:absolute;">
         <li><a href="#" id="edit-pri" data-value="task-priority">Edit Priority</a></li>
         <li><a href="#" id="edit-red" data-value="task-redundancy">Edit Redundancy</a></li>
+        <li><a href="#" id="edit-red" data-value="assign-worker">Assign Worker</a></li>
         <li><a href="#" id="del-task" data-target="#delete-tasks-modal" data-toggle="modal">Delete Task</a></li>
     </ul>
 </div>
