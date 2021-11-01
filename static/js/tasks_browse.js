@@ -493,7 +493,7 @@ $(document).ready(function() {
     function showAssignWorkerModal() {
         $('#assign-worker-value').keypress(onEnterKey(updateAssignWorker));
 
-        $('#assign-worker-modal').click(function() {
+        $('#update-assign-worker-modal').click(function() {
             updateAssignWorker();
         });
 
