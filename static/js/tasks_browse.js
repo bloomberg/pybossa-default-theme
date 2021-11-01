@@ -389,6 +389,10 @@ $(document).ready(function() {
         showRedundancyUpdateModal()
     });
 
+    $('#edit-user').click(function() {
+        showAssignWorkerModal()
+    });
+
     function dropdownCheckboxToggle(elm) {
         var checkbox = $(elm).find('input[type="checkbox"]');
 
@@ -505,7 +509,7 @@ $(document).ready(function() {
     }
 
     function updateAssignWorker() {
-        var assign_workers = parseInt($('#assign-worker-value').val());
+        var assign_workers = $('#assign-worker-value').val();
         $('#update-assign-worker-modal').modal('hide');
         // MAX_ALLOWED = 1000;
         // MIN_ALLOWED = 1;
@@ -516,7 +520,10 @@ $(document).ready(function() {
         //     return;
         // }
         var data = getFilterObject();
-        data.n_answers = assign-workers;
+
+
+        // task
+        data.assign_workers= [assign_workers];
         var url = getUrlFor('/assign-workersupdate');
         sendUpdateRequest(url, data).done(function(res) {
             refresh();
