@@ -545,6 +545,7 @@
 
 <!-- Update assign worker -->
 <div class="modal fade" id="update-assign-worker-modal" tabindex="-1" role="dialog" aria-labelledby="assign-worker-modal-label">
+
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -552,28 +553,12 @@
         <h4 class="modal-title">Assign Workers to Task</h4>
       </div>
       <div class="modal-body">
-        <div class="form-horizontal">
-            <div class="form-group">
-                <label for="assign-worker-value" class="col-sm-6 control-label">Assign Workers</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" id="assign-worker-value"/>
-                </div>
-            </div>
-        </div>
-        <p>
-          Note:
-          TODO: changing notes to be the assign worker description
-          <br>
-          If task is selected, change the redundancy for the selected
-          task in the current page; otherwise, change the redundancy of all
-          the task matched by the current filtering criteria (all pages).
-          <br><br>
-          New redundancy won't be applied to tasks containing files and are
-          either completed or older than {{ rdancy_upd_exp }} days.
-        </p>
+
+        <assign-worker ref="assignworker"></assign-worker>
+
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="save-assign-worker-modal">Update</button>
+        <button type="button" class="btn btn-primary" id="save-assign-worker-modal" @click="$refs.assignworker.save()">Update</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -660,7 +645,7 @@
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-menu" style="display:block;position:absolute;">
         <li><a href="#" id="edit-pri" data-value="task-priority">Edit Priority</a></li>
         <li><a href="#" id="edit-red" data-value="task-redundancy">Edit Redundancy</a></li>
-        <li><a href="#" id="edit-user" data-value="assign-worker">Assign Worker</a></li>
+        <li><a href="#" id="edit-user" data-value="assign-worker" @click="$refs.assignworker.getData()">Assign Worker</a></li>
         <li><a href="#" id="del-task" data-target="#delete-tasks-modal" data-toggle="modal">Delete Task</a></li>
     </ul>
 </div>
@@ -712,6 +697,7 @@
     var first_page_url = "{{ url_for('project.tasks_browse', short_name=project.short_name) }}";
     var records_per_page = {{ records_per_page }};
     var csrftoken = "{{ csrf_token() }}";
+    taskBrowse.setCsrfToken(csrftoken);
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
             if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {

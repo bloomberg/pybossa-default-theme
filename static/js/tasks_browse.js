@@ -281,7 +281,13 @@ $(document).ready(function() {
         showRedundancyUpdateModal()
     });
 
+    // $('#btn-assign-worker').click(function() {
+    //     console.log("assign_workers");
+    //     showAssignWorkerModal()
+    // });
     $('#btn-assign-worker').click(function() {
+        // $refs.assignworker.getDate();
+        console.log("assign_workers");
         showAssignWorkerModal()
     });
 
@@ -338,6 +344,7 @@ $(document).ready(function() {
     const navbarHeight = 100;
 
     $('body').on('contextmenu', '#tasksGrid tbody tr', function(e) {
+        // console.log("click")
         $('#context-menu').css({
             display: 'block',
             left: e.pageX - $(this).offset().left,
@@ -345,6 +352,8 @@ $(document).ready(function() {
         });
         selectedTask = $(this).find('td:first').text()
                               .trim().split(' ')[0].substring(1).trim();
+        console.log(taskBrowse);
+        taskBrowse.setSelectedTask(selectedTask);
         $('#tasksGrid tr').removeClass('selected');
         $(this).toggleClass('selected');
         return false;
@@ -495,17 +504,31 @@ $(document).ready(function() {
     }
 
     function showAssignWorkerModal() {
-        $('#assign-worker-value').keypress(onEnterKey(updateAssignWorker));
+        // make ajax call to get users data
+        console.log("showAssignWorkerModal");
+        // var data = getFilterObject();
+        // let url = getUrlFor('/assign-workersupdate');
+        // sendGetRequest(url, data).done(function(res) {
+        //     console.log(res);
+        //     console.log("ajax call", res.users);
+        //     let users = res.users;
 
-        $('#update-assign-worker-modal').click(function() {
-            updateAssignWorker();
-        });
+        //     // console.log(res.users);
+        // })
+
+        // $('#assign-worker-value').keypress(onEnterKey(updateAssignWorker));
+
+        // $('#save-assign-worker-modal').click(function() {
+        //     updateAssignWorker();
+        // });
 
         $('#update-assign-worker-modal').on('shown.bs.modal', function () {
             $('#assign-worker-value').focus()
         })
 
         $('#update-assign-worker-modal').modal('show');
+
+
     }
 
     function updateAssignWorker() {
@@ -540,6 +563,26 @@ $(document).ready(function() {
             data: JSON.stringify(data)
         }).fail(function(res) {
             setSpinner(false);
+            var message = 'There was an error processing the request.';
+            var severity = 'warning';
+            if (res.status === 403) {
+                message = 'You do not have the permissions to perform this action.';
+                severity = 'danger';
+            }
+            pybossaNotify(message, true, severity);
+        });
+    };
+
+    function sendGetRequest(endpoint, data) {
+        // setSpinner(true);
+        return $.ajax({
+            type: 'GET',
+            url: endpoint,
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(data)
+        }).fail(function(res) {
+            // setSpinner(false);
             var message = 'There was an error processing the request.';
             var severity = 'warning';
             if (res.status === 403) {
