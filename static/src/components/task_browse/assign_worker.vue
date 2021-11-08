@@ -17,14 +17,7 @@
     </div>
         <p>
           Note:
-          TODO: changing notes to be the assign worker description
-          <br>
-          If task is selected, change the redundancy for the selected
-          task in the current page; otherwise, change the redundancy of all
-          the task matched by the current filtering criteria (all pages).
-          <br><br>
-          New redundancy won't be applied to tasks containing files and are
-          either completed or older
+          Type in users to assign them to the selected tasks
         </p>
 
    </div>
@@ -115,10 +108,7 @@ export default {
         remove: []
       }
     }
-  },
-
-
-
+  }
 }
 
 </script>
