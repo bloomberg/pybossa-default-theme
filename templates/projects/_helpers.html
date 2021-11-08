@@ -291,6 +291,17 @@
 </div>
 {% endmacro %}
 
+{% macro render_task_queue_toggle_buttons(project, current_user, view) %}
+    {% set is_admin_or_subadmin_or_owner = current_user.admin or current_user.subadmin or current_user.id in project.owners_ids %}
+    <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}{{'' if (not is_admin_or_subadmin_or_owner or view == 'tasklist') else '?view=tasklist'}}">
+        {% if is_admin_or_subadmin_or_owner and view == 'tasklist' %}
+            Browse Tasks
+        {% else %}
+            Task List
+        {% endif %}
+    </a>
+{% endmacro %}
+
 {% macro render_contribute_button(project, current_user, csrf_token) %}
     {% if project['contrib_button'] == 'completed' %}
     <a href="{{url_for('project.tasks', short_name=project.short_name)}}" class="btn btn-lg btn-primary btn-contribute pull-right">{{ _('Done! View results') }}</a>
@@ -306,14 +317,7 @@
         <a href="{{ url_for('project.presenter', short_name=project.short_name)}}" class="btn btn-lg btn-primary btn-padding">{{ _('Start Contributing Now!') }}</a>
         {% endif %}
         {% if project['enable_task_queue'] %}
-            {% set is_admin_or_subadmin_or_owner = current_user.admin or current_user.subadmin or current_user.id in project.owners_ids %}
-            <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}{{'' if (not is_admin_or_subadmin_or_owner or request.args['view'] == 'tasklist') else '?view=tasklist'}}">
-                {% if is_admin_or_subadmin_or_owner and request.args['view'] == 'tasklist' %}
-                    Browse Tasks
-                {% else %}
-                    Task List
-                {% endif %}
-            </a>
+            {{ render_task_queue_toggle_buttons(project, current_user, request.args['view']) }}
         {% endif %}
     </div>
     {% endif %}
@@ -329,16 +333,9 @@
         <a class="btn btn-lg btn-warning btn-padding" role="button" href="{{url_for('project.make_random_task_gold', short_name=project.short_name)}}">{{ _('Create Gold Questions!') }}</a>
         <a href="{{url_for('project.publish', short_name=project.short_name, published=1)}}" class="btn btn-lg btn-default">{{ _('Publish it') }}</a>
     </div>
-        {% if project['enable_task_queue'] %}
-            {% set is_admin_or_subadmin_or_owner = current_user.admin or current_user.subadmin or current_user.id in project.owners_ids %}
-            <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}{{'' if (not is_admin_or_subadmin_or_owner or request.args['view'] == 'tasklist') else '?view=tasklist'}}">
-                {% if is_admin_or_subadmin_or_owner and request.args['view'] == 'tasklist' %}
-                    Browse Tasks
-                {% else %}
-                    Task List
-                {% endif %}
-            </a>
-        {% endif %}
+    {% if project['enable_task_queue'] %}
+        {{ render_task_queue_toggle_buttons(project, current_user, request.args['view']) }}
+    {% endif %}
     {% endif %}
 {% endmacro %}
 

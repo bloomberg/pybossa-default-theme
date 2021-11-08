@@ -16,7 +16,7 @@
 <div class="row">
     <div class="col-md-12">
         <p>{{_('This page shows all the available tasks for this project')}}.</p>
-        {% if current_user.id in project.owners_ids or current_user.subadmin or current_user.admin %}
+        {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and request.args['view'] != 'tasklist' %}
           <p>{{_('For each task, you can find the following information')}}:
           <ul>
               <li><strong>{{_('Task')}} </strong><span class="label label-info">#0000</span> {{_('This number identifies the task for the project and it is unique')}}</li>
