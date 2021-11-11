@@ -100,13 +100,34 @@ export default {
       }
     },
 
-    save () {
+    async save () {
       let requestData = {
-        taskId: "",
-        filters: {},
-        add: [],
-        remove: []
-      }
+        taskId: this.getSelectedTask(),
+        filters: this.getFilters()
+        addUserValues: addUserValues,
+        removeUserValues:removeUserValues,
+
+      };
+      console.log(this.getCsrfToken())
+      try {
+        this.waiting = true;
+        const res = await fetch(this.getURL(), {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            'X-CSRFToken': this.getCsrfToken()
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(requestData)
+        });
+        const data = await res.json();
+        this.initialize(data);
+        } catch (error) {
+          console.log(error);
+          window.pybossaNotify('An error occurred.', true, 'error');
+        } finally {
+          this.waiting = false;
+        }
     }
   }
 }
