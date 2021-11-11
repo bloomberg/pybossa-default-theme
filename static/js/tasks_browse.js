@@ -532,25 +532,9 @@ $(document).ready(function() {
     }
 
     function updateAssignWorker() {
-        var assign_workers = $('#assign-worker-value').val();
-        $('#update-assign-worker-modal').modal('hide');
-        // MAX_ALLOWED = 1000;
-        // MIN_ALLOWED = 1;
-        // window.scrollTo(0, 0);
-        // if (isNaN(assign-worker) || assign-worker < MIN_ALLOWED || assign-workers > MAX_ALLOWED) {
-        //     pybossaNotify('Invalid assign-workers: please enter a value between ' +
-        //                   MIN_ALLOWED + ' and ' + MAX_ALLOWED, true, 'warning');
-        //     return;
-        // }
-        var data = getFilterObject();
 
+        refresh();
 
-        // task
-        data.assign_workers= [assign_workers];
-        var url = getUrlFor('/assign-workersupdate');
-        sendUpdateRequest(url, data).done(function(res) {
-            refresh();
-        });
     }
 
     function sendUpdateRequest(endpoint, data) {

@@ -101,11 +101,12 @@ export default {
     },
 
     async save () {
+      console.log("save function - task id", this.getSelectedTask())
       let requestData = {
         taskId: this.getSelectedTask(),
-        filters: this.getFilters()
-        addUserValues: addUserValues,
-        removeUserValues:removeUserValues,
+        filters: this.getFilters(),
+        add: this.addUserValues,
+        remove: this.removeUserValues,
 
       };
       console.log(this.getCsrfToken())
@@ -121,12 +122,13 @@ export default {
           body: JSON.stringify(requestData)
         });
         const data = await res.json();
-        this.initialize(data);
         } catch (error) {
           console.log(error);
           window.pybossaNotify('An error occurred.', true, 'error');
         } finally {
           this.waiting = false;
+          window.location.reload();
+
         }
     }
   }
