@@ -43,6 +43,7 @@
     "cross-spawn": "^2.1.5",
     "css-loader": "^0.23.0",
     "d3": "~3.5.17",
+    "deasync": "0.1.23",
     "eslint": "5.15.3",
     "eslint-config-prettier": "4.1.0",
     "eslint-config-standard": "12.0.0",
