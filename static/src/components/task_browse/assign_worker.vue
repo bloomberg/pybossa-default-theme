@@ -6,12 +6,12 @@
         <GigSpinner v-if="waiting" />
         <div>
           <label class="typo__label">Assign users</label>
-          <multiselect v-model="addUserValues" placeholder="Search" label="fullname" track-by="email" :options="allUserList" :multiple="true" :taggable="true"></multiselect>
+          <multiselect v-model="addUserValues" placeholder="Search" label="fullname" track-by="email" :options="allUserList" :multiple="true" ></multiselect>
         </div>
         <br>
         <div>
           <label class="typo__label">Remove users</label>
-          <multiselect v-model="removeUserValues"  placeholder="Search" label="fullname" track-by="email" :options="assignedUserList" :multiple="true" :taggable="true"></multiselect>
+          <multiselect v-model="removeUserValues"  placeholder="Search" label="fullname" track-by="email" :options="assignedUserList" :multiple="true"></multiselect>
         </div>
       </div>
     </div>
