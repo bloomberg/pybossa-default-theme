@@ -6,12 +6,12 @@
         <GigSpinner v-if="waiting" />
         <div>
           <label class="typo__label">Assign users</label>
-          <multiselect v-model="addUserValues" placeholder="Search" label="fullname" track-by="email" :options="allUserList" :multiple="true" :taggable="true"></multiselect>
+          <multiselect v-model="addUserValues" placeholder="Search" label="fullname" track-by="email" :options="allUserList" :multiple="true" ></multiselect>
         </div>
         <br>
         <div>
           <label class="typo__label">Remove users</label>
-          <multiselect v-model="removeUserValues"  placeholder="Search" label="fullname" track-by="email" :options="assignedUserList" :multiple="true" :taggable="true"></multiselect>
+          <multiselect v-model="removeUserValues"  placeholder="Search" label="fullname" track-by="email" :options="assignedUserList" :multiple="true"></multiselect>
         </div>
       </div>
     </div>
@@ -76,7 +76,7 @@ export default {
     async getData () {
       let requestData = {
         taskId: this.getSelectedTask(),
-        filters: this.getFilters()
+        filters: JSON.stringify(this.getFilters())
       };
       console.log(this.getCsrfToken())
       try {
@@ -104,7 +104,7 @@ export default {
       console.log("save function - task id", this.getSelectedTask())
       let requestData = {
         taskId: this.getSelectedTask(),
-        filters: this.getFilters(),
+        filters: JSON.stringify(this.getFilters()),
         add: this.addUserValues,
         remove: this.removeUserValues,
 
