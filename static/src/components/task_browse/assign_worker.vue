@@ -76,7 +76,7 @@ export default {
     async getData () {
       let requestData = {
         taskId: this.getSelectedTask(),
-        filters: this.getFilters()
+        filters: JSON.stringify(this.getFilters())
       };
       console.log(this.getCsrfToken())
       try {
@@ -104,7 +104,7 @@ export default {
       console.log("save function - task id", this.getSelectedTask())
       let requestData = {
         taskId: this.getSelectedTask(),
-        filters: this.getFilters(),
+        filters: JSON.stringify(this.getFilters()),
         add: this.addUserValues,
         remove: this.removeUserValues,
 
