@@ -245,7 +245,11 @@
                 {% if 'task_id' in filter_data.display_columns %}
                 <td>
                     {% if can_know_task_is_gold and t.calibration %}
-                        <a class="label label-warning" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
+                        {% if project.enable_task_queue and request.args['view'] == 'tasklist' %}
+                            <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='cherry_pick', view=request.args['view']) }}">#{{ t.id }}</a>
+                        {% else %}
+                            <a class="label label-warning" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
+                        {% endif %}
                     {% elif can_know_task_is_gold and task_pct >= 100 %}
                         <a class="label label-success" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
                     {% elif project.enable_task_queue and ((not (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin)) or request.args['view'] == 'tasklist') %}
@@ -253,7 +257,8 @@
                     {% else %}
                         <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
                     {% endif %}
-                    {% if can_know_task_is_gold %}
+
+                    {% if can_know_task_is_gold and (not project.enable_task_queue or request.args['view'] != 'tasklist') %}
                       {{ t.n_task_runs|int }} {{_('of')}}
                       {% if t.calibration %}
                         &infin;
