@@ -111,7 +111,9 @@
             <ul class="dropdown-menu" aria-labelledby="btn-edit-tasks">
                 <li><a href="#" id="btn-edit-redundancy" data-value="task-redundancy" tabIndex="-1">Edit redundancy</a></li>
                 <li><a href="#" id="btn-edit-priority" data-value="task-priority" tabIndex="-1">Edit priority</a></li>
-                <li><a href="#" id="btn-assign-worker" data-value="assign-worker" @click="$refs.assignworker.getData()" tabIndex="-1">Assign worker</a></li>
+                {% if project.info.sched == 'task_queue_scheduler' or project.info.sched == 'user_pref_scheduler'  %}
+                  <li><a href="#" id="btn-assign-worker" data-value="assign-worker" @click="$refs.assignworker.getData()" tabIndex="-1">Assign worker</a></li>
+                {% endif %}
             </ul>
         </li>
         <li>
