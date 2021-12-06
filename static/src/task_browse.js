@@ -12,13 +12,13 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     filters: {},
-    selectedTask: "",
-    token: ""
+    selectedTask: '',
+    token: ''
   },
 
   getters: {
     getFilters (state) {
-      console.log("get filters")
+      console.log('get filters')
       return state.filters;
     },
 
@@ -34,17 +34,17 @@ const store = new Vuex.Store({
 
   mutations: {
     setFilters (state, filters) {
-      console.log("set filters")
+      console.log('set filters');
       state.filters = JSON.parse(JSON.stringify(filters));
     },
 
     setSelectedTask (state, taskId) {
-      console.log("set selected task id ", taskId);
+      console.log('set selected task id ', taskId);
       state.selectedTask = taskId;
     },
 
-    setCsrfToken(state, token) {
-      console.log("set token ", token)
+    setCsrfToken (state, token) {
+      console.log('set token ', token);
       state.token = token;
     }
   }
@@ -63,5 +63,5 @@ new Vue({
 window.taskBrowse = {
   setFilters: store.commit.bind(null, 'setFilters'),
   setSelectedTask: store.commit.bind(null, 'setSelectedTask'),
-  setCsrfToken: store.commit.bind(null, 'setCsrfToken'),
+  setCsrfToken: store.commit.bind(null, 'setCsrfToken')
 };
