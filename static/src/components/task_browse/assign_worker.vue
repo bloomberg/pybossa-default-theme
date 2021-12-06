@@ -112,25 +112,9 @@ export default {
 
     async save () {
       console.log('save function - task id', this.getSelectedTask());
-      let requestData = {
-        taskId: this.getSelectedTask(),
-        filters: JSON.stringify(this.getFilters()),
-        add: this.addUserValues,
-        remove: this.removeUserValues
-
-      };
       console.log(this.getCsrfToken());
       try {
         this.waiting = true;
-        const res = await fetch(this.getURL(), {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json',
-            'X-CSRFToken': this.getCsrfToken()
-          },
-          credentials: 'same-origin',
-          body: JSON.stringify(requestData)
-        });
         } catch (error) {
           console.log(error);
           window.pybossaNotify('An error occurred.', true, 'error');
