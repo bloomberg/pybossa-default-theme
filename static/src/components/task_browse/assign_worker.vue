@@ -1,34 +1,44 @@
 <template>
-
   <div class="form-horizontal">
     <div class="form-group">
       <div class="col-sm-12">
         <GigSpinner v-if="waiting" />
         <div>
           <label class="typo__label">Assign users</label>
-          <multiselect v-model="addUserValues" placeholder="Search" label="fullname" track-by="email" :options="allUserList" :multiple="true" ></multiselect>
+          <multiselect
+            v-model="addUserValues"
+            placeholder="Search"
+            label="fullname"
+            track-by="email"
+            :options="allUserList"
+            :multiple="true"
+          />
         </div>
         <br>
         <div>
           <label class="typo__label">Remove users</label>
-          <multiselect v-model="removeUserValues"  placeholder="Search" label="fullname" track-by="email" :options="assignedUserList" :multiple="true"></multiselect>
+          <multiselect
+            v-model="removeUserValues"
+            placeholder="Search"
+            label="fullname"
+            track-by="email"
+            :options="assignedUserList"
+            :multiple="true"
+          />
         </div>
       </div>
     </div>
-        <p>
-          Note:
-          Type in users to assign them to the selected tasks
-        </p>
-
-   </div>
-
+    <p>
+      Note:
+      Type in users to assign them to the selected tasks
+    </p>
+  </div>
 </template>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <script>
-import Vue from 'vue';
-import { mapGetters } from 'vuex'
-import Multiselect from 'vue-multiselect'
+import { mapGetters } from 'vuex';
+import Multiselect from 'vue-multiselect';
 import GigSpinner from '../common/gig_spinner.vue';
 
 export default {
@@ -43,8 +53,8 @@ export default {
       allUserList: [],
       assignedUserList: [],
       addUserValues: [],
-      removeUserValues:[]
-    }
+      removeUserValues: []
+    };
   },
 
   methods: {
@@ -55,7 +65,7 @@ export default {
     ]),
 
     initialize (data) {
-      console.log("initialization")
+      console.log('initialization');
       console.log(data);
       this.allUserList = data.all_users || [];
       this.assignedUserList = data.assign_users || [];
@@ -63,10 +73,10 @@ export default {
 
     getURL () {
       let path = window.location.pathname;
-      console.log(path)
+      console.log(path);
       let res = path.split('/');
-      if (res[res.length - 1] !== "browse") {
-        res = res.splice(0, res.length - 2)
+      if (res[res.length - 1] !== 'browse') {
+        res = res.splice(0, res.length - 2);
       }
       res[res.length - 1] = 'assign-workersupdate';
       console.log(res.join('/'));
@@ -78,7 +88,7 @@ export default {
         taskId: this.getSelectedTask(),
         filters: JSON.stringify(this.getFilters())
       };
-      console.log(this.getCsrfToken())
+      console.log(this.getCsrfToken());
       try {
         this.waiting = true;
         const res = await fetch(this.getURL(), {
@@ -101,15 +111,15 @@ export default {
     },
 
     async save () {
-      console.log("save function - task id", this.getSelectedTask())
+      console.log('save function - task id', this.getSelectedTask());
       let requestData = {
         taskId: this.getSelectedTask(),
         filters: JSON.stringify(this.getFilters()),
         add: this.addUserValues,
-        remove: this.removeUserValues,
+        remove: this.removeUserValues
 
       };
-      console.log(this.getCsrfToken())
+      console.log(this.getCsrfToken());
       try {
         this.waiting = true;
         const res = await fetch(this.getURL(), {
@@ -121,17 +131,15 @@ export default {
           credentials: 'same-origin',
           body: JSON.stringify(requestData)
         });
-        const data = await res.json();
         } catch (error) {
           console.log(error);
           window.pybossaNotify('An error occurred.', true, 'error');
         } finally {
           this.waiting = false;
           window.location.reload();
-
         }
     }
   }
-}
+};
 
 </script>
