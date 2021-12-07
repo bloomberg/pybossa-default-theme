@@ -18,7 +18,7 @@ const store = new Vuex.Store({
 
   getters: {
     getFilters (state) {
-      console.log('get filters')
+      console.log('get filters');
       return state.filters;
     },
 
