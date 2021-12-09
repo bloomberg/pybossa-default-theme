@@ -281,12 +281,7 @@ $(document).ready(function() {
         showRedundancyUpdateModal()
     });
 
-    // $('#btn-assign-worker').click(function() {
-    //     console.log("assign_workers");
-    //     showAssignWorkerModal()
-    // });
     $('#btn-assign-worker').click(function() {
-        // $refs.assignworker.getDate();
         console.log("assign_workers");
         showAssignWorkerModal()
     });
@@ -344,7 +339,6 @@ $(document).ready(function() {
     const navbarHeight = 100;
 
     $('body').on('contextmenu', '#tasksGrid tbody tr', function(e) {
-        // console.log("click")
         $('#context-menu').css({
             display: 'block',
             left: e.pageX - $(this).offset().left,
@@ -506,21 +500,6 @@ $(document).ready(function() {
     function showAssignWorkerModal() {
         // make ajax call to get users data
         console.log("showAssignWorkerModal");
-        // var data = getFilterObject();
-        // let url = getUrlFor('/assign-workersupdate');
-        // sendGetRequest(url, data).done(function(res) {
-        //     console.log(res);
-        //     console.log("ajax call", res.users);
-        //     let users = res.users;
-
-        //     // console.log(res.users);
-        // })
-
-        // $('#assign-worker-value').keypress(onEnterKey(updateAssignWorker));
-
-        // $('#save-assign-worker-modal').click(function() {
-        //     updateAssignWorker();
-        // });
 
         $('#update-assign-worker-modal').on('shown.bs.modal', function () {
             $('#assign-worker-value').focus()
