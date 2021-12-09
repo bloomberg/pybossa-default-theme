@@ -29,8 +29,6 @@
       </div>
     </div>
     <p>
-      Note:
-      Type in users to assign them to the selected tasks
     </p>
   </div>
 </template>
@@ -65,8 +63,6 @@ export default {
     ]),
 
     initialize (data) {
-      console.log('initialization');
-      console.log(data);
       this.allUserList = data.all_users || [];
       this.assignedUserList = data.assign_users || [];
     },
