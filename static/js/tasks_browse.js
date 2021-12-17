@@ -285,7 +285,6 @@ $(document).ready(function() {
         showAssignWorkerModal()
     });
 
-
     $('#delete-tasks-modal .cancel-delete').on('click', function() {
         selectedTask = undefined;
     });
@@ -500,16 +499,11 @@ $(document).ready(function() {
         $('#update-assign-worker-modal').on('shown.bs.modal', function () {
             $('#assign-worker-value').focus()
         })
-
         $('#update-assign-worker-modal').modal('show');
-
-
     }
 
     function updateAssignWorker() {
-
         refresh();
-
     }
 
     function sendUpdateRequest(endpoint, data) {

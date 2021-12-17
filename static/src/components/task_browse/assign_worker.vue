@@ -69,13 +69,11 @@ export default {
 
     getURL () {
       let path = window.location.pathname;
-      console.log(path);
       let res = path.split('/');
       if (res[res.length - 1] !== 'browse') {
         res = res.splice(0, res.length - 2);
       }
       res[res.length - 1] = 'assign-workersupdate';
-      console.log(res.join('/'));
       return res.join('/');
     },
 
@@ -84,7 +82,6 @@ export default {
         taskId: this.getSelectedTask(),
         filters: JSON.stringify(this.getFilters())
       };
-      console.log(this.getCsrfToken());
       try {
         this.waiting = true;
         const res = await fetch(this.getURL(), {
@@ -99,7 +96,6 @@ export default {
         const data = await res.json();
         this.initialize(data);
       } catch (error) {
-        console.log(error);
         window.pybossaNotify('An error occurred.', true, 'error');
       } finally {
         this.waiting = false;
@@ -107,12 +103,9 @@ export default {
     },
 
     async save () {
-      console.log('save function - task id', this.getSelectedTask());
-      console.log(this.getCsrfToken());
       try {
         this.waiting = true;
         } catch (error) {
-          console.log(error);
           window.pybossaNotify('An error occurred.', true, 'error');
         } finally {
           this.waiting = false;

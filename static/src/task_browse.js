@@ -28,7 +28,6 @@ const store = new Vuex.Store({
     getCsrfToken (state) {
       return state.token;
     }
-
   },
 
   mutations: {
