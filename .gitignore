@@ -14,3 +14,4 @@ static/js/img
 static/src/node_modules/*
 coverage/
 **/.DS_Store
+node_modules/

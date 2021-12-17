@@ -347,7 +347,7 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" aria-labelledby="{{id}}">
-            {% for key, display in entries.iteritems() %}
+            {% for key, display in entries.items() %}
             <li><a href="#" data-dropdown-selection="{{key}}">{{display}}</a></li>
             {% endfor %}
         </ul>
