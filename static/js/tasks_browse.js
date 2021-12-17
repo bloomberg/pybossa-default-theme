@@ -282,7 +282,6 @@ $(document).ready(function() {
     });
 
     $('#btn-assign-worker').click(function() {
-        console.log("assign_workers");
         showAssignWorkerModal()
     });
 
@@ -346,7 +345,6 @@ $(document).ready(function() {
         });
         selectedTask = $(this).find('td:first').text()
                               .trim().split(' ')[0].substring(1).trim();
-        console.log(taskBrowse);
         taskBrowse.setSelectedTask(selectedTask);
         $('#tasksGrid tr').removeClass('selected');
         $(this).toggleClass('selected');
@@ -499,8 +497,6 @@ $(document).ready(function() {
 
     function showAssignWorkerModal() {
         // make ajax call to get users data
-        console.log("showAssignWorkerModal");
-
         $('#update-assign-worker-modal').on('shown.bs.modal', function () {
             $('#assign-worker-value').focus()
         })
@@ -718,9 +714,7 @@ function displayTaskRunStatusInfo(taskRunStatusInfo, data) {
 
     function countdown(clock, t) {
         var counter = setInterval(_countdown, 1000);
-
         function _countdown() {
-            console.log('Countdown:', t);
             var seconds = Math.floor(t % 60);
             var minutes = Math.floor((t / 60) % 60);
             var hours = Math.floor(t / 60 / 60);
@@ -807,9 +801,7 @@ window.addEventListener('clearFilters', function() {
 function exportTasks(downloadType) {
     let location = (first_page_url || '') + (!isNaN(records_per_page) ? ('/1/' + records_per_page) : '');
     const preparedFilters = prepareFilters();
-
     location += '?' + $.param(preparedFilters) + '&download_type=' + downloadType;
-
     window.location.replace(location);
 }
 
