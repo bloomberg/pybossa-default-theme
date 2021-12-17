@@ -527,7 +527,6 @@ $(document).ready(function() {
     };
 
     function sendGetRequest(endpoint, data) {
-        // setSpinner(true);
         return $.ajax({
             type: 'GET',
             url: endpoint,
@@ -535,7 +534,6 @@ $(document).ready(function() {
             contentType: 'application/json',
             data: JSON.stringify(data)
         }).fail(function(res) {
-            // setSpinner(false);
             var message = 'There was an error processing the request.';
             var severity = 'warning';
             if (res.status === 403) {
@@ -546,7 +544,6 @@ $(document).ready(function() {
         });
     };
 
-    // user preferences
     $("#multiple-languages").select2({
         placeholder: "Pick language",
         allowClear: false
