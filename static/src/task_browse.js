@@ -18,7 +18,6 @@ const store = new Vuex.Store({
 
   getters: {
     getFilters (state) {
-      console.log('get filters');
       return state.filters;
     },
 
@@ -34,17 +33,14 @@ const store = new Vuex.Store({
 
   mutations: {
     setFilters (state, filters) {
-      console.log('set filters');
       state.filters = JSON.parse(JSON.stringify(filters));
     },
 
     setSelectedTask (state, taskId) {
-      console.log('set selected task id ', taskId);
       state.selectedTask = taskId;
     },
 
     setCsrfToken (state, token) {
-      console.log('set token ', token);
       state.token = token;
     }
   }
