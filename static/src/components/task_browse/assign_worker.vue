@@ -120,7 +120,7 @@ export default {
           credentials: 'same-origin',
           body: JSON.stringify(requestData)
         });
-        console.log(res)
+        console.log(res);
         } catch (error) {
           window.pybossaNotify('An error occurred.', true, 'error');
         } finally {
