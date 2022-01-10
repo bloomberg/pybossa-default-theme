@@ -110,7 +110,7 @@ export default {
       };
       try {
         this.waiting = true;
-        const res = await fetch(this.getURL(), {
+        await fetch(this.getURL(), {
           method: 'POST',
           headers: {
             'content-type': 'application/json',
@@ -119,7 +119,6 @@ export default {
           credentials: 'same-origin',
           body: JSON.stringify(requestData)
         });
-        console.log(res);
         } catch (error) {
           window.pybossaNotify('An error occurred.', true, 'error');
         } finally {
