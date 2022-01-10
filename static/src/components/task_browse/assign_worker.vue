@@ -28,7 +28,7 @@
         </div>
       </div>
     </div>
-    <p></p>
+    <p/>
   </div>
 </template>
 
