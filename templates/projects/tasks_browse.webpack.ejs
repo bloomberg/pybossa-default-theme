@@ -111,6 +111,9 @@
             <ul class="dropdown-menu" aria-labelledby="btn-edit-tasks">
                 <li><a href="#" id="btn-edit-redundancy" data-value="task-redundancy" tabIndex="-1">Edit redundancy</a></li>
                 <li><a href="#" id="btn-edit-priority" data-value="task-priority" tabIndex="-1">Edit priority</a></li>
+                {% if project.info.sched == 'task_queue_scheduler' or project.info.sched == 'user_pref_scheduler'  %}
+                  <li><a href="#" id="btn-assign-worker" data-value="assign-worker" @click="$refs.assignworker.getData()" tabIndex="-1">Assign worker</a></li>
+                {% endif %}
             </ul>
         </li>
         <li>
@@ -547,6 +550,25 @@
   </div>
 </div>
 
+<!-- Update assign worker -->
+<div class="modal fade" id="update-assign-worker-modal" tabindex="-1" role="dialog" aria-labelledby="assign-worker-modal-label">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Assign Workers to Task</h4>
+      </div>
+      <div class="modal-body">
+        <assign-worker ref="assignworker"></assign-worker>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="save-assign-worker-modal" @click="$refs.assignworker.save()">Update</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Delete Task -->
 <div class="modal fade" id="delete-tasks-modal" tabindex="-1" role="dialog" aria-labelledby="delete-tasks-modal-label">
   <div class="modal-dialog modal-md" role="document">
@@ -627,6 +649,9 @@
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-menu" style="display:block;position:absolute;">
         <li><a href="#" id="edit-pri" data-value="task-priority">Edit Priority</a></li>
         <li><a href="#" id="edit-red" data-value="task-redundancy">Edit Redundancy</a></li>
+        {% if project.info.sched == 'task_queue_scheduler' or project.info.sched == 'user_pref_scheduler'  %}
+        <li><a href="#" id="edit-user" data-value="assign-worker" @click="$refs.assignworker.getData()">Assign Worker </a></li>
+        {% endif %}
         <li><a href="#" id="del-task" data-target="#delete-tasks-modal" data-toggle="modal">Delete Task</a></li>
     </ul>
 </div>
@@ -679,6 +704,7 @@
     var first_page_url = "{{ url_for('project.tasks_browse', short_name=project.short_name) }}";
     var records_per_page = {{ records_per_page }};
     var csrftoken = "{{ csrf_token() }}";
+    taskBrowse.setCsrfToken(csrftoken);
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
             if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {

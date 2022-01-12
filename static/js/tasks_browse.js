@@ -281,6 +281,10 @@ $(document).ready(function() {
         showRedundancyUpdateModal()
     });
 
+    $('#btn-assign-worker').click(function() {
+        showAssignWorkerModal()
+    });
+
     $('#delete-tasks-modal .cancel-delete').on('click', function() {
         selectedTask = undefined;
     });
@@ -340,6 +344,7 @@ $(document).ready(function() {
         });
         selectedTask = $(this).find('td:first').text()
                               .trim().split(' ')[0].substring(1).trim();
+        taskBrowse.setSelectedTask(selectedTask);
         $('#tasksGrid tr').removeClass('selected');
         $(this).toggleClass('selected');
         return false;
@@ -382,6 +387,10 @@ $(document).ready(function() {
 
     $('#edit-red').click(function() {
         showRedundancyUpdateModal()
+    });
+
+    $('#edit-user').click(function() {
+        showAssignWorkerModal()
     });
 
     function dropdownCheckboxToggle(elm) {
@@ -485,6 +494,18 @@ $(document).ready(function() {
         });
     }
 
+    function showAssignWorkerModal() {
+        // make ajax call to get users data
+        $('#update-assign-worker-modal').on('shown.bs.modal', function () {
+            $('#assign-worker-value').focus()
+        })
+        $('#update-assign-worker-modal').modal('show');
+    }
+
+    function updateAssignWorker() {
+        refresh();
+    }
+
     function sendUpdateRequest(endpoint, data) {
         setSpinner(true);
         return $.ajax({
@@ -505,7 +526,24 @@ $(document).ready(function() {
         });
     };
 
-    // user preferences
+    function sendGetRequest(endpoint, data) {
+        return $.ajax({
+            type: 'GET',
+            url: endpoint,
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(data)
+        }).fail(function(res) {
+            var message = 'There was an error processing the request.';
+            var severity = 'warning';
+            if (res.status === 403) {
+                message = 'You do not have the permissions to perform this action.';
+                severity = 'danger';
+            }
+            pybossaNotify(message, true, severity);
+        });
+    };
+
     $("#multiple-languages").select2({
         placeholder: "Pick language",
         allowClear: false
@@ -667,9 +705,7 @@ function displayTaskRunStatusInfo(taskRunStatusInfo, data) {
 
     function countdown(clock, t) {
         var counter = setInterval(_countdown, 1000);
-
         function _countdown() {
-            console.log('Countdown:', t);
             var seconds = Math.floor(t % 60);
             var minutes = Math.floor((t / 60) % 60);
             var hours = Math.floor(t / 60 / 60);
@@ -756,9 +792,7 @@ window.addEventListener('clearFilters', function() {
 function exportTasks(downloadType) {
     let location = (first_page_url || '') + (!isNaN(records_per_page) ? ('/1/' + records_per_page) : '');
     const preparedFilters = prepareFilters();
-
     location += '?' + $.param(preparedFilters) + '&download_type=' + downloadType;
-
     window.location.replace(location);
 }
 
