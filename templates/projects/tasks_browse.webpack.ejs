@@ -177,7 +177,7 @@
                 <th>Actions</th>
                 {% endif %}
                 {% for column_name in info_columns %}
-                <th>{{ column_name }} </th>
+                <th class="{{'sort-asc' if filter_data.order_by[column_name] == 'asc'}} {{'sort-desc' if filter_data.order_by[column_name] == 'desc'}} sortable" data-sort="{{column_name}}" >{{ column_name }} </th> 
                 {% endfor %}
                 {% if 'lock_status' in filter_data.display_columns %}
                 <th class="{{'sort-asc' if filter_data.order_by['lock_status'] == 'asc'}} {{'sort-desc' if filter_data.order_by['lock_status'] == 'desc'}} sortable" data-sort="lock_status">Active Users</th>
