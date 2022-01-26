@@ -647,9 +647,11 @@
 {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
 <div id="context-menu" class="dropdown clearfix">
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-menu" style="display:block;position:absolute;">
+        {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
         <li><a href="#" id="edit-pri" data-value="task-priority">Edit Priority</a></li>
         <li><a href="#" id="edit-red" data-value="task-redundancy">Edit Redundancy</a></li>
-        {% if project.info.sched == 'task_queue_scheduler' or project.info.sched == 'user_pref_scheduler'  %}
+        {% endif %}
+        {% if (current_user.id in project.owners_ids or current_user.admin) and (project.info.sched == 'task_queue_scheduler' or project.info.sched == 'user_pref_scheduler')  %}
         <li><a href="#" id="edit-user" data-value="assign-worker" @click="$refs.assignworker.getData()">Assign Worker </a></li>
         {% endif %}
         <li><a href="#" id="del-task" data-target="#delete-tasks-modal" data-toggle="modal">Delete Task</a></li>
