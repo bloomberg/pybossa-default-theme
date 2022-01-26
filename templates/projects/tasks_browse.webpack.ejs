@@ -644,7 +644,7 @@
 </div>
 
 <!-- Project owner, subadmin that are project co-owners and admins can edit/delete task properties -->
-{% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
+{% if current_user.id in project.owners_ids or current_user.admin %}
 <div id="context-menu" class="dropdown clearfix">
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-menu" style="display:block;position:absolute;">
         {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
