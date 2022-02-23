@@ -674,7 +674,7 @@
     const userId = {{ current_user.id |trim}}
     const adminPriv = {{ current_user.admin |tojson }} || {{ current_user.subadmin |tojson }}
     const viewType = '{{ request.args.get('view') }}'
-    const enableAutoRefresh = (proj['enable_task_queue'] && (viewType === 'tasklist' || (!adminPriv && !(userId in proj["owners_ids"]))))
+    const enableAutoRefresh = false; //(proj['enable_task_queue'] && (viewType === 'tasklist' || (!adminPriv && !(userId in proj["owners_ids"]))))
     const refreshInterval = 300000;
     let refresh = null;
 
