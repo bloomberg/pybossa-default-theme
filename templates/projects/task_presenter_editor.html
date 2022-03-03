@@ -329,6 +329,8 @@
         <script type="text/javascript" src="{{ ASSET_URL }}"></script>
     {% endassets %}
 
+    <script type="text/javascript" src="{{url_for('static', filename='js/task-presenter-tabs.js')}}"></script>
+
 <script type="text/javascript">
 (function() {
  var render = function(presenterSource, showGuidelines) {
@@ -415,17 +417,11 @@ var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
   }
 });
 
-//set tabs classes, default tab is guidelines
-if ('{{guidelines_tab_on}}' == 'True' || '{{presenter_tab_on}}' == 'False') {
-    $('#tab-nav-guidelines').addClass('active');
-    $('#tab-content-guidelines').addClass('active');
-    window.location.hash = window.location.hash  == '' ? "content-guidelines" : window.location.hash = window.location.hash;
-}
-if ('{{presenter_tab_on}}' == 'True') {
-    $('#tab-nav-presenter').addClass('active');
-    $('#tab-content-presenter').addClass('active');
-    window.location.hash = "content-presenter";
-}
+// Initialize the module for saving both tabs when clicking Update.
+TaskPresenterTabManager.initialize(editor);
+
+// Set focus to the active tab.
+TaskPresenterTabManager.focus({{guidelines_tab_on|lower}}, {{presenter_tab_on|lower}});
 
 //Codemirror needs to be refreshed in order to render properly
 if ('{{presenter_tab_on}}' == 'True'){
