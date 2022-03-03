@@ -95,7 +95,7 @@
     <div class="tab-content">
           <div role="tabpanel" id="tab-content-guidelines" class="tab-pane fade in col-md-12">
               <div class = "row">
-                  <form method="post" action="{{ url_for('project.task_presenter_editor', short_name=project.short_name, template=request.args.get('template')) }}">
+                  <form id="form-guidelines" method="post" action="{{ url_for('project.task_presenter_editor', short_name=project.short_name, template=request.args.get('template')) }}">
                       {{ form.hidden_tag() }}
                       <fieldset>
                           {{render_field(form.guidelines)}}
@@ -178,7 +178,7 @@
 
               <div class="row ">
                   <div  id="mirror" class="col-md-12">
-                      <form class="col-md-12" method="post"
+                      <form id="form-task-presenter" class="col-md-12" method="post"
                           action="{{ url_for('project.task_presenter_editor', short_name=project.short_name) }}">
                           {{ form.hidden_tag() }}
                           <fieldset>

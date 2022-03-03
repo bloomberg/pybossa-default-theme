@@ -15,7 +15,7 @@ const TaskPresenterTabManager = {
     $("input[name='task-guidelines']").click(() => {
       if (TaskPresenterTabManager._isDirty.presenter) {
         // Insert the task presenter payload into the form submission to save both tabs.
-        var formElement = $($('#editor-page').find('form')[0]);
+        var formElement = $('#form-guidelines'); //$('#editor-page').find('form')[0]);
 
         // Get HTML from task presenter editor and encode.
         var html = editor.getValue();
@@ -28,13 +28,34 @@ const TaskPresenterTabManager = {
       }
 
       // Persist the active tab (since we are saving both tabs, we only want the visible one focused after refresh).
-      localStorage[TaskPresenterTabManager._activeTab.key] = window.location.hash === 'content-guidelines' ? TaskPresenterTabManager._activeTab.guidelines : TaskPresenterTabManager._activeTab.presenter;
+      localStorage[TaskPresenterTabManager._activeTab.key] = TaskPresenterTabManager._activeTab.guidelines;
 
       // Submit the form.
       return true;
     });
 
-    // TODO: Setup click event for task presenter Update button.
+    // Setup click event for task presenter Update button.
+    $("input[name='task-presenter']").click(() => {
+      if (TaskPresenterTabManager._isDirty.guidelines) {
+        // Insert the task guidelines payload into the form submission to save both tabs.
+        var formElement = $('#form-task-presenter'); //$('#editor-page').find('form')[1]);
+
+        // Get HTML from task presenter editor and encode.
+        var html = $('#guidelines').summernote('code');
+        var safeHtml = $('<span>').text(html).html();
+        safeHtml = safeHtml.replace(/"/g, '&quot;');
+
+        // Insert hidden form elements on the guidelines tab.
+        formElement.append(`<input type="hidden" id="task-guidelines" name="task-guidelines" value="Update"></input>`);
+        formElement.append(`<input type="hidden" id="guidelines" name="guidelines" value="${safeHtml}"></input>`);
+      }
+
+      // Persist the active tab (since we are saving both tabs, we only want the visible one focused after refresh).
+      localStorage[TaskPresenterTabManager._activeTab.key] = TaskPresenterTabManager._activeTab.presenter;
+
+      // Submit the form.
+      return true;
+    });
 
     // Setup change event for guidelines editor.
     $("#guidelines").on("summernote.change", e => {
