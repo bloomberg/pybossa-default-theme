@@ -8,23 +8,26 @@ const TaskPresenterTabManager = {
     presenter: 'presenter'
   },
 
+  _dom: {
+    presenter: '<input type="hidden" id="task-presenter" name="task-presenter" value="Update"></input>',
+    guidelines: '<input type="hidden" id="task-guidelines" name="task-guidelines" value="Update"></input>'
+  },
+
   _isDirty: {},
 
   initialize: editor => {
     // Setup click event for guidelines Update button.
     $("input[name='task-guidelines']").click(() => {
       if (TaskPresenterTabManager._isDirty.presenter) {
-        // Insert the task presenter payload into the form submission to save both tabs.
-        var formElement = $('#form-guidelines'); //$('#editor-page').find('form')[0]);
+        // Insert the task presenter payload into the guidelines form to save both tabs.
+        const formElement = $(`#form-${TaskPresenterTabManager._activeTab.guidelines}`);
 
         // Get HTML from task presenter editor and encode.
-        var html = editor.getValue();
-        var safeHtml = $('<span>').text(html).html();
-        safeHtml = safeHtml.replace(/"/g, '&quot;');
+        const html = TaskPresenterTabManager.clean(editor.getValue());
 
         // Insert hidden form elements on the guidelines tab.
-        formElement.append(`<input type="hidden" id="task-presenter" name="task-presenter" value="Update"></input>`);
-        formElement.append(`<input type="hidden" id="editor" name="editor" value="${safeHtml}"></input>`);
+        formElement.append(TaskPresenterTabManager._dom.presenter);
+        formElement.append(`<input type="hidden" id="editor" name="editor" value="${html}"></input>`);
       }
 
       // Persist the active tab (since we are saving both tabs, we only want the visible one focused after refresh).
@@ -37,17 +40,15 @@ const TaskPresenterTabManager = {
     // Setup click event for task presenter Update button.
     $("input[name='task-presenter']").click(() => {
       if (TaskPresenterTabManager._isDirty.guidelines) {
-        // Insert the task guidelines payload into the form submission to save both tabs.
-        var formElement = $('#form-task-presenter'); //$('#editor-page').find('form')[1]);
+        // Insert the task guidelines payload into the presenter form to save both tabs.
+        const formElement = $(`#form-${TaskPresenterTabManager._activeTab.presenter}`);
 
         // Get HTML from task presenter editor and encode.
-        var html = $('#guidelines').summernote('code');
-        var safeHtml = $('<span>').text(html).html();
-        safeHtml = safeHtml.replace(/"/g, '&quot;');
+        const html = TaskPresenterTabManager.clean($('#guidelines').summernote('code'));
 
-        // Insert hidden form elements on the guidelines tab.
-        formElement.append(`<input type="hidden" id="task-guidelines" name="task-guidelines" value="Update"></input>`);
-        formElement.append(`<input type="hidden" id="guidelines" name="guidelines" value="${safeHtml}"></input>`);
+        // Insert hidden form elements on the presenter tab.
+        formElement.append(TaskPresenterTabManager._dom.guidelines);
+        formElement.append(`<input type="hidden" id="guidelines" name="guidelines" value="${html}"></input>`);
       }
 
       // Persist the active tab (since we are saving both tabs, we only want the visible one focused after refresh).
@@ -70,17 +71,36 @@ const TaskPresenterTabManager = {
 
   focus: (isGuidelinesActive, isPresenterActive) => {
     // Set focus to the recently saved tab. Default is guidelines.
-    if (isGuidelinesActive || !isPresenterActive || localStorage[TaskPresenterTabManager._activeTab.key] === 'guidelines') {
-        $('#tab-nav-guidelines').addClass('active');
-        $('#tab-content-guidelines').addClass('active');
-        window.location.hash = window.location.hash  == '' ? "content-guidelines" : window.location.hash = window.location.hash;
+    let isFocusGuidelines;
+
+    if (localStorage[TaskPresenterTabManager._activeTab.key] === TaskPresenterTabManager._activeTab.guidelines) {
+      isFocusGuidelines = true;
     }
-    else if (isPresenterActive || localStorage[TaskPresenterTabManager._activeTab.key] === TaskPresenterTabManager._activeTab.presenter) {
-        $('#tab-nav-presenter').addClass('active');
-        $('#tab-content-presenter').addClass('active');
-        window.location.hash = "content-presenter";
+    else if (localStorage[TaskPresenterTabManager._activeTab.key] === TaskPresenterTabManager._activeTab.presenter) {
+      isFocusGuidelines = false;
+    }
+    else if (isGuidelinesActive || !isPresenterActive) {
+      isFocusGuidelines = true;
+    }
+    else if (isPresenterActive) {
+      isFocusGuidelines = false;
+    }
+
+    if (isFocusGuidelines == true) {
+      $('#tab-nav-guidelines').addClass('active');
+      $('#tab-content-guidelines').addClass('active');
+      window.location.hash = window.location.hash  == '' ? "content-guidelines" : window.location.hash = window.location.hash;
+    }
+    else if (isFocusGuidelines == false) {
+      $('#tab-nav-presenter').addClass('active');
+      $('#tab-content-presenter').addClass('active');
+      window.location.hash = "content-presenter";
     }
 
     delete(localStorage[TaskPresenterTabManager._activeTab.key]);
+  },
+
+  clean: html => {
+    return $('<span>').text(html).html().replace(/"/g, '&quot;');
   }
 };
