@@ -116,9 +116,15 @@ const TaskPresenterTabManager = {
   },
 
   format: html => {
-    return (prettier == null || prettierPlugins == null) ? html : prettier.format(html, {
-      parser: 'html',
-      plugins: prettierPlugins
-    });
+    try {
+      return (prettier == null || prettierPlugins == null) ? html : prettier.format(html, {
+        parser: 'html',
+        plugins: prettierPlugins
+      });
+    }
+    catch (e) {
+      console.warn(e);
+      return html;
+    }
   }
 };
