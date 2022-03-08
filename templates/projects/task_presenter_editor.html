@@ -464,9 +464,9 @@ $('#tabs a[href="' + hash.replace('#', '#tab-') + '"]').tab('show');
 var main = function() {
 
  // Create markup
- $('#guidelines').summernote({
-  height: 554
- });
+ $('#guidelines').summernote(
+      { height: 554}
+ );
 
  // Initialize HTML code formatting for guidelines.
  TaskPresenterTabManager.autoFormat('#guidelines');
