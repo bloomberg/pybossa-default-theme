@@ -69,6 +69,17 @@ const TaskPresenterTabManager = {
     });
   },
 
+  autoFormat: selector => {
+    // Setup auto-format HTML in guidelines code view.
+    $('.btn-codeview').each(function(index) {
+      $(this).on('mousedown', function() {
+        // Format HTML code in guidelines tab.
+        let content = TaskPresenterTabManager.format($(selector).summernote('code'));
+        $(selector).summernote('code', content);
+      });
+    });
+  },
+
   focus: (isGuidelinesActive, isPresenterActive) => {
     // Set focus to the recently saved tab. Default is guidelines.
     let isFocusGuidelines;
@@ -102,5 +113,12 @@ const TaskPresenterTabManager = {
 
   clean: html => {
     return $('<span>').text(html).html().replace(/"/g, '&quot;');
+  },
+
+  format: html => {
+    return (prettier == null || prettierPlugins == null) ? html : prettier.format(html, {
+      parser: 'html',
+      plugins: prettierPlugins
+    });
   }
 };
