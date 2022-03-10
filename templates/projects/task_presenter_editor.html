@@ -11,6 +11,8 @@
 <link  href="{{url_for('static', filename='vendor/summernote/font/summernote.eot')}}"/>
 <link  href="{{url_for('static', filename='vendor/summernote/font/summernote.ttf')}}"/>
 <link  href="{{url_for('static', filename='vendor/summernote/font/summernote.woff')}}"/>
+<script src="{{url_for('static', filename='vendor/prettier/standalone.js')}}"></script>
+<script src="{{url_for('static', filename='vendor/prettier/parser-html.js')}}"></script>
 
 <style>
     .hideAll  {
@@ -330,8 +332,6 @@
     {% endassets %}
 
     <script type="text/javascript" src="{{url_for('static', filename='js/task-presenter-tabs.js')}}"></script>
-    <script src="https://unpkg.com/prettier@1.18.2/standalone.js"></script>
-    <script src="https://unpkg.com/prettier@1.18.2/parser-html.js"></script>
 
 <script type="text/javascript">
 (function() {
