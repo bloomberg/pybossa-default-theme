@@ -2,7 +2,6 @@
 #tasksGrid th.sort-asc:after{
     content: '';
     position: relative;
-    left: -20px;
     float: right;
     border: 7px solid transparent;
 }
@@ -13,11 +12,6 @@
 #tasksGrid th.sort-asc:after{
     border-bottom-color: silver;
 }
-#tasksGrid th.sort-desc,
-#tasksGrid th.sort-asc{
-    padding-left: 20px;
-}
-
 #tasksBrowseControls {
     padding-left:0;
 }
@@ -31,10 +25,33 @@
 }
 #tasksGrid th.sortable {
     cursor: pointer;
+    padding-left: 5px;
 }
 #tasksGrid .gold-task {
     display: block;
     margin: 0 0.25rem;
+}
+#tasksGrid th {
+    border-bottom: 1px solid #ccc;
+    background-color: #f0f0f0;
+}
+#tasksGrid thead tr:nth-child(2) th {
+    background-color: #fafafa;
+}
+#tasksGrid th, td {
+    padding: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+#tasksGrid td {
+    padding: 0 10px 0 5px;
+}
+#tasksGrid.border td, #tasksGrid.border th {
+    border-right: 1px solid #ccc;
+}
+#tasksGrid thead tr th:hover {
+    color: #3498db;
 }
 #date_from {
     z-index: 1051;
