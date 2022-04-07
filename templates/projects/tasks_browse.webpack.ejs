@@ -154,7 +154,7 @@
         <thead>
             <tr>
                 {% if 'task_id' in filter_data.display_columns %}
-                <th class="{{'sort-asc' if filter_data.order_by['task_id'] == 'asc'}} {{'sort-desc' if filter_data.order_by['task_id'] == 'desc'}} sortable" data-sort="task_id">
+                <th class="{{'sort-asc' if filter_data.order_by|length == 0 or filter_data.order_by['task_id'] == 'asc'}} {{'sort-desc' if filter_data.order_by['task_id'] == 'desc'}} sortable" data-sort="task_id">
                     Task #
                 </th>
                 {% endif %}
