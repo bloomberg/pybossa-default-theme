@@ -19,5 +19,5 @@ function setup_task_timeout_display(timeout, original_timeout) {
             });
         },  timeout * 1000);
 }
-setup_task_timeout_display({{ project.timeout or 0 }}, {{ project.original_timeout or project.timeout or 0 }});
+//setup_task_timeout_display({{ project.timeout or 0 }}, {{ project.original_timeout or project.timeout or 0 }});
 </script>
