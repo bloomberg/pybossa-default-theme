@@ -130,6 +130,9 @@ $(document).ready(function() {
         else {
             $(this).toggleClass('sort-asc sort-desc');
         }
+
+        // If not selecting multiple columns, refresh the page with the single sort.
+        !evt.ctrlKey && refresh();
     });
 
     $('#infoModal').on('show.bs.modal', function(event) {
