@@ -1,10 +1,10 @@
 ;(function(){
 var dateModalInfo = '';
 
-function dirtyView() {
+function dirtyView(showHint = true) {
     if (filter_data.changed === false) {
         filter_data.changed = true;
-        $('[data-toggle=popover]').popover('show');
+        showHint && $('[data-toggle=popover]').popover('show');
     }
 }
 
@@ -116,7 +116,7 @@ $(document).ready(function() {
     });
 
     $('#tasksGrid th[data-sort]').click(function(evt) {
-        dirtyView();
+        dirtyView(evt.ctrlKey);
 
         var column = $(this);
 
