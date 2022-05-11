@@ -165,7 +165,10 @@ $(document).ready(function() {
 
         $.get(url)
         .done(function(data) {
-            displayTaskRunStatusInfo(taskRunStatusInfo, data);
+            var tokens = url.split('/')
+            var project_shortname = tokens[2]
+            var task_id = tokens[3]
+            displayTaskRunStatusInfo(taskRunStatusInfo, data, project_shortname, task_id);
         })
         .fail(function() {
             taskRunStatusInfo.text('Error loading data');
@@ -637,7 +640,7 @@ function displayTaskInfo(taskInfo, data) {
     taskInfo.html(info);
 }
 
-function displayTaskRunStatusInfo(taskRunStatusInfo, data) {
+function displayTaskRunStatusInfo(taskRunStatusInfo, data, project_shortname, task_id) {
     if (data.length < 1) {
         return;
     }
@@ -678,6 +681,8 @@ function displayTaskRunStatusInfo(taskRunStatusInfo, data) {
         var trStatus = 'Available';
         var clock = makeCell('-');
 
+        row.setAttribute('id', `row-${i + 1}`);
+
         if (user) {
             userId = user.user_id;
             userEmail = user.user_email;
@@ -698,6 +703,23 @@ function displayTaskRunStatusInfo(taskRunStatusInfo, data) {
 
     table.appendChild(body);
     taskRunStatusInfo.html(table);
+
+    for (let i = 0; i < data.redundancy; i++) {
+        const user = users[i];
+        const row = document.getElementById(`row-${i + 1}`);
+        if (user && user.status === "Completed") {
+            const url = '/project/' + project_shortname + '/task/' + task_id + '/' + user.user_id + '?mode=read_only';
+            row.addEventListener('click', () =>{
+                window.open(url, '_blank');
+            });
+            row.addEventListener('mouseover', (e) => {
+                row.setAttribute('style', 'cursor: pointer; background-color: #dee0e3; outline: none');
+            });
+            row.addEventListener("mouseout", (e) => {
+                row.setAttribute('style', 'background-color: None');
+            });
+        }
+    }
 
     function makeCell(content) {
         var td = document.createElement('td');
