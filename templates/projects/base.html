@@ -5,6 +5,7 @@
 {% from "account/_helpers.html" import render_pagination %}
 
 {% block content %}
+<link rel="stylesheet" href="/static/css/projects.css" />
 <div id="wizard-container">
     <div class="container navigation-element {{'w-100' if request.cookies.leftNavCollapse == 'true'}}">
     {% include "projects/wizard.html" %}
