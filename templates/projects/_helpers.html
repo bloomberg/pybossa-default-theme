@@ -312,12 +312,12 @@
         <div id="btn-contribute-now" class="btn-group btn-contribute" role="group">
               <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.presenter', short_name=project.short_name)}}">{{ _('Start Contributing Now!') }}</a>
               <a class="btn btn-lg btn-warning btn-padding" role="button" href="{{url_for('project.make_random_task_gold', short_name=project.short_name)}}">{{ _('Create Gold Questions!') }}</a>
-            {% if project['enable_task_queue'] %}
-                {{ render_task_queue_toggle_buttons(project, current_user, request.args['view']) }}
-            {% endif %}
         </div>
         {% else %}
         <a href="{{ url_for('project.presenter', short_name=project.short_name)}}" class="btn btn-lg btn-primary btn-padding">{{ _('Start Contributing Now!') }}</a>
+        {% endif %}
+        {% if project['enable_task_queue'] %}
+            {{ render_task_queue_toggle_buttons(project, current_user, request.args['view']) }}
         {% endif %}
     </div>
     {% endif %}
