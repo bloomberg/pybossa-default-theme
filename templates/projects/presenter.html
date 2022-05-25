@@ -50,10 +50,8 @@
                 </div>
         </div>
         {% include 'annotation_guidelines_button.html' %}
-        <script type="text/javascript">
         {% include "projects/js/annotation_guidelines_button.js" %}
         {% include "projects/js/task_timeout.js" %}
-        </script>
         {{ project.info.task_presenter|safe }}
         {% if "task_guidelines" in project.info and project.info.task_guidelines != '' %}
             <script type="text/javascript">
