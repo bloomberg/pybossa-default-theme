@@ -1,3 +1,4 @@
+<script>
 const taskTimeout = {
     intervalId: null,
     taskId: null,
@@ -42,6 +43,13 @@ setup_task_timeout_display({{ project.timeout or 0 }}, {{ project.original_timeo
 // Event handler for when a task has loaded on the page.
 //
 pybossa.taskLoaded(function(task, deferred) {
+    // Check if the task is in read-only mode or gold task mode
+    if (!taskTimeout.intervalId || !taskTimeout.total) {
+        console.log(`Task in read-only/gold-task mode. taskTimeout is: ${taskTimeout}`)
+        deferred.resolve(task);
+        return;
+    }
+
     // Check if the task is valid and we have an active timeout interval already running.
     if ( !$.isEmptyObject(task) && taskTimeout.intervalId && taskTimeout.total) {
         // Stop the timer.
@@ -64,3 +72,4 @@ pybossa.taskLoaded(function(task, deferred) {
         deferred.resolve(task);
     }
 });
+</script>
