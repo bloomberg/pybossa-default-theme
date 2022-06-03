@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -31,7 +31,7 @@ jobs:
         TASK_PRESENTER_VERSION=$(node -p "require('./package.json').devDependencies['@dtwebservices/task-presenter-components']")
         npm install https://s3.amazonaws.com/cf-s3uploads/pybv/${TASK_PRESENTER_VERSION}/task-presenter-components.tgz
       working-directory: static/src
-    - run: yarn install
+    - run: yarn webpack
       working-directory: static/src
     - run: yarn test
       working-directory: static/src

@@ -75,6 +75,7 @@ describe('quizConfig', () => {
     expect(wrapper.vm.users['3']).toEqual(user3);
     await localVue.nextTick();
 
+    window.pybossaNotify = jest.fn();
     wrapper.vm.save();
 
     await localVue.nextTick();

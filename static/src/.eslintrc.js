@@ -20,12 +20,12 @@ module.exports = {
   // https://github.com/vuejs/eslint-plugin-vue
   extends: [
     'plugin:vue/recommended',
-    'standard',
+    'standard'
   ],
   // custom rules here
   rules: {
-    //require semicolons
-    'semi': [2, "always"],
+    // require semicolons
+    'semi': [2, 'always'],
 
     // turn off default prop required
     'vue/require-default-prop': 0,
@@ -38,6 +38,9 @@ module.exports = {
 
     'template-curly-spacing': 'off',
 
-    indent: 'off'
+    indent: 'off',
+
+    'no-unused-vars': 'off',
+    'vue/no-unused-vars': 'off'
   }
-}
+};

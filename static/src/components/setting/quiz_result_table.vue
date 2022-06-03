@@ -127,6 +127,7 @@ export default {
 
     reset (event, id) {
       this.updateUsers(this.users[id]);
+      // eslint-disable-next-line vue/no-mutating-props
       this.users[id].quiz.config.reset = !this.users[id].quiz.config.reset;
     },
 
