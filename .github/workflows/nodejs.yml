@@ -29,6 +29,8 @@ jobs:
         cache-dependency-path: static/src/yarn.lock
     - name: Pre setup
       run: |
+        npm cache clean --force
+        rm -rf ~/.npm
         TASK_PRESENTER_VERSION=$(node -p "require('./package.json').devDependencies['@dtwebservices/task-presenter-components']")
         npm install https://s3.amazonaws.com/cf-s3uploads/pybv/${TASK_PRESENTER_VERSION}/task-presenter-components.tgz
       working-directory: static/src
