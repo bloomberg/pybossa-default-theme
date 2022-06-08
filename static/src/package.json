@@ -37,6 +37,7 @@
     "babel-register": "^6.0.0",
     "babel-runtime": "^6.26.0",
     "chai": "^3.5.0",
+    "codemirror": "^5.65.1",
     "connect-history-api-fallback": "^1.1.0",
     "coveralls": "^3.0.2",
     "cropperjs": "^1.0.0-rc.2",
