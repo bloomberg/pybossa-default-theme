@@ -228,6 +228,7 @@ export default {
         this.random = data.form.rand_within_priority;
         this.schedVariants = data.sched_variants;
         this.goldtaskProbability = data.form.gold_task_probability;
+        this.customized_columns = data.form.customized_columns;
       } catch (error) {
         window.pybossaNotify('An error occurred.', true, 'error');
       }
@@ -264,7 +265,8 @@ export default {
               seconds: _second,
               default_n_answers: _defaultRedundancy,
               rand_within_priority: this.random,
-              gold_task_probability: this.goldtaskProbability
+              gold_task_probability: this.goldtaskProbability,
+              customized_columns: this.customized_columns
               };
         const notificationData = {
           remaining: this.remaining || '',
