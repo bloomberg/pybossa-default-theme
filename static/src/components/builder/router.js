@@ -11,6 +11,7 @@ import DropdownForm from './components/DropdownInput/DropdownForm.vue';
 import MultiselectForm from './components/MultiselectInput/MultiselectForm.vue';
 import ConditionalDisplayForm from './components/ConditionalDisplay/ConditionalDisplayForm.vue';
 import FileUploadForm from './components/FileUpload/FileUploadForm.vue';
+import TaskTimerForm from './components/TaskTimer/TaskTimerForm.vue';
 export const routes = [
   {
     path: '/',
@@ -41,6 +42,31 @@ export const routes = [
       {
         path: 'code',
         name: 'TEXT_INPUT_CODE',
+        components: { default: PreviewCommons }
+      }
+    ]
+  },
+  {
+    path: '/taskTimer',
+    name: 'TASK_TIMER',
+    components: {
+      default: Content,
+      header: Header
+    },
+    children: [
+      {
+        path: 'form',
+        name: 'TASK_TIMER_FORM',
+        components: { default: TaskTimerForm }
+      },
+      {
+        path: 'preview',
+        name: 'TASK_TIMER_PREVIEW',
+        components: { default: PreviewCommons }
+      },
+      {
+        path: 'code',
+        name: 'TASK_TIMER_CODE',
         components: { default: PreviewCommons }
       }
     ]
@@ -233,11 +259,6 @@ export const routes = [
     components: { default: Content, header: Header },
     children: [
       {
-        path: 'timer/preview',
-        name: 'TIMER_PREVIEW',
-        components: { default: PreviewCommons }
-      },
-      {
         path: 'buttonRow/preview',
         name: 'BUTTON_ROW_PREVIEW',
         components: { default: PreviewCommons }
@@ -260,11 +281,6 @@ export const routes = [
       {
         path: 'submitLastButton/preview',
         name: 'SUBMIT_LAST_BUTTON_PREVIEW',
-        components: { default: PreviewCommons }
-      },
-      {
-        path: 'timer/code',
-        name: 'TIMER_CODE',
         components: { default: PreviewCommons }
       },
       {

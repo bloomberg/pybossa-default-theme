@@ -8,7 +8,7 @@
       <custom-router-link :component="submitButton" />
       <custom-router-link :component="submitLastButton" />
       <custom-router-link :component="cancelButton" />
-      <custom-router-link :component="timer" />
+      <custom-router-link :component="taskTimer" />
       <custom-router-link :component="conditionalDisplay" />
       <custom-router-link :component="fileUpload" />
       <custom-router-link :component="textInput" />
@@ -146,11 +146,11 @@ export default {
           header: 'Table'
         }
       },
-      timer: {
-        name: 'TIMER_PREVIEW',
+      taskTimer: {
+        name: 'TASK_TIMER_FORM',
         params: {
-          componentName: 'TIMER',
-          header: 'Timer'
+          componentName: 'TASK_TIMER',
+          header: 'Task Timer'
         }
       },
       taskPresenter: {

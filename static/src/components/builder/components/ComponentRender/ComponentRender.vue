@@ -156,6 +156,11 @@ export default {
             }
           }
         };
+      } else if (this.selectedComponent === 'task-timer') {
+        return {
+          name: 'task-timer',
+          attrs: { lock: `${this.form.showLock}` }
+        };
       }
       return {};
     }

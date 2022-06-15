@@ -6,7 +6,7 @@ import tableTemplate from './components/Table/tableTemplate.html';
 import labelTemplate from './components/templates/labelTemplate.html';
 import textInputColumnTemplate from './components/Table/textInputColumnTemplate.html';
 import checkboxInputColumnTemplate from './components/Table/checkboxInputColumnTemplate.html';
-import timerTemplate from './components/helpers/timerTemplate.html';
+import taskTimerTemplate from './components/TaskTimer/taskTimerTemplate.html';
 import taskPresenterTemplate from './components/helpers/taskPresenterTemplate.html';
 import cancelButtonTemplate from './components/helpers/cancelButtonTemplate.html';
 import buttonRowTemplate from './components/helpers/buttonRowTemplate.html';
@@ -30,7 +30,7 @@ export const templates = {
   CHECKBOX_INPUT_COLUMN: checkboxInputColumnTemplate,
   CONDITIONAL_DISPLAY: conditionalDisplayTemplate,
   FILE_UPLOAD: fileUploadTemplate,
-  TIMER: timerTemplate,
+  TASK_TIMER: taskTimerTemplate,
   TASK_PRESENTER: taskPresenterTemplate,
   CANCEL_BUTTON: cancelButtonTemplate,
   BUTTON_ROW: buttonRowTemplate,
@@ -67,6 +67,8 @@ export default {
       return this.getMultiselectCode(form);
     } else if (component === 'CONDITIONAL_DISPLAY') {
       return this.getConditionalDisplayCode(form, component);
+    } else if (component === 'TASK_TIMER') {
+      return this.getSimpleComponentsCode(form, component);
     } else {
       return this.getHelperComponentCode(component);
     }

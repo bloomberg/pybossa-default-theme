@@ -1,4 +1,4 @@
-const TIMER_SECONDS = 5;
+const TIMER_SECONDS = 20;
 
 export const states = [
   {

@@ -74,7 +74,7 @@ export default {
         CHECKBOX_INPUT: 'checkbox-creator',
         RADIO_INPUT: 'radio-group-input',
         TABLE: 'table-creator',
-        TIMER: 'task-timer',
+        TASK_TIMER: 'task-timer',
         TASK_PRESENTER: 'task-presenter',
         CANCEL_BUTTON: 'cancel-button',
         SUBMIT_BUTTON: 'submit-button',
