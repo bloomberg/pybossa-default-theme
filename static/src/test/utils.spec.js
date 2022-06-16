@@ -183,7 +183,7 @@ it('getTableInputCode for TABLE with static data', () => {
 
 it('Helper components', () => {
   let componentCode = utils.getSnippet('TASK_TIMER', {});
-  expect(componentCode.trim()).toEqual('<task-timer lock="false"></task-timer>');
+  expect(componentCode.trim()).toEqual("<task-timer lock=''></task-timer>");
 
   componentCode = utils.getSnippet('TASK_PRESENTER', {});
   expect(componentCode.trim()).toEqual('<task-presenter></task-presenter>');
