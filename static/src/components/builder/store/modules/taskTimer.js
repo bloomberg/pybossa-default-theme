@@ -12,7 +12,7 @@ export const state = initialState();
 export const getters = {
   [types.GET_TASK_TIMER_PROPS] (state) {
     return state;
-  },
+  }
 };
 
 export const mutations = {
