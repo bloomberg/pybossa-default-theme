@@ -31,7 +31,7 @@
                   v-if="u.id!==owner.id"
                   class="fa fa-times"
                   aria-hidden="true"
-                  @click="remove($event, u.id)"
+                  @click="removeCoowner($event, u.id)"
                 />
               </span>
             </p>
@@ -45,7 +45,7 @@
         <div class="col-md-8 pull-right">
           <div class="input-group">
             <input
-              v-model="search"
+              v-model="coownerQuery"
               type="text"
               class="form-control input-sm"
               placeholder="Try with full name or nick name"
@@ -53,7 +53,7 @@
             <span class="input-group-append">
               <button
                 class="btn btn-sm btn-primary "
-                @click="searchUsers"
+                @click="searchCoowners"
               >
                 <i class="fa fa-search" />
                 Search
@@ -61,7 +61,7 @@
             </span>
           </div>
           <div
-            v-if="searchResult.length"
+            v-if="coownerResult.length"
             class="dropdown-content"
           >
             <div
@@ -69,11 +69,79 @@
               style="max-height: 150px;"
             >
               <div
-                v-for="u in searchResult"
+                v-for="u in coownerResult"
                 :key="u.id"
                 :value="u"
                 class="row"
-                @click="add($event, u)"
+                @click="addCoowner($event, u)"
+              >
+                <p> {{ u['fullname'] }} </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-4">
+          <p> Email Contacts </p>
+        </div>
+        <div class="col-md-8 pull-right">
+          <div v-if="Object.keys(contacts).length">
+            <p style="display: inline-block; word-break: normal; line-height: 35px;">
+              <span
+                v-for="u in contacts"
+                :key="u.name"
+                class=" label label-lg label-info"
+                style="display: inline-block"
+              >
+                {{ u.fullname }}
+                <i
+                  v-if="u.id!==owner.id"
+                  class="fa fa-times"
+                  aria-hidden="true"
+                  @click="removeContact($event, u.id)"
+                />
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-4">
+          <p> Manage Email Contacts </p>
+        </div>
+        <div class="col-md-8 pull-right">
+          <div class="input-group">
+            <input
+              v-model="contactQuery"
+              type="text"
+              class="form-control input-sm"
+              placeholder="Try with full name or nick name"
+            >
+            <span class="input-group-append">
+              <button
+                class="btn btn-sm btn-primary "
+                @click="searchContacts"
+              >
+                <i class="fa fa-search" />
+                Search
+              </button>
+            </span>
+          </div>
+          <div
+            v-if="contactResult.length"
+            class="dropdown-content"
+          >
+            <div
+              class="scroll"
+              style="max-height: 150px;"
+            >
+              <div
+                v-for="u in contactResult"
+                :key="u.id"
+                :value="u"
+                class="row"
+                @click="addContact($event, u)"
               >
                 <p> {{ u['fullname'] }} </p>
               </div>
@@ -106,8 +174,11 @@ export default {
     return {
       owner: {},
       coowners: {},
-      searchResult: [],
-      search: '',
+      contacts: {},
+      coownerResult: [],
+      contactResult: [],
+      coownerQuery: '',
+      contactQuery: '',
       waiting: false
     };
   },
@@ -119,54 +190,44 @@ export default {
   methods: {
 
     initialize (data) {
-      this.coowners = this.getCoowners(data.coowners_dict);
+      this.coowners = this.getUsers(data.coowners_dict);
+      this.contacts = this.getUsers(data.contacts_dict);
       this.owner = data.owner;
       this.csrfToken = data.form.csrf;
     },
 
-    getCoowners (coownerData) {
+    getUsers (data) {
       let users = {};
-      coownerData.forEach(function (u) {
+      data.forEach(function (u) {
         users[u.id] = u;
       });
       return users;
     },
 
     getURL () {
+      //
       let path = window.location.pathname;
       let res = path.split('/');
       res[res.length - 1] = 'coowners';
       return res.join('/');
     },
 
-    add (event, ur) {
-      Vue.set(this.coowners, ur.id, ur);
-      this.coowners[ur.id] = ur;
-    },
-
-    remove (event, id) {
-      Vue.delete(this.coowners, id);
-    },
-
-    async searchUsers () {
-      try {
-        const res = await fetch(this.getURL(), {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json',
-            'X-CSRFToken': this.csrfToken
-          },
-          credentials: 'same-origin',
-          body: JSON.stringify({ user: this.search })
-        });
-        const data = await res.json();
-        this.searchResult = data['found'];
-        if (data['flash']) {
-          window.pybossaNotify(data['flash'], true, data['status']);
-        }
-      } catch (error) {
-        window.pybossaNotify('An error occurred.', true, 'error');
+    async search (user) {
+      const res = await fetch(this.getURL(), {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'X-CSRFToken': this.csrfToken
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({ user })
+      });
+      const data = await res.json();
+      if (data['flash']) {
+        window.pybossaNotify(data['flash'], true, data['status']);
       }
+
+      return data['found'];
     },
 
     async getData () {
@@ -188,8 +249,43 @@ export default {
       }
     },
 
+    addCoowner (event, ur) {
+      Vue.set(this.coowners, ur.id, ur);
+      this.coowners[ur.id] = ur;
+    },
+
+    removeCoowner (event, id) {
+      Vue.delete(this.coowners, id);
+    },
+
+    addContact (event, ur) {
+      Vue.set(this.contacts, ur.id, ur);
+      this.contacts[ur.id] = ur;
+    },
+
+    removeContact (event, id) {
+      Vue.delete(this.contacts, id);
+    },
+
+    async searchCoowners () {
+      try {
+        this.coownerResult = await this.search(this.coownerQuery);
+      } catch (error) {
+        window.pybossaNotify('An error occurred while searching for co-owners: ' + error, true, 'error');
+      }
+    },
+
+    async searchContacts () {
+      try {
+        this.contactResult = await this.search(this.contactQuery);
+      } catch (error) {
+        window.pybossaNotify('An error occurred while searching for contacts.', true, 'error');
+      }
+    },
+
     async save () {
-      let coownerId = Object.keys(this.coowners);
+      const coowners = Object.keys(this.coowners);
+      const contacts = Object.keys(this.contacts);
       try {
         this.waiting = true;
         const res = await fetch(this.getURL(), {
@@ -200,7 +296,8 @@ export default {
           },
           credentials: 'same-origin',
           body: JSON.stringify({
-            coowners: coownerId
+            coowners,
+            contacts
           })
         });
         if (res.ok) {
