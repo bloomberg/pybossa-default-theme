@@ -212,7 +212,7 @@ export default {
       return res.join('/');
     },
 
-    async search (user, contact) {
+    async search (user) {
       const res = await fetch(this.getURL(), {
         method: 'POST',
         headers: {
@@ -220,7 +220,7 @@ export default {
           'X-CSRFToken': this.csrfToken
         },
         credentials: 'same-origin',
-        body: JSON.stringify({ user, contact })
+        body: JSON.stringify({ user })
       });
       const data = await res.json();
       if (data['flash']) {
@@ -277,10 +277,7 @@ export default {
 
     async searchContacts () {
       try {
-        this.contactResult = /*(*/await this.search(this.contactQuery, true);//).filter(contact => contact.is_contact);
-        /*if (!this.contactResult || !this.contactResult.length) {
-          window.pybossaNotify(`We didn't find any enabled user matching your query: ${this.contactQuery}`, true, 'warning');
-        }*/
+        this.contactResult = await this.search(this.contactQuery);
       } catch (error) {
         window.pybossaNotify('An error occurred while searching for contacts: ' + error, true, 'error');
       }
