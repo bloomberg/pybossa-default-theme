@@ -16,6 +16,7 @@ describe('ownershipConfig', () => {
   it('fetch data', async () => {
     let response = {
       coowners_dict: [{ id: 1, fullname: 'user1' }],
+      contacts_dict: [],
       owner: { id: 1, fullname: 'user1' },
       form: { csrf: '' }
     };
