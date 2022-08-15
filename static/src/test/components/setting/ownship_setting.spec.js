@@ -36,9 +36,9 @@ describe('ownershipConfig', () => {
     wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' } };
     const p = wrapper.findAll('p');
-    expect(p).toHaveLength(5);
+    expect(p).toHaveLength(7);
     const button = wrapper.findAll('button');
-    expect(button).toHaveLength(2);
+    expect(button).toHaveLength(3);
   });
 
   it('render fields - with other coowners', () => {
@@ -46,7 +46,7 @@ describe('ownershipConfig', () => {
     wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
     const p = wrapper.findAll('p');
-    expect(p).toHaveLength(5);
+    expect(p).toHaveLength(7);
   });
 
   it('search users', async () => {
@@ -57,11 +57,11 @@ describe('ownershipConfig', () => {
     const wrapper = shallowMount(ownershipConfig);
     wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
-    expect(wrapper.findAll('p')).toHaveLength(5);
+    expect(wrapper.findAll('p')).toHaveLength(7);
     const searchButton = wrapper.findAll('button').at(0);
     searchButton.trigger('click');
     await localVue.nextTick();
-    expect(wrapper.findAll('p')).toHaveLength(6);
+    expect(wrapper.findAll('p')).toHaveLength(7);
   });
 
   it('add coowners', async () => {
@@ -73,7 +73,7 @@ describe('ownershipConfig', () => {
     wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' } };
 
-    expect(wrapper.findAll('i')).toHaveLength(1);
+    expect(wrapper.findAll('i')).toHaveLength(2);
     const searchButton = wrapper.findAll('button').at(0);
     searchButton.trigger('click');
     await localVue.nextTick();
@@ -87,11 +87,11 @@ describe('ownershipConfig', () => {
     wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
 
-    expect(wrapper.findAll('i')).toHaveLength(2);
+    expect(wrapper.findAll('i')).toHaveLength(3);
     const icons = wrapper.findAll('i');
-    expect(icons).toHaveLength(2);
+    expect(icons).toHaveLength(3);
     icons.at(0).trigger('click');
-    expect(wrapper.findAll('i')).toHaveLength(1);
+    expect(wrapper.findAll('i')).toHaveLength(2);
   });
 
   it('saves config', async () => {
