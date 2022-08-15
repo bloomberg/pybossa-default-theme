@@ -16,7 +16,7 @@ describe('ownershipConfig', () => {
   it('fetch data', async () => {
     let response = {
       coowners_dict: [{ id: 1, fullname: 'user1' }],
-      contacts_dict: [],
+      contacts_dict: [{ id: 1, fullname: 'user1' }],
       owner: { id: 1, fullname: 'user1' },
       form: { csrf: '' }
     };
@@ -30,14 +30,16 @@ describe('ownershipConfig', () => {
     expect(notify.mock.calls).toHaveLength(0);
     expect(wrapper.vm._data.owner.id).toBe(1);
     expect(Object.keys(wrapper.vm._data.coowners)).toHaveLength(1);
+    expect(Object.keys(wrapper.vm._data.contacts)).toHaveLength(1);
   });
 
   it('render fields - without other coowners', () => {
     const wrapper = shallowMount(ownershipConfig);
     wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' } };
+    wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' } };
     const p = wrapper.findAll('p');
-    expect(p).toHaveLength(7);
+    expect(p).toHaveLength(8);
     const button = wrapper.findAll('button');
     expect(button).toHaveLength(3);
   });
@@ -46,8 +48,9 @@ describe('ownershipConfig', () => {
     const wrapper = shallowMount(ownershipConfig);
     wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
+    wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
     const p = wrapper.findAll('p');
-    expect(p).toHaveLength(7);
+    expect(p).toHaveLength(8);
   });
 
   it('search users', async () => {
@@ -58,11 +61,12 @@ describe('ownershipConfig', () => {
     const wrapper = shallowMount(ownershipConfig);
     wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
-    expect(wrapper.findAll('p')).toHaveLength(7);
+    wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
+    expect(wrapper.findAll('p')).toHaveLength(8);
     const searchButton = wrapper.findAll('button').at(0);
     searchButton.trigger('click');
     await localVue.nextTick();
-    expect(wrapper.findAll('p')).toHaveLength(7);
+    expect(wrapper.findAll('p')).toHaveLength(8);
   });
 
   it('add coowners', async () => {
@@ -73,9 +77,10 @@ describe('ownershipConfig', () => {
     const wrapper = shallowMount(ownershipConfig);
     wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' } };
+    wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' } };
 
     expect(wrapper.findAll('i')).toHaveLength(2);
-    const searchButton = wrapper.findAll('button').at(0);
+    const searchButton = wrapper.findAll('button').at(0); // coowners button
     searchButton.trigger('click');
     await localVue.nextTick();
     const user = wrapper.findAll('p').at(5);
@@ -87,12 +92,45 @@ describe('ownershipConfig', () => {
     const wrapper = shallowMount(ownershipConfig);
     wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
+    wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
 
-    expect(wrapper.findAll('i')).toHaveLength(3);
+    expect(wrapper.findAll('i')).toHaveLength(4);
     const icons = wrapper.findAll('i');
-    expect(icons).toHaveLength(3);
+    expect(icons).toHaveLength(4);
     icons.at(0).trigger('click');
+    expect(wrapper.findAll('i')).toHaveLength(3);
+  });
+
+  it('add contacts', async () => {
+    fetch.mockImplementation((arg) => ({
+      ok: true,
+      json: () => Promise.resolve({ found: [{ id: 1111, fullname: 'found' }] })
+    }));
+    const wrapper = shallowMount(ownershipConfig);
+    wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
+    wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' } };
+    wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' } };
+
     expect(wrapper.findAll('i')).toHaveLength(2);
+    const searchButton = wrapper.findAll('button').at(1); // contacts button
+    searchButton.trigger('click');
+    await localVue.nextTick();
+    const user = wrapper.findAll('p').at(5);
+    user.trigger('click');
+    expect(wrapper.findAll('i')).toHaveLength(2);
+  });
+
+  it('remove contacts', () => {
+    const wrapper = shallowMount(ownershipConfig);
+    wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
+    wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
+    wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
+
+    expect(wrapper.findAll('i')).toHaveLength(4);
+    const icons = wrapper.findAll('i');
+    expect(icons).toHaveLength(4);
+    icons.at(2).trigger('click');
+    expect(wrapper.findAll('i')).toHaveLength(3);
   });
 
   it('saves config', async () => {
@@ -102,6 +140,7 @@ describe('ownershipConfig', () => {
     const wrapper = shallowMount(ownershipConfig);
     wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' } };
+    wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' } };
 
     const saveButton = wrapper.findAll('button').at(1);
     saveButton.trigger('click');
@@ -117,6 +156,7 @@ describe('ownershipConfig', () => {
     const wrapper = shallowMount(ownershipConfig);
     wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' } };
+    wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' } };
 
     const saveButton = wrapper.findAll('button').at(1);
     saveButton.trigger('click');
