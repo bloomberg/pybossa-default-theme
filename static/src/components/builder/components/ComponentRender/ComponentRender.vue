@@ -161,6 +161,12 @@ export default {
           name: 'task-timer',
           attrs: { lock: `${this.form.showLock}` }
         };
+      } else if (this.selectedComponent === 'input-text-area') {
+        return {
+          name: 'input-text-area',
+          attrs: { id: this.id, 'rows': this.form['rows'], 'cols': this.form['cols'] },
+          props: { 'pyb-answer': this.form['pyb-answer'] }
+        };
       }
       return {};
     }

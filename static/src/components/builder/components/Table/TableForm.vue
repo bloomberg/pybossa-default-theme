@@ -285,7 +285,7 @@ export default {
   components: { StaticData },
   data () {
     return {
-      columnsComponent: ['plain-text', 'text-input', 'checkbox-input', 'other-input']
+      columnsComponent: ['plain-text', 'text-input', 'checkbox-input', 'other-input', 'input-text-area']
     };
   },
   computed: {

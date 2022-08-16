@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     renderFunctions () {
-      if (this.selectedComponent === 'text-input') {
+      if (this.selectedComponent === 'text-input' || this.selectedComponent === 'input-text-area') {
         return {
           props: {
             row: this.form['row'],

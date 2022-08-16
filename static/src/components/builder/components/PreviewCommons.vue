@@ -84,8 +84,8 @@ export default {
         DROPDOWN_INPUT: 'dropdown-input',
         MULTISELECT_INPUT: 'multi-select-input',
         CONDITIONAL_DISPLAY: 'conditionaldisplay-creator',
-        FILE_UPLOAD: 'file-upload'
-
+        FILE_UPLOAD: 'file-upload',
+        INPUT_TEXT_AREA: 'input-text-area'
       }
     };
   },

@@ -10,6 +10,7 @@ import multiselectInput from './modules/multiselectInput';
 import conditionalDisplay from './modules/conditionalDisplay';
 import fileUpload from './modules/fileUpload';
 import taskTimer from './modules/taskTimer';
+import inputTextArea from './modules/inputTextArea';
 
 import { getStoreOptions, setNamespace } from '@dtwebservices/task-presenter-components';
 
@@ -35,6 +36,7 @@ export default new Vuex.Store({
     multiselectInput,
     conditionalDisplay,
     fileUpload,
-    taskTimer
+    taskTimer,
+    inputTextArea
   }
 });

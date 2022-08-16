@@ -6,6 +6,7 @@ import { state as conditionalDisplay } from '../components/builder/store/modules
 import { state as fileUpload } from '../components/builder/store/modules/fileUpload';
 import { state as dropdownInput } from '../components/builder/store/modules/dropdownInput';
 import { state as multiselectInput } from '../components/builder/store/modules/multiselectInput';
+import { state as inputTextArea } from '../components/builder/store/modules/inputTextArea';
 
 test('getSimpleComponentsCode for TEXT_INPUT', () => {
   textInput['pyb-answer'] = 'answername';
@@ -136,10 +137,11 @@ it('getRadioGroupCode for RADIO_INPUT', () => {
 it('getTableInputCode for TABLE', () => {
   const form = { name: 'answerName',
     data: { value: 'sourceNameData', isVariable: true, isDirty: true, list: [] },
-    options: { headings: { 'testColName': 'Col Name', 'testColComponentTextInput': 'Text Input Header Column', 'testColComponentCheckboxInput': 'Checkbox Input Header Column' } },
+    options: { headings: { 'testColName': 'Col Name', 'testColComponentTextInput': 'Text Input Header Column', 'testColComponentCheckboxInput': 'Checkbox Input Header Column', 'testColComponentInputTextArea': 'Input Text Area Header Column' } },
     columns: [{ 'name': 'testColName', 'header': 'Col Name', 'component': 'plain-text', 'id': 'Column 1', 'isDirty': true },
       { 'name': 'testColComponentTextInput', 'header': 'Text Input Header Column', 'component': 'text-input', 'id': 'Column 2', 'isDirty': true },
-      { 'name': 'testColComponentCheckboxInput', 'header': 'Checkbox Input Header Column', 'component': 'checkbox-input', 'id': 'Column 3', 'isDirty': true }],
+      { 'name': 'testColComponentCheckboxInput', 'header': 'Checkbox Input Header Column', 'component': 'checkbox-input', 'id': 'Column 3', 'isDirty': true },
+      { 'name': 'testColComponentInputTextArea', 'header': 'Input Text Area Header Column', 'component': 'input-text-area', 'id': 'Column 2', 'isDirty': true }],
     isValidForm: true,
     enableEditing: true };
 
@@ -150,16 +152,19 @@ it('getTableInputCode for TABLE', () => {
   expect(componentCode.includes(`:data='${form.data.value}'`)).toBeTruthy();
   expect(componentCode.includes(`:options='{`)).toBeTruthy();
   expect(componentCode.includes(`"headings": {`)).toBeTruthy();
-  expect(componentCode.includes(`:columns='["testColName","testColComponentTextInput","testColComponentCheckboxInput"]'`)).toBeTruthy();
+  expect(componentCode.includes(`:columns='["testColName","testColComponentTextInput","testColComponentCheckboxInput","testColComponentInputTextArea"]'`)).toBeTruthy();
 
   expect(componentCode.includes('"testColName": "Col Name"')).toBeTruthy();
   expect(componentCode.includes('"testColComponentTextInput": "Text Input Header Column"')).toBeTruthy();
   expect(componentCode.includes('"testColComponentCheckboxInput": "Checkbox Input Header Column"')).toBeTruthy();
+  expect(componentCode.includes('"testColComponentInputTextArea": "Input Text Area Header Column"')).toBeTruthy();
 
   expect(componentCode.includes(`<div slot="testColComponentTextInput" slot-scope="props">`)).toBeTruthy();
   expect(componentCode.includes(`<text-input :row="props.row" :initial-value="props.row.testColComponentTextInput" pyb-table-answer="testColComponentTextInput"></text-input>`)).toBeTruthy();
   expect(componentCode.includes(`<div slot="testColComponentCheckboxInput" slot-scope="props">`)).toBeTruthy();
   expect(componentCode.includes(`<checkbox-input :row="props.row" :initial-value="props.row.testColComponentCheckboxInput" pyb-table-answer="testColComponentCheckboxInput"></checkbox-input>`)).toBeTruthy();
+  expect(componentCode.includes(`<div slot="testColComponentInputTextArea" slot-scope="props">`)).toBeTruthy();
+  expect(componentCode.includes(`<input-text-area :row="props.row" :initial-value="props.row.testColComponentInputTextArea" pyb-table-answer="testColComponentInputTextArea"></input-text-area>`)).toBeTruthy();
 });
 
 it('getTableInputCode for TABLE with static data', () => {
@@ -253,4 +258,24 @@ it('getMultiselectCode for MULTISELECT', () => {
   expect(componentCode.includes(`choices='[&quot;dropdownInput0&quot;]`));
   expect(componentCode.includes(`initial-value='[]'`)).toBeTruthy();
   expect(componentCode.includes(`validations='${multiselectInput.validations}'`)).toBeTruthy();
+});
+
+test('getSimpleComponentsCode for INPUT_TEXT_AREA', () => {
+  inputTextArea['pyb-answer'] = 'answername';
+  inputTextArea.label = 'Test label';
+  inputTextArea.labelAdded = true;
+  inputTextArea.validations = '["required"]';
+
+  const componentCode = utils.getSnippet('INPUT_TEXT_AREA', inputTextArea);
+  expect(componentCode.includes('Test label')).toBeTruthy();
+
+  expect(componentCode.includes('<input-text-area')).toBeTruthy();
+  expect(componentCode.includes('</input-text-area>')).toBeTruthy();
+  expect(
+    componentCode.includes(`pyb-answer='${inputTextArea['pyb-answer']}'`)
+  ).toBeTruthy();
+  expect(
+    componentCode.includes(`:validations='${inputTextArea.validations}'`)
+  ).toBeTruthy();
+  expect(componentCode.includes(`id='${inputTextArea.id}'`)).toBeTruthy();
 });

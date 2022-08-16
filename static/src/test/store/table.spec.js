@@ -119,6 +119,17 @@ describe('Table store', () => {
     expect(isAnyColumnComponent(columns)).toBeTruthy();
   });
 
+  it('Validation isAnyColumnComponent', () => {
+    const columns = [{
+      component: 'input-text-area',
+      header: '',
+      id: 'Column 1',
+      isDirty: false,
+      name: ''
+    }];
+    expect(isAnyColumnComponent(columns)).toBeTruthy();
+  });
+
   it('Validation isAnyColumnNameEmpty', () => {
     const columns = [{
       component: 'plain-text',

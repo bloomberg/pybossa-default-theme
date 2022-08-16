@@ -12,6 +12,8 @@ import MultiselectForm from './components/MultiselectInput/MultiselectForm.vue';
 import ConditionalDisplayForm from './components/ConditionalDisplay/ConditionalDisplayForm.vue';
 import FileUploadForm from './components/FileUpload/FileUploadForm.vue';
 import TaskTimerForm from './components/TaskTimer/TaskTimerForm.vue';
+import InputTextAreaForm from './components/InputTextArea/InputTextAreaForm.vue';
+
 export const routes = [
   {
     path: '/',
@@ -306,6 +308,31 @@ export const routes = [
       {
         path: 'submitLastButton/code',
         name: 'SUBMIT_LAST_BUTTON_CODE',
+        components: { default: PreviewCommons }
+      }
+    ]
+  },
+  {
+    path: '/inputtextarea',
+    name: 'INPUT_TEXT_AREA',
+    components: {
+      default: Content,
+      header: Header
+    },
+    children: [
+      {
+        path: 'form',
+        name: 'INPUT_TEXT_AREA_FORM',
+        components: { default: InputTextAreaForm }
+      },
+      {
+        path: 'preview',
+        name: 'INPUT_TEXT_AREA_PREVIEW',
+        components: { default: PreviewCommons }
+      },
+      {
+        path: 'code',
+        name: 'INPUT_TEXT_AREA_CODE',
         components: { default: PreviewCommons }
       }
     ]

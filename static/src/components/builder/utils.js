@@ -19,6 +19,8 @@ import dropdownTemplate from './components/DropdownInput/dropdownTemplate.html';
 import multiselectTemplate from './components/MultiselectInput/multiselectTemplate.html';
 import conditionalDisplayTemplate from './components/ConditionalDisplay/conditionalDisplayTemplate.html';
 import fileUploadTemplate from './components/FileUpload/fileUploadTemplate.html';
+import inputTextAreaTemplate from './components/InputTextArea/inputTextAreaTemplate.html';
+import inputTextAreaColumnTemplate from './components/Table/inputTextAreaColumnTemplate.html';
 
 import { flatten, uniq, flow } from 'lodash';
 
@@ -36,7 +38,9 @@ export const templates = {
   BUTTON_ROW: buttonRowTemplate,
   SUBMIT_BUTTON: submitButtonTemplate,
   SUBMIT_LAST_BUTTON: submitLastButtonTemplate,
-  MULTISELECT_INPUT: multiselectTemplate
+  MULTISELECT_INPUT: multiselectTemplate,
+  INPUT_TEXT_AREA: inputTextAreaTemplate,
+  INPUT_TEXT_AREA_COLUMN: inputTextAreaColumnTemplate
 };
 export default {
   uniqueID () {
@@ -68,6 +72,8 @@ export default {
     } else if (component === 'CONDITIONAL_DISPLAY') {
       return this.getConditionalDisplayCode(form, component);
     } else if (component === 'TASK_TIMER') {
+      return this.getSimpleComponentsCode(form, component);
+    } else if (component === 'INPUT_TEXT_AREA') {
       return this.getSimpleComponentsCode(form, component);
     } else {
       return this.getHelperComponentCode(component);
@@ -145,6 +151,14 @@ export default {
         );
       } else if (col.component === 'text-input') {
         const columnComponent = Mustache.render(textInputColumnTemplate, col);
+        slots.push(
+          Mustache.render(slotTemplate, {
+            name: col.name,
+            component: columnComponent
+          })
+        );
+      } else if (col.component === 'input-text-area') {
+        const columnComponent = Mustache.render(inputTextAreaColumnTemplate, col);
         slots.push(
           Mustache.render(slotTemplate, {
             name: col.name,

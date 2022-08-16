@@ -18,6 +18,7 @@
       <custom-router-link :component="multiselectInput" />
       <custom-router-link :component="table" />
       <custom-router-link :component="textTagging" />
+      <custom-router-link :component="inputTextArea" />
     </div>
     <div class="col-md-8">
       <div class="row">
@@ -222,7 +223,14 @@ export default {
           componentName: 'FILE_UPLOAD',
           header: 'File Upload'
         }
-      }
+      },
+      inputTextArea: {
+        name: 'INPUT_TEXT_AREA_FORM',
+        params: {
+          componentName: 'INPUT_TEXT_AREA',
+          header: 'Input Text Area'
+        }
+      },
     };
   },
   mounted () {
