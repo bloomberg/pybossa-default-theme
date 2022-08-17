@@ -68,7 +68,7 @@ export default {
   components: { Validator },
     data () {
     return {
-      validationOptions: ['required'],
+      validationOptions: ['required']
     };
   },
   computed: {

@@ -110,9 +110,9 @@
     "lodash" "^4.2.0"
     "to-fast-properties" "^2.0.0"
 
-"@dtwebservices/task-presenter-components@file:../../../../../../../../Downloads/dtwebservices-task-presenter-components-0.11.7.tgz":
+"@dtwebservices/task-presenter-components@https://s3.amazonaws.com/cf-s3uploads/pybv/0.11.7/task-presenter-components.tgz":
   "integrity" "sha512-7QGtX9KCG3h/vJBa0nwgFc94rdZqQeGNgYam4XyKKPTN9FpEsC0+6biUfSE/unzwDzpomnCrpReTQku249KmQg=="
-  "resolved" "file:../../../../../../../../Downloads/dtwebservices-task-presenter-components-0.11.7.tgz"
+  "resolved" "https://s3.amazonaws.com/cf-s3uploads/pybv/0.11.7/task-presenter-components.tgz"
   "version" "0.11.7"
   dependencies:
     "lodash.clonedeep" "^4.5.0"

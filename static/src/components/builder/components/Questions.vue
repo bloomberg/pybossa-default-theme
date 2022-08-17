@@ -230,7 +230,7 @@ export default {
           componentName: 'INPUT_TEXT_AREA',
           header: 'Input Text Area'
         }
-      },
+      }
     };
   },
   mounted () {
