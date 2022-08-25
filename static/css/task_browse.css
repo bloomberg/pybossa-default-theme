@@ -145,3 +145,7 @@
 #tasksBrowseControls>ul>li:last-child {
     padding-left: 0;
 }
+
+#edit-tasks .dropdown-menu {
+    z-index: 1100;
+}
