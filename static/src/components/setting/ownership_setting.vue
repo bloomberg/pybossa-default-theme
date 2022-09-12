@@ -212,7 +212,7 @@ export default {
       return res.join('/');
     },
 
-    async search (user) {
+    async search (user, contact) {
       const res = await fetch(this.getURL(), {
         method: 'POST',
         headers: {
@@ -220,7 +220,7 @@ export default {
           'X-CSRFToken': this.csrfToken
         },
         credentials: 'same-origin',
-        body: JSON.stringify({ user })
+        body: JSON.stringify({ user, contact })
       });
       const data = await res.json();
       if (data['flash']) {
@@ -269,7 +269,12 @@ export default {
 
     async searchCoowners () {
       try {
-        this.coownerResult = await this.search(this.coownerQuery);
+        if (this.coownerQuery) {
+          this.coownerResult = await this.search(this.coownerQuery);
+        }
+        else {
+          window.pybossaNotify('Please enter a search query.', true, 'error');
+        }
       } catch (error) {
         window.pybossaNotify('An error occurred while searching for co-owners: ' + error, true, 'error');
       }
@@ -277,7 +282,12 @@ export default {
 
     async searchContacts () {
       try {
-        this.contactResult = await this.search(this.contactQuery);
+        if (this.contactQuery) {
+          this.contactResult = await this.search(this.contactQuery, true);
+        }
+        else {
+          window.pybossaNotify('Please enter a search query.', true, 'error');
+        }
       } catch (error) {
         window.pybossaNotify('An error occurred while searching for contacts: ' + error, true, 'error');
       }
