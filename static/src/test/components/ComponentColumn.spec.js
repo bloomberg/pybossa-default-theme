@@ -40,7 +40,7 @@ describe('ComponentColumn', () => {
         form: { 'row': { '__col-id': 0 }, 'pyb-table-answer': { '__col-id': 0 } }
       } });
 
-    expect(wrapper.find('input-text-area')).toEqual({ 'selector': 'input-text-area' });
+    expect(wrapper.find('text-input')).toEqual({ 'selector': 'text-input' });
     expect(wrapper.vm.renderFunctions().props).toEqual({
       'pyb-table-answer': { '__col-id': 0 },
       'row': { '__col-id': 0 } });

@@ -142,7 +142,7 @@ describe('ownershipConfig', () => {
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' } };
     wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' } };
 
-    const saveButton = wrapper.findAll('button').at(1);
+    const saveButton = wrapper.findAll('button').at(2);
     saveButton.trigger('click');
     await localVue.nextTick();
     expect(fetch.mock.calls).toHaveLength(2);
@@ -158,7 +158,7 @@ describe('ownershipConfig', () => {
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' } };
     wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' } };
 
-    const saveButton = wrapper.findAll('button').at(1);
+    const saveButton = wrapper.findAll('button').at(2);
     saveButton.trigger('click');
     await localVue.nextTick();
     expect(fetch.mock.calls).toHaveLength(2);
