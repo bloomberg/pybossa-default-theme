@@ -56,6 +56,37 @@ describe('ownershipConfig', () => {
   it('search users', async () => {
     fetch.mockImplementation((arg) => ({
       ok: true,
+      json: () => Promise.resolve({
+        coowners_dict: [{ id: 1111, fullname: 'full name' }],
+        contacts_dict: [{ id: 1111, fullname: 'full name' }],
+        owner: { id: 1111, fullname: 'full name' },
+        form: { csrf: 'csrf'},
+        found: {
+          coowners: [ { id: 1, fullname: 'user1' }, { id: 2, fullname: 'user2' } ],
+          contacts: [ { id: 1, fullname: 'user1' }, { id: 2, fullname: 'user2' } ],
+        }
+      })
+    }));
+    const wrapper = shallowMount(ownershipConfig);
+    wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
+    wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
+    wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
+    wrapper.vm._data.coownerResult = [];
+    wrapper.vm._data.contactResult = [];
+    expect(wrapper.findAll('p')).toHaveLength(8);
+    const textBox = wrapper.findAll("input[type='text']").at(0); // Coowners query textbox
+    textBox.element.value = 'test';
+    textBox.trigger('input');
+    const searchButton = wrapper.findAll('button').at(0); // Search users button
+    searchButton.trigger('click');
+    await localVue.nextTick();
+    expect(wrapper.findAll('p')).toHaveLength(8); // valid search results
+    expect(notify.mock.calls).toHaveLength(0); // no error alert
+  });
+
+  it('search users invalid', async () => {
+    fetch.mockImplementation((arg) => ({
+      ok: true,
       json: () => Promise.resolve({ found: [{ id: 1111, fullname: 'found' }] })
     }));
     const wrapper = shallowMount(ownershipConfig);
@@ -63,10 +94,59 @@ describe('ownershipConfig', () => {
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
     wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
     expect(wrapper.findAll('p')).toHaveLength(8);
-    const searchButton = wrapper.findAll('button').at(0);
+    const searchButton = wrapper.findAll('button').at(0); // Search users button
     searchButton.trigger('click');
     await localVue.nextTick();
+    expect(notify.mock.calls).toHaveLength(2); // no search results
+    expect(notify.mock.calls[0][0]).toEqual('Please enter a search query.'); // error alert
+  });
+
+  it('search contacts', async () => {
+    fetch.mockImplementation((arg) => ({
+      ok: true,
+      json: () => Promise.resolve({
+        coowners_dict: [{ id: 1111, fullname: 'full name' }],
+        contacts_dict: [{ id: 1111, fullname: 'full name' }],
+        owner: { id: 1111, fullname: 'full name' },
+        form: { csrf: 'csrf'},
+        found: {
+          coowners: [ { id: 1, fullname: 'user1' }, { id: 2, fullname: 'user2' } ],
+          contacts: [ { id: 1, fullname: 'user1' }, { id: 2, fullname: 'user2' } ],
+        }
+      })
+    }));
+    const wrapper = shallowMount(ownershipConfig);
+    wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
+    wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
+    wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
+    wrapper.vm._data.coownerResult = [];
+    wrapper.vm._data.contactResult = [];
     expect(wrapper.findAll('p')).toHaveLength(8);
+    const textBox = wrapper.findAll("input[type='text']").at(1); // Contacts query text box
+    textBox.element.value = 'test';
+    textBox.trigger('input');
+    const searchButton = wrapper.findAll('button').at(1); // Search contacts button
+    searchButton.trigger('click');
+    await localVue.nextTick();
+    expect(wrapper.findAll('p')).toHaveLength(8); // valid search results
+    expect(notify.mock.calls).toHaveLength(0); // no error alert
+  });
+
+  it('search contacts invalid', async () => {
+    fetch.mockImplementation((arg) => ({
+      ok: true,
+      json: () => Promise.resolve({ found: [{ id: 1111, fullname: 'found' }] })
+    }));
+    const wrapper = shallowMount(ownershipConfig);
+    wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
+    wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
+    wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
+    expect(wrapper.findAll('p')).toHaveLength(8);
+    const searchButton = wrapper.findAll('button').at(1); // Search contacts button
+    searchButton.trigger('click');
+    await localVue.nextTick();
+    expect(notify.mock.calls).toHaveLength(2); // no search results
+    expect(notify.mock.calls[0][0]).toEqual('Please enter a search query.'); // error alert
   });
 
   it('add coowners', async () => {
