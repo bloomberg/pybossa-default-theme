@@ -60,10 +60,10 @@ describe('ownershipConfig', () => {
         coowners_dict: [{ id: 1111, fullname: 'full name' }],
         contacts_dict: [{ id: 1111, fullname: 'full name' }],
         owner: { id: 1111, fullname: 'full name' },
-        form: { csrf: 'csrf'},
+        form: { csrf: 'csrf' },
         found: {
           coowners: [ { id: 1, fullname: 'user1' }, { id: 2, fullname: 'user2' } ],
-          contacts: [ { id: 1, fullname: 'user1' }, { id: 2, fullname: 'user2' } ],
+          contacts: [ { id: 1, fullname: 'user1' }, { id: 2, fullname: 'user2' } ]
         }
       })
     }));
@@ -108,10 +108,10 @@ describe('ownershipConfig', () => {
         coowners_dict: [{ id: 1111, fullname: 'full name' }],
         contacts_dict: [{ id: 1111, fullname: 'full name' }],
         owner: { id: 1111, fullname: 'full name' },
-        form: { csrf: 'csrf'},
+        form: { csrf: 'csrf' },
         found: {
           coowners: [ { id: 1, fullname: 'user1' }, { id: 2, fullname: 'user2' } ],
-          contacts: [ { id: 1, fullname: 'user1' }, { id: 2, fullname: 'user2' } ],
+          contacts: [ { id: 1, fullname: 'user1' }, { id: 2, fullname: 'user2' } ]
         }
       })
     }));

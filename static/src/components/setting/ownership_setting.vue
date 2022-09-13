@@ -271,8 +271,7 @@ export default {
       try {
         if (this.coownerQuery) {
           this.coownerResult = await this.search(this.coownerQuery);
-        }
-        else {
+        } else {
           window.pybossaNotify('Please enter a search query.', true, 'error');
         }
       } catch (error) {
@@ -284,8 +283,7 @@ export default {
       try {
         if (this.contactQuery) {
           this.contactResult = await this.search(this.contactQuery, true);
-        }
-        else {
+        } else {
           window.pybossaNotify('Please enter a search query.', true, 'error');
         }
       } catch (error) {
