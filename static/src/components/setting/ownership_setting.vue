@@ -311,6 +311,7 @@ export default {
         if (res.ok) {
           this.searchResult = [];
           const data = await res.json();
+          this.initialize(data);
           window.pybossaNotify(data['flash'], true, data['status']);
         } else {
           window.pybossaNotify('An error occurred configuring ownership config.', true, 'error');
