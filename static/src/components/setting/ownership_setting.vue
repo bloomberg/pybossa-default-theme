@@ -213,6 +213,16 @@ export default {
     },
 
     async search (user, contact) {
+      // Reset and hide drop-downs with search results.
+      this.coownerResult = [];
+      this.contactResult = [];
+      if (contact) {
+        this.coownerQuery = null;
+      }
+      else {
+        this.contactQuery = null;
+      }
+
       const res = await fetch(this.getURL(), {
         method: 'POST',
         headers: {
@@ -296,6 +306,11 @@ export default {
       const contacts = Object.keys(this.contacts);
       try {
         this.waiting = true;
+        // Reset and hide drop-downs with search results.
+        this.coownerResult = [];
+        this.contactResult = [];
+        this.coownerQuery = null;
+        this.contactQuery = null;
         const res = await fetch(this.getURL(), {
           method: 'POST',
           headers: {
