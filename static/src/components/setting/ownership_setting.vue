@@ -218,8 +218,7 @@ export default {
       this.contactResult = [];
       if (contact) {
         this.coownerQuery = null;
-      }
-      else {
+      } else {
         this.contactQuery = null;
       }
 
