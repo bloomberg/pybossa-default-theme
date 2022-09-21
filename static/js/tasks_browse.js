@@ -292,13 +292,13 @@ $(document).ready(function() {
     });
 
     // reset the local variable as well as the state
-    function retSelectedTask() {
+    function resetSelectedTask() {
         selectedTask = undefined;
-        taskBrowse.setSelectedTask(undefined);
+        taskBrowse.setSelectedTask(selectedTask);
     }
 
     $('#delete-tasks-modal .cancel-delete').on('click', function() {
-        retSelectedTask();
+        resetSelectedTask();
     });
 
     var projNameEntry = $('#delete-task-project-name'),
@@ -591,12 +591,12 @@ $(document).ready(function() {
 
     // When clicking bulk update dropdown button, reset selectedTask
     $('#btn-edit-tasks').click(function() {
-        retSelectedTask();
+        resetSelectedTask();
     });
 
     // When clicking bulk delete button, reset selectedTask
     $('#btn-delete-tasks').click(function() {
-        retSelectedTask();
+        resetSelectedTask();
     });
 });
 
