@@ -86,7 +86,7 @@ it('load empty data', () => {
       gigwork_poller: { display: 'test1', fields: [{ type: 'TextField', name: 'target_bucket' }] },
       hdfs: { display: 'test2', fields: [{ type: 'SelectField', name: 'cluster', choices: [('c1', 'option1')] }] }
     };
-    expect(wrapper.findAll('p')).toHaveLength(2);
+    expect(wrapper.findAll('p')).toHaveLength(3);
     expect(wrapper.findAll('input')).toHaveLength(1);
     expect(wrapper.findAll('select')).toHaveLength(1);
   });
@@ -97,7 +97,7 @@ it('load empty data', () => {
     wrapper.vm._data.users = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
     wrapper.vm._data.searchResult = [{ id: 1, fullname: 'user1' }, { id: 2, fullname: 'user2' }];
 
-    expect(wrapper.findAll('p')).toHaveLength(4);
+    expect(wrapper.findAll('p')).toHaveLength(5);
     const user2 = wrapper.findAll('p').at(2);
     user2.trigger('click');
     expect(wrapper.findAll('p')).toHaveLength(5);
@@ -109,7 +109,7 @@ it('load empty data', () => {
     wrapper.vm._data.users = { 1: { id: 1, fullname: 'user' } };
     wrapper.vm._data.searchResult = [{ id: 1, fullname: 'user' }];
 
-    expect(wrapper.findAll('p')).toHaveLength(3);
+    expect(wrapper.findAll('p')).toHaveLength(4);
     const user1 = wrapper.findAll('p').at(2);
     user1.trigger('click');
     expect(wrapper.findAll('p')).toHaveLength(2);
