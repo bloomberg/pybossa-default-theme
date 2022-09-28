@@ -255,7 +255,7 @@ export default {
             this.users = this.getUsers(dataAssignUsers.all_users);
             this.searchResult = Object.values(this.users);
         }
-        this.completed_tasks_cleanup_days = dataProjConfig.completed_tasks_cleanup_days || null
+        this.completed_tasks_cleanup_days = dataProjConfig.completed_tasks_cleanup_days || null;
       } catch (error) {
         window.pybossaNotify('Error reading project config.', true, 'error');
       } finally {
