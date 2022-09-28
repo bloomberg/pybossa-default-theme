@@ -112,6 +112,26 @@
             </tbody>
           </table>
         </div>
+
+      </div>
+      <div class="form-group row">
+        <div class="col-md-6">
+          <p> Auto Delete Completed Tasks After </p>
+        </div>
+        <div class="col-md-6 pull-right">
+          <select
+              v-model="completed_tasks_cleanup_days"
+              class="form-control input-sm"
+          >
+            <option
+                v-for="opt in [[null, 'None'], [30, '30 days'], [60, '60 days'], [90, '90 days'], [180, '180 days']]"
+                :key="opt[0]"
+                :value="opt[0]"
+            >
+              {{ opt[1] }}
+            </option>
+          </select>
+        </div>
       </div>
       <div>
         <button
@@ -144,7 +164,8 @@ export default {
       searchResult: this.users,
       inputFields: [],
       externalConfigDict: {},
-      waiting: false
+      waiting: false,
+      completed_tasks_cleanup_days: null
     };
   },
   created () {
@@ -234,6 +255,7 @@ export default {
             this.users = this.getUsers(dataAssignUsers.all_users);
             this.searchResult = Object.values(this.users);
         }
+        this.completed_tasks_cleanup_days = dataProjConfig.completed_tasks_cleanup_days || null
       } catch (error) {
         window.pybossaNotify('Error reading project config.', true, 'error');
       } finally {
@@ -246,11 +268,13 @@ export default {
         if (this.dataAccessConfigured && this.validAccessLevels.length > 0) {
             data = {
                 config: this.externalConfigDict,
-                select_users: this.assignee
+                select_users: this.assignee,
+                completed_tasks_cleanup_days: this.completed_tasks_cleanup_days
             };
         } else {
             data = {
-                config: this.externalConfigDict
+                config: this.externalConfigDict,
+                completed_tasks_cleanup_days: this.completed_tasks_cleanup_days
             };
         }
         try {
