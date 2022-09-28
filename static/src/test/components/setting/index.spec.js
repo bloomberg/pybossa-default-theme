@@ -88,7 +88,7 @@ it('load empty data', () => {
     };
     expect(wrapper.findAll('p')).toHaveLength(3);
     expect(wrapper.findAll('input')).toHaveLength(1);
-    expect(wrapper.findAll('select')).toHaveLength(1);
+    expect(wrapper.findAll('select')).toHaveLength(2);
   });
 
   it('add assigned user', () => {
@@ -100,7 +100,7 @@ it('load empty data', () => {
     expect(wrapper.findAll('p')).toHaveLength(5);
     const user2 = wrapper.findAll('p').at(2);
     user2.trigger('click');
-    expect(wrapper.findAll('p')).toHaveLength(5);
+    expect(wrapper.findAll('p')).toHaveLength(6);
   });
 
   it('remove assigned user', () => {
@@ -112,7 +112,7 @@ it('load empty data', () => {
     expect(wrapper.findAll('p')).toHaveLength(4);
     const user1 = wrapper.findAll('p').at(2);
     user1.trigger('click');
-    expect(wrapper.findAll('p')).toHaveLength(2);
+    expect(wrapper.findAll('p')).toHaveLength(3);
   });
 
   it('saves config', async () => {
