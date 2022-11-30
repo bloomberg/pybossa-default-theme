@@ -33,6 +33,7 @@
               {% endif %}
               <li><strong>{{_('Actions')}}</strong>: {{_('Three current actions: download, view, or get user info for task results')}}.</li>
               <li><strong>{{_('Active Users')}}</strong>: {{_('List users working on the task')}}.</li>
+              <li><strong>{{_('Completed By')}}</strong>: {{_('List users that completed the task')}}.</li>
           </ul>
           </p>
         {% endif %}
@@ -84,6 +85,7 @@
                   {% endif %}
                   <li><a href="#" class="columns_settings" data-value="actions" tabIndex="-1"><input type="checkbox" {{ "checked" if "actions" in filter_data.display_columns }}/>&nbsp;Actions</a></li>
                   <li><a href="#" class="columns_settings" data-value="lock_status" tabIndex="-1"><input type="checkbox" {{ "checked" if "lock_status" in filter_data.display_columns }}/>&nbsp;Active Users</a></li>
+                  <li><a href="#" class="columns_settings" data-value="completed_by" tabIndex="-1"><input type="checkbox" {{ "checked" if "completed_by" in filter_data.display_columns }}/>&nbsp;Completed By</a></li>
               </ul>
           </li>
         {% endif %}
@@ -184,6 +186,9 @@
                 {% if 'lock_status' in filter_data.display_columns %}
                 <th class="{{'sort-asc' if filter_data.order_by['lock_status'] == 'asc'}} {{'sort-desc' if filter_data.order_by['lock_status'] == 'desc'}} sortable" data-sort="lock_status">Active Users</th>
                 {% endif %}
+                {% if 'completed_by' in filter_data.display_columns %}
+                <th>Completed By</th>
+                {% endif %}
             </tr>
             <tr>
                 {% if 'task_id' in filter_data.display_columns %}
@@ -239,6 +244,9 @@
                 <th>&nbsp;</th>
                 {% endfor %}
                 {% if 'lock_status' in filter_data.display_columns %}
+                <th>&nbsp;</th>
+                {% endif %}
+                {% if 'completed_by' in filter_data.display_columns %}
                 <th>&nbsp;</th>
                 {% endif %}
             </tr>
@@ -355,6 +363,11 @@
                 {% if 'lock_status' in filter_data.display_columns %}
                 <td>
                   {{ t.lock_users }}
+                </td>
+                {% endif %}
+                {% if 'completed_by' in filter_data.display_columns %}
+                <td>
+                  {{ t.completed_users }}
                 </td>
                 {% endif %}
             </tr>
