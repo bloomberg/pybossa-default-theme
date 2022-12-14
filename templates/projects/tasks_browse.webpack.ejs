@@ -187,7 +187,7 @@
                 <th class="{{'sort-asc' if filter_data.order_by['lock_status'] == 'asc'}} {{'sort-desc' if filter_data.order_by['lock_status'] == 'desc'}} sortable" data-sort="lock_status">Active Users</th>
                 {% endif %}
                 {% if 'completed_by' in filter_data.display_columns %}
-                <th class="{{'sort-asc' if filter_data.order_by['completed_by'] == 'asc'}} {{'sort-desc' if filter_data.order_by['completed_by'] == 'desc'}} sortable" data-sort="completed_by">Completed By</th>
+                <th>Completed By</th>
                 {% endif %}
             </tr>
             <tr>
