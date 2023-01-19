@@ -332,6 +332,7 @@
     {% endassets %}
 
     <script type="text/javascript" src="{{url_for('static', filename='js/task-presenter-tabs.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/image_upload.js')}}"></script>
 
 <script type="text/javascript">
 (function() {
@@ -464,10 +465,14 @@ $('#tabs a[href="' + hash.replace('#', '#tab-') + '"]').tab('show');
 var main = function() {
 
  // Create markup
- $('#guidelines').summernote(
-      { height: 554}
- );
-
+ $('#guidelines').summernote({
+    height: 554,
+    callbacks: {
+        onImageUpload: function(files) {
+          TaskPresenterImageUploader.uploadImages(files, '{{project.short_name}}', $('#guidelines'));
+        }
+    }
+});
  // Initialize HTML code formatting for guidelines.
  TaskPresenterTabManager.autoFormat('#guidelines');
 

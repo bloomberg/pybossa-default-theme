@@ -111,7 +111,7 @@
     "to-fast-properties" "^2.0.0"
 
 "@dtwebservices/task-presenter-components@https://s3.amazonaws.com/cf-s3uploads/pybv/0.11.7/task-presenter-components.tgz":
-  "integrity" "sha512-7QGtX9KCG3h/vJBa0nwgFc94rdZqQeGNgYam4XyKKPTN9FpEsC0+6biUfSE/unzwDzpomnCrpReTQku249KmQg=="
+
   "resolved" "https://s3.amazonaws.com/cf-s3uploads/pybv/0.11.7/task-presenter-components.tgz"
   "version" "0.11.7"
   dependencies:
