@@ -70,6 +70,12 @@
         window.cookieconsent_options = {"message":"Cookies help us to deliver our services. By using our services, you agree to our use of cookies.","dismiss":"Got it!","learnMore":"Learn More.","link":"{{url_for('help.cookies_policy')}}","theme":"dark-bottom"};
     </script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("completed")) {
+        pybossaNotify('Congratulations, you have completed the job.', true, 'success', true);
+      }
+    </script>
     {% block extrajs %}
     {% endblock %}
     {% include "_flash_messages.html" %}
