@@ -59,5 +59,14 @@ $(function() {
     $('.container').addClass('animated');
   };
 
+  const notifyProjectComplete = () => {
+    // When the url parameter contains ?completed=true, show a notification.
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("completed") == "true") {
+      pybossaNotify('Congratulations, you have completed the job.', true, 'success', true);
+    }
+};
+
   initializeLeftNav();
+  notifyProjectComplete()
 });
