@@ -7,6 +7,7 @@ import TableForm from './components/Table/TableForm.vue';
 import PreviewCommons from './components/PreviewCommons.vue';
 import RadioForm from './components/RadioInput/RadioInputForm.vue';
 import TextTaggingForm from './components/TextTagging/TextTaggingForm.vue';
+import TextTagging2Form from './components/TextTagging2/TextTagging2Form.vue';
 import DropdownForm from './components/DropdownInput/DropdownForm.vue';
 import MultiselectForm from './components/MultiselectInput/MultiselectForm.vue';
 import ConditionalDisplayForm from './components/ConditionalDisplay/ConditionalDisplayForm.vue';
@@ -201,6 +202,28 @@ export const routes = [
       {
         path: 'code',
         name: 'TEXT_TAGGING_CODE',
+        components: { default: PreviewCommons }
+      }
+    ]
+  },
+  {
+    path: '/textTagging2',
+    name: 'TEXT_TAGGING_2',
+    components: { default: Content, header: Header },
+    children: [
+      {
+        path: 'form',
+        name: 'TEXT_TAGGING_2_FORM',
+        components: { default: TextTagging2Form }
+      },
+      {
+        path: 'preview',
+        name: 'TEXT_TAGGING_2_PREVIEW',
+        components: { default: PreviewCommons }
+      },
+      {
+        path: 'code',
+        name: 'TEXT_TAGGING_2_CODE',
         components: { default: PreviewCommons }
       }
     ]

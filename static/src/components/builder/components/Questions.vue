@@ -18,6 +18,7 @@
       <custom-router-link :component="multiselectInput" />
       <custom-router-link :component="table" />
       <custom-router-link :component="textTagging" />
+      <custom-router-link :component="textTagging2" />
       <custom-router-link :component="inputTextArea" />
     </div>
     <div class="col-md-8">
@@ -193,6 +194,13 @@ export default {
         name: 'TEXT_TAGGING_FORM',
         params: {
           componentName: 'TEXT_TAGGING',
+          header: 'NLP Enrichment'
+        }
+      },
+      textTagging2: {
+        name: 'TEXT_TAGGING_2_FORM',
+        params: {
+          componentName: 'TEXT_TAGGING_2',
           header: 'NLP Enrichment'
         }
       },

@@ -15,6 +15,7 @@ import submitLastButtonTemplate from './components/helpers/submitLastButtonTempl
 import slotTemplate from './components/Table/slotTemplate.html';
 import radioGroupTemplate from './components/RadioInput/radioGroupTemplate.html';
 import textTaggingTemplate from './components/TextTagging/textTaggingTemplate.html';
+import textTagging2Template from './components/TextTagging2/textTagging2Template.html';
 import dropdownTemplate from './components/DropdownInput/dropdownTemplate.html';
 import multiselectTemplate from './components/MultiselectInput/multiselectTemplate.html';
 import conditionalDisplayTemplate from './components/ConditionalDisplay/conditionalDisplayTemplate.html';
@@ -65,6 +66,8 @@ export default {
       return this.getSimpleComponentsCode(form, component);
     } else if (component === 'TEXT_TAGGING') {
       return this.getTextTaggingCode(form);
+    } else if (component === 'TEXT_TAGGING2') {
+      return this.getTextTagging2Code(form);
     } else if (component === 'DROPDOWN_INPUT') {
       return this.getDropdownCode(form);
     } else if (component === 'MULTISELECT_INPUT') {
@@ -263,6 +266,51 @@ export default {
 
     let output = Mustache.render(
       textTaggingTemplate,
+      {
+        pybAnswer,
+        tags: JSON.stringify(tags),
+        text: snippet,
+        readOnly,
+        entities: getEntitiesString(),
+        confidenceThreshold,
+        // If text snippet and preview are the same then it is static text so no Vue binding.
+        // Otherwise it is a variable name so do Vue binding.
+        bindText: (snippet === preview) ? '' : ':'
+      }
+    );
+
+    if (labelAdded) {
+      const labelArgs = {
+        component: output,
+        label
+      };
+      output = Mustache.render(labelTemplate, labelArgs);
+    }
+    return output;
+
+    function getEntitiesString () {
+      const snippet = entities.snippet;
+      // If the snippet is a string then it is a variable name so leave it alone.
+      if (typeof snippet === 'string') return snippet;
+      // Otherwise it's an array so stringify it.
+      else return JSON.stringify(snippet);
+    }
+  },
+
+  getTextTagging2Code (textTagging2) {
+    const {
+      pybAnswer,
+      labelAdded,
+      label,
+      tags,
+      text: { snippet, preview },
+      readOnly,
+      entities,
+      confidenceThreshold
+    } = textTagging2;
+
+    let output = Mustache.render(
+      textTagging2Template,
       {
         pybAnswer,
         tags: JSON.stringify(tags),

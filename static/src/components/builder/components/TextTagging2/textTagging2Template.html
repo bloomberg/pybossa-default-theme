@@ -1,0 +1,10 @@
+<text-tagging-2
+    :read-only="{{readOnly}}"
+    pyb-answer="{{pybAnswer}}"
+    {{bindText}}text="{{text}}"
+    :tags="{{tags}}"
+    :nlpned-entities="{{entities}}"
+    {{#confidenceThreshold}}
+    :confidence-threshold="{{confidenceThreshold}}"
+    {{/confidenceThreshold}}
+></text-tagging-2>

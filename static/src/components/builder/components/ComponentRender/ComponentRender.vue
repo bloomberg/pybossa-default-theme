@@ -136,6 +136,18 @@ export default {
             confidenceThreshold: this.form.confidenceThreshold
           }
         };
+      } else if (this.selectedComponent === 'text-tagging-2') {
+        return {
+          name: 'text-tagging-2',
+          props: {
+            readOnly: this.form.readOnly,
+            pybAnswer: this.form.pybAnswer,
+            tags: this.form.tags,
+            text: this.form.text.preview,
+            nlpnedEntities: this.form.entities.preview,
+            confidenceThreshold: this.form.confidenceThreshold
+          }
+        };
       } else if (this.selectedComponent === 'table-creator') {
         const data = this.form.data.isVariable
           ? [{}]

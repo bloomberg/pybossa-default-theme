@@ -81,6 +81,7 @@ export default {
         BUTTON_ROW: 'button-row',
         SUBMIT_LAST_BUTTON: 'submit-last-button',
         TEXT_TAGGING: 'text-tagging',
+        TEXT_TAGGING_2: 'text-tagging-2',
         DROPDOWN_INPUT: 'dropdown-input',
         MULTISELECT_INPUT: 'multi-select-input',
         CONDITIONAL_DISPLAY: 'conditionaldisplay-creator',
