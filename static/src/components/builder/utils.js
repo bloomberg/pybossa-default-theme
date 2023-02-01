@@ -66,7 +66,7 @@ export default {
       return this.getSimpleComponentsCode(form, component);
     } else if (component === 'TEXT_TAGGING') {
       return this.getTextTaggingCode(form);
-    } else if (component === 'TEXT_TAGGING2') {
+    } else if (component === 'TEXT_TAGGING_2') {
       return this.getTextTagging2Code(form);
     } else if (component === 'DROPDOWN_INPUT') {
       return this.getDropdownCode(form);

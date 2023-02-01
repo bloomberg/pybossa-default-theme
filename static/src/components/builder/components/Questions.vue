@@ -17,7 +17,10 @@
       <custom-router-link :component="dropdownInput" />
       <custom-router-link :component="multiselectInput" />
       <custom-router-link :component="table" />
-      <custom-router-link :component="textTagging" />
+      <custom-router-link
+        :component="textTagging"
+        style="display:none"
+      />
       <custom-router-link :component="textTagging2" />
       <custom-router-link :component="inputTextArea" />
     </div>
@@ -201,7 +204,7 @@ export default {
         name: 'TEXT_TAGGING_2_FORM',
         params: {
           componentName: 'TEXT_TAGGING_2',
-          header: 'NLP Enrichment'
+          header: 'NLP Enrichment 2'
         }
       },
       dropdownInput: {
