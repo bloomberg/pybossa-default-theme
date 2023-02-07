@@ -39,12 +39,9 @@
             {{ render_project_card_option(project, upload_method, title=_('Task Settings'), explanation=_('Configure the task scheduler, redundancy, etc.'), link=url_for('project.task_settings', short_name=project.short_name), link_action_text=_('Settings'), icon='cogs')}}
         </div>
         {% endif %}
-        <!-- Project owner, any co-owner(subadmin or regular user), subadmins and admins can browse tasks -->
-        {% if current_user.id in project.owners_ids or current_user.subadmin or current_user.admin %}
         <div id="task_browse" class="col-md-4">
             {{ render_project_card_option(project, upload_method, title=_('Browse'), explanation=_('Check the status of the tasks'), link=url_for('project.tasks_browse', short_name=project.short_name), link_action_text=_('Browse'), icon='compass')}}
         </div>
-        {% endif %}
         {% if autoimporter_enabled and current_user.admin %}
         <div id="autoimport_tasks" class="col-md-4">
             {{ render_project_card_option(project, upload_method, title=_('Auto-import Tasks'), explanation=_('Import tasks regularly and automatically'), link=url_for('project.setup_autoimporter', short_name=project.short_name), link_action_text=_('Setup'), icon='magic')}}

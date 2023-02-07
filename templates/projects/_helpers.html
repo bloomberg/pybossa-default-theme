@@ -51,20 +51,20 @@
             </div>
             <div class="clear"></div>
         </a>
-
-        <a class="list-group-item {% if active_link=='tasks'%}active{% endif %}" href="{{url_for('project.tasks', short_name=project.short_name)}}">
-            <div class="pull-left">
-                <i class='nav-icon fa fa-tasks'></i>
-                <span class='nav-label'>
-                    {{_('Tasks')}} {{daniel}}{% if task_subsection_1_text %}<a href="{{task_subsection_1}}">{{task_subsection_1_text}}</a>{% endif %}
-                </span>
-            </div>
-            <div class="icon">
-                <i class="{{'fa fa-chevron-right' if request.cookies.leftNavCollapse != 'true'}} pull-right"></i>
-            </div>
-            <div class="clear"></div>
-        </a>
     {% endif %}
+    <a class="list-group-item {% if active_link=='tasks'%}active{% endif %}" href="{{url_for('project.tasks', short_name=project.short_name)}}">
+        <div class="pull-left">
+            <i class='nav-icon fa fa-tasks'></i>
+            <span class='nav-label'>
+                {{_('Tasks')}} {{daniel}}{% if task_subsection_1_text %}<a href="{{task_subsection_1}}">{{task_subsection_1_text}}</a>{% endif %}
+            </span>
+        </div>
+        <div class="icon">
+            <i class="{{'fa fa-chevron-right' if request.cookies.leftNavCollapse != 'true'}} pull-right"></i>
+        </div>
+        <div class="clear"></div>
+    </a>
+
 
     {% if is_subadmin_and_owner_or_admin %}
         <a class="list-group-item {% if active_link=='settings'%}active{% endif %}" href="{{url_for('project.settings', short_name=project.short_name)}}">
