@@ -72,26 +72,31 @@
                 {% endfor %}
             </ul>
         </li>
-        {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and request.args['view'] != 'tasklist' %}
-          <li class="dropdown" id="columnsSettings">
-              <button class="dropdown-toggle btn btn-sm" type="button" id="btnColumnsSettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Columns"><span class="fa fa-cog"><span class="caret"></span></button>
-              <ul class="dropdown-menu" aria-labelledby="btnColumnsSettings">
-                  <li><a href="#" class="columns_settings" data-value="task_id" tabIndex="-1"><input type="checkbox" {{ "checked" if "task_id" in filter_data.display_columns }} disabled="disabled" />&nbsp;Task Id</a></li>
-                  <li><a href="#" class="columns_settings" data-value="priority" tabIndex="-1"><input type="checkbox" {{ "checked" if "priority" in filter_data.display_columns }}/>&nbsp;Priority</a></li>
-                  <li><a href="#" class="columns_settings" data-value="pcomplete" tabIndex="-1"><input type="checkbox" {{ "checked" if "pcomplete" in filter_data.display_columns }}/>&nbsp;%Complete</a></li>
-                  <li><a href="#" class="columns_settings" data-value="created" tabIndex="-1"><input type="checkbox" {{ "checked" if "created" in filter_data.display_columns }}/>&nbsp;Created</a></li>
-                  <li><a href="#" class="columns_settings" data-value="finish_time" tabIndex="-1"><input type="checkbox" {{ "checked" if "finish_time" in filter_data.display_columns }}/>&nbsp;Completed</a></li>
-                  {% if can_know_task_is_gold %}
-                  <li><a href="#" class="columns_settings" data-value="gold_task" tabIndex="-1"><input type="checkbox" {{ "checked" if "gold_task" in filter_data.display_columns }}/>&nbsp;Gold Task</a></li>
-                  {% endif %}
+        <li class="dropdown" id="columnsSettings">
+            <button class="dropdown-toggle btn btn-sm" type="button" id="btnColumnsSettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Columns"><span class="fa fa-cog"><span class="caret"></span></button>
+            <ul class="dropdown-menu" aria-labelledby="btnColumnsSettings">
+                <li><a href="#" class="columns_settings" data-value="task_id" tabIndex="-1"><input type="checkbox" {{ "checked" if "task_id" in filter_data.display_columns }} disabled="disabled" />&nbsp;Task Id</a></li>
+                <li><a href="#" class="columns_settings" data-value="priority" tabIndex="-1"><input type="checkbox" {{ "checked" if "priority" in filter_data.display_columns }}/>&nbsp;Priority</a></li>
+                {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and request.args['view'] != 'tasklist' %}
+                <li><a href="#" class="columns_settings" data-value="pcomplete" tabIndex="-1"><input type="checkbox" {{ "checked" if "pcomplete" in filter_data.display_columns }}/>&nbsp;%Complete</a></li>
+                {% endif %}
+                <li><a href="#" class="columns_settings" data-value="created" tabIndex="-1"><input type="checkbox" {{ "checked" if "created" in filter_data.display_columns }}/>&nbsp;Created</a></li>
+                {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and request.args['view'] != 'tasklist' %}
+                <li><a href="#" class="columns_settings" data-value="finish_time" tabIndex="-1"><input type="checkbox" {{ "checked" if "finish_time" in filter_data.display_columns }}/>&nbsp;Completed</a></li>
+                {% endif %}
+                {% if can_know_task_is_gold %}
+                <li><a href="#" class="columns_settings" data-value="gold_task" tabIndex="-1"><input type="checkbox" {{ "checked" if "gold_task" in filter_data.display_columns }}/>&nbsp;Gold Task</a></li>
+                {% endif %}
+                {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and request.args['view'] != 'tasklist' %}
                   <li><a href="#" class="columns_settings" data-value="actions" tabIndex="-1"><input type="checkbox" {{ "checked" if "actions" in filter_data.display_columns }}/>&nbsp;Actions</a></li>
                   <li><a href="#" class="columns_settings" data-value="lock_status" tabIndex="-1"><input type="checkbox" {{ "checked" if "lock_status" in filter_data.display_columns }}/>&nbsp;Active Users</a></li>
                   <li><a href="#" class="columns_settings" data-value="completed_by" tabIndex="-1"><input type="checkbox" {{ "checked" if "completed_by" in filter_data.display_columns }}/>&nbsp;Completed By</a></li>
                   {% if project.info.sched == 'task_queue_scheduler' or project.info.sched == 'user_pref_scheduler' %}
                   <li><a href="#" class="columns_settings" data-value="assigned_users" tabIndex="-1"><input type="checkbox" {{ "checked" if "assigned_users" in filter_data.display_columns }}/>&nbsp;Assigned Users</a></li>
                   {% endif %}
-              </ul>
-          </li>
+                {% endif %}
+            </ul>
+        </li>
         {% endif %}
         {% if filter_columns %}
           {% if current_user.id in project.owners_ids or current_user.subadmin or current_user.admin %}
@@ -272,6 +277,9 @@
                             {% if t.available %}
                                 <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='cherry_pick', view=request.args['view']) }}">#{{ t.id }}</a>
                             {% else %}
+                              {% if allow_taskrun_edit and regular_user %}
+                                <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='read_only', view=request.args['view']) }}">#{{ t.id }}</a>
+                              {% else %}
                                 <a class="label label-default" target="_blank">#{{ t.id }}</a>
                             {% endif %}
                         {% else %}

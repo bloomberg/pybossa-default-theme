@@ -318,11 +318,22 @@
         {% endif %}
         {% if project['enable_task_queue'] %}
             {{ render_task_queue_toggle_buttons(project, current_user, request.args['view']) }}
+        {% else %}
+            {% if not is_admin_or_subadmin_or_owner %}
+                <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}{{'' if (not is_admin_or_subadmin_or_owner or view == 'tasklist') else '?view=tasklist'}}">
+                    Browse Tasks
+                </a>
+            {% endif %}
         {% endif %}
     </div>
     {% endif %}
     {% if project['contrib_button'] == 'cannot_contribute' %}
     <a href="{{url_for('project.details', short_name=project.short_name)}}" class="btn btn-lg btn-primary btn-contribute">{{ _('Thanks for contributing') }}</a>
+        {% if not is_admin_or_subadmin_or_owner %}
+            <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}{{'' if (not is_admin_or_subadmin_or_owner or view == 'tasklist') else '?view=tasklist'}}">
+                Browse Tasks
+            </a>
+        {% endif %}
     {% endif %}
     {% if project['contrib_button'] == 'draft' %}
     <a href="{{url_for('project.tasks', short_name=project.short_name)}}" class="btn btn-lg btn-primary btn-contribute">{{ _('Draft project, complete it!') }}</a>
@@ -334,6 +345,12 @@
         <a href="{{url_for('project.publish', short_name=project.short_name, published=1)}}" class="btn btn-lg btn-default">{{ _('Publish it') }}</a>
         {% if project['enable_task_queue'] %}
             {{ render_task_queue_toggle_buttons(project, current_user, request.args['view']) }}
+        {% else %}
+            {% if not is_admin_or_subadmin_or_owner %}
+                <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}{{'' if (not is_admin_or_subadmin_or_owner or view == 'tasklist') else '?view=tasklist'}}">
+                    Browse Tasks
+                </a>
+            {% endif %}
         {% endif %}
     </div>
     {% endif %}
