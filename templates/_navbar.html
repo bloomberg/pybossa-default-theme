@@ -62,7 +62,19 @@
 article .navbar-inner {
     background: {{ config.LOGO_COLOR.get(config.get('SERVER_TYPE'), 'linear-gradient(44deg, #26ABE2, #264BE2)') }};
 }
-article .navbar-inner a.sign-in:hover {
-    color: cornsilk !important;
+article .navbar-inner a:hover, article .navbar-inner a:active {
+    color: #ffdca5 !important;
+}
+
+article .navbar-inner .dropdown-menu a:hover, article .navbar-inner .dropdown-menu a:active {
+    color: #fff !important;
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus {
+    background-color: rgba(43,139,165,0);
+    text-decoration: underline;
+    text-decoration-color: rgba(255,255,255,0.7);
+    text-underline-offset: 12px;
+    text-decoration-thickness: 3px;
 }
 </style>
