@@ -100,7 +100,8 @@
     }
 
     function selectSchedulerNeedsCustomizedColumns() {
-        return selectedScheduler() === 'task_queue_scheduler';
+        var scheduler_type = selectedScheduler();
+        return ["locked_scheduler", "user_pref_scheduler", "task_queue_scheduler"].includes(scheduler_type);
     }
 
     function reserveTaskCategorySupported() {
