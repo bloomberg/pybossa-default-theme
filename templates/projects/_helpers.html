@@ -39,6 +39,7 @@
     {% set is_admin_or_subadmin_or_owner = current_user.admin or current_user.subadmin or current_user.id in project.owners_ids %}
     {% set is_subadmin_and_owner_or_admin = (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
     {% set is_subadmin_or_admin = current_user.subadmin or current_user.admin %}
+    {% set enable_browse_task = is_admin_or_subadmin_or_owner or (not current_user.admin and not current_user.subadmin and project.info.allow_taskrun_edit) %}
 
     {% if is_admin_or_subadmin_or_owner %}
         <a class="list-group-item {% if active_link=='info'%}active{% endif %}" href="{{url_for('project.details', short_name=project.short_name)}}">
@@ -52,11 +53,12 @@
             <div class="clear"></div>
         </a>
     {% endif %}
+    {% if enable_browse_task %}
     <a class="list-group-item {% if active_link=='tasks'%}active{% endif %}" href="{{url_for('project.tasks', short_name=project.short_name)}}">
         <div class="pull-left">
             <i class='nav-icon fa fa-tasks'></i>
             <span class='nav-label'>
-                {{_('Tasks')}} {{daniel}}{% if task_subsection_1_text %}<a href="{{task_subsection_1}}">{{task_subsection_1_text}}</a>{% endif %}
+                {{_('Tasks')}} {% if task_subsection_1_text %}<a href="{{task_subsection_1}}">{{task_subsection_1_text}}</a>{% endif %}
             </span>
         </div>
         <div class="icon">
@@ -64,7 +66,7 @@
         </div>
         <div class="clear"></div>
     </a>
-
+    {% endif %}
 
     {% if is_subadmin_and_owner_or_admin %}
         <a class="list-group-item {% if active_link=='settings'%}active{% endif %}" href="{{url_for('project.settings', short_name=project.short_name)}}">
@@ -301,8 +303,9 @@
         {% endif %}
     </a>
 {% endmacro %}
-
 {% macro render_contribute_button(project, current_user, csrf_token) %}
+{% set is_admin_or_subadmin_or_owner = current_user.admin or current_user.subadmin or current_user.id in project.owners_ids %}
+{% set enable_browse_task = is_admin_or_subadmin_or_owner or (not current_user.admin and not current_user.subadmin and project.info.allow_taskrun_edit) %}
     {% if project['contrib_button'] == 'completed' %}
     <a href="{{url_for('project.tasks', short_name=project.short_name)}}" class="btn btn-lg btn-primary btn-contribute pull-right">{{ _('Done! View results') }}</a>
     {% endif %}
@@ -319,8 +322,8 @@
         {% if project['enable_task_queue'] %}
             {{ render_task_queue_toggle_buttons(project, current_user, request.args['view']) }}
         {% else %}
-            {% if not is_admin_or_subadmin_or_owner %}
-                <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}{{'' if (not is_admin_or_subadmin_or_owner or view == 'tasklist') else '?view=tasklist'}}">
+            {% if enable_browse_task %}
+                <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}">
                     Browse Tasks
                 </a>
             {% endif %}
@@ -329,7 +332,7 @@
     {% endif %}
     {% if project['contrib_button'] == 'cannot_contribute' %}
     <a href="{{url_for('project.details', short_name=project.short_name)}}" class="btn btn-lg btn-primary btn-contribute">{{ _('Thanks for contributing') }}</a>
-        {% if not is_admin_or_subadmin_or_owner %}
+        {% if enable_browse_task %}
             <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}{{'' if (not is_admin_or_subadmin_or_owner or view == 'tasklist') else '?view=tasklist'}}">
                 Browse Tasks
             </a>
@@ -346,8 +349,8 @@
         {% if project['enable_task_queue'] %}
             {{ render_task_queue_toggle_buttons(project, current_user, request.args['view']) }}
         {% else %}
-            {% if not is_admin_or_subadmin_or_owner %}
-                <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}{{'' if (not is_admin_or_subadmin_or_owner or view == 'tasklist') else '?view=tasklist'}}">
+            {% if enable_browse_task %}
+                <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}">
                     Browse Tasks
                 </a>
             {% endif %}
