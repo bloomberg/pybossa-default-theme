@@ -101,7 +101,9 @@
 
     function selectSchedulerNeedsCustomizedColumns() {
         var scheduler_type = selectedScheduler();
-        return ["locked_scheduler", "user_pref_scheduler", "task_queue_scheduler"].includes(scheduler_type);
+        return [
+            "default", "locked_scheduler",
+            "user_pref_scheduler", "task_queue_scheduler"].includes(scheduler_type);
     }
 
     function reserveTaskCategorySupported() {
