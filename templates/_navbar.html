@@ -60,7 +60,7 @@
 }
 
 article .navbar-inner {
-    background: {{ config.get('NAVBAR_COLOR', {}).get(config.get('SERVER_TYPE'), 'linear-gradient(44deg, #26ABE2, #264BE2)') }};
+    background: {{ config.get('NAVBAR_COLOR', 'linear-gradient(44deg, #26ABE2, #264BE2)') }};
 }
 article .navbar-inner a:hover, article .navbar-inner a:active {
     color: #ffdca5 !important;
