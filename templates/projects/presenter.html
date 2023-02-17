@@ -17,6 +17,11 @@
     {% if mode == 'cherry_pick' %}
         window.pybossa.isCherryPick = true;
     {% endif %}
+    {% if mode == 'edit_submission' %}
+        window.pybossa.editSubmission = true;
+        window.pybossa.taskrunId = {{ taskrun_id }};
+        window.pybossa.taskrunUserId = {{ taskrun_user_id }};
+    {% endif %}
     {% if mode == 'gold' %}
         window.pybossa.isGoldMode = true;
         {% if bulk %}
@@ -31,7 +36,6 @@
 </script>
 
 <link rel="stylesheet" href="{{url_for('static', filename='css/small-navbar.css')}}"/>
-
 <div class="container" style="min-height:400px;">
     {% if invite_new_volunteers %}
         <div class="row">
