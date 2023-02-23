@@ -97,10 +97,10 @@ it('load empty data', () => {
     wrapper.vm._data.users = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
     wrapper.vm._data.searchResult = [{ id: 1, fullname: 'user1' }, { id: 2, fullname: 'user2' }];
 
-    expect(wrapper.findAll('p')).toHaveLength(5);
+    expect(wrapper.findAll('p')).toHaveLength(6);
     const user2 = wrapper.findAll('p').at(2);
     user2.trigger('click');
-    expect(wrapper.findAll('p')).toHaveLength(6);
+    expect(wrapper.findAll('p')).toHaveLength(7);
   });
 
   it('remove assigned user', () => {
@@ -109,10 +109,10 @@ it('load empty data', () => {
     wrapper.vm._data.users = { 1: { id: 1, fullname: 'user' } };
     wrapper.vm._data.searchResult = [{ id: 1, fullname: 'user' }];
 
-    expect(wrapper.findAll('p')).toHaveLength(4);
+    expect(wrapper.findAll('p')).toHaveLength(5);
     const user1 = wrapper.findAll('p').at(2);
     user1.trigger('click');
-    expect(wrapper.findAll('p')).toHaveLength(3);
+    expect(wrapper.findAll('p')).toHaveLength(4);
   });
 
   it('saves config', async () => {

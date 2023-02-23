@@ -133,7 +133,7 @@
           </select>
         </div>
       </div>
-      <div v-if="Object.keys(users).length <= 0" class="form-group row">  <!-- enable editing of task submissions only on public platform -->
+      <div v-if="!this.validAccessLevels.length" class="form-group row">  <!-- enable editing of task submissions only on public platform -->
         <div class="col-md-6">
           <p> Allow Editing of Task Submissions </p>
         </div>

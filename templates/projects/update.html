@@ -42,7 +42,9 @@
             {{ render_field(form.amp_pvf, placeholder=_('PVF that should be used for annotation store')) }}
         {% endif %}
         {{ render_field(form.category_id) }}
-        {{ render_checkbox_field(form.allow_taskrun_edit, title=_('Check if you want to allow editing of task submissions for your project')) }}
+        {% if 'allow_taskrun_edit' in form %}
+            {{ render_checkbox_field(form.allow_taskrun_edit, title=_('Check if you want to allow editing of task submissions for your project')) }}
+        {% endif %}
         {{ render_checkbox_field(form.hidden, title=_('Check if you want to hide your project'))}}
         {{ render_checkbox_field(form.email_notif, title=_('Check if you want to send email notifications to your workers when new tasks are loaded'))}}
         {% if sync_enabled %}
