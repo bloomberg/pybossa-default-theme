@@ -56,10 +56,14 @@ function pybossaNotify(msg, showNotification, type, keepPreviousNotification, st
     window.onscroll = function() {
         if (sticky) {
             let banner = $("#pybossa-notification");
-            if (window.pageYOffset > 100) {
-                banner.css({position: "sticky", top: -40});
+            const headerHeight = 60;
+            const bannerHeight = 40;
+            const pageYOffset = window.pageYOffset
+            if (pageYOffset < headerHeight + bannerHeight) {
+                let pos = Math.max(0, (pageYOffset - headerHeight));
+                banner.css({position: "relative", top: pos});
             } else {
-                banner.css({position: "relative", top: 0});
+                banner.css({position: "sticky", top: -bannerHeight});
             }
         }
     }
