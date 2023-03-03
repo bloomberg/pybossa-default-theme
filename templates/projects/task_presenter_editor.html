@@ -79,20 +79,26 @@
     <ul class="nav nav-tabs editors col-md-12" role="tablist" id="tabs">
         <li id="tab-nav-guidelines" role="presentation"><a href="#tab-content-guidelines" aria-controls="basics" role="tab" data-toggle="tab">Instructions</a></li>
         <li id="tab-nav-presenter" role="presentation"><a href="#tab-content-presenter" aria-controls="basics" role="tab" data-toggle="tab">Task Presenter</a></li>
-        <a id="help-btn" class="btn btn-info navbar-right " target="_blank" href="http://docs.pybossa.com"><i class="fa fa-book"></i> {{ _('Help') }}</a>
+        <a id="help-btn" class="btn btn-info navbar-right" target="_blank" href="http://docs.pybossa.com"><i class="fa fa-book"></i> {{ _('Help') }}</a>
+        <li id="expand-btn" class="tab-nav-collapse-expand navbar-right tab-link" onclick="expandTaskPresenter()" id ="component-builder-description">
+          <a class="cursor-link">
+              <i class="fa fa-plus-square-o"></i>
+              <span>Expand Task Presenter</span>
+          </a>
+        </li>
         <li class="tab-nav-collapse-expand navbar-right tab-link show-builder"  aria-controls="basics" id ="component-builder-description">
             <a class="cursor-link">
                 <i class="fa fa-plus-square-o builder-tab-icon" aria-hidden="true"></i>
                 <span class="builder-tab-text">Expand Screen</span>
             </a>
-            </li>
+        </li>
         <li class="tab-nav-collapse-expand navbar-right tab-link hide-builder" id="component-builder-hide" >
             <a class="cursor-link">
                 <i class="fa fa-minus-square-o builder-tab-icon" aria-hidden="true"></i>
                 <span class="builder-tab-text">Collapse Screen</span>
             </a>
-            </li>
-    </ul>
+          </li>
+      </ul>
     <!-- Tab panes -->
     <div class="tab-content">
           <div role="tabpanel" id="tab-content-guidelines" class="tab-pane fade in col-md-12">
@@ -419,7 +425,6 @@ var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
     }
   }
 });
-
 // Initialize the module for saving both tabs when clicking Update.
 TaskPresenterTabManager.initialize(editor);
 
@@ -526,6 +531,12 @@ var main = function() {
 }
 $(document).ready(main);
 
+function expandTaskPresenter() {
+  let cm = document.querySelector('.CodeMirror').CodeMirror
+  cm.setOption("fullScreen", true)
+  cm.focus()
+}
+
 function updateExpandButton(e) {
     var text = e ? e.currentTarget.textContent : $('.nav-tabs li[role="presentation"].active a').text();
     var isTaskPresenterTab = text === 'Task Presenter';
@@ -535,13 +546,14 @@ function updateExpandButton(e) {
     var hideToolkitLabel = isTaskPresenterTab ? 'Hide Code Builder' : 'Expand Instructions';
     var showToolkitIcon = isTaskPresenterTab ? 'fa-wrench' : 'fa-plus-square-o';
     var hideToolkitIcon = 'fa-minus-square-o';
+    var showExpandButton = isTaskPresenterTab
 
     // Update the label for the show/hide button, depending on the active tab.
     var showBuilderLabel = isTaskPresenterTab ? showToolkitLabel : hideToolkitLabel;
     var hideBuilderLabel = isTaskPresenterTab ? hideToolkitLabel : showToolkitLabel;
     $('li.show-builder .builder-tab-text').text(showBuilderLabel);
     $('li.hide-builder .builder-tab-text').text(hideBuilderLabel);
-
+    $('#expand-btn').css("display", showExpandButton ? "inline": "none")
     // Update the icon on the show/hide button.
     var showBuilderIcon = $('li.show-builder .builder-tab-icon').removeClass('fa-plus-square-o fa-minus-square-o');
     var hideBuilderIcon = $('li.hide-builder .builder-tab-icon').removeClass('fa-plus-square-o fa-minus-square-o');
