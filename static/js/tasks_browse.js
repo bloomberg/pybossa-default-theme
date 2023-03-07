@@ -115,6 +115,11 @@ $(document).ready(function() {
         refresh();
     });
 
+    $('#btn-edit-submission').click(function() {
+        filter_data["view"] = "edit_submission"
+        refresh();
+    });
+
     $('#tasksGrid th[data-sort]').click(function(evt) {
         dirtyView(evt.ctrlKey);
 

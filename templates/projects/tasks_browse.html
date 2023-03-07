@@ -72,27 +72,31 @@
                 {% endfor %}
             </ul>
         </li>
-        {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and request.args['view'] != 'tasklist' %}
-          <li class="dropdown" id="columnsSettings">
-              <button class="dropdown-toggle btn btn-sm" type="button" id="btnColumnsSettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Columns"><span class="fa fa-cog"><span class="caret"></span></button>
-              <ul class="dropdown-menu" aria-labelledby="btnColumnsSettings">
-                  <li><a href="#" class="columns_settings" data-value="task_id" tabIndex="-1"><input type="checkbox" {{ "checked" if "task_id" in filter_data.display_columns }} disabled="disabled" />&nbsp;Task Id</a></li>
-                  <li><a href="#" class="columns_settings" data-value="priority" tabIndex="-1"><input type="checkbox" {{ "checked" if "priority" in filter_data.display_columns }}/>&nbsp;Priority</a></li>
-                  <li><a href="#" class="columns_settings" data-value="pcomplete" tabIndex="-1"><input type="checkbox" {{ "checked" if "pcomplete" in filter_data.display_columns }}/>&nbsp;%Complete</a></li>
-                  <li><a href="#" class="columns_settings" data-value="created" tabIndex="-1"><input type="checkbox" {{ "checked" if "created" in filter_data.display_columns }}/>&nbsp;Created</a></li>
-                  <li><a href="#" class="columns_settings" data-value="finish_time" tabIndex="-1"><input type="checkbox" {{ "checked" if "finish_time" in filter_data.display_columns }}/>&nbsp;Completed</a></li>
-                  {% if can_know_task_is_gold %}
-                  <li><a href="#" class="columns_settings" data-value="gold_task" tabIndex="-1"><input type="checkbox" {{ "checked" if "gold_task" in filter_data.display_columns }}/>&nbsp;Gold Task</a></li>
-                  {% endif %}
+        <li class="dropdown" id="columnsSettings">
+            <button class="dropdown-toggle btn btn-sm" type="button" id="btnColumnsSettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Columns"><span class="fa fa-cog"><span class="caret"></span></button>
+            <ul class="dropdown-menu" aria-labelledby="btnColumnsSettings">
+                <li><a href="#" class="columns_settings" data-value="task_id" tabIndex="-1"><input type="checkbox" {{ "checked" if "task_id" in filter_data.display_columns }} disabled="disabled" />&nbsp;Task Id</a></li>
+                <li><a href="#" class="columns_settings" data-value="priority" tabIndex="-1"><input type="checkbox" {{ "checked" if "priority" in filter_data.display_columns }}/>&nbsp;Priority</a></li>
+                {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and request.args['view'] != 'tasklist' %}
+                <li><a href="#" class="columns_settings" data-value="pcomplete" tabIndex="-1"><input type="checkbox" {{ "checked" if "pcomplete" in filter_data.display_columns }}/>&nbsp;%Complete</a></li>
+                {% endif %}
+                <li><a href="#" class="columns_settings" data-value="created" tabIndex="-1"><input type="checkbox" {{ "checked" if "created" in filter_data.display_columns }}/>&nbsp;Created</a></li>
+                {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and request.args['view'] != 'tasklist' %}
+                <li><a href="#" class="columns_settings" data-value="finish_time" tabIndex="-1"><input type="checkbox" {{ "checked" if "finish_time" in filter_data.display_columns }}/>&nbsp;Completed</a></li>
+                {% endif %}
+                {% if can_know_task_is_gold %}
+                <li><a href="#" class="columns_settings" data-value="gold_task" tabIndex="-1"><input type="checkbox" {{ "checked" if "gold_task" in filter_data.display_columns }}/>&nbsp;Gold Task</a></li>
+                {% endif %}
+                {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and request.args['view'] != 'tasklist' %}
                   <li><a href="#" class="columns_settings" data-value="actions" tabIndex="-1"><input type="checkbox" {{ "checked" if "actions" in filter_data.display_columns }}/>&nbsp;Actions</a></li>
                   <li><a href="#" class="columns_settings" data-value="lock_status" tabIndex="-1"><input type="checkbox" {{ "checked" if "lock_status" in filter_data.display_columns }}/>&nbsp;Active Users</a></li>
                   <li><a href="#" class="columns_settings" data-value="completed_by" tabIndex="-1"><input type="checkbox" {{ "checked" if "completed_by" in filter_data.display_columns }}/>&nbsp;Completed By</a></li>
                   {% if project.info.sched == 'task_queue_scheduler' or project.info.sched == 'user_pref_scheduler' %}
                   <li><a href="#" class="columns_settings" data-value="assigned_users" tabIndex="-1"><input type="checkbox" {{ "checked" if "assigned_users" in filter_data.display_columns }}/>&nbsp;Assigned Users</a></li>
                   {% endif %}
-              </ul>
-          </li>
-        {% endif %}
+                {% endif %}
+            </ul>
+        </li>
         {% if filter_columns %}
           {% if current_user.id in project.owners_ids or current_user.subadmin or current_user.admin %}
             <li class="dropdown" id="info-columns">
@@ -128,6 +132,14 @@
             <button id="btn-delete-tasks" class="btn btn-sm" type="button" data-target="#delete-tasks-modal" data-toggle="modal" title="Delete tasks">
                 <i class="fa fa-trash" aria-hidden="true"></i>
             </button>
+        </li>
+        {% endif %}
+        {% if allow_taskrun_edit and request.args['view'] != 'tasklist' and (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) %}
+        <li>
+          <!-- <button class="btn btn-sm" id='btnRefresh' type="button" data-toggle="popover" data-trigger="focus" data-placement="top" data-constraints='focus' data-content="{{_('Please refresh the results after setting the desired filters.')}}" title="{{_('Search')}}"></button> -->
+          <button id="btn-edit-submission" class="btn btn-sm" type="button" data-toggle="popover" title="Edit your completed tasks">
+              <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+          </button>
         </li>
         {% endif %}
         {% if language_options and request.args['view'] != 'tasklist' and (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) %}
@@ -278,7 +290,11 @@
                             <a class="label label-warning" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
                         {% endif %}
                     {% elif can_know_task_is_gold and task_pct >= 100 %}
-                        <a class="label label-success" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
+                        {% if not t.calibration and allow_taskrun_edit and request.args['view'] == "edit_submission" %}
+                            <a class="label label-success" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='edit_submission') }}">#{{ t.id }}</a>
+                        {% else %}
+                            <a class="label label-success" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
+                        {% endif %}
                     {% elif project.enable_task_queue and ((not (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin)) or request.args['view'] == 'tasklist') %}
                         {% if t.available %}
                             <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='cherry_pick', view=request.args['view']) }}">#{{ t.id }}</a>
@@ -286,7 +302,11 @@
                             <a class="label label-default" target="_blank">#{{ t.id }}</a>
                         {% endif %}
                     {% else %}
-                        <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
+                        {% if not t.calibration and allow_taskrun_edit and (regular_user or request.args['view'] == "edit_submission") %}
+                            <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='edit_submission', view=request.args['view']) }}">#{{ t.id }}</a>
+                        {% else %}
+                            <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
+                        {% endif %}
                     {% endif %}
 
                     {% if can_know_task_is_gold and (not project.enable_task_queue or request.args['view'] != 'tasklist') %}
@@ -704,7 +724,7 @@
 </div>
 </div>
 
-<script src="/static/js/gen/task_browse.min.efb7131319aa21ce030f.js"></script>
+<script src="/static/js/gen/task_browse.min.fd794e7e5c28fcac03ec.js"></script>
 <script type="text/javascript">
     function autoRefresh() {
       window.location.reload();

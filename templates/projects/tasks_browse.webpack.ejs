@@ -134,6 +134,14 @@
             </button>
         </li>
         {% endif %}
+        {% if allow_taskrun_edit and request.args['view'] != 'tasklist' and (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) %}
+        <li>
+          <!-- <button class="btn btn-sm" id='btnRefresh' type="button" data-toggle="popover" data-trigger="focus" data-placement="top" data-constraints='focus' data-content="{{_('Please refresh the results after setting the desired filters.')}}" title="{{_('Search')}}"></button> -->
+          <button id="btn-edit-submission" class="btn btn-sm" type="button" data-toggle="popover" title="Edit your completed tasks">
+              <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+          </button>
+        </li>
+        {% endif %}
         {% if language_options and request.args['view'] != 'tasklist' and (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) %}
         <li>
             <button id="btn-filter-user-pref" class="btn btn-sm" type="button" data-target="#filter-upref-modal" data-toggle="modal" title="Filter by user preference">
@@ -278,13 +286,15 @@
                             {% else %}
                                 <a class="label label-default" target="_blank">#{{ t.id }}</a>
                             {% endif %}
-                        {% elif allow_taskrun_edit and regular_user %}
-                            <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='edit_submission', view=request.args['view']) }}">#{{ t.id }}</a>
                         {% else %}
                             <a class="label label-warning" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
                         {% endif %}
                     {% elif can_know_task_is_gold and task_pct >= 100 %}
-                        <a class="label label-success" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
+                        {% if not t.calibration and allow_taskrun_edit and request.args['view'] == "edit_submission" %}
+                            <a class="label label-success" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='edit_submission') }}">#{{ t.id }}</a>
+                        {% else %}
+                            <a class="label label-success" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
+                        {% endif %}
                     {% elif project.enable_task_queue and ((not (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin)) or request.args['view'] == 'tasklist') %}
                         {% if t.available %}
                             <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='cherry_pick', view=request.args['view']) }}">#{{ t.id }}</a>
@@ -292,7 +302,7 @@
                             <a class="label label-default" target="_blank">#{{ t.id }}</a>
                         {% endif %}
                     {% else %}
-                        {% if allow_taskrun_edit and regular_user %}
+                        {% if not t.calibration and allow_taskrun_edit and (regular_user or request.args['view'] == "edit_submission") %}
                             <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='edit_submission', view=request.args['view']) }}">#{{ t.id }}</a>
                         {% else %}
                             <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
