@@ -1,0 +1,63 @@
+{% extends "/base.html" %}
+{% set active_page = "profile" %}
+{% set active_link = "admin" %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+<script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+<style>
+    .ct-bar {
+        stroke: #aae266 !important;
+    }
+    .ct-line, .ct-point {
+        stroke: #3AB0D5 !important;
+    }
+</style>
+<div class="container">
+    <div class="col-md-12" style="margin-top:30px;">
+        <h1><strong>{{ _('Metrics Dashboard') }}</strong></h1>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-12">
+            <h2>{{ _('Platform Totals (Last 6 Months)' )}}</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th><p><strong>Last 6 Months</strong></p></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stat, value in stats_6_months.items() %}
+                    <tr>
+                        <th><p><strong>{{ stat | replace('_', ' ') | capitalize }}</strong></p></th>
+                        <td><p>{{ value }}</p></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-12">
+            <h2>{{ _('Platform Totals (Last 12 Months)' )}}</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th><p><strong>Last 6 Months</strong></p></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stat, value in stats_12_months.items() %}
+                    <tr>
+                        <th><p><strong>{{ stat | replace('_', ' ') | capitalize }}</strong></p></th>
+                        <td><p>{{ value }}</p></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+</div>
+{% endblock %}
