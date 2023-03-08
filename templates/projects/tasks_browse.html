@@ -136,10 +136,15 @@
         {% endif %}
         {% if allow_taskrun_edit and request.args['view'] != 'tasklist' and (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) %}
         <li>
-          <!-- <button class="btn btn-sm" id='btnRefresh' type="button" data-toggle="popover" data-trigger="focus" data-placement="top" data-constraints='focus' data-content="{{_('Please refresh the results after setting the desired filters.')}}" title="{{_('Search')}}"></button> -->
-          <button id="btn-edit-submission" class="btn btn-sm" type="button" data-toggle="popover" title="Edit your completed tasks">
-              <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-          </button>
+          {% if request.args['view'] == "edit_submission" %}
+              <button id="btn-edit-submission" class="btn btn-sm" type="button" data-toggle="popover" title="Edit your completed tasks" style="border: 1px solid grey;">
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+              </button>
+          {% else %}
+              <button id="btn-edit-submission" class="btn btn-sm" type="button" data-toggle="popover" title="Edit your completed tasks">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </button>
+          {% endif %}
         </li>
         {% endif %}
         {% if language_options and request.args['view'] != 'tasklist' and (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) %}
@@ -302,8 +307,10 @@
                             <a class="label label-default" target="_blank">#{{ t.id }}</a>
                         {% endif %}
                     {% else %}
-                        {% if not t.calibration and allow_taskrun_edit and (regular_user or request.args['view'] == "edit_submission") %}
-                            <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='edit_submission', view=request.args['view']) }}">#{{ t.id }}</a>
+                        {% if allow_taskrun_edit and (regular_user or request.args['view'] == "edit_submission") %}
+                            {% if not t.calibration %}
+                                <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='edit_submission', view=request.args['view']) }}">#{{ t.id }}</a>
+                            {% endif %}
                         {% else %}
                             <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
                         {% endif %}
@@ -724,7 +731,7 @@
 </div>
 </div>
 
-<script src="/static/js/gen/task_browse.min.fd794e7e5c28fcac03ec.js"></script>
+<script src="/static/js/gen/task_browse.min.29b3ae50f4ec7cb53519.js"></script>
 <script type="text/javascript">
     function autoRefresh() {
       window.location.reload();
