@@ -20,23 +20,23 @@
 </div>
 <div class="container">
     <div class="col-md-12">
-            <h2>{{ _('Platform Totals (Last ' + months + ' Months)' )}}</h2>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th><p><strong>Last 6 Months</strong></p></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for stat, value in stats.items() %}
-                    <tr>
-                        <th><p><strong>{{ stat | replace('_', ' ') }}</strong></p></th>
-                        <td><p>{{ value }}</p></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <h2>{{ _('Platform Totals (Last ' + months + ' Months)' )}}</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th><p><strong>Last {{months}} Months</strong></p></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stat, value in stats.items() %}
+                <tr>
+                    <th><p><strong>{{ stat | replace('_', ' ') }}</strong></p></th>
+                    <td><p>{{ value }}</p></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}
