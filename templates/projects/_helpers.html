@@ -295,13 +295,25 @@
 
 {% macro render_task_queue_toggle_buttons(project, current_user, view) %}
     {% set is_admin_or_subadmin_or_owner = current_user.admin or current_user.subadmin or current_user.id in project.owners_ids %}
-    <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}{{'' if (not is_admin_or_subadmin_or_owner or view == 'tasklist') else '?view=tasklist'}}">
-        {% if is_admin_or_subadmin_or_owner and view == 'tasklist' %}
+    {% set regular_user = not is_admin_or_subadmin_or_owner %}
+    {% if project.info.allow_taskrun_edit and project['enable_task_queue'] and regular_user %}
+        {% if view == 'tasklist' %}
+            <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}">
             Browse Tasks
         {% else %}
+        <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}{{'?view=tasklist'}}">
             Task List
-        {% endif %}
-    </a>
+            {% endif %}
+        </a>
+    {% else %}
+        <a class="btn btn-lg btn-primary btn-padding" role="button" href="{{url_for('project.tasks_browse', short_name=project.short_name)}}{{'' if (not is_admin_or_subadmin_or_owner or view == 'tasklist') else '?view=tasklist'}}">
+            {% if is_admin_or_subadmin_or_owner and view == 'tasklist' %}
+                Browse Tasks
+            {% else %}
+                Task List
+            {% endif %}
+        </a>
+    {% endif %}
 {% endmacro %}
 {% macro render_contribute_button(project, current_user, csrf_token) %}
 {% set is_admin_or_subadmin_or_owner = current_user.admin or current_user.subadmin or current_user.id in project.owners_ids %}

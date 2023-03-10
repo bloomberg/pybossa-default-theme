@@ -301,10 +301,16 @@
                             <a class="label label-success" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
                         {% endif %}
                     {% elif project.enable_task_queue and ((not (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin)) or request.args['view'] == 'tasklist') %}
-                        {% if t.available %}
-                            <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='cherry_pick', view=request.args['view']) }}">#{{ t.id }}</a>
+                        {% if allow_taskrun_edit and request.args['view'] != "tasklist" %}
+                            {% if not t.calibration %}
+                                <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='edit_submission', view=request.args['view']) }}">#{{ t.id }}</a>
+                            {% endif %}
                         {% else %}
-                            <a class="label label-default" target="_blank">#{{ t.id }}</a>
+                            {% if t.available %}
+                                <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='cherry_pick', view=request.args['view']) }}">#{{ t.id }}</a>
+                            {% else %}
+                                <a class="label label-default" target="_blank">#{{ t.id }}</a>
+                            {% endif %}
                         {% endif %}
                     {% else %}
                         {% if allow_taskrun_edit and (regular_user or request.args['view'] == "edit_submission") %}
@@ -731,7 +737,7 @@
 </div>
 </div>
 
-<script src="/static/js/gen/task_browse.min.29b3ae50f4ec7cb53519.js"></script>
+<script src="/static/js/gen/task_browse.min.46f9044b63239b7aa911.js"></script>
 <script type="text/javascript">
     function autoRefresh() {
       window.location.reload();
