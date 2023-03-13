@@ -56,26 +56,7 @@ let timeframe = document.getElementById('timeframe')
 $(document).ready(function() {
     const urlParams = new URLSearchParams(window.location.search);
     const months = urlParams.get('months').toString()
-
-    switch(months) {
-        case '1':
-            timeframe.value = '1'
-            break
-        case '3':
-            timeframe.value = '3'
-            break
-        case '6':
-            timeframe.value = '6'
-            break
-        case '12':
-            timeframe.value = '12'
-            break
-        case 'all':
-            timeframe.value = 'all'
-            break
-        default:
-            timeframe.value = null
-    }
+    timeframe.value = { '1': '1', '3': '3', '6': '6', '12': '12', 'all': 'all' }[months] || null;
 })
 
 function redirect() {
