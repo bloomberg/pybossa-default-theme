@@ -16,16 +16,26 @@
 <div class="container">
     <div class="col-md-12" style="margin-top:30px;">
         <h1><strong>{{ _('Usage Dashboard') }}</strong></h1>
+
+        <label for="timeframe">Timeframe:</label>
+        <select name="timeframe" id="timeframe" onchange="redirect()">
+            <option disabled value> Select a timeframe </option>
+            <option value="1">1 Month</option>
+            <option value="3">3 Months</option>
+            <option value="6">6 Months</option>
+            <option value="12">1 Year</option>
+            <option value="all">All Time</option>
+        </select>
     </div>
 </div>
 <div class="container">
     <div class="col-md-12">
-        <h2>{{ _('Platform Totals (Last ' + months + ' Months)' )}}</h2>
+        <h2>{{ _('Platform Totals — ' + timeframe)}}</h2>
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th></th>
-                    <th><p><strong>Last {{months}} Months</strong></p></th>
+                    <th><p id = table_header><strong>{{timeframe}}</strong></p></th>
                 </tr>
             </thead>
             <tbody>
@@ -39,4 +49,38 @@
         </table>
     </div>
 </div>
+<script>
+
+let timeframe = document.getElementById('timeframe')
+
+$(document).ready(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const months = urlParams.get('months').toString()
+
+    switch(months) {
+        case '1':
+            timeframe.value = '1'
+            break
+        case '3':
+            timeframe.value = '3'
+            break
+        case '6':
+            timeframe.value = '6'
+            break
+        case '12':
+            timeframe.value = '12'
+            break
+        case 'all':
+            timeframe.value = 'all'
+            break
+        default:
+            timeframe.value = null
+    }
+})
+
+function redirect() {
+    let url = window.location.origin + '/admin/usage_dashboard/?months=' + timeframe.value
+    window.location.replace(url)
+}
+</script>
 {% endblock %}
