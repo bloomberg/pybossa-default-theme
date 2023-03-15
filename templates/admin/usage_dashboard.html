@@ -52,7 +52,7 @@
 <script>
 
 function getFormatedStringFromDays(_days) {
-    let text_map = { '30': '1 Month', '90': '3 Months', '183': '6 Months', '365': '1 Year', 'all': 'All Time' }
+    let text_map = { '30': 'Last Month', '90': 'Last 3 Months', '183': 'Last 6 Months', '365': 'Last Year', 'all': 'All Time' }
     if (_days in text_map) return text_map[_days]
 
     // calculate estimated date
@@ -65,7 +65,7 @@ function getFormatedStringFromDays(_days) {
     if (years > 0) res.push(years + " Year" + (years > 1 ? "s" : ""))
     if (months > 0) res.push(months + " Month" + (months > 1 ? "s" : ""))
     if (days > 0) res.push(days + " Day" + (days > 1 ? "s" : ""))
-    return res.join(', ');
+    return 'Last ' + res.join(', ');
 }
 let timeframe_select = document.getElementById('timeframe-select')
 
