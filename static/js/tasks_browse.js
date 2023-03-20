@@ -817,6 +817,12 @@ function prepareFilters() {
         preparedFilters['filter_by_upref'] = JSON.stringify(filter_by_upref);
     }
 
+    const eb = document.getElementById("btn-edit-submission");
+    const eb_selected = eb && eb.style.border != "";
+    if (eb_selected){
+        preparedFilters["view"] = "edit_submission";
+    }
+
     return preparedFilters;
 }
 
