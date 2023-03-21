@@ -2,7 +2,7 @@
 {% set active_page = "projects" %}
 {% set active_project  = "all" %}
 {% set active_link = "tasks" %}
-{% set section = _('Browse tasks') %}
+{% set section = _('Task List') if request.args['view'] == 'tasklist' else 'Browse Tasks'%} 
 {% import "projects/_helpers.html" as project_helper %}
 
 {% block projectcontent %}
