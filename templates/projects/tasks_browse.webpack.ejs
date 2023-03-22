@@ -214,6 +214,9 @@
                 {% if 'assigned_users' in filter_data.display_columns %}
                 <th class="{{'sort-asc' if filter_data.order_by['assigned_users'] == 'asc'}} {{'sort-desc' if filter_data.order_by['assigned_users'] == 'desc'}} sortable" data-sort="assigned_users">Assigned Users</th>
                 {% endif %}
+                {% if 'in_progress' in filter_data.display_columns %}
+                <th class="{{'sort-asc' if filter_data.order_by['in_progress'] == 'asc'}} {{'sort-desc' if filter_data.order_by['in_progress'] == 'desc'}} sortable" data-sort="in_progress">In Progress</th>
+                {% endif %}
             </tr>
             <tr>
                 {% if 'task_id' in filter_data.display_columns %}
@@ -276,6 +279,18 @@
                 {% endif %}
                 {% if 'assigned_users' in filter_data.display_columns %}
                 <th>&nbsp;</th>
+                {% endif %}
+                {% if 'in_progress' in filter_data.display_columns %}
+                <th>
+                    <div>
+                        <select id="in-progress" class="input-sm">
+                            <option value="" style="font-weight: lighter;">--select--</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                            <option value="All">All</option>
+                        </select>
+                    </div>
+                </th>
                 {% endif %}
             </tr>
         </thead>
@@ -418,6 +433,9 @@
                 <td>
                   {{ t.assigned_users }}
                 </td>
+                {% endif %}
+                {% if 'in_progress' in filter_data.display_columns %}
+                <td>{{ t.in_progress }}</td>
                 {% endif %}
             </tr>
             {% endfor %}

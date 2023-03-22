@@ -47,6 +47,12 @@ $(document).ready(function() {
         filter_data.gold_task = $(this).val();
     });
 
+    $('#in-progress').val(filter_data.in_progress)
+      .change(function() {
+          dirtyView();
+          filter_data.in_progress = $(this).val();
+      });
+
     $('.datepicker').datepicker({
         changeMonth: true,
         changeYear: true,
