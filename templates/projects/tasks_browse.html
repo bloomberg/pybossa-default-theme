@@ -15,780 +15,786 @@
 {% endassets %}
 
 <div id="task-browse">
-  <div class="row">
-      <div class="col-md-12">
-          <p>{{_('This page shows all the available tasks for this project')}}.</p>
-          {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
-            <p>{{_('For each task, you can find the following information')}}:
-            <ul>
-                <li><strong>{{_('Task')}} </strong><span class="label label-info">#0000</span> {{_('This number identifies the task for the project and it is unique')}}</li>
-                {% if can_know_task_is_gold %}
-                <li><strong>0 of 30</strong>: {{_('The first number shows how many answers have been submitted for the task and the')}} {{_('second number')}} {{_('how many need to be obtained to mark the task as')}} <strong>{{_('completed')}}</strong>.
-                {{_(' As gold tasks have no redundancy, this is marked as infinity total tasks for gold tasks')}}.</li>
-                {% endif %}
-                <li><strong>{{_('Priority')}}</strong>: {{_('Shows the priority of the task, priority ranges from 0.0 (lowest value) to 1.0 (highest priority)')}}.</li>
-                <li><strong>%{{_('Complete')}}</strong>: {{_('Shows the percentage that has been completed of the task')}}.{{_(' This would be blank for gold tasks as such tasks has no redundancy and would never complete')}}.</li>
-                <li><strong>{{_('Created')}}</strong>: {{_('When the task was created')}}.</li>
-                <li><strong>{{_('Completed')}}</strong>: {{_('When the task most recently became fully completed. The task may not be fully completed if the task has changed redundancy')}}.</li>
-                {% if can_know_task_is_gold %}
-                <li><strong>{{_('Gold Tasks')}}</strong>: {{_('Shows button to make a non-gold task gold or update a current gold task')}}.</li>
-                {% endif %}
-                <li><strong>{{_('Actions')}}</strong>: {{_('Three current actions: download, view, or get user info for task results')}}.</li>
-                <li><strong>{{_('Active Users')}}</strong>: {{_('List users working on the task')}}.</li>
-                <li><strong>{{_('Completed By')}}</strong>: {{_('List users that completed the task')}}.</li>
-                <li><strong>{{_('Assigned Users')}}</strong>: {{_('List users that are assigned to the task')}}.</li>
-            </ul>
-            </p>
-          {% endif %}
-      </div>
-  </div>
-  <div id="tasksBrowseControls">
-      <ul class="pull-left">
-          <li>
-              <button class="btn btn-sm" id='btnRefresh' type="button" data-toggle="popover" data-trigger="focus" data-placement="top" data-constraints='focus' data-content="{{_('Please refresh the results after setting the desired filters.')}}" title="{{_('Search')}}">
-                  <i class="fa fa-search" aria-hidden="true"></i>
-              </button>
-          </li>
-          {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
-            <li class="dropdown">
-                <button class="dropdown-toggle btn btn-sm" type="button" id="btnDownload" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Export tasks/task runs"><span class="fa fa-cloud-download"></span><span class="caret"></span></button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
-                    <li><a href="#" class='download-type' id='task-csv'>Tasks CSV</a></li>
-                    <li><a href="#" class='download-type' id='task-json'>Tasks JSON</a></li>
-                    <li><a href="#" class='download-type' id='task_run-csv'>Task Runs CSV</a></li>
-                    <li><a href="#" class='download-type' id='task_run-json'>Task Runs JSON</a></li>
-                    <li><a href="#" class='download-type' id='task_run-csv-meta'>Task Runs with Metadata CSV</a></li>
-                    <li><a href="#" class='download-type' id='task_run-json-meta'>Task Runs with Metadata JSON</a></li>
-                    <li><a href="#" class='download-type' id='consensus-csv'>Consensus CSV</a></li>
-                    <li><a href="#" class='download-type' id='consensus-json'>Consensus JSON</a></li>
-                    <li><a href="#" class='download-type' id='consensus-csv-meta'>Consensus with Metadata CSV</a></li>
-                    <li><a href="#" class='download-type' id='consensus-json-meta'>Consensus with Metadata JSON</a></li>
-              </ul>
-            </li>
-          {% endif %}
-          <li class="dropdown">
-              <button class="dropdown-toggle btn btn-sm" type="button" id="btnRpp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Tasks per page">{{records_per_page}}<span class="caret"></span></button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
-                  {% for num in allowed_records_per_page %}
-                      <li><a href="#" class='records_per_page'>{{num}}</a></li>
-                  {% endfor %}
-              </ul>
-          </li>
-          <li class="dropdown" id="columnsSettings">
-              <button class="dropdown-toggle btn btn-sm" type="button" id="btnColumnsSettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Columns"><span class="fa fa-cog"><span class="caret"></span></button>
-              <ul class="dropdown-menu" aria-labelledby="btnColumnsSettings">
-                  <li><a href="#" class="columns_settings" data-value="task_id" tabIndex="-1"><input type="checkbox" {{ "checked" if "task_id" in filter_data.display_columns }} disabled="disabled" />&nbsp;Task Id</a></li>
-                  <li><a href="#" class="columns_settings" data-value="priority" tabIndex="-1"><input type="checkbox" {{ "checked" if "priority" in filter_data.display_columns }}/>&nbsp;Priority</a></li>
-                  {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
-                  <li><a href="#" class="columns_settings" data-value="pcomplete" tabIndex="-1"><input type="checkbox" {{ "checked" if "pcomplete" in filter_data.display_columns }}/>&nbsp;%Complete</a></li>
-                  {% endif %}
-                  <li><a href="#" class="columns_settings" data-value="created" tabIndex="-1"><input type="checkbox" {{ "checked" if "created" in filter_data.display_columns }}/>&nbsp;Created</a></li>
-                  {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
-                  <li><a href="#" class="columns_settings" data-value="finish_time" tabIndex="-1"><input type="checkbox" {{ "checked" if "finish_time" in filter_data.display_columns }}/>&nbsp;Completed</a></li>
-                  {% endif %}
-                  {% if can_know_task_is_gold %}
-                  <li><a href="#" class="columns_settings" data-value="gold_task" tabIndex="-1"><input type="checkbox" {{ "checked" if "gold_task" in filter_data.display_columns }}/>&nbsp;Gold Task</a></li>
-                  {% endif %}
-                  {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
-                    <li><a href="#" class="columns_settings" data-value="actions" tabIndex="-1"><input type="checkbox" {{ "checked" if "actions" in filter_data.display_columns }}/>&nbsp;Actions</a></li>
-                    <li><a href="#" class="columns_settings" data-value="lock_status" tabIndex="-1"><input type="checkbox" {{ "checked" if "lock_status" in filter_data.display_columns }}/>&nbsp;Active Users</a></li>
-                    <li><a href="#" class="columns_settings" data-value="completed_by" tabIndex="-1"><input type="checkbox" {{ "checked" if "completed_by" in filter_data.display_columns }}/>&nbsp;Completed By</a></li>
-                    {% if project.info.sched == 'task_queue_scheduler' or project.info.sched == 'user_pref_scheduler' %}
-                    <li><a href="#" class="columns_settings" data-value="assigned_users" tabIndex="-1"><input type="checkbox" {{ "checked" if "assigned_users" in filter_data.display_columns }}/>&nbsp;Assigned Users</a></li>
-                    {% endif %}
-                  {% endif %}
-              </ul>
-          </li>
-          {% if filter_columns %}
-            {% if current_user.id in project.owners_ids or current_user.subadmin or current_user.admin %}
-              <li class="dropdown" id="info-columns">
-                  <button class="dropdown-toggle btn btn-sm" type="button" id="btn-filter-columns" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Display task info"><span class="fa fa-database"><span class="caret"></span></button>
-                  <ul class="dropdown-menu" aria-labelledby="btn-filter-columns">
-                      {% for column_name in filter_columns %}
-                          <li><a href="#" class="info_columns_settings" data-value={{column_name}} tabIndex='-1'><input type="checkbox" {{ "checked" if column_name in info_columns }}/>&nbsp; {{column_name}}</a></li>
-                      {% endfor %}
-                  </ul>
-              </li>
-            {% endif %}
-            <li>
-                <button class="btn btn-sm" id='btnFilter' type="button" data-target="#filterModal" data-toggle="modal" title="Filter by request fields">
-                    <i class="fa fa-filter" aria-hidden="true"></i>
-                </button>
-            </li>
-          {% endif %}
-          <!-- Project owner, subadmin that are project co-owners and admins can delete task properties. All project owners, admins can edit tasks -->
-          {% if (current_user.admin or current_user.id in project.owners_ids) and not is_task_list %}
-          <li class="dropdown" id="edit-tasks">
-              <button class="dropdown-toggle btn btn-sm" type="button" id="btn-edit-tasks" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Edit priority/redundancy"><span class="fa fa-edit"><span class="caret"></span></button>
-              <ul class="dropdown-menu" aria-labelledby="btn-edit-tasks">
-                  <li><a href="#" id="btn-edit-redundancy" data-value="task-redundancy" tabIndex="-1">Edit redundancy</a></li>
-                  <li><a href="#" id="btn-edit-priority" data-value="task-priority" tabIndex="-1">Edit priority</a></li>
-                  {% if project.info.sched == 'task_queue_scheduler' or project.info.sched == 'user_pref_scheduler'  %}
-                    <li><a href="#" id="btn-assign-worker" data-value="assign-worker" @click="$refs.assignworker.getData()" tabIndex="-1">Assign worker</a></li>
-                  {% endif %}
-              </ul>
-          </li>
-          {% endif %}
-          {% if (current_user.admin or (current_user.subadmin and current_user.id in project.owners_ids)) and not is_task_list %}
-          <li>
-              <button id="btn-delete-tasks" class="btn btn-sm" type="button" data-target="#delete-tasks-modal" data-toggle="modal" title="Delete tasks">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-              </button>
-          </li>
-          {% endif %}
-          {% if allow_taskrun_edit and not is_task_list and (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) %}
-          <li>
-            {% if request.args['view'] == "edit_submission" %}
-                <button id="btn-edit-submission" class="btn btn-sm" type="button" data-toggle="popover" title="Edit your completed tasks" style="border: 1px solid grey;">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </button>
-            {% else %}
-                <button id="btn-edit-submission" class="btn btn-sm" type="button" data-toggle="popover" title="Edit your completed tasks">
-                  <i class="fa fa-pencil" aria-hidden="true"></i>
-                </button>
-            {% endif %}
-          </li>
-          {% endif %}
-          {% if language_options and not is_task_list and (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) %}
-          <li>
-              <button id="btn-filter-user-pref" class="btn btn-sm" type="button" data-target="#filter-upref-modal" data-toggle="modal" title="Filter by user preference">
-                  <i class="fa fa-user" aria-hidden="true"></i>
-              </button>
-          </li>
-          {% endif %}
-          {% if filter_data | length > 3 %}
-          <li>
-              <button id="btn-filters" class="btn btn-sm" type="button" data-target="#the-modal" data-toggle="modal" title="Filters">
-                  Filters
-              </button>
-          </li>
-          {% endif %}
-      </ul>
-      <div style="clear: both;"></div>
-      <div class="task-pagination">
-          <div>
-              Displaying tasks
-                  {{ ((pagination.page - 1) * pagination.per_page) + 1 if ((pagination.page - 1) * pagination.per_page) + 1 <= pagination.total_count else pagination.total_count }}-{{(
-                     ((pagination.page) * pagination.per_page) if
-                     ((pagination.page) * pagination.per_page)
-                     <= pagination.total_count
-                     else pagination.total_count )}} of {{ pagination.total_count }}
-          </div>
-      </div>
-  </div>
-  <div>
-      <table id="tasksGrid" class="table table-sm table-striped table-hover border">
-          <thead>
-              <tr>
-                  {% if 'task_id' in filter_data.display_columns %}
-                  <th class="{{'sort-asc' if filter_data.order_by|length == 0 or filter_data.order_by['task_id'] == 'asc'}} {{'sort-desc' if filter_data.order_by['task_id'] == 'desc'}} sortable" data-sort="task_id">
-                      Task #
-                  </th>
-                  {% endif %}
-                  {% if 'priority' in filter_data.display_columns %}
-                  <th class="{{'sort-asc' if filter_data.order_by['priority'] == 'asc'}} {{'sort-desc' if filter_data.order_by['priority'] == 'desc'}} sortable" data-sort="priority">Priority</th>
-                  {% endif %}
-                  {% if 'pcomplete' in filter_data.display_columns %}
-                  <th class="{{'sort-asc' if filter_data.order_by['pcomplete'] == 'asc'}} {{'sort-desc' if filter_data.order_by['pcomplete'] == 'desc'}} sortable" data-sort="pcomplete">%Complete</th>
-                  {% endif %}
-                  {% if 'created' in filter_data.display_columns %}
-                  <th class="{{'sort-asc' if filter_data.order_by['created'] == 'asc'}} {{'sort-desc' if filter_data.order_by['created'] == 'desc'}} sortable" data-sort="created">Created</th>
-                  {% endif %}
-                  {% if 'finish_time' in filter_data.display_columns %}
-                  <th class="{{'sort-asc' if filter_data.order_by['finish_time'] == 'asc'}} {{'sort-desc' if filter_data.order_by['finish_time'] == 'desc'}} sortable" data-sort="finish_time">Completed</th>
-                  {% endif %}
-                  {% if 'gold_task' in filter_data.display_columns %}
-                  <th class="{{'sort-asc' if filter_data.order_by['gold_task'] == 'asc'}} {{'sort-desc' if filter_data.order_by['gold_task'] == 'desc'}}">Gold Task</th>
-                  {% endif %}
-                  {% if 'actions' in filter_data.display_columns %}
-                  <th>Actions</th>
-                  {% endif %}
-                  {% for column_name in info_columns %}
-                  <th class="{{'sort-asc' if filter_data.order_by[column_name] == 'asc'}} {{'sort-desc' if filter_data.order_by[column_name] == 'desc'}} sortable" data-sort="{{column_name}}" >{{ column_name }} </th>
-                  {% endfor %}
-                  {% if 'lock_status' in filter_data.display_columns %}
-                  <th class="{{'sort-asc' if filter_data.order_by['lock_status'] == 'asc'}} {{'sort-desc' if filter_data.order_by['lock_status'] == 'desc'}} sortable" data-sort="lock_status">Active Users</th>
-                  {% endif %}
-                  {% if 'completed_by' in filter_data.display_columns %}
-                  <th>Completed By</th>
-                  {% endif %}
-                  {% if 'assigned_users' in filter_data.display_columns %}
-                  <th class="{{'sort-asc' if filter_data.order_by['assigned_users'] == 'asc'}} {{'sort-desc' if filter_data.order_by['assigned_users'] == 'desc'}} sortable" data-sort="assigned_users">Assigned Users</th>
-                  {% endif %}
-              </tr>
-              <tr>
-                  {% if 'task_id' in filter_data.display_columns %}
-                  <th>
-                  <div>
-                      <div class="input-group">
-                          <div class="input-group-addon">#</div>
-                          <input class="form-control input-sm" type="number" value="{{ filter_data.task_id or '' }}" min="{{ first_task_id or 0 }}" id="task_id" style="width: 100px;">
-                      </div>
-                      </div>
-                  </th>
-                  {% endif %}
-                  {% if 'priority' in filter_data.display_columns %}
-                  <th>
-                      <div>
-                          <input id="priority" type="text" class="span2" value="" data-slider-min="0" data-slider-max="1" data-slider-step="0.05" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" />
-                      </div>
-                  </th>
-                  {% endif %}
-                  {% if 'pcomplete' in filter_data.display_columns %}
-                  <th>
-                      <div>
-                          <input id="pcomplete" type="text" class="span2" value="" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" />
-                      </div>
-                  </th>
-                  {% endif %}
-                  {% if 'created' in filter_data.display_columns %}
-                  <th>
-                     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dateModal" data-info="created">Filter</button>
-                  </th>
-                  {% endif %}
-                  {% if 'finish_time' in filter_data.display_columns %}
-                  <th>
-                     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dateModal" data-info="ftime">Filter</button>
-                  </th>
-                  {% endif %}
-                  {% if 'gold_task' in filter_data.display_columns %}
-                  <th>
-                      <div>
-                          <select id="gold_task" class="input-sm">
-                              <option value="" style="font-weight: lighter;">--select--</option>
-                              <option value="1">Update</option>
-                              <option value="0">Make Gold</option>
-                              <option value="All">All</option>
-                          </select>
-                      </div>
-                  </th>
-                  {% endif %}
-                  {% if 'actions' in filter_data.display_columns %}
-                  <th>&nbsp;</th>
-                  {% endif %}
-                  {% for column_name in info_columns %}
-                  <th>&nbsp;</th>
-                  {% endfor %}
-                  {% if 'lock_status' in filter_data.display_columns %}
-                  <th>&nbsp;</th>
-                  {% endif %}
-                  {% if 'completed_by' in filter_data.display_columns %}
-                  <th>&nbsp;</th>
-                  {% endif %}
-                  {% if 'assigned_users' in filter_data.display_columns %}
-                  <th>&nbsp;</th>
-                  {% endif %}
-              </tr>
-          </thead>
-          <tbody>
-              {% for t in tasks %}
-              {% set task_pct = t.pct_status*100 %}
-              <tr class="task-row">
-                  {% if 'task_id' in filter_data.display_columns %}
-                  <td>
-                      {% if can_know_task_is_gold and t.calibration %}
-                          {% if project.enable_task_queue and is_task_list %}
-                              {% if t.available %}
-                                  <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='cherry_pick', view=request.args['view']) }}">#{{ t.id }}</a>
-                              {% else %}
-                                  <a class="label label-default" target="_blank">#{{ t.id }}</a>
-                              {% endif %}
-                          {% else %}
-                              <a class="label label-warning" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
-                          {% endif %}
-                      {% elif can_know_task_is_gold and task_pct >= 100 %}
-                          {% if not t.calibration and allow_taskrun_edit and request.args['view'] == "edit_submission" %}
-                              <a class="label label-success" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='edit_submission') }}">#{{ t.id }}</a>
-                          {% else %}
-                              <a class="label label-success" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
-                          {% endif %}
-                      {% elif project.enable_task_queue and ((not (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin)) or is_task_list) %}
-                          {% if allow_taskrun_edit and not is_task_list %}
-                              {% if not t.calibration %}
-                                  <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='edit_submission', view=request.args['view']) }}">#{{ t.id }}</a>
-                              {% endif %}
-                          {% else %}
-                              {% if t.available %}
-                                  <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='cherry_pick', view=request.args['view']) }}">#{{ t.id }}</a>
-                              {% else %}
-                                  <a class="label label-default" target="_blank">#{{ t.id }}</a>
-                              {% endif %}
-                          {% endif %}
-                      {% else %}
-                          {% if allow_taskrun_edit and (regular_user or request.args['view'] == "edit_submission") %}
-                              {% if not t.calibration %}
-                                  <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='edit_submission', view=request.args['view']) }}">#{{ t.id }}</a>
-                              {% endif %}
-                          {% else %}
-                              <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
-                          {% endif %}
-                      {% endif %}
-  
-                      {% if can_know_task_is_gold and (not project.enable_task_queue or not is_task_list) %}
-                        {{ t.n_task_runs|int }} {{_('of')}}
-                        {% if t.calibration %}
-                          &infin;
-                        {% else %}
-                          {{ t.n_answers }}
-                        {% endif %}
-                      {% endif %}
-                  </td>
-                  {% endif %}
-                  {% if 'priority' in filter_data.display_columns %}
-                  <td>{{ t.priority_0 }}</td>
-                  {% endif %}
-                  {% if 'pcomplete' in filter_data.display_columns %}
-                      {% if t.calibration %}
-                          <td>{{_('--')}}</td>
-                      {% else %}
-                          <td>{{ (task_pct|round(2, 'floor')|string).rstrip('0').rstrip('.') }}</td>
-                      {% endif %}
-                  {% endif %}
-                  {% if 'created' in filter_data.display_columns %}
-                  <td><div style="width: 100px;">{{ t.created }}</div></td>
-                  {% endif %}
-                  {% if 'finish_time' in filter_data.display_columns %}
-                  <td><div style="width: 100px;">{{ t.finish_time or '' }}</div></td>
-                  {% endif %}
-                  {% if 'gold_task' in filter_data.display_columns %}
-                      {% if t.calibration %}
-                          <td>
-                              <div class="make-gold-cell">
-                              <!-- Allow project owner, sub-admin co-owners, and admins to update Gold tasks -->
-                              {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
-                                  <a class="gold-task label label-warning" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='gold') }}">Update</a>
-                              {% else %}
-                                  <div class="gold-task label label-default" title="Only Project owners can update Gold tasks.">Update</div>
-                              {% endif %}
-                              </div>
-                          </td>
-                      {% else %}
-                      <td>
-                          <div class="make-gold-cell">
-                          <!-- Allow project owner, sub-admin co-owners, and admins to make Gold tasks -->
-                          {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
-                              <a class="gold-task label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='gold') }}">Make Gold</a>
-                          {% else %}
-                              <div class="gold-task label label-default" title="Only project owners can make Gold tasks.">Make Gold</div>
-                          {% endif %}
-                          </div>
-                      </td>
-                      {% endif %}
-                  {% endif %}
-                  {% if 'actions' in filter_data.display_columns %}
-                  <td>
-                      <div style="width: 100px;">
-                        {% if task_pct >= 100 %}
-                        <a id="fulldownload" rel="nofollow" class="btn btn-success btn-xs fa fa-cloud-download" href="{{ url_for('project.export', short_name=project.short_name, task_id=t.id) }}">&nbsp;</a> <button type="button" class="btn btn-success btn-xs fa fa-eye" data-toggle="modal" data-target="#infoModal" data-info="{{ url_for('project.export', short_name=project.short_name, task_id=t.id) }}"></button>
-                        {% elif task_pct > 0 and task_pct < 100 %}
-                        <a id="partialdownload" rel="nofollow" class="btn btn-info btn-xs fa fa-cloud-download" href="{{ url_for('project.export', short_name=project.short_name, task_id=t.id) }}">&nbsp;</a> <button type="button" class="btn btn-success btn-xs fa fa-eye" data-toggle="modal" data-target="#infoModal" data-info="{{ url_for('project.export', short_name=project.short_name, task_id=t.id) }}"></button>
-                        {% else %}
-                        <a id="nothingtodownload" rel="nofollow" class="btn btn-info btn-xs disabled fa fa-cloud-download" href="#">&nbsp;</a> <a rel="nofollow" class="btn btn-success btn-xs disabled fa fa-eye" href="#"></a>
-                        {% endif %}
-                        <button type="button"
-                                class="btn btn-success btn-xs fa fa-users"
-                                data-toggle="modal"
-                                data-target="#taskRunStatusModal"
-                                data-info="{{ url_for('project.export_statuses',
-                                                      short_name=project.short_name,
-                                                      task_id=t.id) }}">
-                        </button>
-                      </div>
-                  </td>
-                  {% endif %}
-                   {% for column_name in info_columns %}
-                      {% if column_name in reserved_options %}
-                        <td>
-                          {{ t[column_name] }}
-                        </td>
-                      {% else %}
-                        <td>{{ t.info[column_name] }}</td>
-                      {% endif %}
-                  {% endfor %}
-                  {% if 'lock_status' in filter_data.display_columns %}
-                  <td>
-                    {{ t.lock_users }}
-                  </td>
-                  {% endif %}
-                  {% if 'completed_by' in filter_data.display_columns %}
-                  <td>
-                    {{ t.completed_users }}
-                  </td>
-                  {% endif %}
-                  {% if 'assigned_users' in filter_data.display_columns %}
-                  <td>
-                    {{ t.assigned_users }}
-                  </td>
-                  {% endif %}
-              </tr>
-              {% endfor %}
-          </tbody>
-      </table>
-  </div>
-  {% if pagination.pages > 1 %}
-  <div class="row">
-      <div class="col-md-12 text-center">
-          {{ render_pagination(pagination) }}
-      </div>
-  </div>
-  {% endif %}
-  
-  <!-- Date Modal -->
-  <div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="dateModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="dateModalLabel">Edit date range</h4>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-              <div class="input-group">
-                  <div class="input-group-addon" style="width: 70px;">From:</div>
-                  <input class="form-control input-sm datepicker" type="text" id="date_from" style="width: 180px;" placeholder="YYYY-MM-DD"/>
-                  <input class="form-control input-sm" type="time" id="time_from" style="width: 180px;" placeholder="00:00" />
-              </div>
-          </div>
-          <div class="form-group">
-              <div class="input-group">
-                  <div class="input-group-addon" style="width: 70px;">To:</div>
-                  <input class="form-control input-sm datepicker" type="text" id="date_to" style="width: 180px;" placeholder="YYYY-MM-DD"/>&nbsp;
-                  <input class="form-control input-sm" type="time" id="time_to" style="width: 180px;" placeholder="23:59" />
-              </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id='saveDateModal'>Search</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- View Info -->
-  <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="infoModalLabel">View Task Info</h4>
-        </div>
-        <div class="modal-body">
-          <div id='loadingInfo' style="text-align: center;"><i class="fa fa-spinner fa-pulse fa-5x fa-fw"> </i></div>
-          <div id='taskInfo'>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Filter Modal -->
-  <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel">
-    <div class="modal-dialog modal-md" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="infoModalLabel">Filter By Task Request Fields</h4>
-        </div>
-        <div class="modal-body">
-          <div class="filter-rows">
-  
-            <div class="row" style="margin-bottom: 5px">
-              <div class="form-inline col-xs-12">
-                <select class="form-group form-control filter-field-name" style="width: 150px">
-                  <option value="" disabled selected>Field Name</option>
-                  {% for column_name in filter_columns %}
-                    <option value="{{column_name}}">{{column_name}}</option>
-                  {% endfor %}
-                </select>
-                <select class="form-group form-control filter-field-operator" disabled style="width: 100px">
-                  {% for operator in ['equals', 'starts with', 'contains'] %}
-                    <option value="{{operator}}">{{operator}}</option>
-                  {% endfor %}
-                </select>
-                <div class="form-group">
-                  <input type="text" class="form-control filter-field-value" placeholder="Field Value" disabled style="width:214px"/>
-                </div>
-                <div class="form-group">
-                  <button type="button" class="btn btn-danger form-control remove-filter-button">Remove</button>
-                </div>
-              </div>
-            </div>
-  
-          </div>
-          <div class="row">
-            <div class="col-xs-6">
-              <button type="button" class="btn btn-primary add-filter-row-button" name="button">Add Row</button>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id='saveFilterModal'>Search</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Task Run Status Info -->
-  <div class="modal fade" id="taskRunStatusModal" tabindex="-1" role="dialog" aria-labelledby="taskRunStatusModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-          </button>
-          <h4 class="modal-title" id="taskRunStatusModalLabel">Task Run Status Info</h4>
-        </div>
-        <div class="modal-body">
-          <div id='loadingTaskRunStatusInfo' style="text-align: center;">
-              <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-          </div>
-          <div id='taskRunStatusInfo'></div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">
-              Close
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Update Priority -->
-  <div class="modal fade" id="update-priority-modal" tabindex="-1" role="dialog" aria-labelledby="update-priority-modal-label">
-    <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Update task priority</h4>
-        </div>
-        <div class="modal-body">
-          <div class="form-horizontal">
-              <div class="form-group">
-                  <label for="priority-value" class="col-sm-5 control-label">New priority</label>
-                  <div class="col-sm-7">
-                      <input type="text" class="form-control" id="priority-value" placeholder="0.0 to 1.0"/>
-                  </div>
-              </div>
-          </div>
-          <p>Note: if task is selected, change the priority for the selected
-              task in the current page; otherwise, change the priority of all the
-              task matched by the current filtering criteria (all pages).</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id="save-priority-modal">Update</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Update Redundancy -->
-  <div class="modal fade" id="update-redundancy-modal" tabindex="-1" role="dialog" aria-labelledby="update-redundancy-modal-label">
-    <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Update task redundancy</h4>
-        </div>
-        <div class="modal-body">
-          <div class="form-horizontal">
-              <div class="form-group">
-                  <label for="redundancy-value" class="col-sm-6 control-label">New redundancy</label>
-                  <div class="col-sm-6">
-                      <input type="text" class="form-control" id="redundancy-value"/>
-                  </div>
-              </div>
-          </div>
-          <p>
-            Note:
-            <br>
-            If task is selected, change the redundancy for the selected
-            task in the current page; otherwise, change the redundancy of all
-            the task matched by the current filtering criteria (all pages).
-            <br><br>
-            New redundancy won't be applied to tasks containing files and are
-            either completed or older than {{ rdancy_upd_exp }} days.
+<div class="row">
+    <div class="col-md-12">
+        <p>{{_('This page shows all the available tasks for this project')}}.</p>
+        {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
+          <p>{{_('For each task, you can find the following information')}}:
+          <ul>
+              <li><strong>{{_('Task')}} </strong><span class="label label-info">#0000</span> {{_('This number identifies the task for the project and it is unique')}}</li>
+              {% if can_know_task_is_gold %}
+              <li><strong>0 of 30</strong>: {{_('The first number shows how many answers have been submitted for the task and the')}} {{_('second number')}} {{_('how many need to be obtained to mark the task as')}} <strong>{{_('completed')}}</strong>.
+              {{_(' As gold tasks have no redundancy, this is marked as infinity total tasks for gold tasks')}}.</li>
+              {% endif %}
+              <li><strong>{{_('Priority')}}</strong>: {{_('Shows the priority of the task, priority ranges from 0.0 (lowest value) to 1.0 (highest priority)')}}.</li>
+              <li><strong>%{{_('Complete')}}</strong>: {{_('Shows the percentage that has been completed of the task')}}.{{_(' This would be blank for gold tasks as such tasks has no redundancy and would never complete')}}.</li>
+              <li><strong>{{_('Created')}}</strong>: {{_('When the task was created')}}.</li>
+              <li><strong>{{_('Completed')}}</strong>: {{_('When the task most recently became fully completed. The task may not be fully completed if the task has changed redundancy')}}.</li>
+              {% if can_know_task_is_gold %}
+              <li><strong>{{_('Gold Tasks')}}</strong>: {{_('Shows button to make a non-gold task gold or update a current gold task')}}.</li>
+              {% endif %}
+              <li><strong>{{_('Actions')}}</strong>: {{_('Three current actions: download, view, or get user info for task results')}}.</li>
+              <li><strong>{{_('Active Users')}}</strong>: {{_('List users working on the task')}}.</li>
+              <li><strong>{{_('Completed By')}}</strong>: {{_('List users that completed the task')}}.</li>
+              <li><strong>{{_('Assigned Users')}}</strong>: {{_('List users that are assigned to the task')}}.</li>
+          </ul>
           </p>
+        {% endif %}
+    </div>
+</div>
+<div id="tasksBrowseControls">
+    <ul class="pull-left">
+        <li>
+            <button class="btn btn-sm" id='btnRefresh' type="button" data-toggle="popover" data-trigger="focus" data-placement="top" data-constraints='focus' data-content="{{_('Please refresh the results after setting the desired filters.')}}" title="{{_('Search')}}">
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+        </li>
+        {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
+          <li class="dropdown">
+              <button class="dropdown-toggle btn btn-sm" type="button" id="btnDownload" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Export tasks/task runs"><span class="fa fa-cloud-download"></span><span class="caret"></span></button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
+                  <li><a href="#" class='download-type' id='task-csv'>Tasks CSV</a></li>
+                  <li><a href="#" class='download-type' id='task-json'>Tasks JSON</a></li>
+                  <li><a href="#" class='download-type' id='task_run-csv'>Task Runs CSV</a></li>
+                  <li><a href="#" class='download-type' id='task_run-json'>Task Runs JSON</a></li>
+                  <li><a href="#" class='download-type' id='task_run-csv-meta'>Task Runs with Metadata CSV</a></li>
+                  <li><a href="#" class='download-type' id='task_run-json-meta'>Task Runs with Metadata JSON</a></li>
+                  <li><a href="#" class='download-type' id='consensus-csv'>Consensus CSV</a></li>
+                  <li><a href="#" class='download-type' id='consensus-json'>Consensus JSON</a></li>
+                  <li><a href="#" class='download-type' id='consensus-csv-meta'>Consensus with Metadata CSV</a></li>
+                  <li><a href="#" class='download-type' id='consensus-json-meta'>Consensus with Metadata JSON</a></li>
+            </ul>
+          </li>
+        {% endif %}
+        <li class="dropdown">
+            <button class="dropdown-toggle btn btn-sm" type="button" id="btnRpp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Tasks per page">{{records_per_page}}<span class="caret"></span></button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
+                {% for num in allowed_records_per_page %}
+                    <li><a href="#" class='records_per_page'>{{num}}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li class="dropdown" id="columnsSettings">
+            <button class="dropdown-toggle btn btn-sm" type="button" id="btnColumnsSettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Columns"><span class="fa fa-cog"><span class="caret"></span></button>
+            <ul class="dropdown-menu" aria-labelledby="btnColumnsSettings">
+                <li><a href="#" class="columns_settings" data-value="task_id" tabIndex="-1"><input type="checkbox" {{ "checked" if "task_id" in filter_data.display_columns }} disabled="disabled" />&nbsp;Task Id</a></li>
+                <li><a href="#" class="columns_settings" data-value="priority" tabIndex="-1"><input type="checkbox" {{ "checked" if "priority" in filter_data.display_columns }}/>&nbsp;Priority</a></li>
+                {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
+                <li><a href="#" class="columns_settings" data-value="pcomplete" tabIndex="-1"><input type="checkbox" {{ "checked" if "pcomplete" in filter_data.display_columns }}/>&nbsp;%Complete</a></li>
+                {% endif %}
+                <li><a href="#" class="columns_settings" data-value="created" tabIndex="-1"><input type="checkbox" {{ "checked" if "created" in filter_data.display_columns }}/>&nbsp;Created</a></li>
+                {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
+                <li><a href="#" class="columns_settings" data-value="finish_time" tabIndex="-1"><input type="checkbox" {{ "checked" if "finish_time" in filter_data.display_columns }}/>&nbsp;Completed</a></li>
+                {% endif %}
+                {% if can_know_task_is_gold %}
+                <li><a href="#" class="columns_settings" data-value="gold_task" tabIndex="-1"><input type="checkbox" {{ "checked" if "gold_task" in filter_data.display_columns }}/>&nbsp;Gold Task</a></li>
+                {% endif %}
+                {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
+                  <li><a href="#" class="columns_settings" data-value="actions" tabIndex="-1"><input type="checkbox" {{ "checked" if "actions" in filter_data.display_columns }}/>&nbsp;Actions</a></li>
+                  <li><a href="#" class="columns_settings" data-value="lock_status" tabIndex="-1"><input type="checkbox" {{ "checked" if "lock_status" in filter_data.display_columns }}/>&nbsp;Active Users</a></li>
+                  <li><a href="#" class="columns_settings" data-value="completed_by" tabIndex="-1"><input type="checkbox" {{ "checked" if "completed_by" in filter_data.display_columns }}/>&nbsp;Completed By</a></li>
+                  {% if project.info.sched == 'task_queue_scheduler' or project.info.sched == 'user_pref_scheduler' %}
+                  <li><a href="#" class="columns_settings" data-value="assigned_users" tabIndex="-1"><input type="checkbox" {{ "checked" if "assigned_users" in filter_data.display_columns }}/>&nbsp;Assigned Users</a></li>
+                  {% endif %}
+                {% endif %}
+            </ul>
+        </li>
+        {% if filter_columns %}
+          {% if current_user.id in project.owners_ids or current_user.subadmin or current_user.admin %}
+            <li class="dropdown" id="info-columns">
+                <button class="dropdown-toggle btn btn-sm" type="button" id="btn-filter-columns" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Display task info"><span class="fa fa-database"><span class="caret"></span></button>
+                <ul class="dropdown-menu" aria-labelledby="btn-filter-columns">
+                    {% for column_name in filter_columns %}
+                        <li><a href="#" class="info_columns_settings" data-value={{column_name}} tabIndex='-1'><input type="checkbox" {{ "checked" if column_name in info_columns }}/>&nbsp; {{column_name}}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+          {% endif %}
+          <li>
+              <button class="btn btn-sm" id='btnFilter' type="button" data-target="#filterModal" data-toggle="modal" title="Filter by request fields">
+                  <i class="fa fa-filter" aria-hidden="true"></i>
+              </button>
+          </li>
+        {% endif %}
+        <!-- Project owner, subadmin that are project co-owners and admins can delete task properties. All project owners, admins can edit tasks -->
+        {% if (current_user.admin or current_user.id in project.owners_ids) and not is_task_list %}
+        <li class="dropdown" id="edit-tasks">
+            <button class="dropdown-toggle btn btn-sm" type="button" id="btn-edit-tasks" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Edit priority/redundancy"><span class="fa fa-edit"><span class="caret"></span></button>
+            <ul class="dropdown-menu" aria-labelledby="btn-edit-tasks">
+                <li><a href="#" id="btn-edit-redundancy" data-value="task-redundancy" tabIndex="-1">Edit redundancy</a></li>
+                <li><a href="#" id="btn-edit-priority" data-value="task-priority" tabIndex="-1">Edit priority</a></li>
+                {% if project.info.sched == 'task_queue_scheduler' or project.info.sched == 'user_pref_scheduler'  %}
+                  <li><a href="#" id="btn-assign-worker" data-value="assign-worker" @click="$refs.assignworker.getData()" tabIndex="-1">Assign worker</a></li>
+                {% endif %}
+            </ul>
+        </li>
+        {% endif %}
+        {% if (current_user.admin or (current_user.subadmin and current_user.id in project.owners_ids)) and not is_task_list %}
+        <li>
+            <button id="btn-delete-tasks" class="btn btn-sm" type="button" data-target="#delete-tasks-modal" data-toggle="modal" title="Delete tasks">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
+        </li>
+        {% endif %}
+        {% if allow_taskrun_edit and not is_task_list and (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) %}
+        <li>
+          {% if request.args['view'] == "edit_submission" %}
+              <button id="btn-edit-submission" class="btn btn-sm" type="button" data-toggle="popover" title="Edit your completed tasks" style="border: 1px solid grey;">
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+              </button>
+          {% else %}
+              <button id="btn-edit-submission" class="btn btn-sm" type="button" data-toggle="popover" title="Edit your completed tasks">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </button>
+          {% endif %}
+        </li>
+        {% endif %}
+        {% if language_options and not is_task_list and (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) %}
+        <li>
+            <button id="btn-filter-user-pref" class="btn btn-sm" type="button" data-target="#filter-upref-modal" data-toggle="modal" title="Filter by user preference">
+                <i class="fa fa-user" aria-hidden="true"></i>
+            </button>
+        </li>
+        {% endif %}
+        {% if filter_data | length > 3 %}
+        <li>
+            <button id="btn-filters" class="btn btn-sm" type="button" data-target="#the-modal" data-toggle="modal" title="Filters">
+                Filters
+            </button>
+        </li>
+        {% endif %}
+    </ul>
+    <div style="clear: both;"></div>
+    <div class="task-pagination">
+        <div>
+            Displaying tasks
+                {{ ((pagination.page - 1) * pagination.per_page) + 1 if ((pagination.page - 1) * pagination.per_page) + 1 <= pagination.total_count else pagination.total_count }}-{{(
+                   ((pagination.page) * pagination.per_page) if
+                   ((pagination.page) * pagination.per_page)
+                   <= pagination.total_count
+                   else pagination.total_count )}} of {{ pagination.total_count }}
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id="save-redundancy-modal">Update</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+</div>
+<div>
+    <table id="tasksGrid" class="table table-sm table-striped table-hover border">
+        <thead>
+            <tr>
+                {% if 'task_id' in filter_data.display_columns %}
+                <th class="{{'sort-asc' if filter_data.order_by|length == 0 or filter_data.order_by['task_id'] == 'asc'}} {{'sort-desc' if filter_data.order_by['task_id'] == 'desc'}} sortable" data-sort="task_id">
+                    Task #
+                </th>
+                {% endif %}
+                {% if 'priority' in filter_data.display_columns %}
+                <th class="{{'sort-asc' if filter_data.order_by['priority'] == 'asc'}} {{'sort-desc' if filter_data.order_by['priority'] == 'desc'}} sortable" data-sort="priority">Priority</th>
+                {% endif %}
+                {% if 'pcomplete' in filter_data.display_columns %}
+                <th class="{{'sort-asc' if filter_data.order_by['pcomplete'] == 'asc'}} {{'sort-desc' if filter_data.order_by['pcomplete'] == 'desc'}} sortable" data-sort="pcomplete">%Complete</th>
+                {% endif %}
+                {% if 'created' in filter_data.display_columns %}
+                <th class="{{'sort-asc' if filter_data.order_by['created'] == 'asc'}} {{'sort-desc' if filter_data.order_by['created'] == 'desc'}} sortable" data-sort="created">Created</th>
+                {% endif %}
+                {% if 'finish_time' in filter_data.display_columns %}
+                <th class="{{'sort-asc' if filter_data.order_by['finish_time'] == 'asc'}} {{'sort-desc' if filter_data.order_by['finish_time'] == 'desc'}} sortable" data-sort="finish_time">Completed</th>
+                {% endif %}
+                {% if 'gold_task' in filter_data.display_columns %}
+                <th class="{{'sort-asc' if filter_data.order_by['gold_task'] == 'asc'}} {{'sort-desc' if filter_data.order_by['gold_task'] == 'desc'}}">Gold Task</th>
+                {% endif %}
+                {% if 'actions' in filter_data.display_columns %}
+                <th>Actions</th>
+                {% endif %}
+                {% for column_name in info_columns %}
+                <th class="{{'sort-asc' if filter_data.order_by[column_name] == 'asc'}} {{'sort-desc' if filter_data.order_by[column_name] == 'desc'}} sortable" data-sort="{{column_name}}" >{{ column_name }} </th>
+                {% endfor %}
+                {% if 'lock_status' in filter_data.display_columns %}
+                <th class="{{'sort-asc' if filter_data.order_by['lock_status'] == 'asc'}} {{'sort-desc' if filter_data.order_by['lock_status'] == 'desc'}} sortable" data-sort="lock_status">Active Users</th>
+                {% endif %}
+                {% if 'completed_by' in filter_data.display_columns %}
+                <th>Completed By</th>
+                {% endif %}
+                {% if 'assigned_users' in filter_data.display_columns %}
+                <th class="{{'sort-asc' if filter_data.order_by['assigned_users'] == 'asc'}} {{'sort-desc' if filter_data.order_by['assigned_users'] == 'desc'}} sortable" data-sort="assigned_users">Assigned Users</th>
+                {% endif %}
+            </tr>
+            <tr>
+                {% if 'task_id' in filter_data.display_columns %}
+                <th>
+                <div>
+                    <div class="input-group">
+                        <div class="input-group-addon">#</div>
+                        <input class="form-control input-sm" type="number" value="{{ filter_data.task_id or '' }}" min="{{ first_task_id or 0 }}" id="task_id" style="width: 100px;">
+                    </div>
+                    </div>
+                </th>
+                {% endif %}
+                {% if 'priority' in filter_data.display_columns %}
+                <th>
+                    <div>
+                        <input id="priority" type="text" class="span2" value="" data-slider-min="0" data-slider-max="1" data-slider-step="0.05" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" />
+                    </div>
+                </th>
+                {% endif %}
+                {% if 'pcomplete' in filter_data.display_columns %}
+                <th>
+                    <div>
+                        <input id="pcomplete" type="text" class="span2" value="" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show" />
+                    </div>
+                </th>
+                {% endif %}
+                {% if 'created' in filter_data.display_columns %}
+                <th>
+                   <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dateModal" data-info="created">Filter</button>
+                </th>
+                {% endif %}
+                {% if 'finish_time' in filter_data.display_columns %}
+                <th>
+                   <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dateModal" data-info="ftime">Filter</button>
+                </th>
+                {% endif %}
+                {% if 'gold_task' in filter_data.display_columns %}
+                <th>
+                    <div>
+                        <select id="gold_task" class="input-sm">
+                            <option value="" style="font-weight: lighter;">--select--</option>
+                            <option value="1">Update</option>
+                            <option value="0">Make Gold</option>
+                            <option value="All">All</option>
+                        </select>
+                    </div>
+                </th>
+                {% endif %}
+                {% if 'actions' in filter_data.display_columns %}
+                <th>&nbsp;</th>
+                {% endif %}
+                {% for column_name in info_columns %}
+                <th>&nbsp;</th>
+                {% endfor %}
+                {% if 'lock_status' in filter_data.display_columns %}
+                <th>&nbsp;</th>
+                {% endif %}
+                {% if 'completed_by' in filter_data.display_columns %}
+                <th>&nbsp;</th>
+                {% endif %}
+                {% if 'assigned_users' in filter_data.display_columns %}
+                <th>&nbsp;</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in tasks %}
+            {% set task_pct = t.pct_status*100 %}
+            <tr class="task-row">
+                {% if 'task_id' in filter_data.display_columns %}
+                <td>
+                    {% if can_know_task_is_gold and t.calibration %}
+                        {% if project.enable_task_queue and is_task_list %}
+                            {% if t.available %}
+                                <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='cherry_pick', view=request.args['view']) }}">#{{ t.id }}</a>
+                            {% else %}
+                                <a class="label label-default" target="_blank">#{{ t.id }}</a>
+                            {% endif %}
+                        {% else %}
+                            <a class="label label-warning" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
+                        {% endif %}
+                    {% elif can_know_task_is_gold and task_pct >= 100 %}
+                        {% if not t.calibration and allow_taskrun_edit and request.args['view'] == "edit_submission" %}
+                            <a class="label label-success" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='edit_submission') }}">#{{ t.id }}</a>
+                        {% else %}
+                            <a class="label label-success" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
+                        {% endif %}
+                    {% elif project.enable_task_queue and ((not (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin)) or is_task_list) %}
+                        {% if allow_taskrun_edit and not is_task_list %}
+                            {% if not t.calibration %}
+                                <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='edit_submission', view=request.args['view']) }}">#{{ t.id }}</a>
+                            {% endif %}
+                        {% else %}
+                            {% if t.available %}
+                                <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='cherry_pick', view=request.args['view']) }}">#{{ t.id }}</a>
+                            {% else %}
+                                <a class="label label-default" target="_blank">#{{ t.id }}</a>
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        {% if allow_taskrun_edit and (regular_user or request.args['view'] == "edit_submission") %}
+                            {% if not t.calibration %}
+                                <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='edit_submission', view=request.args['view']) }}">#{{ t.id }}</a>
+                            {% endif %}
+                        {% else %}
+                            <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if can_know_task_is_gold and (not project.enable_task_queue or not is_task_list) %}
+                      {{ t.n_task_runs|int }} {{_('of')}}
+                      {% if t.calibration %}
+                        &infin;
+                      {% else %}
+                        {{ t.n_answers }}
+                      {% endif %}
+                    {% endif %}
+                </td>
+                {% endif %}
+                {% if 'priority' in filter_data.display_columns %}
+                <td>{{ t.priority_0 }}</td>
+                {% endif %}
+                {% if 'pcomplete' in filter_data.display_columns %}
+                    {% if t.calibration %}
+                        <td>{{_('--')}}</td>
+                    {% else %}
+                        <td>{{ (task_pct|round(2, 'floor')|string).rstrip('0').rstrip('.') }}</td>
+                    {% endif %}
+                {% endif %}
+                {% if 'created' in filter_data.display_columns %}
+                <td><div style="width: 100px;">{{ t.created }}</div></td>
+                {% endif %}
+                {% if 'finish_time' in filter_data.display_columns %}
+                <td><div style="width: 100px;">{{ t.finish_time or '' }}</div></td>
+                {% endif %}
+                {% if 'gold_task' in filter_data.display_columns %}
+                    {% if t.calibration %}
+                        <td>
+                            <div class="make-gold-cell">
+                            <!-- Allow project owner, sub-admin co-owners, and admins to update Gold tasks -->
+                            {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
+                                <a class="gold-task label label-warning" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='gold') }}">Update</a>
+                            {% else %}
+                                <div class="gold-task label label-default" title="Only Project owners can update Gold tasks.">Update</div>
+                            {% endif %}
+                            </div>
+                        </td>
+                    {% else %}
+                    <td>
+                        <div class="make-gold-cell">
+                        <!-- Allow project owner, sub-admin co-owners, and admins to make Gold tasks -->
+                        {% if (current_user.subadmin and current_user.id in project.owners_ids) or current_user.admin %}
+                            <a class="gold-task label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='gold') }}">Make Gold</a>
+                        {% else %}
+                            <div class="gold-task label label-default" title="Only project owners can make Gold tasks.">Make Gold</div>
+                        {% endif %}
+                        </div>
+                    </td>
+                    {% endif %}
+                {% endif %}
+                {% if 'actions' in filter_data.display_columns %}
+                <td>
+                    <div style="width: 100px;">
+                      {% if task_pct >= 100 %}
+                      <a id="fulldownload" rel="nofollow" class="btn btn-success btn-xs fa fa-cloud-download" href="{{ url_for('project.export', short_name=project.short_name, task_id=t.id) }}">&nbsp;</a> <button type="button" class="btn btn-success btn-xs fa fa-eye" data-toggle="modal" data-target="#infoModal" data-info="{{ url_for('project.export', short_name=project.short_name, task_id=t.id) }}"></button>
+                      {% elif task_pct > 0 and task_pct < 100 %}
+                      <a id="partialdownload" rel="nofollow" class="btn btn-info btn-xs fa fa-cloud-download" href="{{ url_for('project.export', short_name=project.short_name, task_id=t.id) }}">&nbsp;</a> <button type="button" class="btn btn-success btn-xs fa fa-eye" data-toggle="modal" data-target="#infoModal" data-info="{{ url_for('project.export', short_name=project.short_name, task_id=t.id) }}"></button>
+                      {% else %}
+                      <a id="nothingtodownload" rel="nofollow" class="btn btn-info btn-xs disabled fa fa-cloud-download" href="#">&nbsp;</a> <a rel="nofollow" class="btn btn-success btn-xs disabled fa fa-eye" href="#"></a>
+                      {% endif %}
+                      <button type="button"
+                              class="btn btn-success btn-xs fa fa-users"
+                              data-toggle="modal"
+                              data-target="#taskRunStatusModal"
+                              data-info="{{ url_for('project.export_statuses',
+                                                    short_name=project.short_name,
+                                                    task_id=t.id) }}">
+                      </button>
+                    </div>
+                </td>
+                {% endif %}
+                 {% for column_name in info_columns %}
+                    {% if column_name in reserved_options %}
+                      <td>
+                        {{ t[column_name] }}
+                      </td>
+                    {% else %}
+                      <td>{{ t.info[column_name] }}</td>
+                    {% endif %}
+                {% endfor %}
+                {% if 'lock_status' in filter_data.display_columns %}
+                <td>
+                  {{ t.lock_users }}
+                </td>
+                {% endif %}
+                {% if 'completed_by' in filter_data.display_columns %}
+                <td>
+                  {{ t.completed_users }}
+                </td>
+                {% endif %}
+                {% if 'assigned_users' in filter_data.display_columns %}
+                <td>
+                  {{ t.assigned_users }}
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% if pagination.pages > 1 %}
+<div class="row">
+    <div class="col-md-12 text-center">
+        {{ render_pagination(pagination) }}
+    </div>
+</div>
+{% endif %}
+
+<!-- Date Modal -->
+<div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="dateModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="dateModalLabel">Edit date range</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon" style="width: 70px;">From:</div>
+                <input class="form-control input-sm datepicker" type="text" id="date_from" style="width: 180px;" placeholder="YYYY-MM-DD"/>
+                <input class="form-control input-sm" type="time" id="time_from" style="width: 180px;" placeholder="00:00" />
+            </div>
         </div>
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon" style="width: 70px;">To:</div>
+                <input class="form-control input-sm datepicker" type="text" id="date_to" style="width: 180px;" placeholder="YYYY-MM-DD"/>&nbsp;
+                <input class="form-control input-sm" type="time" id="time_to" style="width: 180px;" placeholder="23:59" />
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id='saveDateModal'>Search</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
-  
-  <!-- Update assign worker -->
-  <div class="modal fade" id="update-assign-worker-modal" tabindex="-1" role="dialog" aria-labelledby="assign-worker-modal-label">
-    <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Assign Workers to Task</h4>
+</div>
+
+<!-- View Info -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="infoModalLabel">View Task Info</h4>
+      </div>
+      <div class="modal-body">
+        <div id='loadingInfo' style="text-align: center;"><i class="fa fa-spinner fa-pulse fa-5x fa-fw"> </i></div>
+        <div id='taskInfo'>
         </div>
-        <div class="modal-body">
-          <assign-worker ref="assignworker"></assign-worker>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id="save-assign-worker-modal" @click="$refs.assignworker.save()">Update</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
-  
-  <!-- Delete Task -->
-  <div class="modal fade" id="delete-tasks-modal" tabindex="-1" role="dialog" aria-labelledby="delete-tasks-modal-label">
-    <div class="modal-dialog modal-md" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close cancel-delete" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Delete tasks</h4>
-        </div>
-        <div class="modal-body">
-              <p></p>
-              <p><strong>If you are absolutely sure you want to proceed, enter the project short name in the box below and click on the delete button.</strong></p>
-  
+</div>
+
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="infoModalLabel">Filter By Task Request Fields</h4>
+      </div>
+      <div class="modal-body">
+        <div class="filter-rows">
+
+          <div class="row" style="margin-bottom: 5px">
+            <div class="form-inline col-xs-12">
+              <select class="form-group form-control filter-field-name" style="width: 150px">
+                <option value="" disabled selected>Field Name</option>
+                {% for column_name in filter_columns %}
+                  <option value="{{column_name}}">{{column_name}}</option>
+                {% endfor %}
+              </select>
+              <select class="form-group form-control filter-field-operator" disabled style="width: 100px">
+                {% for operator in ['equals', 'starts with', 'contains'] %}
+                  <option value="{{operator}}">{{operator}}</option>
+                {% endfor %}
+              </select>
               <div class="form-group">
-                  <label for="delete-task-project-name">Project Short Name</label>
-                  <input type="text" class="form-control" id="delete-task-project-name">
+                <input type="text" class="form-control filter-field-value" placeholder="Field Value" disabled style="width:214px"/>
               </div>
               <div class="form-group">
-                  <div class="form-check">
-                      <label for="delete-task-prod">
-                          Check If Production: <input type="checkbox" id="delete-task-prod">
-                      </label>
-                  </div>
+                <button type="button" class="btn btn-danger form-control remove-filter-button">Remove</button>
               </div>
-  
+            </div>
+          </div>
+
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" id="delete-btn" disabled>Yes, delete!</button>
-          <button type="button" class="btn btn-default cancel-delete" data-dismiss="modal">Close</button>
+        <div class="row">
+          <div class="col-xs-6">
+            <button type="button" class="btn btn-primary add-filter-row-button" name="button">Add Row</button>
+          </div>
         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id='saveFilterModal'>Search</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
-  
-  <!-- Filter by User Preference Modal -->
-  <div class="modal fade" id="filter-upref-modal" tabindex="-1" role="dialog" aria-labelledby="filter-upref-modal-label">
-    <div class="modal-dialog modal-md" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="infoModalLabel">Filter Task By User Preference</h4>
+</div>
+
+<!-- Task Run Status Info -->
+<div class="modal fade" id="taskRunStatusModal" tabindex="-1" role="dialog" aria-labelledby="taskRunStatusModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="taskRunStatusModalLabel">Task Run Status Info</h4>
+      </div>
+      <div class="modal-body">
+        <div id='loadingTaskRunStatusInfo' style="text-align: center;">
+            <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
         </div>
-        <div class="modal-body">
-          {% if language_options %}
-            <label for="multiple-languages" class="control-label">Languages</label>
-            <select id="multiple-languages" class="js-states form-control" style="width: 100%" multiple>
-              {% for lang in language_options %}
-                <option value="{{lang}}">{{lang}}</option>
-              {% endfor %}
-            </select>
-            <br>
-            <br>
-          {% endif %}
-          {% if location_options %}
-            <label for="multiple-locations" class="control-label">Locations</label>
-            <select id="multiple-locations" class="js-states form-control" style="width: 100%" multiple>
-              {% for loc in location_options %}
-                <option value="{{loc}}">{{loc}}</option>
-              {% endfor %}
-            </select>
-          {% endif %}
-        </div>
-  
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id='upref-filter-modal-search-button'>Search</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+        <div id='taskRunStatusInfo'></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+            Close
+        </button>
       </div>
     </div>
   </div>
-  
-  <div class="modal fade" id="the-modal" tabindex="-1" role="dialog">
-      <filters-modal></filters-modal>
+</div>
+
+<!-- Update Priority -->
+<div class="modal fade" id="update-priority-modal" tabindex="-1" role="dialog" aria-labelledby="update-priority-modal-label">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Update task priority</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label for="priority-value" class="col-sm-5 control-label">New priority</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" id="priority-value" placeholder="0.0 to 1.0"/>
+                </div>
+            </div>
+        </div>
+        <p>Note: if task is selected, change the priority for the selected
+            task in the current page; otherwise, change the priority of all the
+            task matched by the current filtering criteria (all pages).</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="save-priority-modal">Update</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
   </div>
-  
-  <!-- Project owner, subadmin that are project co-owners and admins can delete task properties. All project owners, admins can edit tasks -->
-  {% if (current_user.admin or current_user.id in project.owners_ids) and not is_task_list %}
-  <div id="context-menu" class="dropdown clearfix">
-      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-menu" style="display:block;position:absolute;">
-          <li><a href="#" id="edit-pri" data-value="task-priority">Edit Priority</a></li>
-          <li><a href="#" id="edit-red" data-value="task-redundancy">Edit Redundancy</a></li>
-          {% if project.info.sched == 'task_queue_scheduler' or project.info.sched == 'user_pref_scheduler'  %}
-          <li><a href="#" id="edit-user" data-value="assign-worker" @click="$refs.assignworker.getData()">Assign Worker </a></li>
-          {% endif %}
-          {% if current_user.admin or (current_user.subadmin and current_user.id in project.owners_ids) %}
-          <li><a href="#" id="del-task" data-target="#delete-tasks-modal" data-toggle="modal">Delete Task</a></li>
-          {% endif %}
-      </ul>
+</div>
+
+<!-- Update Redundancy -->
+<div class="modal fade" id="update-redundancy-modal" tabindex="-1" role="dialog" aria-labelledby="update-redundancy-modal-label">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Update task redundancy</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label for="redundancy-value" class="col-sm-6 control-label">New redundancy</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="redundancy-value"/>
+                </div>
+            </div>
+        </div>
+        <p>
+          Note:
+          <br>
+          If task is selected, change the redundancy for the selected
+          task in the current page; otherwise, change the redundancy of all
+          the task matched by the current filtering criteria (all pages).
+          <br><br>
+          New redundancy won't be applied to tasks containing files and are
+          either completed or older than {{ rdancy_upd_exp }} days.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="save-redundancy-modal">Update</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
   </div>
-  {% endif %}
-  
-  <div class="overlay">
-      <span class="spinner">
-          <i class="fa fa-spinner fa-spin fa-lg"></i>
-      </span>
+</div>
+
+<!-- Update assign worker -->
+<div class="modal fade" id="update-assign-worker-modal" tabindex="-1" role="dialog" aria-labelledby="assign-worker-modal-label">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Assign Workers to Task</h4>
+      </div>
+      <div class="modal-body">
+        <assign-worker ref="assignworker"></assign-worker>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="save-assign-worker-modal" @click="$refs.assignworker.save()">Update</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
   </div>
+</div>
+
+<!-- Delete Task -->
+<div class="modal fade" id="delete-tasks-modal" tabindex="-1" role="dialog" aria-labelledby="delete-tasks-modal-label">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close cancel-delete" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Delete tasks</h4>
+      </div>
+      <div class="modal-body">
+            <p></p>
+            <p><strong>If you are absolutely sure you want to proceed, enter the project short name in the box below and click on the delete button.</strong></p>
+
+            <div class="form-group">
+                <label for="delete-task-project-name">Project Short Name</label>
+                <input type="text" class="form-control" id="delete-task-project-name">
+            </div>
+            <div class="form-group">
+                <div class="form-check">
+                    <label for="delete-task-prod">
+                        Check If Production: <input type="checkbox" id="delete-task-prod">
+                    </label>
+                </div>
+            </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="delete-btn" disabled>Yes, delete!</button>
+        <button type="button" class="btn btn-default cancel-delete" data-dismiss="modal">Close</button>
+      </div>
+    </div>
   </div>
-  
-  <script src="/static/js/gen/task_browse.min.8bf08b3b16925c4e382d.js"></script>
-  <script type="text/javascript">
-      function autoRefresh() {
-        window.location.reload();
+</div>
+
+<!-- Filter by User Preference Modal -->
+<div class="modal fade" id="filter-upref-modal" tabindex="-1" role="dialog" aria-labelledby="filter-upref-modal-label">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="infoModalLabel">Filter Task By User Preference</h4>
+      </div>
+      <div class="modal-body">
+        {% if language_options %}
+          <label for="multiple-languages" class="control-label">Languages</label>
+          <select id="multiple-languages" class="js-states form-control" style="width: 100%" multiple>
+            {% for lang in language_options %}
+              <option value="{{lang}}">{{lang}}</option>
+            {% endfor %}
+          </select>
+          <br>
+          <br>
+        {% endif %}
+        {% if location_options %}
+          <label for="multiple-locations" class="control-label">Locations</label>
+          <select id="multiple-locations" class="js-states form-control" style="width: 100%" multiple>
+            {% for loc in location_options %}
+              <option value="{{loc}}">{{loc}}</option>
+            {% endfor %}
+          </select>
+        {% endif %}
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id='upref-filter-modal-search-button'>Search</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="the-modal" tabindex="-1" role="dialog">
+    <filters-modal></filters-modal>
+</div>
+
+<!-- Project owner, subadmin that are project co-owners and admins can delete task properties. All project owners, admins can edit tasks -->
+{% if (current_user.admin or current_user.id in project.owners_ids) and not is_task_list %}
+<div id="context-menu" class="dropdown clearfix">
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-menu" style="display:block;position:absolute;">
+        <li><a href="#" id="edit-pri" data-value="task-priority">Edit Priority</a></li>
+        <li><a href="#" id="edit-red" data-value="task-redundancy">Edit Redundancy</a></li>
+        {% if project.info.sched == 'task_queue_scheduler' or project.info.sched == 'user_pref_scheduler'  %}
+        <li><a href="#" id="edit-user" data-value="assign-worker" @click="$refs.assignworker.getData()">Assign Worker </a></li>
+        {% endif %}
+        {% if current_user.admin or (current_user.subadmin and current_user.id in project.owners_ids) %}
+        <li><a href="#" id="del-task" data-target="#delete-tasks-modal" data-toggle="modal">Delete Task</a></li>
+        {% endif %}
+    </ul>
+</div>
+{% endif %}
+
+<div class="overlay">
+    <span class="spinner">
+        <i class="fa fa-spinner fa-spin fa-lg"></i>
+    </span>
+</div>
+</div>
+
+<script src="/static/js/gen/task_browse.min.29b4fd463970f33dd2bd.js"></script>
+<script type="text/javascript">
+    function autoRefresh() {
+      window.location.reload();
+    }
+
+    const proj = {{ project |tojson }};
+    const userId = {{ current_user.id |trim}}
+    const adminPriv = {{ current_user.admin |tojson }} || {{ current_user.subadmin |tojson }}
+    const viewType = '{{ request.args.get('view') }}'
+
+    // disable auto refresh
+    // const enableAutoRefresh = (proj['enable_task_queue'] && (viewType === 'tasklist' || (!adminPriv && !(userId in proj["owners_ids"]))))
+    const enableAutoRefresh = false;
+    const refreshInterval = 300000;
+    let refresh = null;
+
+    if (enableAutoRefresh) {
+      refresh = setInterval('autoRefresh()', refreshInterval);
+    }
+
+    $(window).focus(function() {
+      if (enableAutoRefresh && !refresh){
+        autoRefresh();
       }
-      const proj = {{ project |tojson }};
-      const userId = {{ current_user.id |trim}}
-      const adminPriv = {{ current_user.admin |tojson }} || {{ current_user.subadmin |tojson }}
-      const viewType = '{{ request.args.get('view') }}'
-      // disable auto refresh
-      // const enableAutoRefresh = (proj['enable_task_queue'] && (viewType === 'tasklist' || (!adminPriv && !(userId in proj["owners_ids"]))))
-      const enableAutoRefresh = false;
-      const refreshInterval = 300000;
-      let refresh = null;
-      if (enableAutoRefresh) {
-        refresh = setInterval('autoRefresh()', refreshInterval);
+    });
+
+    $(window).blur(function() {
+      if (refresh) {
+        clearInterval(refresh);
+        refresh = 0;
       }
-      $(window).focus(function() {
-        if (enableAutoRefresh && !refresh){
-          autoRefresh();
+    });
+
+    var filter_data = {{ filter_data|tojson }};
+    taskBrowse.setFilters(filter_data);
+    var selectedTask;
+    var pybTaskBrowse = {
+        filterCount: {{ pagination.total_count }}
+    };
+    var first_page_url = "{{ url_for('project.tasks_browse', short_name=project.short_name) }}";
+    var records_per_page = {{ records_per_page }};
+    var csrftoken = "{{ csrf_token() }}";
+    taskBrowse.setCsrfToken(csrftoken);
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
         }
-      });
-      $(window).blur(function() {
-        if (refresh) {
-          clearInterval(refresh);
-          refresh = 0;
-        }
-      });
-      var filter_data = {{ filter_data|tojson }};
-      taskBrowse.setFilters(filter_data);
-      var selectedTask;
-      var pybTaskBrowse = {
-          filterCount: {{ pagination.total_count }}
-      };
-      var first_page_url = "{{ url_for('project.tasks_browse', short_name=project.short_name) }}";
-      var records_per_page = {{ records_per_page }};
-      var csrftoken = "{{ csrf_token() }}";
-      taskBrowse.setCsrfToken(csrftoken);
-      $.ajaxSetup({
-          beforeSend: function(xhr, settings) {
-              if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
-              }
-          }
-      })
-  </script>
-  {{ helper.confirm_delete(project, config.IS_QA) }}
-  
-  {% assets "js_taskbrowse" %}
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-  {% endassets %}
-  
-  {% endblock %}
+    })
+</script>
+{{ helper.confirm_delete(project, config.IS_QA) }}
+
+{% assets "js_taskbrowse" %}
+  <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+
+{% endblock %}
