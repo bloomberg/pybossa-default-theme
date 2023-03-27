@@ -1,14 +1,16 @@
-function pybossaNotify(msg, showNotification, type, keepPreviousNotification, sticky=false){
+function pybossaNotify(msg, showNotification, type, keepPreviousNotification, sticky=false, timeout=0) {
     if (!keepPreviousNotification)
-        $("#pybossa-notification").remove();
+        $('[id^=pybossa-notification]').remove();  // remove id starts with 'pybossa-notification'
     var div = $("<div/>");
-    div.attr("id", "pybossa-notification");
+    var timestamp = new Date().getTime(); // generate a unique timestamp
+    div.addClass("pybossa-notification"); // add a class for easier selection
+    div.attr("id", "pybossa-notification-" + timestamp); // append timestamp to ID
     var icon = $("<li/>");
     var close = $("<li/>");
     close.addClass("fa fa-2x fa-close pull-right");
     close.on('click', function(){
-        $("#pybossa-notification").addClass("hide-notification");
-        hidePybossaNotification();
+        $("#pybossa-notification-" + timestamp).addClass("hide-notification");
+        hidePybossaNotification(timestamp);
     });
     if (type === undefined) {
         type = 'info';
@@ -47,33 +49,43 @@ function pybossaNotify(msg, showNotification, type, keepPreviousNotification, st
     if (showNotification === true) {
         div.addClass("show-notification");
         $("body").prepend(div);
+        const index = $('[id^=pybossa-notification]').length;
+        div.attr("data-index", index); // add data-index attribute to the notification
     }
     else {
-        $("#pybossa-notification").addClass("hide-notification");
-        hidePybossaNotification();
+        $("#pybossa-notification-" + timestamp).addClass("hide-notification");
+        hidePybossaNotification(timestamp);
     }
 
     window.onscroll = function() {
-        if (sticky) {
-            let banner = $("#pybossa-notification");
-            const headerHeight = 60;
-            const bannerHeight = 40;
-            const pageYOffset = window.pageYOffset
-            if (pageYOffset < headerHeight + bannerHeight) {
-                let pos = Math.max(0, (pageYOffset - headerHeight));
-                banner.css({position: "relative", top: pos});
-            } else {
-                banner.css({position: "sticky", top: -bannerHeight});
+        $('[id^=pybossa-notification]').each(function() {
+            const notification = $(this);
+            const index = notification.attr("data-index");
+            if (sticky) {
+                const headerHeight = 60;
+                const bannerHeight = 40;
+                const pageYOffset = window.pageYOffset
+                const offsetForMultipleBanners = (index - 1) * bannerHeight
+                if (pageYOffset < headerHeight + bannerHeight) {
+                    let pos = Math.max(0, (pageYOffset - headerHeight));
+                    notification.css({position: "relative", top: pos});
+                } else {
+                    notification.css({position: "sticky", top: -bannerHeight + offsetForMultipleBanners});
+                }
             }
-        }
+        });
+    }
+
+    if (timeout > 0) {
+        hidePybossaNotification(timestamp, timeout);
     }
 }
 
-function hidePybossaNotification() {
+function hidePybossaNotification(id, timeout=500) {
     /*
     a workaround to hide the notification after hide-notification animation.
     The top margin for some pages is hardcoded to 30 or 50px, the browser mis-calulates
     the margines when the notification area is present in the page, eventhough it's hidden.
     */
-    setTimeout(function() { $("#pybossa-notification").remove() }, 500);
+    setTimeout(function() { $("#pybossa-notification-" + id).remove() }, timeout);
 }
