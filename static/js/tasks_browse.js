@@ -116,7 +116,16 @@ $(document).ready(function() {
     });
 
     $('#btn-edit-submission').click(function() {
-        filter_data["view"] = "edit_submission"
+        // toggle button border
+        const btn_border = this.style.borderColor;
+        if (btn_border == ""){
+            filter_data["view"] = "edit_submission";
+            this.style.borderColor = "1px solid grey";
+        } else {
+            filter_data["view"] = "";
+            this.style.borderColor = "";
+        }
+
         refresh();
     });
 
