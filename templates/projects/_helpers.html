@@ -379,21 +379,21 @@
     <script>
       const toggleButton = document.getElementById("toggle-button");
 
-      const new_task_a_tag_admin = document.getElementById("new_task_admin");
-      const new_task_a_tag_user = document.getElementById("new_task_user");
-      const new_task_a_tag_overall = document.getElementById("new_task_overall");
+      const tag_new_task_admin = document.getElementById("new_task_admin");
+      const tag_new_task_user = document.getElementById("new_task_user");
+      const tag_new_task_overall = document.getElementById("new_task_overall");
 
       let new_task_url = "{{url_for('project.presenter', short_name=project.short_name, saved_task_position='last')}}"
 
-      function set_new_task_a_tag_url(url) {
-        if (new_task_a_tag_admin) {
-          new_task_a_tag_admin.href = url;
+      function set_tag_new_task_url(url) {
+        if (tag_new_task_admin) {
+          tag_new_task_admin.href = url;
         }
-        if (new_task_a_tag_user) {
-          new_task_a_tag_user.href = url;
+        if (tag_new_task_user) {
+          tag_new_task_user.href = url;
         }
-        if (new_task_a_tag_overall) {
-          new_task_a_tag_overall.href = url
+        if (tag_new_task_overall) {
+          tag_new_task_overall.href = url
         }
       }
 
@@ -411,7 +411,7 @@
                 new_task_url = "{{url_for('project.presenter', short_name=project.short_name, saved_task_position='first')}}"
               }
               // Change the new task href with path parameter ('first' and 'last')
-              set_new_task_a_tag_url(new_task_url);
+              set_tag_new_task_url(new_task_url);
             } else if (div && !has_answer){
               div.style.display = "none";
             }
@@ -433,7 +433,7 @@
           new_task_url = "{{url_for('project.presenter', short_name=project.short_name, saved_task_position='last')}}"
         }
         // Change the new task href with path parameter ('first' and 'last')
-        set_new_task_a_tag_url(new_task_url);
+        set_tag_new_task_url(new_task_url);
       });
     }
     </script>
