@@ -2,7 +2,8 @@
 {% set active_page = "projects" %}
 {% set active_project  = "all" %}
 {% set active_link = "tasks" %}
-{% set section = _('Browse tasks') %}
+{% set is_task_list = request.args['view'] == 'tasklist' %}
+{% set section = _('Task List') if is_task_list else _('Browse Tasks') %}
 {% import "projects/_helpers.html" as project_helper %}
 
 {% block projectcontent %}
@@ -16,7 +17,7 @@
 <div class="row">
     <div class="col-md-12">
         <p>{{_('This page shows all the available tasks for this project')}}.</p>
-        {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and request.args['view'] != 'tasklist' %}
+        {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
           <p>{{_('For each task, you can find the following information')}}:
           <ul>
               <li><strong>{{_('Task')}} </strong><span class="label label-info">#0000</span> {{_('This number identifies the task for the project and it is unique')}}</li>
@@ -47,7 +48,7 @@
                 <i class="fa fa-search" aria-hidden="true"></i>
             </button>
         </li>
-        {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and request.args['view'] != 'tasklist' %}
+        {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
           <li class="dropdown">
               <button class="dropdown-toggle btn btn-sm" type="button" id="btnDownload" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Export tasks/task runs"><span class="fa fa-cloud-download"></span><span class="caret"></span></button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
@@ -77,17 +78,17 @@
             <ul class="dropdown-menu" aria-labelledby="btnColumnsSettings">
                 <li><a href="#" class="columns_settings" data-value="task_id" tabIndex="-1"><input type="checkbox" {{ "checked" if "task_id" in filter_data.display_columns }} disabled="disabled" />&nbsp;Task Id</a></li>
                 <li><a href="#" class="columns_settings" data-value="priority" tabIndex="-1"><input type="checkbox" {{ "checked" if "priority" in filter_data.display_columns }}/>&nbsp;Priority</a></li>
-                {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and request.args['view'] != 'tasklist' %}
+                {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
                 <li><a href="#" class="columns_settings" data-value="pcomplete" tabIndex="-1"><input type="checkbox" {{ "checked" if "pcomplete" in filter_data.display_columns }}/>&nbsp;%Complete</a></li>
                 {% endif %}
                 <li><a href="#" class="columns_settings" data-value="created" tabIndex="-1"><input type="checkbox" {{ "checked" if "created" in filter_data.display_columns }}/>&nbsp;Created</a></li>
-                {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and request.args['view'] != 'tasklist' %}
+                {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
                 <li><a href="#" class="columns_settings" data-value="finish_time" tabIndex="-1"><input type="checkbox" {{ "checked" if "finish_time" in filter_data.display_columns }}/>&nbsp;Completed</a></li>
                 {% endif %}
                 {% if can_know_task_is_gold %}
                 <li><a href="#" class="columns_settings" data-value="gold_task" tabIndex="-1"><input type="checkbox" {{ "checked" if "gold_task" in filter_data.display_columns }}/>&nbsp;Gold Task</a></li>
                 {% endif %}
-                {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and request.args['view'] != 'tasklist' %}
+                {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
                   <li><a href="#" class="columns_settings" data-value="actions" tabIndex="-1"><input type="checkbox" {{ "checked" if "actions" in filter_data.display_columns }}/>&nbsp;Actions</a></li>
                   <li><a href="#" class="columns_settings" data-value="lock_status" tabIndex="-1"><input type="checkbox" {{ "checked" if "lock_status" in filter_data.display_columns }}/>&nbsp;Active Users</a></li>
                   <li><a href="#" class="columns_settings" data-value="completed_by" tabIndex="-1"><input type="checkbox" {{ "checked" if "completed_by" in filter_data.display_columns }}/>&nbsp;Completed By</a></li>
@@ -115,7 +116,7 @@
           </li>
         {% endif %}
         <!-- Project owner, subadmin that are project co-owners and admins can delete task properties. All project owners, admins can edit tasks -->
-        {% if (current_user.admin or current_user.id in project.owners_ids) and request.args['view'] != 'tasklist' %}
+        {% if (current_user.admin or current_user.id in project.owners_ids) and not is_task_list %}
         <li class="dropdown" id="edit-tasks">
             <button class="dropdown-toggle btn btn-sm" type="button" id="btn-edit-tasks" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Edit priority/redundancy"><span class="fa fa-edit"><span class="caret"></span></button>
             <ul class="dropdown-menu" aria-labelledby="btn-edit-tasks">
@@ -127,14 +128,14 @@
             </ul>
         </li>
         {% endif %}
-        {% if (current_user.admin or (current_user.subadmin and current_user.id in project.owners_ids)) and request.args['view'] != 'tasklist' %}
+        {% if (current_user.admin or (current_user.subadmin and current_user.id in project.owners_ids)) and not is_task_list %}
         <li>
             <button id="btn-delete-tasks" class="btn btn-sm" type="button" data-target="#delete-tasks-modal" data-toggle="modal" title="Delete tasks">
                 <i class="fa fa-trash" aria-hidden="true"></i>
             </button>
         </li>
         {% endif %}
-        {% if allow_taskrun_edit and request.args['view'] != 'tasklist' and (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) %}
+        {% if allow_taskrun_edit and not is_task_list and (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) %}
         <li>
           {% if request.args['view'] == "edit_submission" %}
               <button id="btn-edit-submission" class="btn btn-sm" type="button" data-toggle="popover" title="Edit your completed tasks" style="border: 1px solid grey;">
@@ -147,7 +148,7 @@
           {% endif %}
         </li>
         {% endif %}
-        {% if language_options and request.args['view'] != 'tasklist' and (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) %}
+        {% if language_options and not is_task_list and (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) %}
         <li>
             <button id="btn-filter-user-pref" class="btn btn-sm" type="button" data-target="#filter-upref-modal" data-toggle="modal" title="Filter by user preference">
                 <i class="fa fa-user" aria-hidden="true"></i>
@@ -285,7 +286,7 @@
                 {% if 'task_id' in filter_data.display_columns %}
                 <td>
                     {% if can_know_task_is_gold and t.calibration %}
-                        {% if project.enable_task_queue and request.args['view'] == 'tasklist' %}
+                        {% if project.enable_task_queue and is_task_list %}
                             {% if t.available %}
                                 <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='cherry_pick', view=request.args['view']) }}">#{{ t.id }}</a>
                             {% else %}
@@ -300,8 +301,8 @@
                         {% else %}
                             <a class="label label-success" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
                         {% endif %}
-                    {% elif project.enable_task_queue and ((not (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin)) or request.args['view'] == 'tasklist') %}
-                        {% if allow_taskrun_edit and request.args['view'] != "tasklist" %}
+                    {% elif project.enable_task_queue and ((not (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin)) or is_task_list) %}
+                        {% if allow_taskrun_edit and not is_task_list %}
                             {% if not t.calibration %}
                                 <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='edit_submission', view=request.args['view']) }}">#{{ t.id }}</a>
                             {% endif %}
@@ -322,7 +323,7 @@
                         {% endif %}
                     {% endif %}
 
-                    {% if can_know_task_is_gold and (not project.enable_task_queue or request.args['view'] != 'tasklist') %}
+                    {% if can_know_task_is_gold and (not project.enable_task_queue or not is_task_list) %}
                       {{ t.n_task_runs|int }} {{_('of')}}
                       {% if t.calibration %}
                         &infin;
@@ -431,6 +432,45 @@
 </div>
 {% endif %}
 
+<div>
+  <h3>Bookmarks</h3>
+  <button id='btnAddBookmark' type="button" data-target="#bookmarkModal" data-toggle="modal" class="btn btn-primary">Add Bookmark</button>
+</div>
+
+<div>
+  <table id="bookmarksGrid" class="table table-sm table-striped table-hover border">
+    <thead>
+      <tr>
+        <th class="sortable" data-sort="name">Name</th>
+        <th>Created (temp)</th>
+        <th>Updated (temp)</th>
+        <th>Go!</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for name in taskbrowse_bookmarks %}
+      <tr class="task-row">
+          <td>
+            <a href={{taskbrowse_bookmarks[name]["url"]}} class="label label-info">{{ name }}</a>
+          </td>
+          <td>
+            {{ taskbrowse_bookmarks[name]["created"] }}
+          </td>
+          <td>
+            {{ taskbrowse_bookmarks[name]["updated"] }}
+          </td>
+          <td>
+            <a class="label label-danger delete-bookmark" onclick="deleteBookmark">
+              <span id="bookmark-name" style="display:none">{{ name }}</span>
+              Delete</a>
+          </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
 <!-- Date Modal -->
 <div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="dateModalLabel">
   <div class="modal-dialog modal-sm" role="document">
@@ -530,6 +570,30 @@
     </div>
   </div>
 </div>
+
+<!-- Add Bookmark Modal -->
+<div class="modal fade" id="bookmarkModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="infoModalLabel">Add Bookmark</h4>
+      </div>
+      <div class="modal-body">
+        <h5>Bookmark your current search and filters for easy access.</h5>
+        <div class="form-group">
+          <label for="bookmark-name" >Bookmark Name</label>
+          <input type="text" class="form-control" id="bookmark-name" placeholder="Bookmark Name"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id='add-bookmark'>Add</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- Task Run Status Info -->
 <div class="modal fade" id="taskRunStatusModal" tabindex="-1" role="dialog" aria-labelledby="taskRunStatusModalLabel">
@@ -715,7 +779,7 @@
 </div>
 
 <!-- Project owner, subadmin that are project co-owners and admins can delete task properties. All project owners, admins can edit tasks -->
-{% if (current_user.admin or current_user.id in project.owners_ids) and request.args['view'] != 'tasklist' %}
+{% if (current_user.admin or current_user.id in project.owners_ids) and not is_task_list %}
 <div id="context-menu" class="dropdown clearfix">
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-menu" style="display:block;position:absolute;">
         <li><a href="#" id="edit-pri" data-value="task-priority">Edit Priority</a></li>
@@ -737,40 +801,34 @@
 </div>
 </div>
 
-<script src="/static/js/gen/task_browse.min.46f9044b63239b7aa911.js"></script>
+<script src="/static/js/gen/task_browse.min.5fc08bf6f4ea85d42524.js"></script>
 <script type="text/javascript">
     function autoRefresh() {
       window.location.reload();
     }
-
     const proj = {{ project |tojson }};
     const userId = {{ current_user.id |trim}}
     const adminPriv = {{ current_user.admin |tojson }} || {{ current_user.subadmin |tojson }}
     const viewType = '{{ request.args.get('view') }}'
-
     // disable auto refresh
     // const enableAutoRefresh = (proj['enable_task_queue'] && (viewType === 'tasklist' || (!adminPriv && !(userId in proj["owners_ids"]))))
     const enableAutoRefresh = false;
     const refreshInterval = 300000;
     let refresh = null;
-
     if (enableAutoRefresh) {
       refresh = setInterval('autoRefresh()', refreshInterval);
     }
-
     $(window).focus(function() {
       if (enableAutoRefresh && !refresh){
         autoRefresh();
       }
     });
-
     $(window).blur(function() {
       if (refresh) {
         clearInterval(refresh);
         refresh = 0;
       }
     });
-
     var filter_data = {{ filter_data|tojson }};
     taskBrowse.setFilters(filter_data);
     var selectedTask;

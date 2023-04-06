@@ -8,6 +8,14 @@ function dirtyView(showHint = true) {
     }
 }
 
+function getTaskbrowseBookmarksUrl() {
+    return window.location.origin + '/account/user/taskbrowse_bookmarks/testproject2'
+}
+
+function setBookmarks(bookmarks) {
+
+}
+
 $(document).ready(function() {
     if (filter_data.priority_to === 0) {
         filter_data.priority_to = 0.0001;
@@ -288,6 +296,31 @@ $(document).ready(function() {
         refresh();
     });
 
+    $('#add-bookmark').click(() => {
+        var modal = $('#bookmarkModal');
+
+        data = {
+            "name":$('.modal-body #bookmark-name').val(),
+            "url": window.location.href
+        }
+        sendUpdateRequest(getTaskbrowseBookmarksUrl(), data).done(function(res) {
+            console.log(res)
+            setBookmarks(res)
+        });
+        modal.modal('hide');
+    });
+
+    $('.delete-bookmark').click(e => {
+        let url = getTaskbrowseBookmarksUrl()
+        data = {
+            "name": $(e.target).children("#bookmark-name").text(),
+        }
+        sendDeleteRequest(url, data).done(function(res) {
+            console.log(res)
+            setBookmarks(res)
+        });
+    });
+
     $('.add-filter-row-button').click(function(evt) {
         addFieldFilterRow();
     });
@@ -558,6 +591,26 @@ $(document).ready(function() {
         });
     };
 
+    function sendDeleteRequest(endpoint, data) {
+        setSpinner(true);
+        return $.ajax({
+            type: 'DELETE',
+            url: endpoint,
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(data)
+        }).fail(function(res) {
+            setSpinner(false);
+            var message = 'There was an error processing the request.';
+            var severity = 'warning';
+            if (res.status === 403) {
+                message = 'You do not have the permissions to perform this action.';
+                severity = 'danger';
+            }
+            pybossaNotify(message, true, severity);
+        });
+    };
+
     function sendGetRequest(endpoint, data) {
         return $.ajax({
             type: 'GET',
@@ -618,6 +671,11 @@ $(document).ready(function() {
     $('#btn-delete-tasks').click(function() {
         resetSelectedTask();
     });
+
+    // TODO: init bookmarks
+    setBookmarks()
+
+
 });
 
 const sanitizeChars = {
