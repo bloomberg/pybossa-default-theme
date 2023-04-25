@@ -14,6 +14,29 @@ function getTaskbrowseBookmarksUrl() {
 
 function setBookmarks(bookmarks) {
 
+    bookmarksBody = $('#bookmarksGrid > tbody')
+    bookmarksBody.empty()
+    bookmarks.forEach(bookmark => {
+        let row = $("<tr>").appendTo(bookmarksBody);
+        row.append(
+            $("<td>").append(
+                $("<a>", {
+                    "href": bookmark["url"],
+                    "class": "label label-info",
+                    "text": bookmark["name"]
+                })
+            )
+        )
+        row.append($("<td>"), {"text": bookmark["created"]})
+        row.append($("<td>"), {"text": bookmark["updated"]})
+        row.append(
+            $("<td>").append(
+                $("<a>", {
+                    "class": "label label-danger delete-bookmark",
+                }).append($("<span>"), {"id": "bookmark-name", "style": "display:none", "text": bookmark["name"]})
+            )
+        )
+    })
 }
 
 $(document).ready(function() {
@@ -304,20 +327,23 @@ $(document).ready(function() {
             "url": window.location.href
         }
         sendUpdateRequest(getTaskbrowseBookmarksUrl(), data).done(function(res) {
-            console.log(res)
             setBookmarks(res)
+            setSpinner(false)
         });
         modal.modal('hide');
     });
 
     $('.delete-bookmark').click(e => {
         let url = getTaskbrowseBookmarksUrl()
+        console.log($(e.target).find("#bookmark-name").text())
+        console.log($(e.target).text())
         data = {
             "name": $(e.target).children("#bookmark-name").text(),
         }
+        console.log(data)
         sendDeleteRequest(url, data).done(function(res) {
-            console.log(res)
             setBookmarks(res)
+            setSpinner(false)
         });
     });
 
@@ -671,11 +697,6 @@ $(document).ready(function() {
     $('#btn-delete-tasks').click(function() {
         resetSelectedTask();
     });
-
-    // TODO: init bookmarks
-    setBookmarks()
-
-
 });
 
 const sanitizeChars = {

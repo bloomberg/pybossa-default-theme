@@ -444,24 +444,23 @@
         <th class="sortable" data-sort="name">Name</th>
         <th>Created (temp)</th>
         <th>Updated (temp)</th>
-        <th>Go!</th>
         <th>Delete</th>
       </tr>
     </thead>
     <tbody>
-      {% for name in taskbrowse_bookmarks %}
-      <tr class="task-row">
+      {% for bookmark in taskbrowse_bookmarks %}
+      <tr>
           <td>
-            <a href={{taskbrowse_bookmarks[name]["url"]}} class="label label-info">{{ name }}</a>
+            <a href={{bookmark["url"]}} class="label label-info">{{ bookmark["name"] }}</a>
           </td>
           <td>
-            {{ taskbrowse_bookmarks[name]["created"] }}
+            {{ bookmark["created"] }}
           </td>
           <td>
-            {{ taskbrowse_bookmarks[name]["updated"] }}
+            {{ bookmark["updated"] }}
           </td>
           <td>
-            <a class="label label-danger delete-bookmark" onclick="deleteBookmark">
+            <a class="label label-danger delete-bookmark">
               <span id="bookmark-name" style="display:none">{{ name }}</span>
               Delete</a>
           </td>
