@@ -13,7 +13,6 @@ function getTaskbrowseBookmarksUrl() {
 }
 
 function setBookmarks(bookmarks) {
-
     bookmarksBody = $('#bookmarksGrid > tbody')
     bookmarksBody.empty()
     bookmarks.forEach(bookmark => {
@@ -27,13 +26,14 @@ function setBookmarks(bookmarks) {
                 })
             )
         )
-        row.append($("<td>"), {"text": bookmark["created"]})
-        row.append($("<td>"), {"text": bookmark["updated"]})
+        row.append($("<td>", {"text": bookmark["created"]}))
+        row.append($("<td>", {"text": bookmark["updated"]}))
         row.append(
             $("<td>").append(
                 $("<a>", {
                     "class": "label label-danger delete-bookmark",
-                }).append($("<span>"), {"id": "bookmark-name", "style": "display:none", "text": bookmark["name"]})
+                    "text": "Delete"
+                }).append($("<span>", {"id": "bookmark-name", "style": "display:none", "text": bookmark["name"]}))
             )
         )
     })
