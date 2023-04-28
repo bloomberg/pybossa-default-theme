@@ -298,7 +298,8 @@ $(document).ready(function() {
     function getBookmarks() {
         sendGetRequest(getTaskbrowseBookmarksUrl(), null).done(function(res) {
             bookmarks = res
-            sortBookmarks(sort)
+            sortBookmarks()
+            showBookmarks()
         });
     }
 
@@ -332,15 +333,12 @@ $(document).ready(function() {
         switch(sort) {
             case "alphabetical":
                 bookmarks.sort((a,b) => a.name.localeCompare(b.name, undefined, {sensitivity: 'base'}))
-                showBookmarks()
                 break;
             case "created":
                 bookmarks.sort((a,b) => b.created > a.created ? 1 : -1)
-                showBookmarks()
                 break;
             case "updated":
                 bookmarks.sort((a,b) => b.updated > a.updated ? 1 : -1)
-                showBookmarks()
                 break;
         }
     }
@@ -380,6 +378,7 @@ $(document).ready(function() {
     $('#sort-bookmarks').on( "change", function() {
         sort = $(this).val()
         sortBookmarks()
+        showBookmarks()
     });
 
     $('.add-filter-row-button').click(function(evt) {
