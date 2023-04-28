@@ -9,34 +9,8 @@ function dirtyView(showHint = true) {
 }
 
 function getTaskbrowseBookmarksUrl() {
-    return window.location.origin + '/account/user/taskbrowse_bookmarks/testproject2'
-}
-
-function setBookmarks(bookmarks) {
-    bookmarksBody = $('#bookmarksGrid > tbody')
-    bookmarksBody.empty()
-    bookmarks.forEach(bookmark => {
-        let row = $("<tr>").appendTo(bookmarksBody);
-        row.append(
-            $("<td>").append(
-                $("<a>", {
-                    "href": bookmark["url"],
-                    "class": "label label-info",
-                    "text": bookmark["name"]
-                })
-            )
-        )
-        row.append($("<td>", {"text": bookmark["created"]}))
-        row.append($("<td>", {"text": bookmark["updated"]}))
-        row.append(
-            $("<td>").append(
-                $("<a>", {
-                    "class": "label label-danger delete-bookmark",
-                    "text": "Delete"
-                }).append($("<span>", {"id": "bookmark-name", "style": "display:none", "text": bookmark["name"]}))
-            )
-        )
-    })
+    let username = $('#currentUsername').text()
+    return window.location.origin + '/account/' + username + '/taskbrowse_bookmarks/testproject2'
 }
 
 $(document).ready(function() {
@@ -319,32 +293,93 @@ $(document).ready(function() {
         refresh();
     });
 
+    let bookmarks = getBookmarks()
+    let sort = "alphabetical"
+    function getBookmarks() {
+        sendGetRequest(getTaskbrowseBookmarksUrl(), null).done(function(res) {
+            bookmarks = res
+            sortBookmarks(sort)
+        });
+    }
+
+    function showBookmarks() {
+        bookmarksBody = $('#bookmarksGrid > tbody')
+        bookmarksBody.empty()
+        bookmarks.forEach(bookmark => {
+            let row = $("<tr>").appendTo(bookmarksBody);
+            row.append(
+                $("<td>").append(
+                    $("<a>", {
+                        "href": bookmark["url"],
+                        "class": "label label-info",
+                        "text": bookmark["name"]
+                    })
+                )
+            )
+            row.append(
+                $("<td>").append(
+                    $("<a>", {
+                        "class": "label label-danger delete-bookmark",
+                        "text": "Delete",
+                    }).append($("<span>", {"id": "bookmark-name", "style": "display:none", "text": bookmark["name"]}))
+                )
+            )
+        })
+        $('.delete-bookmark').click(e => deleteBookmark(e))
+    }
+
+    function sortBookmarks() {
+        switch(sort) {
+            case "alphabetical":
+                bookmarks.sort((a,b) => a.name.localeCompare(b.name, undefined, {sensitivity: 'base'}))
+                showBookmarks()
+                break;
+            case "created":
+                bookmarks.sort((a,b) => b.created > a.created ? 1 : -1)
+                showBookmarks()
+                break;
+            case "updated":
+                bookmarks.sort((a,b) => b.updated > a.updated ? 1 : -1)
+                showBookmarks()
+                break;
+        }
+    }
+
     $('#add-bookmark').click(() => {
         var modal = $('#bookmarkModal');
-
-        data = {
-            "name":$('.modal-body #bookmark-name').val(),
-            "url": window.location.href
+        if (bookmarks.length >= 100) {
+            alert("Exceeded limit of 100 bookmarks per project!")
         }
-        sendUpdateRequest(getTaskbrowseBookmarksUrl(), data).done(function(res) {
-            setBookmarks(res)
-            setSpinner(false)
-        });
+        else {
+            data = {
+                "name":$('.modal-body #bookmark-name').val(),
+                "url": window.location.href
+            }
+            sendUpdateRequest(getTaskbrowseBookmarksUrl(), data).done(function(res) {
+                bookmarks = res
+                sortBookmarks()
+                showBookmarks()
+                setSpinner(false)
+            });
+    }
         modal.modal('hide');
     });
 
-    $('.delete-bookmark').click(e => {
-        let url = getTaskbrowseBookmarksUrl()
-        console.log($(e.target).find("#bookmark-name").text())
-        console.log($(e.target).text())
+    function deleteBookmark(e) {
         data = {
             "name": $(e.target).children("#bookmark-name").text(),
         }
-        console.log(data)
-        sendDeleteRequest(url, data).done(function(res) {
-            setBookmarks(res)
+        sendDeleteRequest(getTaskbrowseBookmarksUrl(), data).done(function(res) {
+            bookmarks = res
+            sortBookmarks()
+            showBookmarks()
             setSpinner(false)
         });
+    }
+
+    $('#sort-bookmarks').on( "change", function() {
+        sort = $(this).val()
+        sortBookmarks()
     });
 
     $('.add-filter-row-button').click(function(evt) {

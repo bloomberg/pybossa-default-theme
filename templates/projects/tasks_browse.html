@@ -81,10 +81,7 @@
                 {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
                 <li><a href="#" class="columns_settings" data-value="pcomplete" tabIndex="-1"><input type="checkbox" {{ "checked" if "pcomplete" in filter_data.display_columns }}/>&nbsp;%Complete</a></li>
                 {% endif %}
-                <li><a href="#" class="columns_settings" data-value="created" tabIndex="-1"><input type="checkbox" {{ "checked" if "created" in filter_data.display_columns }}/>&nbsp;Created</a></li>
-                {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
-                <li><a href="#" class="columns_settings" data-value="finish_time" tabIndex="-1"><input type="checkbox" {{ "checked" if "finish_time" in filter_data.display_columns }}/>&nbsp;Completed</a></li>
-                {% endif %}
+
                 {% if can_know_task_is_gold %}
                 <li><a href="#" class="columns_settings" data-value="gold_task" tabIndex="-1"><input type="checkbox" {{ "checked" if "gold_task" in filter_data.display_columns }}/>&nbsp;Gold Task</a></li>
                 {% endif %}
@@ -435,37 +432,21 @@
 <div>
   <h3>Bookmarks</h3>
   <button id='btnAddBookmark' type="button" data-target="#bookmarkModal" data-toggle="modal" class="btn btn-primary">Add Bookmark</button>
-</div>
-
-<div>
+  <label for="sort-bookmarks">Sort Bookmarks:</label>
+  <select id="sort-bookmarks">
+    <option value="alphabetical" selected>Alphabetical</option>
+    <option value="updated">Updated</option>
+    <option value="created">Created</option>
+  </select>
+  <span id="currentUsername" style="display:none">{{current_user.name}}</span>
   <table id="bookmarksGrid" class="table table-sm table-striped table-hover border">
     <thead>
       <tr>
         <th class="sortable" data-sort="name">Name</th>
-        <th>Created (temp)</th>
-        <th>Updated (temp)</th>
         <th>Delete</th>
       </tr>
     </thead>
     <tbody>
-      {% for bookmark in taskbrowse_bookmarks %}
-      <tr>
-          <td>
-            <a href={{bookmark["url"]}} class="label label-info">{{ bookmark["name"] }}</a>
-          </td>
-          <td>
-            {{ bookmark["created"] }}
-          </td>
-          <td>
-            {{ bookmark["updated"] }}
-          </td>
-          <td>
-            <a class="label label-danger delete-bookmark">
-              <span id="bookmark-name" style="display:none">{{ bookmark["name"] }}</span>
-              Delete</a>
-          </td>
-      </tr>
-      {% endfor %}
     </tbody>
   </table>
 </div>
