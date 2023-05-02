@@ -359,7 +359,7 @@ $(document).ready(function() {
                 showBookmarks()
                 setSpinner(false)
             });
-    }
+        }
         modal.modal('hide');
     });
 

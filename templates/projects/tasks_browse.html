@@ -430,25 +430,29 @@
 {% endif %}
 
 <div>
-  <h3>Bookmarks</h3>
-  <button id='btnAddBookmark' type="button" data-target="#bookmarkModal" data-toggle="modal" class="btn btn-primary">Add Bookmark</button>
-  <label for="sort-bookmarks">Sort Bookmarks:</label>
-  <select id="sort-bookmarks">
-    <option value="alphabetical" selected>Alphabetical</option>
-    <option value="updated">Updated</option>
-    <option value="created">Created</option>
-  </select>
-  <span id="currentUsername" style="display:none">{{current_user.name}}</span>
-  <table id="bookmarksGrid" class="table table-sm table-striped table-hover border">
-    <thead>
-      <tr>
-        <th class="sortable" data-sort="name">Name</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
+  <div>
+    <h3>Bookmarks</h3>
+    <button id='btnAddBookmark' type="button" data-target="#bookmarkModal" data-toggle="modal" class="btn btn-primary">Add Bookmark</button>
+    <label for="sort-bookmarks">Sort Bookmarks:</label>
+    <select id="sort-bookmarks">
+      <option value="alphabetical" selected>Alphabetical</option>
+      <option value="updated">Updated</option>
+      <option value="created">Created</option>
+    </select>
+    <span id="currentUsername" style="display:none">{{current_user.name}}</span>
+</div>
+  <div class="col-md-4">
+    <table id="bookmarksGrid" class="w-25 table table-sm table-striped table-hover border table-responsive">
+      <thead>
+        <tr>
+          <th class="sortable" data-sort="name">Name</th>
+          <th class="col-md-1">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <!-- Date Modal -->
