@@ -15,7 +15,7 @@
 
 <div id="task-browse">
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6">
         <p>{{_('This page shows all the available tasks for this project')}}.</p>
         {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
           <p>{{_('For each task, you can find the following information')}}:
@@ -40,7 +40,35 @@
           </p>
         {% endif %}
     </div>
+
+    <div class="col-md-5" style="transform: translate(50%, 0);">
+      <div>
+        <h3>Filters</h3>
+        <button id='btnAddBookmark' type="button" data-target="#bookmarkModal" data-toggle="modal" class="btn btn-primary">Add Filter</button>
+        <label for="sort-bookmarks">Sort Filters:</label>
+        <select id="sort-bookmarks">
+          <option value="alphabetical" selected>Alphabetical</option>
+          <option value="updated">Updated</option>
+          <option value="created">Created</option>
+        </select>
+        <span id="currentUsername" style="display:none">{{current_user.name}}</span>
+    </div>
+    <div style="overflow-y: scroll; max-height:30em">
+        <table id="bookmarksGrid" class="table table-sm table-striped table-hover border">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th class="col-md-1">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
 </div>
+
 <div id="tasksBrowseControls">
     <ul class="pull-left">
         <li>
@@ -429,32 +457,6 @@
 </div>
 {% endif %}
 
-<div>
-  <div>
-    <h3>Bookmarks</h3>
-    <button id='btnAddBookmark' type="button" data-target="#bookmarkModal" data-toggle="modal" class="btn btn-primary">Add Bookmark</button>
-    <label for="sort-bookmarks">Sort Bookmarks:</label>
-    <select id="sort-bookmarks">
-      <option value="alphabetical" selected>Alphabetical</option>
-      <option value="updated">Updated</option>
-      <option value="created">Created</option>
-    </select>
-    <span id="currentUsername" style="display:none">{{current_user.name}}</span>
-</div>
-  <div class="col-md-4">
-    <table id="bookmarksGrid" class="w-25 table table-sm table-striped table-hover border table-responsive">
-      <thead>
-        <tr>
-          <th class="sortable" data-sort="name">Name</th>
-          <th class="col-md-1">Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-  </div>
-</div>
-
 <!-- Date Modal -->
 <div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="dateModalLabel">
   <div class="modal-dialog modal-sm" role="document">
@@ -561,13 +563,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="infoModalLabel">Add Bookmark</h4>
+        <h4 class="modal-title" id="infoModalLabel">Add Filter</h4>
       </div>
       <div class="modal-body">
         <h5>Bookmark your current search and filters for easy access.</h5>
         <div class="form-group">
-          <label for="bookmark-name" >Bookmark Name</label>
-          <input type="text" class="form-control" id="bookmark-name" placeholder="Bookmark Name"/>
+          <label for="bookmark-name" >Filter Name</label>
+          <input type="text" class="form-control" id="bookmark-name" placeholder="Filter Name"/>
         </div>
       </div>
       <div class="modal-footer">
