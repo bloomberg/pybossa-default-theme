@@ -304,6 +304,7 @@ $(document).ready(function() {
     }
 
     function showBookmarks() {
+        /*
         bookmarksBody = $('#bookmarksGrid > tbody')
         bookmarksBody.empty()
         bookmarks.forEach(bookmark => {
@@ -327,9 +328,11 @@ $(document).ready(function() {
             )
         })
         $('.delete-bookmark').click(e => deleteBookmark(e))
+        */
     }
 
     function sortBookmarks() {
+        /*
         switch(sort) {
             case "alphabetical":
                 bookmarks.sort((a,b) => a.name.localeCompare(b.name, undefined, {sensitivity: 'base'}))
@@ -341,6 +344,7 @@ $(document).ready(function() {
                 bookmarks.sort((a,b) => b.updated > a.updated ? 1 : -1)
                 break;
         }
+        */
     }
 
     $('#add-bookmark').click(() => {
@@ -358,22 +362,23 @@ $(document).ready(function() {
                 sortBookmarks()
                 showBookmarks()
                 setSpinner(false)
+                refresh()
             });
         }
         modal.modal('hide');
     });
 
-    function deleteBookmark(e) {
+    $('.delete-bookmark').on('click', function(e){
         data = {
-            "name": $(e.target).children("#bookmark-name").text(),
+            "name": $(this).data('name'),
         }
+        console.log(data)
         sendDeleteRequest(getTaskbrowseBookmarksUrl(), data).done(function(res) {
             bookmarks = res
-            sortBookmarks()
-            showBookmarks()
             setSpinner(false)
+            refresh()
         });
-    }
+    })
 
     $('#sort-bookmarks').on( "change", function() {
         sort = $(this).val()
