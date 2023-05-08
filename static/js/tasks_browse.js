@@ -8,11 +8,6 @@ function dirtyView(showHint = true) {
     }
 }
 
-function getTaskbrowseBookmarksUrl() {
-    let username = $('#currentUsername').text()
-    return window.location.origin + '/account/' + username + '/taskbrowse_bookmarks/testproject2'
-}
-
 $(document).ready(function() {
     if (filter_data.priority_to === 0) {
         filter_data.priority_to = 0.0001;
@@ -293,18 +288,7 @@ $(document).ready(function() {
         refresh();
     });
 
-    let bookmarks = getBookmarks()
-    let sort = "alphabetical"
-    function getBookmarks() {
-        sendGetRequest(getTaskbrowseBookmarksUrl(), null).done(function(res) {
-            bookmarks = res
-            sortBookmarks()
-            showBookmarks()
-        });
-    }
-
-    function showBookmarks() {
-        /*
+    function showBookmarks(bookmarks) {
         bookmarksBody = $('#bookmarksGrid > tbody')
         bookmarksBody.empty()
         bookmarks.forEach(bookmark => {
@@ -323,68 +307,87 @@ $(document).ready(function() {
                     $("<a>", {
                         "class": "label label-danger delete-bookmark",
                         "text": "Delete",
-                    }).append($("<span>", {"id": "bookmark-name", "style": "display:none", "text": bookmark["name"]}))
+                        "data-name": bookmark["name"]
+                    })
                 )
             )
         })
-        $('.delete-bookmark').click(e => deleteBookmark(e))
-        */
+        $('.delete-bookmark').on('click', function(e){
+            deleteBookmark($(this).data('name').toString())
+        })
     }
 
-    function sortBookmarks() {
-        /*
-        switch(sort) {
-            case "alphabetical":
-                bookmarks.sort((a,b) => a.name.localeCompare(b.name, undefined, {sensitivity: 'base'}))
-                break;
-            case "created":
-                bookmarks.sort((a,b) => b.created > a.created ? 1 : -1)
-                break;
-            case "updated":
-                bookmarks.sort((a,b) => b.updated > a.updated ? 1 : -1)
-                break;
-        }
-        */
+    function getNumBookmarks() {
+        bookmarksBody = $('#bookmarksGrid > tbody')
+        return bookmarksBody.children().length
+    }
+
+    function getTaskbrowseBookmarksUrl() {
+        let url_arr = window.location.pathname.split('/')
+        let username = $('#currentUsername').text()
+        let project = url_arr[url_arr.indexOf('project') + 1]
+
+        let url = window.location.origin + '/account/' + username + '/taskbrowse_bookmarks/' + project + '?order_by=' + bookmark_sort + '&desc=' + bookmark_desc
+        console.log(url)
+        return url
+    }
+
+    function getBookmarks() {
+        sendGetRequest(getTaskbrowseBookmarksUrl(), null).done(function(res) {
+            showBookmarks(res)
+        });
     }
 
     $('#add-bookmark').click(() => {
-        var modal = $('#bookmarkModal');
-        if (bookmarks.length >= 100) {
+        const MAX_TASKBROWSE_BOOKMARKS = 100
+        var modal = $('#addBookmarkModal');
+        if (getNumBookmarks() >= MAX_TASKBROWSE_BOOKMARKS) {
             alert("Exceeded limit of 100 bookmarks per project!")
         }
         else {
+            nameInput = $('.modal-body #bookmark-name')
             data = {
-                "name":$('.modal-body #bookmark-name').val(),
+                "name": nameInput.val(),
                 "url": window.location.href
             }
             sendUpdateRequest(getTaskbrowseBookmarksUrl(), data).done(function(res) {
-                bookmarks = res
-                sortBookmarks()
-                showBookmarks()
+                showBookmarks(res)
+                nameInput.val('')
                 setSpinner(false)
-                refresh()
             });
         }
         modal.modal('hide');
     });
 
-    $('.delete-bookmark').on('click', function(e){
+
+    function deleteBookmark(name) {
         data = {
-            "name": $(this).data('name'),
+            "name": name,
         }
-        console.log(data)
         sendDeleteRequest(getTaskbrowseBookmarksUrl(), data).done(function(res) {
-            bookmarks = res
+            showBookmarks(res)
             setSpinner(false)
-            refresh()
         });
+    }
+
+    $('.delete-bookmark').on('click', function(e){
+        deleteBookmark($(this).data('name'))
     })
 
+    let bookmark_sort = "name"
+    let bookmark_desc = false
+
     $('#sort-bookmarks').on( "change", function() {
-        sort = $(this).val()
-        sortBookmarks()
-        showBookmarks()
+        bookmark_sort = $(this).val()
+
+        //console.log(bo)
+
+        if (bookmark_sort == "name") bookmark_desc = false
+        else bookmark_desc = true
+        console.log("calling getting bookmarks")
+        getBookmarks()
     });
+
 
     $('.add-filter-row-button').click(function(evt) {
         addFieldFilterRow();
@@ -682,7 +685,7 @@ $(document).ready(function() {
             url: endpoint,
             dataType: 'json',
             contentType: 'application/json',
-            data: JSON.stringify(data)
+            data: data
         }).fail(function(res) {
             var message = 'There was an error processing the request.';
             var severity = 'warning';

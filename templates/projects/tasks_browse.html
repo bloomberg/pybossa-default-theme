@@ -49,13 +49,11 @@
           <i class="fa fa-cloud" aria-hidden="true"></i>
         </button>
       </li>
-      {% if taskbrowse_bookmarks | length > 0 %}
       <li>
           <button id="btn-bookmark-list" class="btn btn-sm" type="button" data-target="#listBookmarksModal" data-toggle="modal" title="Saved Filters">
             <i class="fa fa-bookmark" aria-hidden="true"></i>
           </button>
       </li>
-      {% endif %}
         <li>
             <button class="btn btn-sm" id='btnRefresh' type="button" data-toggle="popover" data-trigger="focus" data-placement="top" data-constraints='focus' data-content="{{_('Please refresh the results after setting the desired filters.')}}" title="{{_('Search')}}">
                 <i class="fa fa-search" aria-hidden="true"></i>
@@ -574,6 +572,12 @@
         <h4 class="modal-title" id="infoModalLabel">Saved Filters</h4>
       </div>
       <div class="modal-body">
+        <label for="sort-bookmarks">Sort Filters:</label>
+        <select id="sort-bookmarks">
+          <option value="name" selected>Alphabetical</option>
+          <option value="updated">Updated</option>
+          <option value="created">Created</option>
+        </select>
         <span id="currentUsername" style="display:none">{{current_user.name}}</span>
         <table id="bookmarksGrid" class="table table-sm table-striped table-hover border">
           <thead>
