@@ -328,7 +328,6 @@ $(document).ready(function() {
         let project = url_arr[url_arr.indexOf('project') + 1]
 
         let url = window.location.origin + '/account/' + username + '/taskbrowse_bookmarks/' + project + '?order_by=' + bookmark_sort + '&desc=' + bookmark_desc
-        console.log(url)
         return url
     }
 
@@ -380,11 +379,8 @@ $(document).ready(function() {
     $('#sort-bookmarks').on( "change", function() {
         bookmark_sort = $(this).val()
 
-        //console.log(bo)
-
         if (bookmark_sort == "name") bookmark_desc = false
         else bookmark_desc = true
-        console.log("calling getting bookmarks")
         getBookmarks()
     });
 
