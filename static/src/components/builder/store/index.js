@@ -11,6 +11,7 @@ import conditionalDisplay from './modules/conditionalDisplay';
 import fileUpload from './modules/fileUpload';
 import taskTimer from './modules/taskTimer';
 import inputTextArea from './modules/inputTextArea';
+import taskPresenter from './modules/taskPresenter';
 
 import { getStoreOptions, setNamespace } from '@dtwebservices/task-presenter-components';
 
@@ -37,6 +38,7 @@ export default new Vuex.Store({
     conditionalDisplay,
     fileUpload,
     taskTimer,
-    inputTextArea
+    inputTextArea,
+    taskPresenter
   }
 });

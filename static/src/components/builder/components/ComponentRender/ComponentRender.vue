@@ -161,6 +161,11 @@ export default {
           name: 'task-timer',
           attrs: { lock: `${this.form.showLock}` }
         };
+      } else if (this.selectedComponent === 'task-presenter') {
+        return {
+          name: 'task-presenter',
+          attrs: { 'allow-save-work': `${this.form.allowSaveWork}` }
+        };
       } else if (this.selectedComponent === 'input-text-area') {
         return {
           name: 'input-text-area',
