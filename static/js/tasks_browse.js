@@ -322,6 +322,9 @@ $(document).ready(function() {
         return bookmarksBody.children().length
     }
 
+    let bookmark_sort = "name"
+    let bookmark_desc = false
+
     function getTaskbrowseBookmarksUrl() {
         let url_arr = window.location.pathname.split('/')
         let username = $('#currentUsername').text()
@@ -358,7 +361,6 @@ $(document).ready(function() {
         modal.modal('hide');
     });
 
-
     function deleteBookmark(name) {
         data = {
             "name": name,
@@ -373,17 +375,11 @@ $(document).ready(function() {
         deleteBookmark($(this).data('name'))
     })
 
-    let bookmark_sort = "name"
-    let bookmark_desc = false
-
     $('#sort-bookmarks').on( "change", function() {
         bookmark_sort = $(this).val()
-
-        if (bookmark_sort == "name") bookmark_desc = false
-        else bookmark_desc = true
+        bookmark_desc =  !(bookmark_sort === "name")
         getBookmarks()
     });
-
 
     $('.add-filter-row-button').click(function(evt) {
         addFieldFilterRow();
