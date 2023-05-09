@@ -164,7 +164,7 @@ export default {
       } else if (this.selectedComponent === 'task-presenter') {
         return {
           name: 'task-presenter',
-          attrs: { 'allow-save-work': `${this.form.allowSaveWork}` }
+          props: { allowSaveWork: `${this.form.allowSaveWork}` }
         };
       } else if (this.selectedComponent === 'input-text-area') {
         return {

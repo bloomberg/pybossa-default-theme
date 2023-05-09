@@ -19,9 +19,6 @@ export const getters = {
 
   export const mutations = {
     [types.MUTATE_ALLOW_SAVE_WORK] (state, payload) {
-      state.allowSaveWork = payload;
-    },
-    [types.MUTATE_ALLOW_SAVE_WORK] (state, payload) {
       state.allowSaveWork = false;
     }
   };

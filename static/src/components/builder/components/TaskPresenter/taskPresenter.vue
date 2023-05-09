@@ -4,7 +4,7 @@
     <div class="form-row">
       <input
         id="allow-save-work"
-        v-model="allowSaveWork"
+        v-model='allowSaveWork'
         :checked="allowSaveWork"
         type="checkbox"
       >

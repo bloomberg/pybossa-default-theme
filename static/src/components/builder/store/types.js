@@ -147,4 +147,5 @@ export const MUTATE_CLEAR_INPUT_TEXT_AREA_FORM = 'inputtextarea/MUTATE_INPUT_TEX
 export const MUTATE_INPUT_TEXT_AREA_ROWS = 'inputtextarea/MUTATE_INPUT_TEXT_AREA_ROWS';
 export const MUTATE_INPUT_TEXT_AREA_COLS = 'inputtextarea/MUTATE_INPUT_TEXT_AREA_COLS';
 
+export const GET_TASK_PRESENTER_PROPS = 'taskPresenter/TASK_PRESENTER_CODE';
 export const MUTATE_ALLOW_SAVE_WORK = 'taskPresenter/ALLOW_SAVE_WORK';
