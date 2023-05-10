@@ -2,27 +2,36 @@
   <div class="row">
     <h4>Task Presenter Settings</h4>
     <div class="form-row">
+      <p>Saving partial work functions for all schedulers.</p>
       <input
         id="allow-save-work"
         v-model="allowSaveWork"
         :checked="allowSaveWork"
         type="checkbox"
       >
-      <label for="allow-save-work">
-        Allow work to be auto-saved
+      <label
+        for="allow-save-work"
+      >
+        &ensp;Allow partial work to be saved
       </label>
     </div>
     <div v-if="allowSaveWork">
-      <label for="auto-save-seconds">
-        Seconds between auto saves
+      <label
+        for="auto-save-seconds"
+        style="font-weight: lighter"
+      >
+        &emsp;&ensp;Seconds between auto saves&emsp;
       </label>
       <input
         id="auto-save-seconds"
         v-model.number="autoSaveSeconds"
+        style="border: 1px"
         type="number"
       >
     </div>
+    <br>
     <div>
+      <p>Assigning workers only functions with Task Queues or User Preference schedulers.</p>
       <input
         id="allow-assign-to-user"
         v-model="allowAssignToUser"
@@ -30,7 +39,7 @@
         type="checkbox"
       >
       <label for="allow-assign-to-user">
-        Allow tasks to be assigned to users
+        &ensp;Allow tasks to be assigned to users
       </label>
     </div>
   </div>
@@ -44,13 +53,13 @@
     components: { },
       data () {
       return {
+        upHere: false,
         validationOptions: [],
         inputTypeOptions: {
         }
       };
     },
     modules: {
-
     },
     computed: {
       allowSaveWork: {
@@ -75,6 +84,15 @@
         },
         set (newValue) {
           this.$store.commit(types.MUTATE_AUTO_SAVE_SECONDS, newValue);
+        }
+      }
+    },
+    watch: {
+      autoSaveSeconds: function (newValue) {
+        if (newValue > 3) {
+          this.autoSaveSeconds = newValue;
+        } else {
+          this.autoSaveSeconds = '';
         }
       }
     },
