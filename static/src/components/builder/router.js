@@ -13,6 +13,7 @@ import ConditionalDisplayForm from './components/ConditionalDisplay/ConditionalD
 import FileUploadForm from './components/FileUpload/FileUploadForm.vue';
 import TaskTimerForm from './components/TaskTimer/TaskTimerForm.vue';
 import InputTextAreaForm from './components/InputTextArea/InputTextAreaForm.vue';
+import TaskPresenterForm from './components/TaskPresenter/TaskPresenterForm.vue';
 
 export const routes = [
   {
@@ -318,7 +319,7 @@ export const routes = [
       {
         path: 'taskPresenter/form',
         name: 'TASK_PRESENTER_FORM',
-        components: { default: PreviewCommons }
+        components: { default: TaskPresenterForm }
       },
       {
         path: 'taskPresenter/preview',

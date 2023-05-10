@@ -3,7 +3,9 @@ import utils from '../../utils';
 
 const initialState = () => {
   return {
-    allowSaveWork: true
+    allowSaveWork: false,
+    autoSaveSeconds: 0,
+    allowAssignToUser: false
   };
 };
 
@@ -19,7 +21,18 @@ export const getters = {
 
   export const mutations = {
     [types.MUTATE_ALLOW_SAVE_WORK] (state, payload) {
+      state.allowSaveWork = payload;
+    },
+    [types.MUTATE_AUTO_SAVE_SECONDS] (state, payload) {
+      state.autoSaveSeconds = payload;
+    },
+    [types.MUTATE_ALLOW_ASSIGN_TO_USER] (state, payload) {
+      state.allowAssignToUser = payload;
+    },
+    [types.MUTATE_CLEAR_TASK_TIMER_FORM] (state, payload) {
       state.allowSaveWork = false;
+      state.allowAssignToUser = false;
+      state.autoSaveSeconds = 0;
     }
   };
 
