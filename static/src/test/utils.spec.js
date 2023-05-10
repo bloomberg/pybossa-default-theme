@@ -192,11 +192,7 @@ it('Helper components', () => {
 
   componentCode = utils.getSnippet('TASK_PRESENTER', {});
   // eslint-disable-next-line no-multi-str
-  expect(componentCode.trim()).toEqual('"<task-presenter\
-                                          :allow-save-work=\
-                                          :auto-save-seconds=\
-                                          :allow-assign-to-user=\
-                                        ></task-presenter>"');
+  expect(componentCode.trim()).toEqual('<task-presenter :allow-save-work="" :auto-save-seconds="" :allow-assign-to-user=""></task-presenter>');
 
   componentCode = utils.getSnippet('CANCEL_BUTTON', {});
   expect(componentCode.trim()).toEqual('<cancel-button></cancel-button>');
