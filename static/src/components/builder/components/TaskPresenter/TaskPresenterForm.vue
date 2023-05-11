@@ -20,7 +20,7 @@
         for="auto-save-seconds"
         style="font-weight: lighter"
       >
-        &emsp;&ensp;Seconds between auto saves&emsp;
+        &emsp;&ensp;Seconds (min.5) between auto saves&emsp;
       </label>
       <input
         id="auto-save-seconds"
@@ -88,11 +88,9 @@
       }
     },
     watch: {
-      autoSaveSeconds: function (newValue) {
-        if (newValue > 3) {
-          this.autoSaveSeconds = newValue;
-        } else {
-          this.autoSaveSeconds = '';
+      allowSaveWork: function (newValue) {
+        if (newValue !== true) {
+          this.autoSaveSeconds = 0;
         }
       }
     },

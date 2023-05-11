@@ -32,7 +32,7 @@ export const getters = {
     [types.MUTATE_CLEAR_TASK_TIMER_FORM] (state, payload) {
       state.allowSaveWork = false;
       state.allowAssignToUser = false;
-      state.autoSaveSeconds = 3;
+      state.autoSaveSeconds = 0;
     }
   };
 
