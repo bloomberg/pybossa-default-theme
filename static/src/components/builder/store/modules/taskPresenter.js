@@ -29,7 +29,7 @@ export const getters = {
     [types.MUTATE_ALLOW_ASSIGN_TO_USER] (state, payload) {
       state.allowAssignToUser = payload;
     },
-    [types.MUTATE_CLEAR_TASK_TIMER_FORM] (state, payload) {
+    [types.MUTATE_CLEAR_TASK_PRESENTER_FORM] (state, payload) {
       state.allowSaveWork = false;
       state.allowAssignToUser = false;
       state.autoSaveSeconds = 0;
