@@ -20,7 +20,7 @@
         for="auto-save-seconds"
         style="font-weight: lighter"
       >
-        &emsp;&ensp;Seconds (min.5) between auto saves&emsp;
+        &emsp;&ensp;Seconds between auto saves&emsp;
       </label>
       <input
         id="auto-save-seconds"
