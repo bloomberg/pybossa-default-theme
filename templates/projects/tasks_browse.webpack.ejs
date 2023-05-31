@@ -44,6 +44,16 @@
 <div id="tasksBrowseControls">
     <ul class="pull-left">
         <li>
+          <button id="btn-add-bookmark" class="btn btn-sm" type="button" data-target="#addBookmarkModal" data-toggle="modal" title="Save Filter">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+          </button>
+        </li>
+        <li>
+            <button id="btn-bookmark-list" class="btn btn-sm" type="button" data-target="#listBookmarksModal" data-toggle="modal" title="Saved Filters">
+              <i class="fa fa-bookmark" aria-hidden="true"></i>
+            </button>
+        </li>
+        <li>
             <button class="btn btn-sm" id='btnRefresh' type="button" data-toggle="popover" data-trigger="focus" data-placement="top" data-constraints='focus' data-content="{{_('Please refresh the results after setting the desired filters.')}}" title="{{_('Search')}}">
                 <i class="fa fa-search" aria-hidden="true"></i>
             </button>
@@ -449,6 +459,75 @@
     </div>
 </div>
 {% endif %}
+
+<!-- Add Bookmark Modal -->
+<div class="modal fade" id="addBookmarkModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="infoModalLabel">Save Filter</h4>
+      </div>
+      <div class="modal-body">
+        <h5>Bookmark your current search and filters for easy access.</h5>
+        <div class="form-group">
+          <label for="bookmark-name" >Filter Name</label>
+          <input type="text" class="form-control" id="bookmark-name" placeholder="Filter Name"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id='add-bookmark'>Add</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bookmark List Modal -->
+<div class="modal fade" id="listBookmarksModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="infoModalLabel">Saved Filters</h4>
+      </div>
+      <div class="modal-body">
+        <label for="sort-bookmarks">Sort Filters:</label>
+        <select id="sort-bookmarks">
+          <option value="name" selected>Alphabetical</option>
+          <option value="updated">Updated</option>
+          <option value="created">Created</option>
+        </select>
+        <span id="currentUsername" style="display:none">{{current_user.name}}</span>
+        <table id="bookmarksGrid" class="table table-sm table-striped table-hover border">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th class="col-md-1">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for bookmark in taskbrowse_bookmarks %}
+            <tr>
+                <td>
+                  <a href="{{ bookmark['url'] }}" class="label label-info">{{ bookmark["name"] }}</a>
+                </td>
+                <td>
+                  <a class="label label-danger delete-bookmark" data-name= "{{ bookmark['name'] }}">
+                    Delete
+                  </a>
+                </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Date Modal -->
 <div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="dateModalLabel">

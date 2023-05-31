@@ -288,6 +288,99 @@ $(document).ready(function() {
         refresh();
     });
 
+    function showBookmarks(bookmarks) {
+        bookmarksBody = $('#bookmarksGrid > tbody')
+        bookmarksBody.empty()
+        bookmarks.forEach(bookmark => {
+            let row = $("<tr>").appendTo(bookmarksBody);
+            row.append(
+                $("<td>").append(
+                    $("<a>", {
+                        "href": bookmark["url"],
+                        "class": "label label-info",
+                        "text": bookmark["name"]
+                    })
+                )
+            )
+            row.append(
+                $("<td>").append(
+                    $("<a>", {
+                        "class": "label label-danger delete-bookmark",
+                        "text": "Delete",
+                        "data-name": bookmark["name"]
+                    })
+                )
+            )
+        })
+        $('.delete-bookmark').on('click', function(e){
+            deleteBookmark($(this).data('name').toString())
+        })
+    }
+
+    function getNumBookmarks() {
+        bookmarksBody = $('#bookmarksGrid > tbody')
+        return bookmarksBody.children().length
+    }
+
+    let bookmark_sort = "name"
+    let bookmark_desc = false
+
+    function getTaskbrowseBookmarksUrl() {
+        let url_arr = window.location.pathname.split('/')
+        let username = $('#currentUsername').text()
+        let project = url_arr[url_arr.indexOf('project') + 1]
+
+        let url = window.location.origin + '/account/' + username + '/taskbrowse_bookmarks/' + project + '?order_by=' + bookmark_sort + '&desc=' + bookmark_desc
+        return url
+    }
+
+    function getBookmarks() {
+        sendGetRequest(getTaskbrowseBookmarksUrl(), null).done(function(res) {
+            showBookmarks(res)
+        });
+    }
+
+    $('#add-bookmark').click(() => {
+        const MAX_TASKBROWSE_BOOKMARKS = 100
+        var modal = $('#addBookmarkModal');
+        if (getNumBookmarks() >= MAX_TASKBROWSE_BOOKMARKS) {
+            alert("Exceeded limit of 100 bookmarks per project!")
+        }
+        else {
+            nameInput = $('.modal-body #bookmark-name')
+            data = {
+                "name": nameInput.val(),
+                "url": window.location.href
+            }
+            sendUpdateRequest(getTaskbrowseBookmarksUrl(), data).done(function(res) {
+                showBookmarks(res)
+                nameInput.val('')
+                setSpinner(false)
+            });
+        }
+        modal.modal('hide');
+    });
+
+    function deleteBookmark(name) {
+        data = {
+            "name": name,
+        }
+        sendDeleteRequest(getTaskbrowseBookmarksUrl(), data).done(function(res) {
+            showBookmarks(res)
+            setSpinner(false)
+        });
+    }
+
+    $('.delete-bookmark').on('click', function(e){
+        deleteBookmark($(this).data('name'))
+    })
+
+    $('#sort-bookmarks').on( "change", function() {
+        bookmark_sort = $(this).val()
+        bookmark_desc =  !(bookmark_sort === "name")
+        getBookmarks()
+    });
+
     $('.add-filter-row-button').click(function(evt) {
         addFieldFilterRow();
     });
@@ -558,13 +651,33 @@ $(document).ready(function() {
         });
     };
 
+    function sendDeleteRequest(endpoint, data) {
+        setSpinner(true);
+        return $.ajax({
+            type: 'DELETE',
+            url: endpoint,
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(data)
+        }).fail(function(res) {
+            setSpinner(false);
+            var message = 'There was an error processing the request.';
+            var severity = 'warning';
+            if (res.status === 403) {
+                message = 'You do not have the permissions to perform this action.';
+                severity = 'danger';
+            }
+            pybossaNotify(message, true, severity);
+        });
+    };
+
     function sendGetRequest(endpoint, data) {
         return $.ajax({
             type: 'GET',
             url: endpoint,
             dataType: 'json',
             contentType: 'application/json',
-            data: JSON.stringify(data)
+            data: data
         }).fail(function(res) {
             var message = 'There was an error processing the request.';
             var severity = 'warning';
