@@ -4,7 +4,7 @@ import utils from '../../utils';
 const initialState = () => {
   return {
     allowSaveWork: false,
-    autoSaveSeconds: 0,
+    autoSaveSeconds: 60,
     allowAssignToUser: false
   };
 };

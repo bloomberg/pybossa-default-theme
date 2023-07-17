@@ -24,8 +24,9 @@
       </label>
       <input
         id="auto-save-seconds"
+        ref="autoSaveSecondsInput"
         v-model.number="autoSaveSeconds"
-        style="border: 1px"
+        class="form-control form-control-sm"
         type="number"
       >
     </div>
@@ -45,9 +46,7 @@
   </div>
 </template>
   <script>
-  // import '../../../../../css/component_builder.css';
   import * as types from '../../store/types';
-  import { mapMutations, mapState } from 'vuex';
   export default {
     name: 'TaskPresenterForm',
     components: { },
@@ -90,8 +89,13 @@
     watch: {
       allowSaveWork: function (newValue) {
         if (newValue !== true) {
-          this.autoSaveSeconds = 0;
+          this.autoSaveSeconds = 60;
         }
+      }
+    },
+    updated () {
+      if (this.allowSaveWork && this.$refs.autoSaveSecondsInput) {
+         this.$refs.autoSaveSecondsInput.focus();
       }
     },
     methods: {
@@ -100,7 +104,8 @@
   </script>
 
 <style lang="css" scoped>
-.auto-save-seconds {
-    width: 50px;
+#auto-save-seconds {
+    width: auto;
+    display: inline;
 }
 </style>
