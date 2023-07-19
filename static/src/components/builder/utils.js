@@ -7,7 +7,6 @@ import labelTemplate from './components/templates/labelTemplate.html';
 import textInputColumnTemplate from './components/Table/textInputColumnTemplate.html';
 import checkboxInputColumnTemplate from './components/Table/checkboxInputColumnTemplate.html';
 import taskTimerTemplate from './components/TaskTimer/taskTimerTemplate.html';
-import taskPresenterTemplate from './components/helpers/taskPresenterTemplate.html';
 import cancelButtonTemplate from './components/helpers/cancelButtonTemplate.html';
 import buttonRowTemplate from './components/helpers/buttonRowTemplate.html';
 import submitButtonTemplate from './components/helpers/submitButtonTemplate.html';
@@ -22,6 +21,7 @@ import fileUploadTemplate from './components/FileUpload/fileUploadTemplate.html'
 import inputTextAreaTemplate from './components/InputTextArea/inputTextAreaTemplate.html';
 import inputTextAreaColumnTemplate from './components/Table/inputTextAreaColumnTemplate.html';
 import assistantLLMTemplate from './components/AssistantLLM/AssistantLLMTemplate.html'
+import taskPresenterTemplate from './components/TaskPresenter/taskPresenterTemplate.html';
 
 import { flatten, uniq, flow } from 'lodash';
 
@@ -79,6 +79,8 @@ export default {
       return this.getSimpleComponentsCode(form, component);
     } else if (component === 'ASSISTANT_LLM') {
       return this.getAssistantLLMCode(form);
+    } else if (component === 'TASK_PRESENTER') {
+       return this.getSimpleComponentsCode(form, component);
     } else {
       return this.getHelperComponentCode(component);
     }

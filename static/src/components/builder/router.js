@@ -14,6 +14,7 @@ import FileUploadForm from './components/FileUpload/FileUploadForm.vue';
 import TaskTimerForm from './components/TaskTimer/TaskTimerForm.vue';
 import InputTextAreaForm from './components/InputTextArea/InputTextAreaForm.vue';
 import AssistantLLMForm from './components/AssistantLLM/AssistantLLMForm.vue'
+import TaskPresenterForm from './components/TaskPresenter/TaskPresenterForm.vue';
 
 export const routes = [
   {
@@ -289,11 +290,6 @@ export const routes = [
         components: { default: PreviewCommons }
       },
       {
-        path: 'taskPresenter/preview',
-        name: 'TASK_PRESENTER_PREVIEW',
-        components: { default: PreviewCommons }
-      },
-      {
         path: 'cancelButton/preview',
         name: 'CANCEL_BUTTON_PREVIEW',
         components: { default: PreviewCommons }
@@ -314,11 +310,6 @@ export const routes = [
         components: { default: PreviewCommons }
       },
       {
-        path: 'taskPresenter/code',
-        name: 'TASK_PRESENTER_CODE',
-        components: { default: PreviewCommons }
-      },
-      {
         path: 'cancelButton/code',
         name: 'CANCEL_BUTTON_CODE',
         components: { default: PreviewCommons }
@@ -331,6 +322,31 @@ export const routes = [
       {
         path: 'submitLastButton/code',
         name: 'SUBMIT_LAST_BUTTON_CODE',
+        components: { default: PreviewCommons }
+      }
+    ]
+  },
+  {
+    path: '/taskPresenter',
+    name: 'TASK_PRESENTER',
+    components: {
+      default: Content,
+      header: Header
+    },
+    children: [
+      {
+        path: 'taskPresenter/code',
+        name: 'TASK_PRESENTER_CODE',
+        components: { default: PreviewCommons }
+      },
+      {
+        path: 'taskPresenter/form',
+        name: 'TASK_PRESENTER_FORM',
+        components: { default: TaskPresenterForm }
+      },
+      {
+        path: 'taskPresenter/preview',
+        name: 'TASK_PRESENTER_PREVIEW',
         components: { default: PreviewCommons }
       }
     ]

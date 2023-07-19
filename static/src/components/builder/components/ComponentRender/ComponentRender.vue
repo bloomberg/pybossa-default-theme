@@ -174,6 +174,17 @@ export default {
           name: 'task-timer',
           attrs: { lock: `${this.form.showLock}` }
         };
+      } else if (this.selectedComponent === 'task-presenter') {
+        return {
+          name: 'task-presenter',
+          props: {
+            form: {
+              allowSaveWork: `${this.form.allowSaveWork}`,
+              autoSaveSeconds: `${this.form.autoSaveSeconds}`,
+              allowAssignToUser: `${this.form.allowAssignToUser}`
+            }
+          }
+        };
       } else if (this.selectedComponent === 'input-text-area') {
         return {
           name: 'input-text-area',

@@ -319,7 +319,7 @@
 {% set is_admin_or_subadmin_or_owner = current_user.admin or current_user.subadmin or current_user.id in project.owners_ids %}
 {% set enable_browse_task = is_admin_or_subadmin_or_owner or (not current_user.admin and not current_user.subadmin and project.info.allow_taskrun_edit) %}
     {% if project['contrib_button'] == 'completed' %}
-    <a href="{{url_for('project.tasks', short_name=project.short_name)}}" class="btn btn-lg btn-primary btn-contribute pull-right">{{ _('Done! View results') }}</a>
+    <a href="{{url_for('project.tasks', short_name=project.short_name)}}" class="btn btn-lg btn-primary btn-contribute btn-view-results pull-right">{{ _('Done! View results') }}</a>
     {% endif %}
     {% if project['contrib_button'] == 'can_contribute' %}
     <div class="btn-group btn-contribute">
@@ -340,13 +340,13 @@
                 </a>
             {% endif %}
         {% endif %}
-        <div class="col-md-6 pull-left" id="retrieve-task-switch" style="display: none">
-            <label for="toggle-button">Retrieve saved task </label>
-            <label class="switch">
-                <input type="checkbox" id="toggle-button">
-                <span class="slider" />
-            </label>
-        </div>
+    </div>
+    <div class="cls-retrieve-task-switch" id="retrieve-task-switch" style="display: none">
+        <label for="toggle-button">Retrieve saved task </label>
+        <label class="switch">
+            <input type="checkbox" id="toggle-button">
+            <span class="slider" />
+        </label>
     </div>
     {% endif %}
     {% if project['contrib_button'] == 'cannot_contribute' %}
