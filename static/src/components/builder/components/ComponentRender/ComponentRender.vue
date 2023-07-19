@@ -137,7 +137,6 @@ export default {
           }
         };
       } else if (this.selectedComponent === 'assistant-llm') {
-        console.log(this.form)
         return {
           name: 'assistant-llm',
           props: {
