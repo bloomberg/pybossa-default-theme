@@ -88,9 +88,7 @@
     },
     watch: {
       allowSaveWork: function (newValue) {
-        if (newValue !== true) {
-          this.autoSaveSeconds = 60;
-        }
+        this.autoSaveSeconds = newValue ? 60 : 0;
       }
     },
     updated () {
