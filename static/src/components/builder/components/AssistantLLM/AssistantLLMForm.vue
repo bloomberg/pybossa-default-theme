@@ -6,16 +6,19 @@
         id="add-label"
         :checked="labelAdded"
         type="checkbox"
-        @input="updateLabelAdded($event.target.checked)">
+        @input="updateLabelAdded($event.target.checked)"
+      >
       <label for="add-label">
         Add Label
       </label>
-      <input v-if="labelAdded"
+      <input
+        v-if="labelAdded"
         id="component-label"
         :value="label"
         class="form-control form-control-sm"
         type="text"
-        @input="updateLabel($event.target.value)">
+        @input="updateLabel($event.target.value)"
+      >
     </div>
     <div class="form-row">
       <div>
@@ -25,30 +28,49 @@
             :value="prompt[promptSourceType]"
             type="text"
             class="form-control form-control-sm"
-            @input="updatePrompt($event.target.value)">
+            @input="updatePrompt($event.target.value)"
+          >
         </label>
       </div>
       <div>
         <label class="col-labels right-padding-radio">
-          <input v-model="promptSourceType" value="variable" type="radio">
+          <input
+            v-model="promptSourceType"
+            value="variable"
+            type="radio"
+          >
           From Variable
         </label>
         <label class="col-labels">
-          <input v-model="promptSourceType" value="static" type="radio">
+          <input
+            v-model="promptSourceType"
+            value="static"
+            type="radio"
+          >
           Static
         </label>
       </div>
-      <div v-if="promptSourceType === 'variable'" class="form-group">
+      <div
+        v-if="promptSourceType === 'variable'"
+        class="form-group"
+      >
         <input
           id="useStaticPromptPreview"
-          @input="updateUseStaticPromptPreview($event.target.checked)"
           style="vertical-align:top"
-          type="checkbox">
-        <label class="col-labels" for="useStaticPromptPreview">
+          type="checkbox"
+          @input="updateUseStaticPromptPreview($event.target.checked)"
+        >
+        <label
+          class="col-labels"
+          for="useStaticPromptPreview"
+        >
           Use static in preview.
         </label>
         <br>
-        <label for="useStaticPromptPreview" class="label-tip">
+        <label
+          for="useStaticPromptPreview"
+          class="label-tip"
+        >
           Check this if you want to configure some sample data under the static option for preview purposes while using a
           variable in your code.
         </label>
@@ -63,7 +85,8 @@
             :value="content"
             type="text"
             class="form-control form-control-sm"
-            @input="updateContent($event.target.value)">
+            @input="updateContent($event.target.value)"
+          >
         </label>
       </div>
     </div>
@@ -75,7 +98,8 @@
             :value="contentPreview"
             type="text"
             class="form-control form-control-sm"
-            @input="updateContentPreview($event.target.value)">
+            @input="updateContentPreview($event.target.value)"
+          >
         </label>
       </div>
     </div>
@@ -88,8 +112,13 @@
       <select
         class="form-control form-control-sm"
         :value="model"
-        @input="updateModel($event.target.value)">
-        <option v-for="(v, k) in modelOptions" :key="k" :value="v">
+        @input="updateModel($event.target.value)"
+      >
+        <option
+          v-for="(v, k) in modelOptions"
+          :key="k"
+          :value="v"
+        >
           {{ k }}
         </option>
       </select>
@@ -102,9 +131,9 @@
         style="min-height: 16em;"
         class="form-control form-control-sm"
         :value="modelParams"
+        :placeholder="model_params_placeholder"
         @input="updateModelParams($event.target.value)"
-        :placeholder="model_params_placeholder">
-      </textarea>
+      />
     </div>
     <div class="form-row">
       <label class="col-labels">
@@ -113,15 +142,23 @@
       <select
         class="form-control form-control-sm"
         :value="editable"
-        @input="updateEditable($event.target.value)">
-        <option v-for="(v, k) in EditableOptions" :key="k" :value="v">
+        @input="updateEditable($event.target.value)"
+      >
+        <option
+          v-for="(v, k) in EditableOptions"
+          :key="k"
+          :value="v"
+        >
           {{ k }}
         </option>
       </select>
     </div>
     <br>
     <div class="form-row">
-      <label for="pyb-answer" class="col-labels">
+      <label
+        for="pyb-answer"
+        class="col-labels"
+      >
         Answer field name | <span class="label-tip">The field where the worker's answer is stored. Can be a JSON path like
           a.b.c.</span>
       </label>
@@ -129,20 +166,19 @@
         id="pyb-answer"
         :value="pybAnswer"
         class="form-control form-control-sm"
-        @input="updatePybAnswer($event.target.value)">
+        @input="updatePybAnswer($event.target.value)"
+      >
     </div>
   </div>
 </template>
 
 <script>
 import '../../../../../css/component_builder.css';
-import Validator from '../validator';
 import * as types from '../../store/types';
 import { mapMutations, mapState } from 'vuex';
 export default {
   name: 'AssistantLLMForm',
-  components: { Validator },
-  data() {
+  data () {
     return {
       model_params_placeholder:
         `{
@@ -165,17 +201,17 @@ export default {
     };
   },
   computed: {
-    promptSourceLabel() {
+    promptSourceLabel () {
       return `Prompt ${this.promptSourceType === 'variable' ? 'Variable' : ''}`;
     },
-    promptSourceLabelTip() {
+    promptSourceLabelTip () {
       return (this.promptSourceType === 'variable') ? 'A JavaScript expression that returns the LLM prompt. For example, task.info.prompt.' : 'The static LLM prompt.';
     },
     promptSourceType: {
-      get() {
+      get () {
         return this.$store.state.assistantLLM.promptSourceType;
       },
-      set(newValue) {
+      set (newValue) {
         this.$store.commit(types.MUTATE_ASSISTANT_LLM_PROMPT_SOURCE_TYPE, newValue);
       }
     },
@@ -189,7 +225,7 @@ export default {
       modelParams: state => state.assistantLLM.modelParams,
       editable: state => state.assistantLLM.editable,
       pybAnswer: state => state.assistantLLM.pybAnswer,
-      useStaticPromptPreview: state => state.assistantLLM.useStaticPromptPreview,
+      useStaticPromptPreview: state => state.assistantLLM.useStaticPromptPreview
     })
   },
   methods: {
@@ -203,7 +239,7 @@ export default {
       'updateModelParams': types.MUTATE_ASSISTANT_LLM_MODEL_PARAMETERS,
       'updateEditable': types.MUTATE_ASSISTANT_LLM_EDITABLE,
       'updatePybAnswer': types.MUTATE_ASSISTANT_LLM_PYB_ANSWER,
-      'updateUseStaticPromptPreview': types.MUTATE_ASSISTANT_LLM_USE_STATIC_PROMPT_PREVIEW,
+      'updateUseStaticPromptPreview': types.MUTATE_ASSISTANT_LLM_USE_STATIC_PROMPT_PREVIEW
     })
   }
 };

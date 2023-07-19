@@ -20,7 +20,7 @@ import conditionalDisplayTemplate from './components/ConditionalDisplay/conditio
 import fileUploadTemplate from './components/FileUpload/fileUploadTemplate.html';
 import inputTextAreaTemplate from './components/InputTextArea/inputTextAreaTemplate.html';
 import inputTextAreaColumnTemplate from './components/Table/inputTextAreaColumnTemplate.html';
-import assistantLLMTemplate from './components/AssistantLLM/AssistantLLMTemplate.html'
+import assistantLLMTemplate from './components/AssistantLLM/AssistantLLMTemplate.html';
 import taskPresenterTemplate from './components/TaskPresenter/taskPresenterTemplate.html';
 
 import { flatten, uniq, flow } from 'lodash';
@@ -311,7 +311,7 @@ export default {
       model,
       modelParams,
       editable,
-      pybAnswer,
+      pybAnswer
     } = assistantLLM;
 
     let output = Mustache.render(
@@ -337,8 +337,8 @@ export default {
     }
     return output;
 
-    function getBindChar(source) {
-      return source == "variable" ? ":" : ""
+    function getBindChar (source) {
+      return source === 'variable' ? ':' : '';
     }
   },
 

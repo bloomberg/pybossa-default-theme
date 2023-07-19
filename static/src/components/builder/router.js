@@ -13,7 +13,7 @@ import ConditionalDisplayForm from './components/ConditionalDisplay/ConditionalD
 import FileUploadForm from './components/FileUpload/FileUploadForm.vue';
 import TaskTimerForm from './components/TaskTimer/TaskTimerForm.vue';
 import InputTextAreaForm from './components/InputTextArea/InputTextAreaForm.vue';
-import AssistantLLMForm from './components/AssistantLLM/AssistantLLMForm.vue'
+import AssistantLLMForm from './components/AssistantLLM/AssistantLLMForm.vue';
 import TaskPresenterForm from './components/TaskPresenter/TaskPresenterForm.vue';
 
 export const routes = [

@@ -18,7 +18,7 @@ const initialState = () => {
     modelParams: '',
     pybAnswer: '',
     editable: 'none',
-    isValidForm: true,
+    isValidForm: true
   };
 };
 
@@ -51,7 +51,7 @@ export const getters = {
       model: state.model,
       modelParams: state.modelParams,
       editable: state.editable,
-      pybAnswer: state.pybAnswer,
+      pybAnswer: state.pybAnswer
     };
   },
   [types.GET_ASSISTANT_LLM_FORM_VALID] () {

@@ -18,7 +18,10 @@
       <custom-router-link :component="multiselectInput" />
       <custom-router-link :component="table" />
       <custom-router-link :component="textTagging" />
-      <custom-router-link :component="assistantLLM" v-bind:style="isProd ? 'display:none' : ''"/>
+      <custom-router-link
+        :component="assistantLLM"
+        :style="isProd ? 'display:none' : ''"
+      />
       <custom-router-link :component="inputTextArea" />
     </div>
     <div class="col-md-8">
@@ -94,7 +97,7 @@
 
 import Vue from 'vue';
 import Prism from 'vue-prism-component';
-Vue.component('custom-router-link', {
+Vue.component('CustomRouterLink', {
   props: {
     component: {
       type: Object,
