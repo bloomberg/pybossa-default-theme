@@ -18,6 +18,7 @@
       <custom-router-link :component="multiselectInput" />
       <custom-router-link :component="table" />
       <custom-router-link :component="textTagging" />
+      <custom-router-link :component="assistantLLM" v-bind:style="isProd ? 'display:none' : ''"/>
       <custom-router-link :component="inputTextArea" />
     </div>
     <div class="col-md-8">
@@ -116,6 +117,7 @@ export default {
   components: { Prism },
   data () {
     return {
+      isProd: window.location.hostname.includes('prod'),
       loading: false,
       error: false,
       snippet: '',
@@ -194,6 +196,13 @@ export default {
         params: {
           componentName: 'TEXT_TAGGING',
           header: 'NLP Enrichment'
+        }
+      },
+      assistantLLM: {
+        name: 'ASSISTANT_LLM_FORM',
+        params: {
+          componentName: 'ASSISTANT_LLM',
+          header: 'Assistant LLM'
         }
       },
       dropdownInput: {

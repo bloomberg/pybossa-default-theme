@@ -1,0 +1,13 @@
+<assistant-llm
+    id='{{id}}'
+    {{bindPrompt}}prompt='{{prompt}}'
+    {{#content}}
+    {{bindContent}}content="{{content}}"
+    {{/content}}
+    model='{{model}}'
+    {{#modelParams}}
+    model-params='{{modelParams}}'
+    {{/modelParams}}
+    editable='{{editable}}'
+    pyb-answer='{{pybAnswer}}'>
+</assistant-llm>

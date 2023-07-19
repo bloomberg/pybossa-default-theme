@@ -21,6 +21,7 @@ import conditionalDisplayTemplate from './components/ConditionalDisplay/conditio
 import fileUploadTemplate from './components/FileUpload/fileUploadTemplate.html';
 import inputTextAreaTemplate from './components/InputTextArea/inputTextAreaTemplate.html';
 import inputTextAreaColumnTemplate from './components/Table/inputTextAreaColumnTemplate.html';
+import assistantLLMTemplate from './components/AssistantLLM/AssistantLLMTemplate.html'
 
 import { flatten, uniq, flow } from 'lodash';
 
@@ -40,7 +41,8 @@ export const templates = {
   SUBMIT_LAST_BUTTON: submitLastButtonTemplate,
   MULTISELECT_INPUT: multiselectTemplate,
   INPUT_TEXT_AREA: inputTextAreaTemplate,
-  INPUT_TEXT_AREA_COLUMN: inputTextAreaColumnTemplate
+  INPUT_TEXT_AREA_COLUMN: inputTextAreaColumnTemplate,
+  ASSISTANT_LLM: assistantLLMTemplate
 };
 export default {
   uniqueID () {
@@ -48,7 +50,7 @@ export default {
       '_' +
       Math.random()
         .toString(36)
-        .substr(2, 9)
+        .substring(2, 9)
     );
   },
 
@@ -75,6 +77,8 @@ export default {
       return this.getSimpleComponentsCode(form, component);
     } else if (component === 'INPUT_TEXT_AREA') {
       return this.getSimpleComponentsCode(form, component);
+    } else if (component === 'ASSISTANT_LLM') {
+      return this.getAssistantLLMCode(form);
     } else {
       return this.getHelperComponentCode(component);
     }
@@ -291,6 +295,50 @@ export default {
       if (typeof snippet === 'string') return snippet;
       // Otherwise it's an array so stringify it.
       else return JSON.stringify(snippet);
+    }
+  },
+
+  getAssistantLLMCode (assistantLLM) {
+    const {
+      id,
+      labelAdded,
+      label,
+      prompt: { snippet, preview },
+      content,
+      promptSourceType,
+      contentSourceType,
+      model,
+      modelParams,
+      editable,
+      pybAnswer,
+    } = assistantLLM;
+
+    let output = Mustache.render(
+      assistantLLMTemplate,
+      {
+        id: id,
+        pybAnswer: pybAnswer,
+        prompt: snippet,
+        content: content[contentSourceType],
+        bindPrompt: getBindChar(promptSourceType),
+        bindContent: getBindChar(contentSourceType),
+        model: model,
+        modelParams: modelParams,
+        editable: editable
+      }
+    );
+
+    if (labelAdded) {
+      const labelArgs = {
+        component: output,
+        label
+      };
+      output = Mustache.render(labelTemplate, labelArgs);
+    }
+    return output;
+
+    function getBindChar(source) {
+      return source == "variable" ? ":" : ""
     }
   },
 

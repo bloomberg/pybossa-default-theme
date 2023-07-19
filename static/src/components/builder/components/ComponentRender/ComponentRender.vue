@@ -136,6 +136,19 @@ export default {
             confidenceThreshold: this.form.confidenceThreshold
           }
         };
+      } else if (this.selectedComponent === 'assistant-llm') {
+        return {
+          name: 'assistant-llm',
+          props: {
+            id: this.form.id,
+            prompt: this.form.prompt.preview,
+            content: this.form.content.preview,
+            model: this.form.model,
+            modelParams: this.form.modelParams,
+            editable: this.form.editable,
+            pybAnswer: this.form.pybAnswer
+          }
+        };
       } else if (this.selectedComponent === 'table-creator') {
         const data = this.form.data.isVariable
           ? [{}]

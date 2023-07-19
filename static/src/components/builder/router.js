@@ -13,6 +13,7 @@ import ConditionalDisplayForm from './components/ConditionalDisplay/ConditionalD
 import FileUploadForm from './components/FileUpload/FileUploadForm.vue';
 import TaskTimerForm from './components/TaskTimer/TaskTimerForm.vue';
 import InputTextAreaForm from './components/InputTextArea/InputTextAreaForm.vue';
+import AssistantLLMForm from './components/AssistantLLM/AssistantLLMForm.vue'
 
 export const routes = [
   {
@@ -251,6 +252,28 @@ export const routes = [
       {
         path: 'code',
         name: 'FILE_UPLOAD_CODE',
+        components: { default: PreviewCommons }
+      }
+    ]
+  },
+  {
+    path: '/assistantLLM',
+    name: 'ASSISTANT_LLM',
+    components: { default: Content, header: Header },
+    children: [
+      {
+        path: 'form',
+        name: 'ASSISTANT_LLM_FORM',
+        components: { default: AssistantLLMForm }
+      },
+      {
+        path: 'preview',
+        name: 'ASSISTANT_LLM_PREVIEW',
+        components: { default: PreviewCommons }
+      },
+      {
+        path: 'code',
+        name: 'ASSISTANT_LLM_CODE',
         components: { default: PreviewCommons }
       }
     ]

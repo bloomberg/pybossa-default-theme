@@ -5,6 +5,7 @@ import checkboxInput from './modules/checkboxInput';
 import table from './modules/table';
 import radioInput from './modules/radioInput';
 import textTagging from './modules/textTagging';
+import assistantLLM from './modules/assistantLLM';
 import dropdownInput from './modules/dropdownInput';
 import multiselectInput from './modules/multiselectInput';
 import conditionalDisplay from './modules/conditionalDisplay';
@@ -32,6 +33,7 @@ export default new Vuex.Store({
     table,
     radioInput,
     textTagging,
+    assistantLLM,
     dropdownInput,
     multiselectInput,
     conditionalDisplay,
