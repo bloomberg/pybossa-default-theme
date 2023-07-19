@@ -129,7 +129,6 @@
         id="pyb-answer"
         :value="pybAnswer"
         class="form-control form-control-sm"
-        type="text"
         @input="updatePybAnswer($event.target.value)">
     </div>
   </div>
