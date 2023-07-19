@@ -93,12 +93,6 @@ export const mutations = {
   },
   [types.MUTATE_ASSISTANT_LLM_USE_STATIC_PROMPT_PREVIEW] (state, payload) {
     state.useStaticPromptPreview = payload;
-  },
-  [types.MUTATE_CLEAR_TEXT_INPUT_FORM] (state) {
-    const initial = initialState();
-    Object.keys(initial).forEach(key => {
-      state[key] = initial[key];
-    });
   }
 };
 

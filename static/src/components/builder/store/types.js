@@ -28,7 +28,6 @@ export const GET_TEXT_TAGGING_ERRORS = 'textTagging/GET_TEXT_TAGGING_ERRORS';
 
 export const GET_ASSISTANT_LLM_PROPS = 'assistantLLM/PROPS';
 export const GET_ASSISTANT_LLM_FORM_VALID = 'assistantLLM/FORM_VALID';
-export const GET_ASSISTANT_LLM_ERRORS = 'assistantLLM/GET_ASSISTANT_LLM_ERRORS';
 
 export const GET_DROPDOWN_INPUT_PROPS = 'dropdownInput/PROPS';
 export const GET_DROPDOWN_INPUT_FORM_VALID = 'dropdownInput/FORM_VALID';
