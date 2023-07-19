@@ -58,37 +58,24 @@
     <div id="content-input">
       <div>
         <label class="block-label">
-          {{ contentSourceLabel }} | <span class="label-tip">{{ contentSourceLabelTip }}</span>
+          Content Variable | <span class="label-tip">A JavaScript expression that returns the LLM content. For example, task.info.content.</span>
           <input
-            :value="content[promptSourceType]"
+            :value="content"
             type="text"
             class="form-control form-control-sm"
             @input="updateContent($event.target.value)">
         </label>
       </div>
+    </div>
+    <div id="content-preview-input">
       <div>
-        <label class="col-labels right-padding-radio">
-          <input v-model="contentSourceType" value="variable" type="radio">
-          From Variable
-        </label>
-        <label class="col-labels">
-          <input v-model="contentSourceType" value="static" type="radio">
-          Static
-        </label>
-      </div>
-      <div v-if="contentSourceType === 'variable'" class="form-group">
-        <input
-          id="useStaticContentPreview"
-          @input="updateUseStaticContentPreview($event.target.checked)"
-          style="vertical-align:top"
-          type="checkbox">
-        <label class="col-labels" for="useStaticContentPreview">
-          Use static in preview.
-        </label>
-        <br>
-        <label for="useStaticContentPreview" class="label-tip">
-          Check this if you want to configure some sample data under the static option for preview purposes while using a
-          variable in your code.
+        <label class="block-label">
+          Content Preview | <span class="label-tip">Enter text if you want to configure some sample data for content in the component preview.</span>
+          <input
+            :value="contentPreview"
+            type="text"
+            class="form-control form-control-sm"
+            @input="updateContentPreview($event.target.value)">
         </label>
       </div>
     </div>
@@ -185,12 +172,6 @@ export default {
     promptSourceLabelTip() {
       return (this.promptSourceType === 'variable') ? 'A JavaScript expression that returns the LLM prompt. For example, task.info.prompt.' : 'The static LLM prompt.';
     },
-    contentSourceLabel() {
-      return `Content ${this.contentSourceType === 'variable' ? 'Variable' : ''}`;
-    },
-    contentSourceLabelTip() {
-      return (this.contentSourceType === 'variable') ? 'A JavaScript expression that returns the LLM content. For example, task.info.content.' : 'The static LLM content.';
-    },
     promptSourceType: {
       get() {
         return this.$store.state.assistantLLM.promptSourceType;
@@ -199,26 +180,17 @@ export default {
         this.$store.commit(types.MUTATE_ASSISTANT_LLM_PROMPT_SOURCE_TYPE, newValue);
       }
     },
-    contentSourceType: {
-      get() {
-        return this.$store.state.assistantLLM.contentSourceType;
-      },
-      set(newValue) {
-        this.$store.commit(types.MUTATE_ASSISTANT_LLM_CONTENT_SOURCE_TYPE, newValue);
-      }
-    },
-
     ...mapState({
       label: state => state.assistantLLM.label,
       labelAdded: state => state.assistantLLM.labelAdded,
       prompt: state => state.assistantLLM.prompt,
       content: state => state.assistantLLM.content,
+      contentPreview: state => state.assistantLLM.contentPreview,
       model: state => state.assistantLLM.model,
       modelParams: state => state.assistantLLM.modelParams,
       editable: state => state.assistantLLM.editable,
       pybAnswer: state => state.assistantLLM.pybAnswer,
       useStaticPromptPreview: state => state.assistantLLM.useStaticPromptPreview,
-      useStaticContenttPreview: state => state.assistantLLM.useStaticContentPreview
     })
   },
   methods: {
@@ -227,12 +199,12 @@ export default {
       'updateLabelAdded': types.MUTATE_ASSISTANT_LLM_LABEL_ADDED,
       'updatePrompt': types.MUTATE_ASSISTANT_LLM_PROMPT,
       'updateContent': types.MUTATE_ASSISTANT_LLM_CONTENT,
+      'updateContentPreview': types.MUTATE_ASSISTANT_LLM_CONTENT_PREVIEW,
       'updateModel': types.MUTATE_ASSISTANT_LLM_MODEL,
       'updateModelParams': types.MUTATE_ASSISTANT_LLM_MODEL_PARAMETERS,
       'updateEditable': types.MUTATE_ASSISTANT_LLM_EDITABLE,
       'updatePybAnswer': types.MUTATE_ASSISTANT_LLM_PYB_ANSWER,
       'updateUseStaticPromptPreview': types.MUTATE_ASSISTANT_LLM_USE_STATIC_PROMPT_PREVIEW,
-      'updateUseStaticContentPreview': types.MUTATE_ASSISTANT_LLM_USE_STATIC_CONTENT_PREVIEW
     })
   }
 };

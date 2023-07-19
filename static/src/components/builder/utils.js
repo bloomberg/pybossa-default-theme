@@ -306,7 +306,6 @@ export default {
       prompt: { snippet, preview },
       content,
       promptSourceType,
-      contentSourceType,
       model,
       modelParams,
       editable,
@@ -319,9 +318,8 @@ export default {
         id: id,
         pybAnswer: pybAnswer,
         prompt: snippet,
-        content: content[contentSourceType],
+        content: content,
         bindPrompt: getBindChar(promptSourceType),
-        bindContent: getBindChar(contentSourceType),
         model: model,
         modelParams: modelParams,
         editable: editable

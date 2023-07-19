@@ -137,12 +137,13 @@ export default {
           }
         };
       } else if (this.selectedComponent === 'assistant-llm') {
+        console.log(this.form)
         return {
           name: 'assistant-llm',
           props: {
             id: this.form.id,
             prompt: this.form.prompt.preview,
-            content: this.form.content.preview,
+            content: this.form.contentPreview,
             model: this.form.model,
             modelParams: this.form.modelParams,
             editable: this.form.editable,

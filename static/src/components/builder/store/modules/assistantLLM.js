@@ -6,18 +6,14 @@ const initialState = () => {
     id: utils.uniqueID(),
     label: '',
     labelAdded: false,
+    content: '',
+    contentPreview: '',
     prompt: {
       variable: '',
       static: ''
     },
-    content: {
-      variable: '',
-      static: ''
-    },
     promptSourceType: 'variable',
-    contentSourceType: 'variable',
     useStaticPromptPreview: false,
-    useStaticContentPreview: false,
     model: 'flan-ul2',
     modelParams: '',
     pybAnswer: '',
@@ -48,14 +44,14 @@ export const getters = {
       label: state.label,
       labelAdded: state.labelAdded,
       prompt: getText(state.prompt, state.promptSourceType, state.useStaticPromptPreview),
-      content: getText(state.content, state.contentSourceType, state.useStaticContentPreview),
       promptSourceType: state.promptSourceType,
-      contentSourceType: state.contentSourceType,
+      useStaticPromptPreview: state.useStaticPromptPreview,
+      content: state.content,
+      contentPreview: state.contentPreview,
       model: state.model,
       modelParams: state.modelParams,
       editable: state.editable,
       pybAnswer: state.pybAnswer,
-      useStaticPromptPreview: state.useStaticPromptPreview,
     };
   },
   [types.GET_ASSISTANT_LLM_FORM_VALID] () {
@@ -78,10 +74,10 @@ export const mutations = {
     state.promptSourceType = payload;
   },
   [types.MUTATE_ASSISTANT_LLM_CONTENT] (state, payload) {
-    state.content[state.contentSourceType] = payload;
+    state.content = payload;
   },
-  [types.MUTATE_ASSISTANT_LLM_CONTENT_SOURCE_TYPE] (state, payload) {
-    state.contentSourceType = payload;
+  [types.MUTATE_ASSISTANT_LLM_CONTENT_PREVIEW] (state, payload) {
+    state.contentPreview = payload;
   },
   [types.MUTATE_ASSISTANT_LLM_MODEL] (state, payload) {
   state.model = payload;
@@ -97,9 +93,6 @@ export const mutations = {
   },
   [types.MUTATE_ASSISTANT_LLM_USE_STATIC_PROMPT_PREVIEW] (state, payload) {
     state.useStaticPromptPreview = payload;
-  },
-  [types.MUTATE_ASSISTANT_LLM_USE_STATIC_CONTENT_PREVIEW] (state, payload) {
-    state.useStaticContentPreview = payload;
   },
   [types.MUTATE_CLEAR_TEXT_INPUT_FORM] (state) {
     const initial = initialState();
