@@ -120,7 +120,7 @@ export default {
   components: { Prism },
   data () {
     return {
-      isPrivate: window.location.hostname.includes('blpprofessional'),
+      isPrivate: window.location.hostname.includes('gigwork.net'),
       loading: false,
       error: false,
       snippet: '',
