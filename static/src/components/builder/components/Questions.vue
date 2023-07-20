@@ -20,7 +20,7 @@
       <custom-router-link :component="textTagging" />
       <custom-router-link
         :component="assistantLLM"
-        :style="isProd ? 'display:none' : ''"
+        :style="!isPrivate ? 'display:none' : ''"
       />
       <custom-router-link :component="inputTextArea" />
     </div>
@@ -120,7 +120,7 @@ export default {
   components: { Prism },
   data () {
     return {
-      isProd: window.location.hostname.includes('prod'),
+      isPrivate: window.location.hostname.includes('blpprofessional'),
       loading: false,
       error: false,
       snippet: '',
