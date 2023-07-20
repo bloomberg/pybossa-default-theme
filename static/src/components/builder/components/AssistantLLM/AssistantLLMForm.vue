@@ -137,7 +137,7 @@
     </div>
     <div class="form-row">
       <label class="col-labels">
-        Editable | <span class="label-tip">Which of the LLM fields are editable by the worker.</span>
+        Editable | <span class="label-tip">LLM fields that are editable by the worker.</span>
       </label>
       <select
         class="form-control form-control-sm"
