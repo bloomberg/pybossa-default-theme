@@ -33,6 +33,9 @@
                     <div>{{ overall_progress | round | int }}%</div>
                   </div>
                 </div>
+                {% if notifications is defined and 'project_incomplete_info' in notifications %}
+                    {{helper.render_project_incomplete_info_panel(notifications['project_incomplete_info'])}}
+                {% endif %}
             {% endif %}
             {% if active_link == 'info' and project.long_description != project.description %}
                 <div class="row">

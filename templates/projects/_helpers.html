@@ -293,6 +293,24 @@
 </div>
 {% endmacro %}
 
+{% macro render_project_incomplete_info_panel(info) %}
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-info-circle"></i> {{ _('You have no remaining tasks, but the project is not complete because:') }}</h3>
+    </div>
+    <div class="panel-body">
+        <ul>
+            {% if 'user_preferences' in info %}
+            {% set task_scheduler = info['user_preferences'].get('task_scheduler') %}
+            {% set account_profile_link =  info['user_preferences'].get('account_profile_link') %}
+            <li>{{ _('Your <a href="{}">user preferences</a> do not match the remaining task preferences as set by the project owner.').format(account_profile_link) }}</li>
+            <li>{{ _('The scheduler for this project is the {}.').format(task_scheduler) }}</li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endmacro %}
+
 {% macro render_task_queue_toggle_buttons(project, current_user, view) %}
     {% set is_admin_or_subadmin_or_owner = current_user.admin or current_user.subadmin or current_user.id in project.owners_ids %}
     {% set regular_user = not is_admin_or_subadmin_or_owner %}
