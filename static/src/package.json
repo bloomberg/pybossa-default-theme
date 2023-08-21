@@ -8,6 +8,7 @@
     "url": "https://github.com/bloomberg/pybossa-default-theme.git"
   },
   "scripts": {
+    "build": "webpack",
     "watch": "webpack -w -d",
     "test": "jest",
     "test-update": "jest -u",
