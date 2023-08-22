@@ -1,6 +1,9 @@
 <template>
   <div class="row">
     <h3>Assistant LLM Settings</h3>
+    <div class="danger-validation-text">
+      <label>Please submit SDSK ADD 38813 for production use of LLMs</label>
+    </div>
     <div class="form-row">
       <input
         id="add-label"
