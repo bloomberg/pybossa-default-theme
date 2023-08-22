@@ -1,5 +1,5 @@
 ## Development
-You can use `npm` or `yarn`, although `npm` works better under Bloomberg proxy settings.
+
 ### Install Node
 1. Install [nvm](https://github.com/nvm-sh/nvm)
 2. Inside the `static/src` folder, run `nvm install`
