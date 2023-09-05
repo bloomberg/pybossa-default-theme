@@ -22,18 +22,13 @@
         <h3> Unpublish Project </h3>
         <strong>{{ _('Unpublish project from ') }} {{ server_type }}</strong>
         <p>{{ _('You are about to unpublish your project. Once your project has been unpublished, people will not be able to contribute to it. ') }}</p>
-
         <form class="form-horizontal" method="post" action="{{ url_for('project.publish', short_name=project.short_name) }}">
             <div class="form-actions">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                
-
                 <button id="btn-unpublish" class="btn btn-md btn-primary" type="button" data-target="#unpublish-project-modal" data-toggle="modal" title="Unpublish Project">{{ _('Unpublish') }}</button>
-                
                 <!-- Unpublish Project -->
                 <div class="modal fade" id="unpublish-project-modal" tabindex="-1" role="dialog" aria-labelledby="unpublish-project-modal-label">
                     <div class="modal-dialog">
-                    
                     <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
@@ -46,12 +41,9 @@
                         <div class="modal-footer">
                         <input type="submit" class="btn btn-danger" value="{{ _('Yes, Unpublish') }}"/>
                         <button type="button" class="btn btn-default cancel-delete" data-dismiss="modal">Close</button>
-                
                         </div>
-
                     </div>
-                    
-                    </div>
+                </div>
                 </div>
             </div>
         </form>
@@ -84,7 +76,11 @@
                     <b>
                         <a href="{{ target_url }}" target="_blank">Production GIGwork</a>
                         {{  _(' > My Profile > API Key ') }}
-                    </b></p>
+                    </b>
+            </p>
+            <p>
+                {{ _(config.get('SYNC_PROJECT_MSG')) }}
+            </p>
 
             <form method="post" action="{{ url_for('project.sync_project', short_name = project.short_name) }}">
                 <fieldset>
