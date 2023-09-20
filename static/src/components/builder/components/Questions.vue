@@ -198,7 +198,7 @@ export default {
         name: 'TEXT_TAGGING_FORM',
         params: {
           componentName: 'TEXT_TAGGING',
-          header: 'NLP Enrichment'
+          header: 'Span Annotation (NER)'
         }
       },
       assistantLLM: {
