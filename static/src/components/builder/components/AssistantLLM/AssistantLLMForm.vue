@@ -190,9 +190,7 @@ export default {
           "top_k": 3,
           "top_p": 1.0,
           "seed": null,
-          "repetition_penalty": 1.0,
-          "num_beams": 1,
-          "logprobs": false
+          "repetition_penalty": 1.0
     }`,
       modelOptions: { 'FLAN-UL2': 'flan-ul2' },
       EditableOptions: {
