@@ -19,7 +19,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@dtwebservices/task-presenter-components": "0.11.19",
+    "@dtwebservices/task-presenter-components": "0.11.27",
     "@vue/eslint-config-standard": "^4.0.0",
     "@vue/test-utils": "1.0.0-beta.29",
     "axios": "^0.20.0",
