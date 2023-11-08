@@ -111,7 +111,6 @@
     "to-fast-properties" "^2.0.0"
 
 "@dtwebservices/task-presenter-components@0.11.27":
-  "integrity" "sha1-t8oD1lkubF+t+rHtYk1twiUpKkc="
   "resolved" "https://artprod.dev.bloomberg.com/artifactory/api/npm/npm-repos/@dtwebservices/task-presenter-components/-/@dtwebservices/task-presenter-components-0.11.27.tgz"
   "version" "0.11.27"
   dependencies:
