@@ -1,0 +1,26 @@
+<script>
+    async function setImage(selector, timeout = 10000) {
+        const start = Date.now();
+        // wait for image to exist
+        while (Date.now() - start < timeout) {
+            const el = document.querySelector(selector);
+            if (el) {
+                // create link to home page
+                let link = document.createElement('a')
+                link.href = "/"
+                el.parentNode.insertBefore(link, el);
+                link.appendChild(el);
+                // set image
+                el.src = "/static/img/gigwork-white.png";
+                el.height = "75"
+                return;
+            }
+            await new Promise(resolve => setTimeout(resolve, 10));
+        }
+        return;
+    }
+    window.addEventListener('load', function (){
+        let imgSelector = "#swagger-ui > section > div.topbar > div > div > a > img";
+        setImage(imgSelector);
+    });
+</script>
