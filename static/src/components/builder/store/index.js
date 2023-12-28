@@ -1,18 +1,19 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import textInput from './modules/textInput';
-import checkboxInput from './modules/checkboxInput';
-import table from './modules/table';
-import radioInput from './modules/radioInput';
-import textTagging from './modules/textTagging';
+import anco from './modules/anco';
 import assistantLLM from './modules/assistantLLM';
-import dropdownInput from './modules/dropdownInput';
-import multiselectInput from './modules/multiselectInput';
+import checkboxInput from './modules/checkboxInput';
 import conditionalDisplay from './modules/conditionalDisplay';
+import dropdownInput from './modules/dropdownInput';
 import fileUpload from './modules/fileUpload';
-import taskTimer from './modules/taskTimer';
 import inputTextArea from './modules/inputTextArea';
+import multiselectInput from './modules/multiselectInput';
+import radioInput from './modules/radioInput';
+import table from './modules/table';
 import taskPresenter from './modules/taskPresenter';
+import taskTimer from './modules/taskTimer';
+import textInput from './modules/textInput';
+import textTagging from './modules/textTagging';
 
 import { getStoreOptions, setNamespace } from '@dtwebservices/task-presenter-components';
 
@@ -41,6 +42,7 @@ export default new Vuex.Store({
     fileUpload,
     taskTimer,
     inputTextArea,
-    taskPresenter
+    taskPresenter,
+    anco
   }
 });

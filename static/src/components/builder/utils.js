@@ -1,29 +1,30 @@
 import Mustache from 'mustache';
-import textInputTemplate from './components/TextInput/textInputTemplate.html';
-import checkboxInputTemplate from './components/CheckboxInput/checkboxInputTemplate.html';
+import ancoTemplate from './components/Anco/AncoTemplate.html';
+import assistantLLMTemplate from './components/AssistantLLM/AssistantLLMTemplate.html';
 import checkboxGroupTemplate from './components/CheckboxInput/checkboxGroupTemplate.html';
-import tableTemplate from './components/Table/tableTemplate.html';
-import labelTemplate from './components/templates/labelTemplate.html';
-import textInputColumnTemplate from './components/Table/textInputColumnTemplate.html';
-import checkboxInputColumnTemplate from './components/Table/checkboxInputColumnTemplate.html';
-import taskTimerTemplate from './components/TaskTimer/taskTimerTemplate.html';
-import cancelButtonTemplate from './components/helpers/cancelButtonTemplate.html';
-import buttonRowTemplate from './components/helpers/buttonRowTemplate.html';
-import submitButtonTemplate from './components/helpers/submitButtonTemplate.html';
-import submitLastButtonTemplate from './components/helpers/submitLastButtonTemplate.html';
-import slotTemplate from './components/Table/slotTemplate.html';
-import radioGroupTemplate from './components/RadioInput/radioGroupTemplate.html';
-import textTaggingTemplate from './components/TextTagging/textTaggingTemplate.html';
-import dropdownTemplate from './components/DropdownInput/dropdownTemplate.html';
-import multiselectTemplate from './components/MultiselectInput/multiselectTemplate.html';
+import checkboxInputTemplate from './components/CheckboxInput/checkboxInputTemplate.html';
 import conditionalDisplayTemplate from './components/ConditionalDisplay/conditionalDisplayTemplate.html';
+import dropdownTemplate from './components/DropdownInput/dropdownTemplate.html';
 import fileUploadTemplate from './components/FileUpload/fileUploadTemplate.html';
 import inputTextAreaTemplate from './components/InputTextArea/inputTextAreaTemplate.html';
+import multiselectTemplate from './components/MultiselectInput/multiselectTemplate.html';
+import radioGroupTemplate from './components/RadioInput/radioGroupTemplate.html';
+import checkboxInputColumnTemplate from './components/Table/checkboxInputColumnTemplate.html';
 import inputTextAreaColumnTemplate from './components/Table/inputTextAreaColumnTemplate.html';
-import assistantLLMTemplate from './components/AssistantLLM/AssistantLLMTemplate.html';
+import slotTemplate from './components/Table/slotTemplate.html';
+import tableTemplate from './components/Table/tableTemplate.html';
+import textInputColumnTemplate from './components/Table/textInputColumnTemplate.html';
 import taskPresenterTemplate from './components/TaskPresenter/taskPresenterTemplate.html';
+import taskTimerTemplate from './components/TaskTimer/taskTimerTemplate.html';
+import textInputTemplate from './components/TextInput/textInputTemplate.html';
+import textTaggingTemplate from './components/TextTagging/textTaggingTemplate.html';
+import buttonRowTemplate from './components/helpers/buttonRowTemplate.html';
+import cancelButtonTemplate from './components/helpers/cancelButtonTemplate.html';
+import submitButtonTemplate from './components/helpers/submitButtonTemplate.html';
+import submitLastButtonTemplate from './components/helpers/submitLastButtonTemplate.html';
+import labelTemplate from './components/templates/labelTemplate.html';
 
-import { flatten, uniq, flow } from 'lodash';
+import { flatten, flow, uniq } from 'lodash';
 
 export const templates = {
   TEXT_INPUT: textInputTemplate,
@@ -79,6 +80,8 @@ export default {
       return this.getSimpleComponentsCode(form, component);
     } else if (component === 'ASSISTANT_LLM') {
       return this.getAssistantLLMCode(form);
+    } else if (component === 'ANCO') {
+      return this.getAncoCode(form);
     } else if (component === 'TASK_PRESENTER') {
        return this.getSimpleComponentsCode(form, component);
     } else {
@@ -406,6 +409,32 @@ export default {
   getConditionalDisplayCode (form, component) {
     const formForTemplate = this.getValuesForTemplate(form);
     const output = Mustache.render(templates[component], formForTemplate);
+    return output;
+  },
+
+  getAncoCode ({ pybAnswer, categoryList = [], docUrl, annotationUrl }) {
+    const categories = categoryList.filter(c => c.name).map(c => ({
+      name: c.name,
+      style: c.style,
+      valueType: c.type
+    }));
+
+    const config = {
+      docUrl,
+      annotationType: "BoundingBox",
+      requiredAnnotationOnLoad: !!annotationUrl,
+      categories: JSON.stringify(categories),
+    }
+
+    if (annotationUrl) {
+      config.annotationUrl = annotationUrl
+    }
+
+    const output = Mustache.render(ancoTemplate, {
+      pybAnswer,
+      ...config
+    });
+
     return output;
   },
 

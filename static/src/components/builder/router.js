@@ -1,20 +1,21 @@
-import Questions from './components/Questions.vue';
-import Header from './components/Header.vue';
-import Content from './components/Content.vue';
-import CheckboxForm from './components/CheckboxInput/CheckboxInputForm.vue';
-import TextInputForm from './components/TextInput/TextInputForm.vue';
-import TableForm from './components/Table/TableForm.vue';
-import PreviewCommons from './components/PreviewCommons.vue';
-import RadioForm from './components/RadioInput/RadioInputForm.vue';
-import TextTaggingForm from './components/TextTagging/TextTaggingForm.vue';
-import DropdownForm from './components/DropdownInput/DropdownForm.vue';
-import MultiselectForm from './components/MultiselectInput/MultiselectForm.vue';
-import ConditionalDisplayForm from './components/ConditionalDisplay/ConditionalDisplayForm.vue';
-import FileUploadForm from './components/FileUpload/FileUploadForm.vue';
-import TaskTimerForm from './components/TaskTimer/TaskTimerForm.vue';
-import InputTextAreaForm from './components/InputTextArea/InputTextAreaForm.vue';
+import AncoForm from './components/Anco/AncoForm';
 import AssistantLLMForm from './components/AssistantLLM/AssistantLLMForm.vue';
+import CheckboxForm from './components/CheckboxInput/CheckboxInputForm.vue';
+import ConditionalDisplayForm from './components/ConditionalDisplay/ConditionalDisplayForm.vue';
+import Content from './components/Content.vue';
+import DropdownForm from './components/DropdownInput/DropdownForm.vue';
+import FileUploadForm from './components/FileUpload/FileUploadForm.vue';
+import Header from './components/Header.vue';
+import InputTextAreaForm from './components/InputTextArea/InputTextAreaForm.vue';
+import MultiselectForm from './components/MultiselectInput/MultiselectForm.vue';
+import PreviewCommons from './components/PreviewCommons.vue';
+import Questions from './components/Questions.vue';
+import RadioForm from './components/RadioInput/RadioInputForm.vue';
+import TableForm from './components/Table/TableForm.vue';
 import TaskPresenterForm from './components/TaskPresenter/TaskPresenterForm.vue';
+import TaskTimerForm from './components/TaskTimer/TaskTimerForm.vue';
+import TextInputForm from './components/TextInput/TextInputForm.vue';
+import TextTaggingForm from './components/TextTagging/TextTaggingForm.vue';
 
 export const routes = [
   {
@@ -372,6 +373,31 @@ export const routes = [
       {
         path: 'code',
         name: 'INPUT_TEXT_AREA_CODE',
+        components: { default: PreviewCommons }
+      }
+    ]
+  },
+  {
+    path: '/anco',
+    name: 'ANCO',
+    components: {
+      default: Content,
+      header: Header
+    },
+    children: [
+      {
+        path: 'form',
+        name: 'ANCO_FORM',
+        components: { default: AncoForm }
+      },
+      {
+        path: 'preview',
+        name: 'ANCO_PREVIEW',
+        components: { default: PreviewCommons }
+      },
+      {
+        path: 'code',
+        name: 'ANCO_CODE',
         components: { default: PreviewCommons }
       }
     ]

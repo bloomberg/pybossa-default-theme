@@ -53,13 +53,13 @@
 </style>
 
 <script>
+import components from '@dtwebservices/task-presenter-components';
 import 'prismjs';
 import 'prismjs/themes/prism.css';
 import Prism from 'vue-prism-component';
-import ComponentRender from './ComponentRender/ComponentRender';
-import components from '@dtwebservices/task-presenter-components';
 import * as types from '../store/types';
 import utils from '../utils';
+import ComponentRender from './ComponentRender/ComponentRender';
 
 export default {
   components: {
@@ -86,7 +86,8 @@ export default {
         MULTISELECT_INPUT: 'multi-select-input',
         CONDITIONAL_DISPLAY: 'conditionaldisplay-creator',
         FILE_UPLOAD: 'file-upload',
-        INPUT_TEXT_AREA: 'input-text-area'
+        INPUT_TEXT_AREA: 'input-text-area',
+        ANCO_LOADER: 'anco'
       }
     };
   },
