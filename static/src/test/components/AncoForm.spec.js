@@ -1,5 +1,5 @@
 import { createLocalVue, mount } from '@vue/test-utils';
-import AncoForm from "../../components/builder/components/Anco/AncoForm";
+import AncoForm from '../../components/builder/components/Anco/AncoForm';
 import { __createMocks as createStoreMocks } from '../../components/builder/store';
 import * as types from '../../components/builder/store/types';
 

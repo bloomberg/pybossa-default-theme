@@ -112,7 +112,6 @@
             </tbody>
           </table>
         </div>
-
       </div>
       <div class="form-group row">
         <div class="col-md-6">
@@ -120,20 +119,24 @@
         </div>
         <div class="col-md-6 pull-right">
           <select
-              v-model="completed_tasks_cleanup_days"
-              class="form-control input-sm"
+            v-model="completed_tasks_cleanup_days"
+            class="form-control input-sm"
           >
             <option
-                v-for="opt in [[null, 'None'], [30, '30 days'], [60, '60 days'], [90, '90 days'], [180, '180 days']]"
-                :key="opt[0]"
-                :value="opt[0]"
+              v-for="opt in [[null, 'None'], [30, '30 days'], [60, '60 days'], [90, '90 days'], [180, '180 days']]"
+              :key="opt[0]"
+              :value="opt[0]"
             >
               {{ opt[1] }}
             </option>
           </select>
         </div>
       </div>
-      <div v-if="!this.validAccessLevels.length" class="form-group row">  <!-- enable editing of task submissions only on public platform -->
+      <div
+        v-if="!validAccessLevels.length"
+        class="form-group row"
+      >
+        <!-- enable editing of task submissions only on public platform -->
         <div class="col-md-6">
           <p> Allow Editing of Task Submissions </p>
         </div>

@@ -44,6 +44,9 @@ import * as types from '../store/types';
 
 export default {
   name: 'Header',
+  beforeRouteEnter (to, from, next) {
+    next();
+  },
   data () {
     return {};
   },
@@ -57,9 +60,6 @@ export default {
 
       this.$router.push({ name: 'home' });
     }
-  },
-  beforeRouteEnter (to, from, next) {
-    next();
   }
 };
 </script>

@@ -421,13 +421,13 @@ export default {
 
     const config = {
       docUrl,
-      annotationType: "BoundingBox",
+      annotationType: 'BoundingBox',
       requiredAnnotationOnLoad: !!annotationUrl,
-      categories: JSON.stringify(categories),
-    }
+      categories: JSON.stringify(categories)
+    };
 
     if (annotationUrl) {
-      config.annotationUrl = annotationUrl
+      config.annotationUrl = annotationUrl;
     }
 
     const output = Mustache.render(ancoTemplate, {

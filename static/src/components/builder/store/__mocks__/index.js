@@ -20,7 +20,7 @@ export function __createMocks (
     anco.mutations
   );
   const mockActions = Object.assign({}, textInput.actions, custom.actions, inputTextArea.actions);
-  const mockState = Object.assign({}, textInput.state, checkboxInput.state, table.state, inputTextArea.state,anco.state);
+  const mockState = Object.assign({}, textInput.state, checkboxInput.state, table.state, inputTextArea.state, anco.state);
   return {
     getters: mockGetters,
     mutations: mockMutations,

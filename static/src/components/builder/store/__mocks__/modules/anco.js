@@ -3,7 +3,7 @@ import * as types from '../../types';
 export const state = {
   anco: {
     'pyb-answer': 'myPybAnswer',
-    categoryList: [{name: 'category1', type: 'text', stle: 'color:red'}],
+    categoryList: [{ name: 'category1', type: 'text', stle: 'color:red' }],
     docUrl: 'http://boomberg.next/doc.pdf',
     annotationUrl: 'http://boomberg.next/annotation.json',
     isValidForm: true
@@ -23,7 +23,7 @@ export const mutations = {
   [types.MUTATE_ANCO_PYB_ANSWER]: jest.fn(),
   [types.MUTATE_ANCO_DOC_URL]: jest.fn(),
   [types.MUTATE_ANCO_ANNOTATION_URL]: jest.fn(),
-  [types.MUTATE_ANCO_ADD_LIST_ITEM]: jest.fn(),
+  [types.MUTATE_ANCO_ADD_LIST_ITEM]: jest.fn()
 };
 
 export default {
