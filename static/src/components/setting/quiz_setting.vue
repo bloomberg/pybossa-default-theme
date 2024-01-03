@@ -49,8 +49,8 @@ import Multiselect from 'vue-multiselect';
 import TableQuiz from './quiz_result_table.vue';
 import GigSpinner from '../common/gig_spinner.vue';
 
-Vue.component('multiselect', Multiselect);
-Vue.component('table-quiz', TableQuiz);
+Vue.component('Multiselect', Multiselect);
+Vue.component('TableQuiz', TableQuiz);
 
 export default {
   components: {

@@ -4,9 +4,9 @@
     <div class="form-row">
       <input
         id="show-lock"
+        v-model="showLock"
         :checked="showLock"
         type="checkbox"
-        v-model='showLock'
       >
       <label for="show-lock">
         Display lock time

@@ -26,11 +26,11 @@
         Number of rows
       </label>
       <input
-          id="rows"
-          :value="rows"
-          class="form-control form-control-sm"
-          type="number"
-          @input="updateRows($event.target.value)"
+        id="rows"
+        :value="rows"
+        class="form-control form-control-sm"
+        type="number"
+        @input="updateRows($event.target.value)"
       >
     </div>
 

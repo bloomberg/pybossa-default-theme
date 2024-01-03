@@ -23,6 +23,10 @@
         :style="isPublic ? 'display:none' : ''"
       />
       <custom-router-link :component="inputTextArea" />
+      <custom-router-link
+        :component="anco"
+        :style="isPublic ? 'display:none' : ''"
+      />
     </div>
     <div class="col-md-8">
       <div class="row">
@@ -241,6 +245,13 @@ export default {
         params: {
           componentName: 'INPUT_TEXT_AREA',
           header: 'Input Text Area'
+        }
+      },
+      anco: {
+        name: 'ANCO_FORM',
+        params: {
+          componentName: 'ANCO',
+          header: 'Annotation Copilot'
         }
       }
     };
