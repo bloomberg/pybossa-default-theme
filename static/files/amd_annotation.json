@@ -1,0 +1,29 @@
+{
+  "version": "1.0",
+  "source-uri": "amd-2022-10k.pdf",
+  "pages": {
+    "1": {
+      "id": "1",
+      "width": 612,
+      "height": 792,
+      "elements": [
+        {
+          "id": "02dc26d0-e631-42e2-838d-53ef84dea4c3",
+          "text": [],
+          "bboxes": [
+            {
+              "top": 154,
+              "left": 177,
+              "bottom": 228,
+              "right": 432
+            }
+          ],
+          "transparencies": [],
+          "categories": [
+            "Logo"
+          ]
+        }
+      ]
+    }
+  }
+}

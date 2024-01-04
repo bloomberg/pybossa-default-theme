@@ -1,0 +1,77 @@
+{
+  "version": "1.0",
+  "source-uri": "/static/files/EE-79993017.pdf",
+  "pages": {
+    "1": {
+      "id": "1",
+      "width": 595,
+      "height": 841,
+      "elements": [
+        {
+          "id": "700ff51c-cc46-4865-95cc-9ff513c74acb",
+          "text": [],
+          "bboxes": [
+            {
+              "top": 184,
+              "left": 214,
+              "bottom": 263,
+              "right": 554
+            }
+          ],
+          "transparencies": [],
+          "categories": [
+            "myCategory1"
+          ]
+        },
+        {
+          "id": "af834772-09ef-42bb-aa64-6d89b781df06",
+          "text": [],
+          "bboxes": [
+            {
+              "top": 25,
+              "left": 37,
+              "bottom": 102,
+              "right": 210
+            }
+          ],
+          "transparencies": [],
+          "categories": [
+            "myCategory1"
+          ]
+        },
+        {
+          "id": "6ad3368a-6670-4ae9-837c-476a2dda7947",
+          "text": [],
+          "bboxes": [
+            {
+              "top": 21,
+              "left": 391,
+              "bottom": 54,
+              "right": 470
+            }
+          ],
+          "transparencies": [],
+          "categories": [
+            "myCategory2"
+          ]
+        },
+        {
+          "id": "b3f774da-0296-4adc-84f5-f1b476f53b93",
+          "text": [],
+          "bboxes": [
+            {
+              "top": 109,
+              "left": 40,
+              "bottom": 159,
+              "right": 171
+            }
+          ],
+          "transparencies": [],
+          "categories": [
+            "myCategory2"
+          ]
+        }
+      ]
+    }
+  }
+}

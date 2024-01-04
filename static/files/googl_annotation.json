@@ -1,0 +1,29 @@
+{
+  "version": "1.0",
+  "source-uri": "googl-2022-10k.pdf",
+  "pages": {
+    "1": {
+      "id": "1",
+      "width": 612,
+      "height": 792,
+      "elements": [
+        {
+          "id": "61108d90-fa49-4490-8900-566cc6a88685",
+          "text": [],
+          "bboxes": [
+            {
+              "top": 262,
+              "left": 206,
+              "bottom": 328,
+              "right": 412
+            }
+          ],
+          "transparencies": [],
+          "categories": [
+            "Logo"
+          ]
+        }
+      ]
+    }
+  }
+}
