@@ -110,10 +110,10 @@
     "lodash" "^4.2.0"
     "to-fast-properties" "^2.0.0"
 
-"@dtwebservices/task-presenter-components@0.11.28":
-  "integrity" "sha512-30KokiOpTWINUAo5GuKiF9q9WZz5Kd2R0UkBYReR1FjlwlBfrg2J14qJoh4efyIUlm/vGoKFPQx8C2mBOyR7ow=="
-  "resolved" "https://artprod.dev.bloomberg.com/artifactory/api/npm/npm-repos/@dtwebservices/task-presenter-components/-/@dtwebservices/task-presenter-components-0.11.28.tgz"
-  "version" "0.11.28"
+"@dtwebservices/task-presenter-components@0.11.30":
+  "integrity" "sha512-Z02zepX4O2670clZiW0MBMuL0HzvqoiIlcycCxAX85TvvLNYsa3rpKnKbwYVQzn3aD5tIX/hXnakN8zhVSmGEw=="
+  "resolved" "https://artprod.dev.bloomberg.com/artifactory/api/npm/npm-repos/@dtwebservices/task-presenter-components/-/@dtwebservices/task-presenter-components-0.11.30.tgz"
+  "version" "0.11.30"
   dependencies:
     "lodash.clonedeep" "^4.5.0"
     "lodash.flow" "^3.5.0"
