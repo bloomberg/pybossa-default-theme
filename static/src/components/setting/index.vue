@@ -21,6 +21,7 @@
             <input
               v-if="field.type==='TextField'"
               v-model="externalConfigDict[field.name]"
+              :placeholder="field.label"
               type="text"
               class="form-control input-sm"
             >
