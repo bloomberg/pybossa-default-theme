@@ -42,7 +42,7 @@
                 {% for stat, value in stats.items() %}
                 <tr>
                     <th><p><strong>{{ stat | replace('_', ' ') }}</strong></p></th>
-                    <td><p>{{ value }}</p></td>
+                    <td><p>{{ value[0][0] }} | {{ value[0][1] }} | {{ value[0][2] }}</p></td>
                 </tr>
                 {% endfor %}
             </tbody>
