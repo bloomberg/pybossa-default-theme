@@ -31,22 +31,52 @@
 <div class="container">
     <div class="col-md-12">
         <h2 id ="large-header">{{ _('Platform Totals — ')}}</h2>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th><p id = table-header><strong></strong></p></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for stat, value in stats.items() %}
-                <tr>
-                    <th><p><strong>{{ stat | replace('_', ' ') }}</strong></p></th>
-                    <td><p>{{ value[0][0] }} | {{ value[0][1] }} | {{ value[0][2] }}</p></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th><p id = table-header><strong></strong></p></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stat, value in stats.items() %}
+                    <tr>
+                        <th><p><strong>{{ stat | replace('_', ' ') }}</strong></p></th>
+                        <td>
+                            <p>
+                                {% if value[0][1] != None %}
+                                    <a href="#" class="stat-link" data-toggle="modal" data-target="#statsModal" data-ids="{{ value[0][1] }}" data-names="{{ value[0][2] }}">{{ value[0][0] }}</a>
+                                {% else %}
+                                    {{ value[0][0] }}
+                                {% endif %}
+                            </p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Modal -->
+            <div class="modal fade" id="statsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="myModalLabel">Stat Details</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="project-ids"></p>
+                            <p id="project-names"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End of Modal -->
     </div>
 </div>
 <script>
@@ -79,6 +109,20 @@ $(document).ready(function() {
     let date_text = getFormatedStringFromDays(days)
     document.getElementById('table-header').textContent = date_text;
     document.getElementById('large-header').textContent += date_text;
+
+    // Initialize count stats.
+    $('.stat-link').on('click', function(){
+        var ids = `${$(this).data('ids')}`.split(',');
+        var names = `${$(this).data('names')}`.split(',');
+        var idsHtml = 'Project IDs: ';
+        var namesHtml = 'Project Names: ';
+        for (var i = 0; i < ids.length; i++) {
+            idsHtml += '<a href="/projectid/' + ids[i].trim() + '">' + ids[i] + '</a>, ';
+            namesHtml += '<a href="/projectid/' + ids[i].trim() + '">' + names[i] + '</a>, ';
+        }
+        $('#project-ids').html(idsHtml.slice(0, -2));
+        $('#project-names').html(namesHtml.slice(0, -2));
+    });
 })
 
 function redirect() {
