@@ -67,8 +67,17 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p id="project-ids"></p>
-                            <p id="project-names"></p>
+                            <table id="project-table" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Project ID</th>
+                                        <th>Project Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Rows will be added dynamically -->
+                                </tbody>
+                            </table>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -114,15 +123,18 @@ $(document).ready(function() {
     $('.stat-link').on('click', function(){
         var ids = `${$(this).data('ids')}`.split(',');
         var names = `${$(this).data('names')}`.split(',');
-        var idsHtml = 'Project IDs: ';
-        var namesHtml = 'Project Names: ';
+        var table = document.getElementById('project-table').getElementsByTagName('tbody')[0];
+        // Clear the table before adding new rows
+        table.innerHTML = '';
         for (var i = 0; i < ids.length; i++) {
-            idsHtml += '<a href="/projectid/' + ids[i].trim() + '">' + ids[i] + '</a>, ';
-            namesHtml += '<a href="/projectid/' + ids[i].trim() + '">' + names[i] + '</a>, ';
+            var row = table.insertRow();
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            cell1.textContent = ids[i].trim();
+            cell2.innerHTML = `<a href="/projectid/${ids[i].trim()}" target="_blank">${names[i]}</a>`;
         }
-        $('#project-ids').html(idsHtml.slice(0, -2));
-        $('#project-names').html(namesHtml.slice(0, -2));
     });
+
 })
 
 function redirect() {
