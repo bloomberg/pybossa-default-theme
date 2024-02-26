@@ -44,10 +44,12 @@
                         <th><p><strong>{{ stat | replace('_', ' ') }}</strong></p></th>
                         <td>
                             <p>
-                                {% if value[0][1] != None %}
-                                    <a href="#" class="stat-link" data-toggle="modal" data-target="#statsModal" data-ids="{{ value[0][1] }}" data-names="{{ value[0][2] }}">{{ value[0][0] }}</a>
-                                {% else %}
+                                {% if value|length and value[0][1] != None %}
+                                    <a href="#" class="stat-link" data-toggle="modal" data-target="#statsModal" data-ids="{{ value[0][1] }}" data-names="{{ value[0][2] }}" data-owner-names="{{ value[0][4] }}" data-owner-emails="{{ value[0][5] }}">{{ value[0][0] }}</a>
+                                {% elif value[0]|length %}
                                     {{ value[0][0] }}
+                                {% else %}
+                                    0
                                 {% endif %}
                             </p>
                         </td>
@@ -72,6 +74,7 @@
                                     <tr>
                                         <th>Project ID</th>
                                         <th>Project Name</th>
+                                        <th>Owner</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -123,6 +126,8 @@ $(document).ready(function() {
     $('.stat-link').on('click', function(){
         var ids = `${$(this).data('ids')}`.split(',');
         var names = `${$(this).data('names')}`.split(',');
+        var owner_names = `${$(this).data('owner-names')}`.split(',');
+        var owner_emails = `${$(this).data('owner-emails')}`.split(',');
         var table = document.getElementById('project-table').getElementsByTagName('tbody')[0];
         // Clear the table before adding new rows
         table.innerHTML = '';
@@ -130,8 +135,10 @@ $(document).ready(function() {
             var row = table.insertRow();
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
             cell1.textContent = ids[i].trim();
             cell2.innerHTML = `<a href="/projectid/${ids[i].trim()}" target="_blank">${names[i]}</a>`;
+            cell3.innerHTML = `<span title="${owner_emails[i]}">${owner_names[i]}</span>`;
         }
     });
 
