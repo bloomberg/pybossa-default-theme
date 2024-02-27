@@ -51,8 +51,8 @@
                         <td>
                             <p>
                                 {% if value|length and value[0][1] != None %}
-                                    <a href="#" class="stat-link" data-toggle="modal" data-target="#statsModal" data-ids="{{ value[0][1] }}" data-names="{{ value[0][2] }}" data-owner-names="{{ value[0][4] }}" data-owner-emails="{{ value[0][5] }}">{{ value[0][0] }}</a>
-                                {% elif value[0]|length %}
+                                    <a href="#" class="stat-link" data-toggle="modal" data-target="#statsModal" data-ids="{{ value|map(attribute='1')|join(',') }}" data-names="{{ value|map(attribute='2')|join(',') }}" data-owner-names="{{ value|map(attribute='4')|join(',') }}" data-owner-emails="{{ value|map(attribute='5')|join(',') }}">{{ value|length }}</a>
+                                {% elif value|length %}
                                     {{ value[0][0] }}
                                 {% else %}
                                     0
