@@ -12,6 +12,12 @@
     .ct-line, .ct-point {
         stroke: #3AB0D5 !important;
     }
+    .modal-dialog .btn-secondary {
+        color: #505050;
+    }
+    .modal-dialog .btn-secondary:hover {
+        color: #000;
+    }
 </style>
 <div class="container">
     <div class="col-md-12" style="margin-top:30px;">
@@ -35,13 +41,13 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th><p id = table-header><strong></strong></p></th>
+                        <th><p class="table-header"><strong></strong></p></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for stat, value in stats.items() %}
                     <tr>
-                        <th><p><strong>{{ stat | replace('_', ' ') }}</strong></p></th>
+                        <th><p class='row-heading'><strong>{{ stat | replace('_', ' ') }}</strong></p></th>
                         <td>
                             <p>
                                 {% if value|length and value[0][1] != None %}
@@ -59,11 +65,11 @@
             </table>
 
             <!-- Modal -->
-            <div class="modal fade" id="statsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal fade" id="statsModal" tabindex="-1" role="dialog" aria-labelledby="statsDetailLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="myModalLabel">Stat Details</h5>
+                            <h3 class="modal-title" id="statsDetailLabel">Projects Using: <span id='modal-subject'></span></h3>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
@@ -118,30 +124,35 @@ $(document).ready(function() {
     timeframe_select.value = { '30': '30', '90': '90', '183': '183', '365': '365', 'all': 'all' }[days] || null;
 
     // set headers
-    let date_text = getFormatedStringFromDays(days)
-    document.getElementById('table-header').textContent = date_text;
+    const date_text = getFormatedStringFromDays(days)
+    document.getElementsByClassName('table-header')[0].textContent = date_text;
     document.getElementById('large-header').textContent += date_text;
 
     // Initialize count stats.
     $('.stat-link').on('click', function(){
-        var ids = `${$(this).data('ids')}`.split(',');
-        var names = `${$(this).data('names')}`.split(',');
-        var owner_names = `${$(this).data('owner-names')}`.split(',');
-        var owner_emails = `${$(this).data('owner-emails')}`.split(',');
-        var table = document.getElementById('project-table').getElementsByTagName('tbody')[0];
+        // Set modal title.
+        const title = $(this).closest('tr').find('.row-heading').text();
+        $('#modal-subject').text(title);
+
+        // Get data for table rows.
+        const ids = `${$(this).data('ids')}`.split(',');
+        const names = `${$(this).data('names')}`.split(',');
+        const owner_names = `${$(this).data('owner-names')}`.split(',');
+        const owner_emails = `${$(this).data('owner-emails')}`.split(',');
+        const table = document.getElementById('project-table').getElementsByTagName('tbody')[0];
+
         // Clear the table before adding new rows
         table.innerHTML = '';
-        for (var i = 0; i < ids.length; i++) {
-            var row = table.insertRow();
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
+        for (let i = 0; i < ids.length; i++) {
+            const row = table.insertRow();
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            const cell3 = row.insertCell(2);
             cell1.textContent = ids[i].trim();
             cell2.innerHTML = `<a href="/projectid/${ids[i].trim()}" target="_blank">${names[i]}</a>`;
             cell3.innerHTML = `<span title="${owner_emails[i]}">${owner_names[i]}</span>`;
         }
     });
-
 })
 
 function redirect() {
