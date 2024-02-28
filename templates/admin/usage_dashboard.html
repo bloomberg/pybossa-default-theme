@@ -56,7 +56,9 @@
                         <td>
                             <p>
                                 {% if value|length and value[0][1] != None %}
-                                    <a href="#" class="stat-link" data-toggle="modal" data-target="#statsModal" data-ids="{{ value|map(attribute='1')|join(',') }}" data-names="{{ value|map(attribute='2')|join(',') }}" data-owner-names="{{ value|map(attribute='4')|join(',') }}" data-owner-emails="{{ value|map(attribute='5')|join(',') }}">{{ value|length }}</a>
+                                    {% set ids = value|map(attribute='1')|join(',') %}
+                                    {% set count = ids.split(",") | length %}
+                                    <a href="#" class="stat-link" data-toggle="modal" data-target="#statsModal" data-ids="{{ ids }}" data-names="{{ value|map(attribute='2')|join(',') }}" data-owner-names="{{ value|map(attribute='4')|join(',') }}" data-owner-emails="{{ value|map(attribute='5')|join(',') }}">{{ count }}</a>
                                 {% elif value|length %}
                                     {{ value[0][0] }}
                                 {% else %}
