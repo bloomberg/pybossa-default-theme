@@ -17,7 +17,7 @@
                 <recently-completed-tasks :username="'{{current_user.name}}'"></recently-completed-tasks>
             </div>
             {% if upref_mdata_enabled %}
-            {{ user_pref_metadata.render_upref_mdata(user, form, can_update, input_form) }}
+            {{ user_pref_metadata.render_upref_mdata(user, form, can_update, input_form, country_name_to_country_code, country_code_to_country_name) }}
             {% endif %}
         </div>
         <div>
@@ -28,7 +28,7 @@
     </div>
 </section>
 
-<script src="/static/js/gen/userprofile.min.46f9044b63239b7aa911.js"></script>
+<script src="/static/js/gen/userprofile.min.3af8f9d373e759d0c88c.js"></script>
 {% endblock %}
 
 

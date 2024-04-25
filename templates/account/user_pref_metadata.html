@@ -1,6 +1,7 @@
 {% from "_formhelpers.html" import render_form %}
-{% macro render_upref_mdata(user, form, can_update, input_form) %}
+{% macro render_upref_mdata(user, form, can_update, input_form, country_name_to_country_code, country_code_to_country_name) %}
 <div class="user-metadata">
+    {{form.data}}
     {% if form.data %}
         {% if form.data.languages %}
             <p><strong>Language(s):</strong> {{form.data.languages|join(', ') }}</p>
