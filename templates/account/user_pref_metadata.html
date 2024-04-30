@@ -1,5 +1,5 @@
 {% from "_formhelpers.html" import render_form %}
-{% macro render_upref_mdata(user, form, can_update, input_form, country_name_to_country_code, country_code_to_country_name) %}
+{% macro render_upref_mdata(user, form, can_update, input_form) %}
 <div class="user-metadata">
     {% if form.data %}
         {% if form.data.languages %}
