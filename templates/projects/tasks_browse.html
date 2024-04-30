@@ -12,7 +12,6 @@
 {% assets "css_taskbrowse" %}
     <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">
 {% endassets %}
-
 <div id="task-browse">
 <div class="row">
     <div class="col-md-12">
@@ -41,18 +40,19 @@
         {% endif %}
     </div>
 </div>
+
 <div id="tasksBrowseControls">
     <ul class="pull-left">
-        <li>
-          <button id="btn-add-bookmark" class="btn btn-sm" type="button" data-target="#addBookmarkModal" data-toggle="modal" title="Save Filter">
-            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+      <li>
+        <button id="btn-add-bookmark" class="btn btn-sm" type="button" data-target="#addBookmarkModal" data-toggle="modal" title="Save Filter">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i>
+        </button>
+      </li>
+      <li>
+          <button id="btn-bookmark-list" class="btn btn-sm" type="button" data-target="#listBookmarksModal" data-toggle="modal" title="Saved Filters">
+            <i class="fa fa-bookmark" aria-hidden="true"></i>
           </button>
-        </li>
-        <li>
-            <button id="btn-bookmark-list" class="btn btn-sm" type="button" data-target="#listBookmarksModal" data-toggle="modal" title="Saved Filters">
-              <i class="fa fa-bookmark" aria-hidden="true"></i>
-            </button>
-        </li>
+      </li>
         <li>
             <button class="btn btn-sm" id='btnRefresh' type="button" data-toggle="popover" data-trigger="focus" data-placement="top" data-constraints='focus' data-content="{{_('Please refresh the results after setting the desired filters.')}}" title="{{_('Search')}}">
                 <i class="fa fa-search" aria-hidden="true"></i>
@@ -91,10 +91,7 @@
                 {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
                 <li><a href="#" class="columns_settings" data-value="pcomplete" tabIndex="-1"><input type="checkbox" {{ "checked" if "pcomplete" in filter_data.display_columns }}/>&nbsp;%Complete</a></li>
                 {% endif %}
-                <li><a href="#" class="columns_settings" data-value="created" tabIndex="-1"><input type="checkbox" {{ "checked" if "created" in filter_data.display_columns }}/>&nbsp;Created</a></li>
-                {% if (current_user.id in project.owners_ids or current_user.subadmin or current_user.admin) and not is_task_list %}
-                <li><a href="#" class="columns_settings" data-value="finish_time" tabIndex="-1"><input type="checkbox" {{ "checked" if "finish_time" in filter_data.display_columns }}/>&nbsp;Completed</a></li>
-                {% endif %}
+
                 {% if can_know_task_is_gold %}
                 <li><a href="#" class="columns_settings" data-value="gold_task" tabIndex="-1"><input type="checkbox" {{ "checked" if "gold_task" in filter_data.display_columns }}/>&nbsp;Gold Task</a></li>
                 {% endif %}
@@ -224,9 +221,6 @@
                 {% if 'assigned_users' in filter_data.display_columns %}
                 <th class="{{'sort-asc' if filter_data.order_by['assigned_users'] == 'asc'}} {{'sort-desc' if filter_data.order_by['assigned_users'] == 'desc'}} sortable" data-sort="assigned_users">Assigned Users</th>
                 {% endif %}
-                {% if 'in_progress' in filter_data.display_columns %}
-                <th class="{{'sort-asc' if filter_data.order_by['in_progress'] == 'asc'}} {{'sort-desc' if filter_data.order_by['in_progress'] == 'desc'}} sortable" data-sort="in_progress">In Progress</th>
-                {% endif %}
             </tr>
             <tr>
                 {% if 'task_id' in filter_data.display_columns %}
@@ -289,18 +283,6 @@
                 {% endif %}
                 {% if 'assigned_users' in filter_data.display_columns %}
                 <th>&nbsp;</th>
-                {% endif %}
-                {% if 'in_progress' in filter_data.display_columns %}
-                <th>
-                    <div>
-                        <select id="in-progress" class="input-sm">
-                            <option value="" style="font-weight: lighter;">--select--</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                            <option value="All">All</option>
-                        </select>
-                    </div>
-                </th>
                 {% endif %}
             </tr>
         </thead>
@@ -444,9 +426,6 @@
                   {{ t.assigned_users }}
                 </td>
                 {% endif %}
-                {% if 'in_progress' in filter_data.display_columns %}
-                <td>{{ t.in_progress }}</td>
-                {% endif %}
             </tr>
             {% endfor %}
         </tbody>
@@ -459,75 +438,6 @@
     </div>
 </div>
 {% endif %}
-
-<!-- Add Bookmark Modal -->
-<div class="modal fade" id="addBookmarkModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel">
-  <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="infoModalLabel">Save Filter</h4>
-      </div>
-      <div class="modal-body">
-        <h5>Bookmark your current search and filters for easy access.</h5>
-        <div class="form-group">
-          <label for="bookmark-name" >Filter Name</label>
-          <input type="text" class="form-control" id="bookmark-name" placeholder="Filter Name"/>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id='add-bookmark'>Add</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Bookmark List Modal -->
-<div class="modal fade" id="listBookmarksModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel">
-  <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="infoModalLabel">Saved Filters</h4>
-      </div>
-      <div class="modal-body">
-        <label for="sort-bookmarks">Sort Filters:</label>
-        <select id="sort-bookmarks">
-          <option value="name" selected>Alphabetical</option>
-          <option value="updated">Updated</option>
-          <option value="created">Created</option>
-        </select>
-        <span id="currentUsername" style="display:none">{{current_user.name}}</span>
-        <table id="bookmarksGrid" class="table table-sm table-striped table-hover border">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th class="col-md-1">Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for bookmark in taskbrowse_bookmarks %}
-            <tr>
-                <td>
-                  <a href="{{ bookmark['url'] }}" class="label label-info">{{ bookmark["name"] }}</a>
-                </td>
-                <td>
-                  <a class="label label-danger delete-bookmark" data-name= "{{ bookmark['name'] }}">
-                    Delete
-                  </a>
-                </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- Date Modal -->
 <div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="dateModalLabel">
@@ -629,6 +539,74 @@
   </div>
 </div>
 
+<!-- Add Bookmark Modal -->
+<div class="modal fade" id="addBookmarkModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="infoModalLabel">Save Filter</h4>
+      </div>
+      <div class="modal-body">
+        <h5>Bookmark your current search and filters for easy access.</h5>
+        <div class="form-group">
+          <label for="bookmark-name" >Filter Name</label>
+          <input type="text" class="form-control" id="bookmark-name" placeholder="Filter Name"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id='add-bookmark'>Add</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bookmark List Modal -->
+<div class="modal fade" id="listBookmarksModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="infoModalLabel">Saved Filters</h4>
+      </div>
+      <div class="modal-body">
+        <label for="sort-bookmarks">Sort Filters:</label>
+        <select id="sort-bookmarks">
+          <option value="name" selected>Alphabetical</option>
+          <option value="updated">Updated</option>
+          <option value="created">Created</option>
+        </select>
+        <span id="currentUsername" style="display:none">{{current_user.name}}</span>
+        <table id="bookmarksGrid" class="table table-sm table-striped table-hover border">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th class="col-md-1">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for bookmark in taskbrowse_bookmarks %}
+            <tr>
+                <td>
+                  <a href="{{ bookmark['url'] }}" class="label label-info">{{ bookmark["name"] }}</a>
+                </td>
+                <td>
+                  <a class="label label-danger delete-bookmark" data-name= "{{ bookmark['name'] }}">
+                    Delete
+                  </a>
+                </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Task Run Status Info -->
 <div class="modal fade" id="taskRunStatusModal" tabindex="-1" role="dialog" aria-labelledby="taskRunStatusModalLabel">
   <div class="modal-dialog modal-lg" role="document">
@@ -835,7 +813,7 @@
 </div>
 </div>
 
-<script src="/static/js/gen/task_browse.min.3af8f9d373e759d0c88c.js"></script>
+<script src="/static/js/gen/task_browse.min.5fc08bf6f4ea85d42524.js"></script>
 <script type="text/javascript">
     function autoRefresh() {
       window.location.reload();
