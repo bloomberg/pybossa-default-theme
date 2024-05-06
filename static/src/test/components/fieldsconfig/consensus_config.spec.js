@@ -78,7 +78,7 @@ describe('ConsensusConfig', () => {
     });
     const wrapper = shallowMount(ConsensusConfig, { store, localVue });
     const p = wrapper.findAll('p');
-    expect(p).toHaveLength(3);
+    expect(p).toHaveLength(5);
   });
 
   it('load non-empty config', () => {
@@ -98,7 +98,7 @@ describe('ConsensusConfig', () => {
     const p = wrapper.findAll('p');
     const button = wrapper.findAll('button');
     expect(button).toHaveLength(1);
-    expect(p).toHaveLength(3);
+    expect(p).toHaveLength(5);
   });
 
   it('save config (without consensus config)', async () => {
