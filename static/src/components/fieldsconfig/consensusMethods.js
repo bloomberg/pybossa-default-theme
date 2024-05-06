@@ -4,7 +4,8 @@ const _types = {
   F1: 'f1',
   JACCARD: 'jaccard',
   DICE: 'dice',
-  MAJORITY: 'majority'
+  MAJORITY: 'majority',
+  OVERLAP: 'overlap'
 };
 
 const config = {
@@ -19,6 +20,9 @@ const config = {
   },
   [_types.MAJORITY]: {
     display: 'Majority',
+  },
+  [_types.OVERLAP]: {
+    display: 'Overlap',
   },
 };
 
