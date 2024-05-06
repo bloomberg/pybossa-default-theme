@@ -4,6 +4,7 @@
       id="answer-field-config"
       class="col-md-12"
     >
+    <h3>Answer Field Config</h3>
       <div
         class="form-group"
         :class="{'has-error': error}"

@@ -15,6 +15,8 @@ function _updateConsensusConfig (state, config) {
   if (config) {
     const cf = {
       consensusThreshold: config['consensus_threshold'],
+      agreementThreshold: config['agreement_threshold'],
+      consensusMethod: config['consensus_method'],
       maxRetries: config['max_retries'],
       redundancyConfig: config['redundancy_config']
     };
