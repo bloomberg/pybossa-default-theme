@@ -10,20 +10,20 @@ const _types = {
 
 const config = {
   [_types.MAJORITY]: {
-    display: 'Majority',
+    display: 'Majority'
   },
   [_types.F1]: {
-    display: 'F1',
+    display: 'F1'
   },
   [_types.JACCARD]: {
-    display: 'Jaccard',
+    display: 'Jaccard'
   },
   [_types.DICE]: {
-    display: 'Dice',
+    display: 'Dice'
   },
   [_types.OVERLAP]: {
-    display: 'Overlap',
-  },
+    display: 'Overlap'
+  }
 };
 
 export default {
