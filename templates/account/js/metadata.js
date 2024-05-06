@@ -44,9 +44,9 @@ function handleLocationChange(previousValues, currentSelector, relatedSelector, 
   }
 
   // update the other dropdown
-  const newRelatedValues = Array.from(related_values_set);
-  if (!arraysEqual(newRelatedValues, get_val_or_default(relatedSelector, []))) {
-    $(relatedSelector).val(newRelatedValues).trigger('change');
+  const new_related_values = Array.from(related_values_set);
+  if (!arraysEqual(new_related_values, get_val_or_default(relatedSelector, []))) {
+    $(relatedSelector).val(new_related_values).trigger('change');
   }
   return current_values;
 }
