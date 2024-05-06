@@ -9,6 +9,9 @@ const _types = {
 };
 
 const config = {
+  [_types.MAJORITY]: {
+    display: 'Majority',
+  },
   [_types.F1]: {
     display: 'F1',
   },
@@ -17,9 +20,6 @@ const config = {
   },
   [_types.DICE]: {
     display: 'Dice',
-  },
-  [_types.MAJORITY]: {
-    display: 'Majority',
   },
   [_types.OVERLAP]: {
     display: 'Overlap',
