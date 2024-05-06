@@ -17,59 +17,39 @@ let previous_ccs = get_val_or_default('#country_codes', []);
 let previous_cns = get_val_or_default('#country_names', []);
 
 $('#country_codes').change(function () {
-  let current_ccs = $(this).val() || [];
-  let added_ccs = current_ccs.filter(x => !previous_ccs.includes(x));
-  let removed_ccs = previous_ccs.filter(x => !current_ccs.includes(x));
-
-  let selected_cns_map = new Set($('#country_names').val());
-
-  if (added_ccs.length > 0) {
-    added_ccs.forEach(cc => {
-      selected_cns_map.add(country_code_to_country_name.get(cc));
-    });
-  }
-  if (removed_ccs.length > 0) {
-    removed_ccs.forEach(cc => {
-      selected_cns_map.delete(country_code_to_country_name.get(cc));
-    });
-  }
-
-  // Update the previous_ccs for the next change event
-  previous_ccs = current_ccs;
-
-  new_selected_cns = Array.from(selected_cns_map);
-  if (!arraysEqual(new_selected_cns, get_val_or_default('#country_names', []))) {
-    $('#country_names').val(new_selected_cns).trigger('change');
-  }
+  previous_ccs = handleLocationChange(previous_ccs, '#country_codes', '#country_names', country_code_to_country_name);
 });
-
 
 $('#country_names').change(function () {
-  let current_cns = $(this).val() || [];
-  let added_cns = current_cns.filter(x => !previous_cns.includes(x));
-  let removed_cns = previous_cns.filter(x => !current_cns.includes(x));
-
-  let selected_ccs_map = new Set($('#country_codes').val());
-
-  if (added_cns.length > 0) {
-    added_cns.forEach(cc => {
-      selected_ccs_map.add(country_name_to_country_code.get(cc));
-    });
-  }
-  if (removed_cns.length > 0) {
-    removed_cns.forEach(cc => {
-      selected_ccs_map.delete(country_name_to_country_code.get(cc));
-    });
-  }
-
-  // Update the previous_cns for the next change event
-  previous_cns = current_cns;
-
-  new_selected_ccs = Array.from(selected_ccs_map);
-  if (!arraysEqual(new_selected_ccs, get_val_or_default('#country_codes', []))) {
-    $('#country_codes').val(new_selected_ccs).trigger('change');
-  }
+  previous_cns = handleLocationChange(previous_cns, '#country_names', '#country_codes', country_name_to_country_code);
 });
+
+// handle sync between location dropdowns
+function handleLocationChange(previousValues, currentSelector, relatedSelector, map_to_related) {
+  const current_values = $(currentSelector).val() || [];
+  const added_values = current_values.filter(x => !previousValues.includes(x));
+  const removed_values = previousValues.filter(x => !current_values.includes(x));
+
+  const related_values_set = new Set($(relatedSelector).val());
+
+  if (added_values.length > 0) {
+    added_values.forEach(value => {
+      related_values_set.add(map_to_related.get(value));
+    });
+  }
+  if (removed_values.length > 0) {
+    removed_values.forEach(value => {
+      related_values_set.delete(map_to_related.get(value));
+    });
+  }
+
+  // update the other dropdown
+  const newRelatedValues = Array.from(related_values_set);
+  if (!arraysEqual(newRelatedValues, get_val_or_default(relatedSelector, []))) {
+    $(relatedSelector).val(newRelatedValues).trigger('change');
+  }
+  return current_values;
+}
 
 function get_val_or_default(selector, def) {
   return $(selector).val() || def;
