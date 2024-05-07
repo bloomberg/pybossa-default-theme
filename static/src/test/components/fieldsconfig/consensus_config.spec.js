@@ -174,33 +174,6 @@ describe('ConsensusConfig', () => {
     expect(wrapper.findAll('.error-msg')).toHaveLength(1);
   });
 
-  // it('save incorrect config', () => {
-  //   const propsData = {
-  //     consensusConfig: { consensus_threshold: 70, max_retries: 0, redundancy_config: 0 }
-  //   };
-  //   store.commit('setData', {
-  //     answerFields: {
-  //       testField: {
-  //         type: 'categorical',
-  //         config: {
-  //           labels: ['A', 'B', 'C']
-  //         },
-  //         retry_for_consensus: true
-  //       }
-  //     },
-  //     consensus: {
-  //       consensus_threshold: 70,
-  //       max_retries: 0,
-  //       redundancy_config: 0
-  //     }
-  //   });
-  //   const wrapper = shallowMount(ConsensusConfig, { store, localVue, propsData });
-  //   expect(wrapper.findAll('.error-msg')).toHaveLength(0);
-  //   const saveButton = wrapper.findAll('button').at(0);
-  //   saveButton.trigger('click');
-  //   expect(wrapper.findAll('.error-msg')).toHaveLength(1);
-  // });
-
   it('save config fails', async () => {
     fetch.mockImplementation((arg) => ({
       ok: false
@@ -223,4 +196,19 @@ describe('ConsensusConfig', () => {
     expect(fetch.mock.calls).toHaveLength(2);
     expect(notify.mock.calls).toHaveLength(2);
   });
+
+  it('test validation logic directly', () => {
+    const wrapper = shallowMount(ConsensusConfig, { store, localVue });
+    let valid = wrapper.vm._write(80, 2, 10, 70); // should pass
+    expect(valid).toBe(true);
+
+    valid = wrapper.vm._write(101, 2, 10, 70); // threshold out of range
+    expect(valid).toBe(false);
+    expect(wrapper.vm.errorMsg).toContain('within 50 - 100');
+
+    valid = wrapper.vm._write(80, -1, 10, 70); // redundancy should be positive
+    expect(valid).toBe(false);
+    expect(wrapper.vm.errorMsg).toContain('positive integer');
+  });
+
 });

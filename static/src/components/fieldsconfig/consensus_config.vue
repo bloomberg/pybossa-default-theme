@@ -150,7 +150,7 @@ export default {
     _write: function (_consensusThreshold, _redundancyConfig, _maxRetries, _agreementThreshold) {
       if (!this._isIntegerNumeric(_consensusThreshold) || _consensusThreshold <= 50 ||
         _consensusThreshold > 100) {
-        this.errorMsg = 'Threshold should be integer within 50 - 100';
+        this.errorMsg = 'Consensus Threshold should be integer within 50 - 100';
         return false;
       }
       if (!this._isIntegerNumeric(_redundancyConfig) || _redundancyConfig <= 0) {
@@ -162,9 +162,9 @@ export default {
         this.errorMsg = 'Maximum retries should be integer within 1 - ' + this.capacity;
         return false;
       }
-      if (!this._isIntegerNumeric(_agreementThreshold) || _agreementThreshold <= 0 ||
-        _agreementThreshold > this.capacity) {
-        this.errorMsg = 'Maximum agreement threshold should be integer within 1 - ' + this.capacity;
+      if (!this._isIntegerNumeric(_agreementThreshold) || _consensusThreshold <= 50 ||
+        _consensusThreshold > 100) {
+        this.errorMsg = 'Agreement Threshold should be integer within 50 - 100';
         return false;
       }
       this.errorMsg = '';
