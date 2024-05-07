@@ -210,5 +210,4 @@ describe('ConsensusConfig', () => {
     expect(valid).toBe(false);
     expect(wrapper.vm.errorMsg).toContain('positive integer');
   });
-
 });
