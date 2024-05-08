@@ -5,7 +5,7 @@ import quizSetting from './components/setting/quiz_setting.vue';
 import ownershipSetting from './components/setting/ownership_setting.vue';
 import Vuex from 'vuex';
 import FieldsConfig from './components/fieldsconfig/index';
-import ConsensusConfig from './components/fieldsconfig/consensus_config';
+import RedundancyConfig from './components/fieldsconfig/redundancy_config';
 import { storeSpecs } from './components/fieldsconfig/store';
 
 Vue.use(Vuex);
@@ -17,7 +17,7 @@ const app = new Vue({
   store,
   components: {
     FieldsConfig,
-    ConsensusConfig,
+    RedundancyConfig,
     setting,
     taskSetting,
     quizSetting,

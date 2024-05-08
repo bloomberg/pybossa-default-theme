@@ -11,7 +11,7 @@ function _addField (state, { name, type, config, retryForConsensus, newField = f
   state.fieldNames.push(name);
 }
 
-function _updateConsensusConfig (state, config) {
+function _updateRedundancyConfig (state, config) {
   if (config) {
     const cf = {
       consensusThreshold: config['consensus_threshold'],
@@ -94,8 +94,8 @@ const storeSpecs = {
       delete state.answerFields[name];
     },
 
-    updateConsensusConfig (state, config) {
-      _updateConsensusConfig(state, config);
+    updateRedundancyConfig (state, config) {
+      _updateRedundancyConfig(state, config);
     },
 
     changeRetryConfig (state, { name, retry }) {
@@ -110,7 +110,7 @@ const storeSpecs = {
         const { type, config } = fields[name];
         _addField(state, { name, type, config, retryForConsensus });
       }
-      _updateConsensusConfig(state, consensus);
+      _updateRedundancyConfig(state, consensus);
     }
   }
 };

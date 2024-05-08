@@ -6,6 +6,7 @@
       v-if="hasRetryFields"
       class="col-md-12 consensus"
     >
+    <h3>Redundancy Config</h3>
       <div class="form-group row">
         <div class="col-md-4">
           <p> Consensus Threshold </p>
@@ -85,7 +86,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['updateConsensusConfig', 'setData']),
+    ...mapMutations(['updateRedundancyConfig', 'setData']),
 
     initialize (data) {
       let config = JSON.parse(data.consensus_config);
@@ -154,12 +155,12 @@ export default {
             if (!this._write(_consensusThreshold, _redundancyConfig, _maxRetries)) {
                 return;
             }
-            data['consensus_config'] = {
+            data['redundancy_config'] = {
                     'consensus_threshold': _consensusThreshold,
                     'max_retries': _maxRetries,
                     'redundancy_config': _redundancyConfig
                   };
-            this.updateConsensusConfig(data['consensus_config']);
+            this.updateRedundancyConfig(data['redundancy_config']);
         }
         try {
             const res = await fetch(this.getURL(), {
