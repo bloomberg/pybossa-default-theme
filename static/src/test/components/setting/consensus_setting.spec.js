@@ -12,7 +12,7 @@ describe('ConsensusConfig', () => {
   let fetch;
   let notify;
   let consensusConfig = {
-    consensus_method: "dice",
+    consensus_method: 'dice',
     agreement_threshold: 80
   };
 
