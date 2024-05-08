@@ -6,7 +6,7 @@
       v-if="hasRetryFields"
       class="col-md-12 consensus"
     >
-    <h3>Redundancy Config</h3>
+      <h3>Redundancy Config</h3>
       <div class="form-group row">
         <div class="col-md-4">
           <p> Consensus Threshold </p>
@@ -143,6 +143,7 @@ export default {
         this.initialize(data);
       } catch (error) {
         window.pybossaNotify('An error occurred.', true, 'error');
+        console.log(error);
       }
     },
 
@@ -155,12 +156,12 @@ export default {
             if (!this._write(_consensusThreshold, _redundancyConfig, _maxRetries)) {
                 return;
             }
-            data['redundancy_config'] = {
+            data['consensus_config'] = {
                     'consensus_threshold': _consensusThreshold,
                     'max_retries': _maxRetries,
                     'redundancy_config': _redundancyConfig
                   };
-            this.updateRedundancyConfig(data['redundancy_config']);
+            this.updateRedundancyConfig(data['consensus_config']);
         }
         try {
             const res = await fetch(this.getURL(), {
