@@ -78,7 +78,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['csrfToken', 'hasRetryFields', 'answerFields'])
+    ...mapGetters(['csrfToken', 'hasRetryFields', 'answerFields', 'consensusConfig'])
   },
 
   created () {
@@ -86,18 +86,16 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['updateRedundancyConfig', 'setData']),
+    ...mapMutations(['setCSRF', 'updateRedundancyConfig', 'setAnswerFields']),
 
     initialize (data) {
       let config = JSON.parse(data.consensus_config);
       this.consensusThreshold = config.consensus_threshold;
       this.redundancyConfig = config.redundancy_config;
       this.maxRetries = config.max_retries;
-      this.setData({
-        csrf: data.csrf,
-        answerFields: JSON.parse(data.answer_fields),
-        consensus: config
-      });
+      this.setCSRF(data.csrf);
+      this.updateRedundancyConfig(config);
+      this.setAnswerFields(JSON.parse(data.answer_fields));
     },
 
     _isIntegerNumeric: function (_n) {
@@ -159,7 +157,9 @@ export default {
             data['consensus_config'] = {
                     'consensus_threshold': _consensusThreshold,
                     'max_retries': _maxRetries,
-                    'redundancy_config': _redundancyConfig
+                    'redundancy_config': _redundancyConfig,
+                    'consensus_method': this.consensusConfig.consensusMethod,
+                    'agreement_threshold': this.consensusConfig.agreementThreshold
                   };
             this.updateRedundancyConfig(data['consensus_config']);
         }

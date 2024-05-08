@@ -8,6 +8,11 @@ const _types = {
   OVERLAP: 'overlap'
 };
 
+function isPairwiseConsensus (consensusType) {
+  const pairwiseFunctions = [_types.F1, _types.JACCARD, _types.DICE, _types.OVERLAP];
+  return pairwiseFunctions.includes(consensusType);
+}
+
 const config = {
   [_types.MAJORITY]: {
     display: 'Majority'
@@ -28,5 +33,6 @@ const config = {
 
 export default {
   default: _types.MAJORITY,
-  config
+  config,
+  isPairwiseConsensus
 };

@@ -11,6 +11,7 @@
           v-model="consensusMethod"
           name="consensus-method"
           class="form-control input-sm"
+          @change="setPairwiseConsensus"
         >
           <option
             v-for="(conf, type, index) in consensusMethods.config"
@@ -22,7 +23,10 @@
         </select>
       </div>
     </div>
-    <div class="form-group row">
+    <div
+      v-if="isPairwiseConsensus"
+      class="form-group row"
+    >
       <div class="col-md-4">
         <p> Agreement Threshold </p>
       </div>
@@ -61,14 +65,15 @@ export default {
     data () {
         return {
             consensusMethods,
-            consensusMethod: null,
+            consensusMethod: consensusMethods.default,
+            isPairwiseConsensus: false,
             agreementThreshold: null,
             errorMsg: ''
         };
     },
 
     computed: {
-        ...mapGetters(['csrfToken'])
+        ...mapGetters(['csrfToken', 'redundancyConfig', 'answerFields'])
     },
 
     created () {
@@ -78,14 +83,16 @@ export default {
     methods: {
         ...mapMutations(['updateConsensusConfig', 'setData']),
 
+        setPairwiseConsensus () {
+            this.isPairwiseConsensus = consensusMethods.isPairwiseConsensus(this.consensusMethod);
+        },
+
         initialize (data) {
             let config = JSON.parse(data.consensus_config);
-            this.consensusMethod = config.consensus_method;
+            this.consensusMethod = config.consensus_method || consensusMethods.default;
             this.agreementThreshold = config.agreement_threshold;
-            this.setData({
-                csrf: data.csrf,
-                consensus: config
-            });
+            this.setPairwiseConsensus();
+            this.updateConsensusConfig(config);
         },
 
         _isIntegerNumeric: function (_n) {
@@ -119,7 +126,6 @@ export default {
                     credentials: 'same-origin'
                 });
                 const data = await res.json();
-                print('consnss confg got dataa:', data);
                 this.initialize(data);
             } catch (error) {
                 window.pybossaNotify('An error occurred.', true, 'error');
@@ -128,16 +134,19 @@ export default {
         },
 
         async save () {
+            let data = { answer_fields: this.answerFields };
             let _agreementThreshold = parseInt(this.agreementThreshold, 10);
-            let _consensusMethod = parseInt(this.consensusMethod, 'majority');
-            if (!this._write(_agreementThreshold)) {
+            let _consensusMethod = this.consensusMethod;
+            if (this.isPairwiseConsensus && !this._write(_agreementThreshold)) {
                 return;
             }
-            let data = {
-                'consensus_config': {
-                    'agreement_threshold': _agreementThreshold,
-                    'consensus_method': _consensusMethod
-                }
+            data['consensus_config'] =
+            {
+                'agreement_threshold': _agreementThreshold,
+                'consensus_method': _consensusMethod,
+                'consensus_threshold': this.redundancyConfig.consensusThreshold,
+                'max_retries': this.redundancyConfig.maxRetries,
+                'redundancy_config': this.redundancyConfig.redundancyConfig
             };
             this.updateConsensusConfig(data['consensus_config']);
             try {

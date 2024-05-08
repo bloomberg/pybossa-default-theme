@@ -14,9 +14,9 @@ function _addField (state, { name, type, config, retryForConsensus, newField = f
 function _updateRedundancyConfig (state, config) {
   if (config) {
     const cf = {
-      consensus_threshold: config['consensus_threshold'],
-      max_retries: config['max_retries'],
-      redundancy_config: config['redundancy_config']
+      consensusThreshold: config['consensus_threshold'],
+      maxRetries: config['max_retries'],
+      redundancyConfig: config['redundancy_config']
     };
     state.redundancyConfig = cf;
   }
@@ -25,7 +25,7 @@ function _updateRedundancyConfig (state, config) {
 function _updateConsensusConfig (state, config) {
   if (config) {
     const cf = {
-      consensus_method: config['consensusMethod'],
+      consensusMethod: config['consensus_method'],
       agreementThreshold: config['agreement_threshold']
     };
     state.consensusConfig = cf;
@@ -48,6 +48,7 @@ const storeSpecs = {
     fieldNames: [],
     answerFields: {},
     consensusConfig: {},
+    redundancyConfig: {},
     newFields: {},
     showWarning: false
   },
@@ -81,6 +82,14 @@ const storeSpecs = {
 
     showWarning (state) {
       return state.showWarning;
+    },
+
+    redundancyConfig (state) {
+      return state.redundancyConfig;
+    },
+
+    consensusConfig (state) {
+      return state.consensusConfig;
     }
   },
 
@@ -114,6 +123,18 @@ const storeSpecs = {
 
     changeRetryConfig (state, { name, retry }) {
       state.answerFields[name]['retry_for_consensus'] = retry;
+    },
+
+    setCSRF (state, csrf) {
+      state.csrf = csrf;
+    },
+
+    setAnswerFields (state, answerFields) {
+      for (const name in answerFields) {
+        const retryForConsensus = answerFields[name]['retry_for_consensus'];
+        const { type, config } = answerFields[name];
+        _addField(state, { name, type, config, retryForConsensus });
+      }
     },
 
     setData (state, { csrf, answerFields, config }) {
