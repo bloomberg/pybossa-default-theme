@@ -147,6 +147,11 @@ export default {
 
     async save () {
         let data = { answer_fields: this.answerFields };
+        data['consensus_config'] = {
+            'consensus_method': this.consensusConfig.consensusMethod,
+            'agreement_threshold': this.consensusConfig.agreementThreshold
+          };
+
         if (this.hasRetryFields) {
             let _consensusThreshold = parseInt(this.consensusThreshold, 10);
             let _redundancyConfig = parseInt(this.redundancyConfig, 10);
@@ -154,14 +159,10 @@ export default {
             if (!this._write(_consensusThreshold, _redundancyConfig, _maxRetries)) {
                 return;
             }
-            data['consensus_config'] = {
-                    'consensus_threshold': _consensusThreshold,
-                    'max_retries': _maxRetries,
-                    'redundancy_config': _redundancyConfig,
-                    'consensus_method': this.consensusConfig.consensusMethod,
-                    'agreement_threshold': this.consensusConfig.agreementThreshold
-                  };
-            this.updateRedundancyConfig(data['consensus_config']);
+        data['consensus_config']['consensus_threshold'] = _consensusThreshold;
+        data['consensus_config']['max_retries'] = _maxRetries;
+        data['consensus_config']['redundancy_config'] = _redundancyConfig;
+        this.updateRedundancyConfig(data['consensus_config']);
         }
         try {
             const res = await fetch(this.getURL(), {
