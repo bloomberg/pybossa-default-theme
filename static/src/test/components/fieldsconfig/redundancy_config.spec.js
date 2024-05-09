@@ -1,13 +1,13 @@
 import Vuex from 'vuex';
 import { createLocalVue, shallowMount } from '@vue/test-utils';
-import ConsensusConfig from '../../../components/fieldsconfig/consensus_config.vue';
+import RedundancyConfig from '../../../components/fieldsconfig/redundancy_config.vue';
 import { storeSpecs } from '../../../components/fieldsconfig/store';
 import { cloneDeep } from 'lodash';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 
-describe('ConsensusConfig', () => {
+describe('RedundancyConfig', () => {
   let store;
   let fetch;
   let notify;
@@ -40,7 +40,7 @@ describe('ConsensusConfig', () => {
       ok: true,
       json: () => Promise.resolve(response)
     }));
-    const wrapper = shallowMount(ConsensusConfig, { store, localVue });
+    const wrapper = shallowMount(RedundancyConfig, { store, localVue });
     await localVue.nextTick();
     expect(wrapper.vm._data.consensusThreshold).toBe(80);
     expect(wrapper.vm._data.redundancyConfig).toBe(2);
@@ -59,7 +59,7 @@ describe('ConsensusConfig', () => {
         }
       }
     });
-    const wrapper = shallowMount(ConsensusConfig, { store, localVue });
+    const wrapper = shallowMount(RedundancyConfig, { store, localVue });
     const p = wrapper.findAll('p');
     expect(p).toHaveLength(0);
   });
@@ -76,7 +76,7 @@ describe('ConsensusConfig', () => {
         }
       }
     });
-    const wrapper = shallowMount(ConsensusConfig, { store, localVue });
+    const wrapper = shallowMount(RedundancyConfig, { store, localVue });
     const p = wrapper.findAll('p');
     expect(p).toHaveLength(3);
   });
@@ -94,7 +94,7 @@ describe('ConsensusConfig', () => {
       },
       consensus: consensusConfig
     });
-    const wrapper = shallowMount(ConsensusConfig, { store, localVue });
+    const wrapper = shallowMount(RedundancyConfig, { store, localVue });
     const p = wrapper.findAll('p');
     const button = wrapper.findAll('button');
     expect(button).toHaveLength(1);
@@ -117,7 +117,7 @@ describe('ConsensusConfig', () => {
         }
       }
     });
-    const wrapper = shallowMount(ConsensusConfig, { store, localVue });
+    const wrapper = shallowMount(RedundancyConfig, { store, localVue });
     const saveButton = wrapper.findAll('button').at(0);
     saveButton.trigger('click');
     await localVue.nextTick();
@@ -142,7 +142,7 @@ describe('ConsensusConfig', () => {
       },
       consensus: consensusConfig
     });
-    const wrapper = shallowMount(ConsensusConfig, { store, localVue });
+    const wrapper = shallowMount(RedundancyConfig, { store, localVue });
     const saveButton = wrapper.findAll('button').at(0);
     saveButton.trigger('click');
     await localVue.nextTick();
@@ -167,39 +167,12 @@ describe('ConsensusConfig', () => {
         redundancy_config: 'wrong'
       }
     });
-    const wrapper = shallowMount(ConsensusConfig, { store, localVue });
+    const wrapper = shallowMount(RedundancyConfig, { store, localVue });
     expect(wrapper.findAll('.error-msg')).toHaveLength(0);
     const saveButton = wrapper.findAll('button').at(0);
     saveButton.trigger('click');
     expect(wrapper.findAll('.error-msg')).toHaveLength(1);
   });
-
-  // it('save incorrect config', () => {
-  //   const propsData = {
-  //     consensusConfig: { consensus_threshold: 70, max_retries: 0, redundancy_config: 0 }
-  //   };
-  //   store.commit('setData', {
-  //     answerFields: {
-  //       testField: {
-  //         type: 'categorical',
-  //         config: {
-  //           labels: ['A', 'B', 'C']
-  //         },
-  //         retry_for_consensus: true
-  //       }
-  //     },
-  //     consensus: {
-  //       consensus_threshold: 70,
-  //       max_retries: 0,
-  //       redundancy_config: 0
-  //     }
-  //   });
-  //   const wrapper = shallowMount(ConsensusConfig, { store, localVue, propsData });
-  //   expect(wrapper.findAll('.error-msg')).toHaveLength(0);
-  //   const saveButton = wrapper.findAll('button').at(0);
-  //   saveButton.trigger('click');
-  //   expect(wrapper.findAll('.error-msg')).toHaveLength(1);
-  // });
 
   it('save config fails', async () => {
     fetch.mockImplementation((arg) => ({
@@ -216,11 +189,25 @@ describe('ConsensusConfig', () => {
         }
       }
     });
-    const wrapper = shallowMount(ConsensusConfig, { store, localVue });
+    const wrapper = shallowMount(RedundancyConfig, { store, localVue });
     const saveButton = wrapper.findAll('button').at(0);
     saveButton.trigger('click');
     await localVue.nextTick();
     expect(fetch.mock.calls).toHaveLength(2);
     expect(notify.mock.calls).toHaveLength(2);
+  });
+
+  it('test validation logic directly', () => {
+    const wrapper = shallowMount(RedundancyConfig, { store, localVue });
+    let valid = wrapper.vm._write(80, 2, 10, 70); // should pass
+    expect(valid).toBe(true);
+
+    valid = wrapper.vm._write(101, 2, 10, 70); // threshold out of range
+    expect(valid).toBe(false);
+    expect(wrapper.vm.errorMsg).toContain('within 50 - 100');
+
+    valid = wrapper.vm._write(80, -1, 10, 70); // redundancy should be positive
+    expect(valid).toBe(false);
+    expect(wrapper.vm.errorMsg).toContain('positive integer');
   });
 });
