@@ -13,18 +13,18 @@
             <fields-config > </fields-config>
         </div>
         <div>
-            <redundancy-config :redundancy-config="{{redundancy_config}}"></redundancy-config>
+            <redundancy-config :redundancy-config="{{consensus_config}}"></redundancy-config>
         </div>
     </div>
 </div>
 
-<script src="/static/js/gen/answerfieldsconfig.min.1faeb808b925ee3acc5c.js"></script>
+<script src="/static/js/gen/answerfieldsconfig.min.de95e17d9e066e2e3aa3.js"></script>
 
 <script>
 answerFields.setData({
     csrf: '{{csrf}}',
     answerFields: {{answer_fields | safe}},
-    consensus: {{redundancy_config | safe}}
+    consensus: {{consensus_config | safe}}
 });
 </script>
 {% endblock %}
