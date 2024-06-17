@@ -3,8 +3,9 @@ let country_name_to_country_code = new Map(Object.entries({{ country_name_to_cou
 let country_code_to_country_name = new Map(Object.entries({{ country_code_to_country_name }}))
 
 // hide location dropdown, use country code and country name instead
-$("#input-form > form > div:nth-child(3)").hide();
-$('#locations').val([]);
+let locations = $("#locations")
+locations.parent().hide();
+locations.val([]);
 
 $("#edit-button").on('click', function () {
   $("#input-form").removeClass("hidden");
