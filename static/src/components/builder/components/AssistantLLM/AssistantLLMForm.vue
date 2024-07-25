@@ -192,7 +192,7 @@ export default {
           "seed": null,
           "repetition_penalty": 1.0
     }`,
-      modelOptions: { 'FLAN-UL2': 'flan-ul2' },
+      modelOptions: { 'MIXTRAL-8x7B-INSTRUCT': 'mixtral-8x7b-instruct' },
       EditableOptions: {
         'Response': 'response',
         'Prompt': 'prompt',
