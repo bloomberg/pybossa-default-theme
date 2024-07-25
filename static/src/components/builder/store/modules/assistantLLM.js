@@ -14,7 +14,7 @@ const initialState = () => {
     },
     promptSourceType: 'variable',
     useStaticPromptPreview: false,
-    model: 'flan-ul2',
+    model: 'mixtral-8x7b-instruct',
     modelParams: '',
     pybAnswer: '',
     editable: 'none',
