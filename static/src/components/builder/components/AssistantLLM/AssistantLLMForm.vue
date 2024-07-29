@@ -187,7 +187,7 @@ export default {
         `{
           "max_tokens": 16,
           "temperature": 1.0,
-          "top_p": 1.0,
+          "top_p": 0.9,
           "seed": null,
           "frequency_penalty": 0.0
     }`,
