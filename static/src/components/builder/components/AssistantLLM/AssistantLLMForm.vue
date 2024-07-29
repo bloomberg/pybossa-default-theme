@@ -185,12 +185,11 @@ export default {
     return {
       model_params_placeholder:
         `{
-          "max_new_tokens": 16,
+          "max_tokens": 16,
           "temperature": 1.0,
-          "top_k": 3,
           "top_p": 1.0,
           "seed": null,
-          "repetition_penalty": 1.0
+          "frequency_penalty": 0.0
     }`,
       modelOptions: { 'MIXTRAL-8x7B-INSTRUCT': 'mixtral-8x7b-instruct' },
       EditableOptions: {
