@@ -30,11 +30,10 @@
     <div id="annotation_config" class="col-md-4">
         {{ render_project_card_option(project, upload_method, title=_('Annotation Settings'), explanation=_('Configure parameters related to annotation'), link=url_for('project.annotation_config', short_name=project.short_name), link_action_text=_('Annotation'), icon='cogs')}}
     </div>
-    {% if private_instance %}
     <div id="assign_users_to_project" class="col-md-4">
         {{ render_project_card_option(project, upload_method, title=_('Assign Users To Project'), explanation=_('Assign users to project based on matching data access levels'), link=url_for('project.assign_users', short_name=project.short_name), link_action_text=_('Assign Users'), icon='users')}}
     </div>
-    {% endif %}
+
 {% endif %}
 </div>
 
