@@ -62,6 +62,14 @@
         </div>
     </fieldset>
 </form>
+<br>
+<form id="remove-password-form" method="post" action="{{ url_for('project.remove_password', short_name = project.short_name) }}">
+    <div class="form-actions">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <input type="hidden" name="password" value="" />
+        <button type="submit" class="btn btn-primary" value="Remove Project Password">{{_('Remove Project Password')}}</button>
+    </div>
+</form>
 
 <h3>{{_('Project secret key')}}</h3>
 <div class="input-group">
