@@ -53,7 +53,17 @@
         {% endif %}
         <a name="data-access"></a>
         {{ render_field(form.password, type="password", class_="password", placeholder="Leave blank to maintain set password") }}
-        <div id="password-requirements">{{ form.password.render_kw.placeholder }}</div>
+        <div id="password-requirements">
+            <div style="float:left;">
+                {{ form.password.render_kw.placeholder }}
+            </div>
+            {% if not config.get('PROJECT_PASSWORD_REQUIRED') %}
+            <div style="float:right;">
+                <a class="link-opacity-100" style="font-style: normal;" href="#" id="remove-password-link">Remove Project Password</a>
+            </div>
+            {% endif %}
+            <div style="clear:both"></div>
+        </div>
         {% if 'data_access' in form %}
             {{ render_select2_field(form.data_access, config.DATA_ACCESS_MESSAGE.replace('SHORT_NAME', project.short_name) if config.DATA_ACCESS_MESSAGE else None) }}
         {% endif %}
@@ -62,7 +72,16 @@
         </div>
     </fieldset>
 </form>
-
+{% if not config.get('PROJECT_PASSWORD_REQUIRED') %}
+<br>
+<form id="remove-password-form" method="post" action="{{ url_for('project.remove_password', short_name = project.short_name) }}" onsubmit="return confirm('Do you really want to remove your project password?');" style="display: none;">
+    <div class="form-actions">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <input type="hidden" name="password" value="" />
+        <button type="submit" class="btn btn-danger" value="Remove Project Password">{{_('Remove Project Password')}}</button>
+    </div>
+</form>
+{% endif %}
 <h3>{{_('Project secret key')}}</h3>
 <div class="input-group">
     <input type="password" name="secret-key" class="form-control" id="project-secret-key" style="width:100%;" readonly value="{{project.secret_key}}">
@@ -102,6 +121,16 @@
         });
     })
 </script>
+{% if not config.get('PROJECT_PASSWORD_REQUIRED') %}
+<script>
+    $(document).ready(function() {
+            $('#remove-password-link').click(function(event) {
+                event.preventDefault();
+                $('#remove-password-form').submit();
+            });
+        });
+</script>
+{% endif %}
 <link rel="stylesheet" href="{{url_for('static', filename='css/cropper.min.css')}}" type="text/css" />
 <script type="text/javascript">
     //Show/hide secret key
