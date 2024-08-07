@@ -66,7 +66,8 @@
         </div>
     </fieldset>
 </form>
-
+{% if not config.get('PROJECT_PASSWORD_REQUIRED') %}
+<br>
 <form id="remove-password-form" method="post" action="{{ url_for('project.remove_password', short_name = project.short_name) }}" onsubmit="return confirm('Do you really want to remove your project password?');" style="display: none;">
     <div class="form-actions">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
@@ -74,6 +75,7 @@
         <button type="submit" class="btn btn-danger" value="Remove Project Password">{{_('Remove Project Password')}}</button>
     </div>
 </form>
+{% endif %}
 <h3>{{_('Project secret key')}}</h3>
 <div class="input-group">
     <input type="password" name="secret-key" class="form-control" id="project-secret-key" style="width:100%;" readonly value="{{project.secret_key}}">
@@ -113,6 +115,7 @@
         });
     })
 </script>
+{% if not config.get('PROJECT_PASSWORD_REQUIRED') %}
 <script>
     $(document).ready(function() {
             $('#remove-password-link').click(function(event) {
@@ -121,6 +124,7 @@
             });
         });
 </script>
+{% endif %}
 <link rel="stylesheet" href="{{url_for('static', filename='css/cropper.min.css')}}" type="text/css" />
 <script type="text/javascript">
     //Show/hide secret key
