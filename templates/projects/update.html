@@ -53,10 +53,16 @@
         {% endif %}
         <a name="data-access"></a>
         {{ render_field(form.password, type="password", class_="password", placeholder="Leave blank to maintain set password") }}
-        <div id="password-requirements">{{ form.password.render_kw.placeholder }}
+        <div id="password-requirements">
+            <div style="float:left;">
+                {{ form.password.render_kw.placeholder }}
+            </div>
             {% if not config.get('PROJECT_PASSWORD_REQUIRED') %}
-            <a class="link-opacity-100" style="font-style: normal;" href="#" id="remove-password-link">Remove Project Password</a>
+            <div style="float:right;">
+                <a class="link-opacity-100" style="font-style: normal;" href="#" id="remove-password-link">Remove Project Password</a>
+            </div>
             {% endif %}
+            <div style="clear:both"></div>
         </div>
         {% if 'data_access' in form %}
             {{ render_select2_field(form.data_access, config.DATA_ACCESS_MESSAGE.replace('SHORT_NAME', project.short_name) if config.DATA_ACCESS_MESSAGE else None) }}
