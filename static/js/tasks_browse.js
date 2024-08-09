@@ -108,6 +108,21 @@ $(document).ready(function() {
         refresh();
     });
 
+    $('#assignUserModal').on('show.bs.modal', function(event) {
+        const match = /assign_user=([^&#=]*)/.exec(window.location.search);
+        match.length && $('#assign_user').val(match[1]);
+    });
+
+    $('#saveAssignUserModal').click(function() {
+        var modal = $('#assignUserModal');
+
+        var keyword = modal.find('.modal-body #assign_user').val();
+        filter_data['assign_user'] = keyword;
+
+        modal.modal('hide');
+        refresh();
+    });
+
     $('.records_per_page').click(function() {
         records_per_page = parseInt($(this).text());
         refresh();
