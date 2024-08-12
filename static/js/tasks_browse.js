@@ -1,5 +1,6 @@
 ;(function(){
 var dateModalInfo = '';
+var textModalFieldName = '';
 
 function dirtyView(showHint = true) {
     if (filter_data.changed === false) {
@@ -108,16 +109,33 @@ $(document).ready(function() {
         refresh();
     });
 
-    $('#assignUserModal').on('show.bs.modal', function(event) {
-        const match = /assign_user=([^&#=]*)/.exec(window.location.search);
-        match.length && $('#assign_user').val(match[1]);
+    $('#textModal').on('show.bs.modal', function(event) {
+        const button = $(event.relatedTarget);
+
+        // Get the target field name for the url parameter value for this modal.
+        textModalFieldName = button.data('info');
+
+        // Check if a value should be loaded into the modal from the url parameter.
+        const match = new RegExp(`${textModalFieldName}=([^&#=]*)`).exec(window.location.search);
+        match && $('#text-value').val(match[1]);
     });
 
-    $('#saveAssignUserModal').click(function() {
-        var modal = $('#assignUserModal');
+    $('#textModal').on('shown.bs.modal', function () {
+        $('#text-value').focus();
+    })
 
-        var keyword = modal.find('.modal-body #assign_user').val();
-        filter_data['assign_user'] = keyword;
+    $('#text-value').keypress(function(event) {
+        // Enter key pressed.
+        if (event.which === 13) {
+            $('#saveTextModal').click();
+        }
+    });
+
+    $('#saveTextModal').click(function() {
+        var modal = $('#textModal');
+
+        var fieldValue = modal.find('.modal-body #text-value').val();
+        filter_data[textModalFieldName] = fieldValue;
 
         modal.modal('hide');
         refresh();
