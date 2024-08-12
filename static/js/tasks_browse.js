@@ -120,7 +120,7 @@ $(document).ready(function() {
         match && $('#text-value').val(match[1]);
     });
 
-    $('#textModal').on('shown.bs.modal', function () {
+    $('#textModal').on('shown.bs.modal', function() {
         $('#text-value').focus();
     })
 
@@ -132,6 +132,11 @@ $(document).ready(function() {
     });
 
     $('#saveTextModal').click(function() {
+       /* To add a new filter to Browse Tasks, use the following HTML button and include the name of the url parameter to filter.
+          The url parameter is specified in data-info.
+          <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                  data-target="#textModal"
+                  data-info="assign_user">Filter</button> */
         var modal = $('#textModal');
 
         var fieldValue = modal.find('.modal-body #text-value').val();
