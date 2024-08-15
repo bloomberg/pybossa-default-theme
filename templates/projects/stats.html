@@ -24,7 +24,7 @@
             {% if config.get('STATS_DASHBOARD_URL') %}
                 {% set dashboard_url = config.get('STATS_DASHBOARD_URL') + "?var-project_id=" + project.id|string + "&var-task_source=GIGWORK_" + ("PRIV" if private_instance else "PUBLIC") %}
                 <div class="row" style="margin-top: 2em;" id="grafana-link">
-                    <a class="btn btn-primary" target="_blank" href="{{dashboard_url}}">Grafana Metrics Dashboard</a>
+                    <a class="btn btn-primary" target="_blank" href="{{dashboard_url}}">Metrics Dashboard</a>
                 </div>
             {% endif %}
             <!-- Hour Stats CARD -->
