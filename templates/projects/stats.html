@@ -14,16 +14,19 @@
         {% else %}
         <br/>
             {% if private %}
-            <div class="row">
-                <div class="alert alert-info">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong>{{_('Important')}}:</strong> {{_('Data have been')}} <strong>{{_('anonymized')}}!</strong>
+                <div class="row">
+                    <div class="alert alert-info">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>{{_('Important')}}:</strong> {{_('Data have been')}} <strong>{{_('anonymized')}}!</strong>
+                    </div>
                 </div>
-            </div>
             {% endif %}
-            <div class="row" style="margin-top: 2em;" id="grafana-link">
-                <a class="btn btn-primary" target="_blank" href="https://grafana.prod.bloomberg.com/d/f59623f5-0ab2-4849-80d3-f4ef8bda7259/poc-crowd-task-metrics?var-project_id={{project.id}}&var-task_source=GIGWORK_{{'PRIV' if private_instance else 'PUBLIC'}}">Grafana Metrics Dashboard</a>
-            </div>
+            {% if config.get('STATS_DASHBOARD_URL') %}
+                {% set dashboard_url = config.get('STATS_DASHBOARD_URL') + "?var-project_id=" + project.id|string + "&var-task_source=GIGWORK_" + ("PRIV" if private_instance else "PUBLIC") %}
+                <div class="row" style="margin-top: 2em;" id="grafana-link">
+                    <a class="btn btn-primary" target="_blank" href="{{dashboard_url}}">Grafana Metrics Dashboard</a>
+                </div>
+            {% endif %}
             <!-- Hour Stats CARD -->
             <div id="card" class="row">
                 <div class="col-md-12">
