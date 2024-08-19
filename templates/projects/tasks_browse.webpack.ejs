@@ -288,7 +288,9 @@
                 <th>&nbsp;</th>
                 {% endif %}
                 {% if 'assigned_users' in filter_data.display_columns %}
-                <th>&nbsp;</th>
+                <th>
+                   <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#textModal" data-info="assign_user">Filter</button>
+                </th>
                 {% endif %}
                 {% if 'in_progress' in filter_data.display_columns %}
                 <th>
@@ -555,6 +557,30 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" id='saveDateModal'>Search</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Text Modal -->
+<div class="modal fade" id="textModal" tabindex="-1" role="dialog" aria-labelledby="textModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="textModalLabel">Edit Filter</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon" style="width: 70px;">Keyword:</div>
+                <input class="form-control input-sm" type="text" id="text-value" style="width: 180px;" placeholder="keyword" />
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id='saveTextModal'>Search</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>

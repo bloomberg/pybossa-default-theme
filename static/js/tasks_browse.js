@@ -1,5 +1,6 @@
 ;(function(){
 var dateModalInfo = '';
+var textModalFieldName = '';
 
 function dirtyView(showHint = true) {
     if (filter_data.changed === false) {
@@ -103,6 +104,43 @@ $(document).ready(function() {
 
         filter_data[info + '_from'] = from;
         filter_data[info + '_to'] = to;
+
+        modal.modal('hide');
+        refresh();
+    });
+
+    $('#textModal').on('show.bs.modal', function(event) {
+        const button = $(event.relatedTarget);
+
+        // Get the target field name for the url parameter value for this modal.
+        textModalFieldName = button.data('info');
+
+        // Check if a value should be loaded into the modal from the url parameter.
+        const match = new RegExp(`${textModalFieldName}=([^&#=]*)`).exec(window.location.search);
+        match && $('#text-value').val(match[1]);
+    });
+
+    $('#textModal').on('shown.bs.modal', function() {
+        $('#text-value').focus();
+    })
+
+    $('#text-value').keypress(function(event) {
+        // Enter key pressed.
+        if (event.which === 13) {
+            $('#saveTextModal').click();
+        }
+    });
+
+    $('#saveTextModal').click(function() {
+       /* To add a new filter to Browse Tasks, use the following HTML button and include the name of the url parameter to filter.
+          The url parameter is specified in data-info.
+          <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                  data-target="#textModal"
+                  data-info="assign_user">Filter</button> */
+        var modal = $('#textModal');
+
+        var fieldValue = modal.find('.modal-body #text-value').val();
+        filter_data[textModalFieldName] = fieldValue;
 
         modal.modal('hide');
         refresh();
