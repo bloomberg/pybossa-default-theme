@@ -115,6 +115,9 @@ $(document).ready(function() {
         // Get the target field name for the url parameter value for this modal.
         textModalFieldName = button.data('info');
 
+        // Set the label for the keyword textbox.
+        $('#text-modal-keyword-label').text(button.data('label') || 'Keyword');
+
         // Check if a value should be loaded into the modal from the url parameter.
         const match = new RegExp(`${textModalFieldName}=([^&#=]*)`).exec(window.location.search);
         match && $('#text-value').val(match[1]);
