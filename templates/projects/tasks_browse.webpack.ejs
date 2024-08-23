@@ -289,7 +289,7 @@
                 {% endif %}
                 {% if 'assigned_users' in filter_data.display_columns %}
                 <th>
-                   <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#textModal" data-info="assign_user">Filter</button>
+                   <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#textModal" data-info="assign_user" data-label="Email">Filter</button>
                 </th>
                 {% endif %}
                 {% if 'in_progress' in filter_data.display_columns %}
@@ -442,8 +442,8 @@
                 </td>
                 {% endif %}
                 {% if 'assigned_users' in filter_data.display_columns %}
-                <td>
-                  {{ t.assigned_users }}
+                <td title="{{ t.assigned_users_emails|join(', ') }}">
+                  {{ t.assigned_users|join(', ') }}
                 </td>
                 {% endif %}
                 {% if 'in_progress' in filter_data.display_columns %}
@@ -574,7 +574,7 @@
       <div class="modal-body">
         <div class="form-group">
             <div class="input-group">
-                <div class="input-group-addon" style="width: 70px;">Keyword:</div>
+                <div id="text-modal-keyword-label" class="input-group-addon" style="width: 70px;"></div>
                 <input class="form-control input-sm" type="text" id="text-value" style="width: 180px;" placeholder="keyword" />
             </div>
         </div>
