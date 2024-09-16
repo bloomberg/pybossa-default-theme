@@ -65,6 +65,22 @@
           </div>
         </div>
       </div>
+
+      <div class="form-group row">
+        <div class="col-md-6">
+          <p> Reset Task Presented Time Upon Canceling Task </p>
+        </div>
+        <div class="col-md-6 pull-right">
+          <label class="switch">
+            <input
+              v-model="resetPresentedTime"
+              type="checkbox"
+            >
+            <span class="slider" />
+          </label>
+        </div>
+      </div>
+
       <div class="form-group row">
         <div class="col-md-6">
           <p> Default Task Redundancy </p>
@@ -161,7 +177,8 @@ export default {
       currentRedundancy: null,
       goldtaskProbability: 0,
       remaining: 0,
-      webhook: null
+      webhook: null,
+      resetPresentedTime: false
     };
   },
 
@@ -248,6 +265,21 @@ export default {
         window.pybossaNotify('An error occurred.', true, 'error');
       }
 
+      try {
+        const res = await fetch(this.getURL('project-config'), {
+          method: 'GET',
+          headers: {
+            'content-type': 'application/json'
+          },
+          credentials: 'same-origin'
+        });
+        const dataProjConfig = await res.json();
+        this.resetPresentedTime = dataProjConfig.reset_presented_time || false;
+        this.csrfToken = dataProjConfig.csrf;
+      } catch (error) {
+        window.pybossaNotify('An error occurred.', true, 'error');
+      }
+
       this.waiting = false;
     },
 
@@ -290,6 +322,19 @@ export default {
           credentials: 'same-origin',
           body: JSON.stringify(data)
         });
+
+        let dataResetPresentedTime = {
+          reset_presented_time: this.resetPresentedTime
+        };
+        const resetPresentedTimeRes = await fetch(this.getURL('project-config'), {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            'X-CSRFToken': this.csrfToken
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(dataResetPresentedTime)
+        });
         const redundancyRes = await fetch(this.getURL('tasks/redundancy'), {
           method: 'POST',
           headers: {
@@ -317,8 +362,10 @@ export default {
           credentials: 'same-origin',
           body: JSON.stringify(notificationData)
         });
-        if (timeoutRes.ok && redundancyRes.ok && schedulerRes.ok && taskNotificationRes.ok) {
+
+        if (timeoutRes.ok && redundancyRes.ok && schedulerRes.ok && taskNotificationRes.ok && resetPresentedTimeRes.ok) {
           const timeoutData = await timeoutRes.json();
+          const resetPresentedTimeData = await resetPresentedTimeRes.json();
           const redundancyData = await redundancyRes.json();
           const schedulerData = await schedulerRes.json();
           const taskNotificationData = await taskNotificationRes.json();
@@ -326,6 +373,8 @@ export default {
             window.pybossaNotify('scheduler config. ' + schedulerData['flash'], true, schedulerData['status']);
           } else if (timeoutData['status'] !== 'success') {
             window.pybossaNotify('timeout config. ' + timeoutData['flash'], true, timeoutData['status']);
+          } else if (resetPresentedTimeData['status'] !== 'success') {
+            window.pybossaNotify('reset presented time config. ' + resetPresentedTimeData['flash'], true, resetPresentedTimeData['status']);
           } else if (redundancyData['status'] !== 'success') {
             window.pybossaNotify('redundancy config. ' + redundancyData['flash'], true, redundancyData['status']);
           } else if (taskNotificationData['status'] !== 'success') {

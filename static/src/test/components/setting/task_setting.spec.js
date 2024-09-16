@@ -69,7 +69,7 @@ describe('taskConfig', () => {
   it('render fields', () => {
     const wrapper = shallowMount(taskConfig);
     const p = wrapper.findAll('p');
-    expect(p).toHaveLength(8);
+    expect(p).toHaveLength(9);
     const button = wrapper.findAll('button');
     expect(button).toHaveLength(1);
   });
@@ -89,8 +89,8 @@ describe('taskConfig', () => {
     await localVue.nextTick();
     await localVue.nextTick();
     await localVue.nextTick();
-    expect(fetch.mock.calls).toHaveLength(8);
-    expect(notify.mock.calls).toHaveLength(5);
+    expect(fetch.mock.calls).toHaveLength(10);
+    expect(notify.mock.calls).toHaveLength(6);
   });
 
   it('saves config - invalid input', async () => {
@@ -108,8 +108,8 @@ describe('taskConfig', () => {
     await localVue.nextTick();
     await localVue.nextTick();
     await localVue.nextTick();
-    expect(fetch.mock.calls).toHaveLength(4);
-    expect(notify.mock.calls).toHaveLength(5);
+    expect(fetch.mock.calls).toHaveLength(5);
+    expect(notify.mock.calls).toHaveLength(6);
   });
 
   it('saves config fails', async () => {
@@ -122,7 +122,7 @@ describe('taskConfig', () => {
     await localVue.nextTick();
     await localVue.nextTick();
     await localVue.nextTick();
-    expect(fetch.mock.calls).toHaveLength(4);
-    expect(notify.mock.calls).toHaveLength(5);
+    expect(fetch.mock.calls).toHaveLength(5);
+    expect(notify.mock.calls).toHaveLength(6);
   });
 });
