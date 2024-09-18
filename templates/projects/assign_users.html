@@ -36,22 +36,33 @@
 </script>
 
 <script>
+    const setupTooltips = () => {
+        // Set a tooltip as the email address for each multiselect option.
+        $('#selected_users option').each(function() {
+            const userId = $(this).val();
+            const userEmail = $(this).data('email');
+
+            // Find the corresponding "a" link element by data-value attribute
+            const $linkElement = $('.item[data-value="' + userId + '"]');
+
+            // Add a title attribute to the "a" link element using the user's email
+            $linkElement.attr('title', userEmail);
+
+            $linkElement.click(function() {
+                // Initialize tooltips after selecting an option, after the menu is rebuilt.
+                setTimeout(() => {
+                    setupTooltips();
+                }, 0);
+            });
+       });
+    }
+
     $(document).ready(function() {
         $('select').multi({
             search_placeholder: 'Search Users...'
         });
 
-        // Set a tooltip as the email address for each multiselect option.
-        $('#selected_users option').each(function() {
-            var userId = $(this).val();
-            var userEmail = $(this).data('email');
-
-            // Find the corresponding "a" link element by data-value attribute
-            var $linkElement = $('.item[data-value="' + userId + '"]');
-
-            // Add a title attribute to the "a" link element using the user's email
-            $linkElement.attr('title', userEmail);
-        });
+        setupTooltips();
     });
 </script>
 <!-- Le styles -->
