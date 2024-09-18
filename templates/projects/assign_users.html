@@ -55,6 +55,20 @@
                 }, 0);
             });
        });
+
+       $('#assign_users .search-input').keyup(function() {
+            // Initialize tooltips after entering a search term, after the menu is rebuilt.
+            setTimeout(() => {
+                setupTooltips();
+            }, 0);
+       });
+
+       $('#assign_users .search-input').on('paste', function() {
+            // Initialize tooltips after entering a search term, after the menu is rebuilt.
+            setTimeout(() => {
+                setupTooltips();
+            }, 0);
+       });
     }
 
     $(document).ready(function() {
