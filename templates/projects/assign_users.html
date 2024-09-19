@@ -63,6 +63,13 @@
         });
 
         setupTooltips();
+
+        $('#assign_users .search-input').on('keyup paste cut', function() {
+            // Initialize tooltips after entering a search term, after the menu is rebuilt.
+            setTimeout(() => {
+                setupTooltips();
+            }, 0);
+        });
     });
 </script>
 <!-- Le styles -->
