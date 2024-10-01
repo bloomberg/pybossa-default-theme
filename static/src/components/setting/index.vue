@@ -76,8 +76,9 @@
                   >
                   <div class="col-md-12 scroll">
                     <div
-                      v-for="u in searchResult"
+                      v-for="u in sortedUsers(searchResult)"
                       id="users"
+                      :title="u.email_addr"
                       :key="u.id"
                       class="row"
                       :value="u"
@@ -98,14 +99,15 @@
                 <td>
                   <div class="col-md-12 scroll">
                     <div
-                      v-for="id in assignee"
+                      v-for="u in sortedUsers(assignee)"
                       id="users"
-                      :key="id"
+                      :title="u.email_addr"
+                      :key="u.id"
                       class="row"
-                      :value="id"
-                      @click="remove($event, id)"
+                      :value="u.id"
+                      @click="remove($event, u.id)"
                     >
-                      <p> {{ users[id].fullname }}</p>
+                      <p> {{ u.fullname }}</p>
                     </div>
                   </div>
                 </td>
@@ -204,12 +206,13 @@ export default {
       return users;
     },
 
-    getUsers (allUsers) {
-      let users = {};
-      allUsers.forEach(function (u) {
-        users[u.id] = u;
-      });
-      return users;
+    getUsers(allUsers) {
+      return allUsers
+        .filter(u => u.enabled)
+        .reduce((users, u) => {
+          users[u.id] = u;
+          return users;
+        }, {});
     },
 
     getURL (keyword) {
@@ -217,6 +220,17 @@ export default {
       let res = path.split('/');
       res[res.length - 1] = keyword;
       return res.join('/');
+    },
+
+    sortedUsers(usersOrIds) {
+      // Sorts an array of user objects or user ids.
+      const isIds = typeof usersOrIds[0] !== 'object';
+      const users = isIds ? usersOrIds.map(id => this.users[id]) : usersOrIds;
+
+      // Sort the users by their last name.
+      return users.slice().sort((a, b) => {
+        return a.last_name.localeCompare(b.last_name, undefined, { sensitivity: 'base' });
+      });
     },
 
     add (event, ur) {
