@@ -149,6 +149,22 @@
           </div>
         </div>
       </div>
+
+      <div class="form-group row">
+        <div class="col-md-4">
+          <p> {{ownership_id_title}} </p>
+        </div>
+        <div class="col-md-8 pull-right">
+          <input
+            v-model="ownership_id"
+            type="text"
+            class="form-control input-sm"
+            placeholder="Ownership ID"
+          >
+        </div>
+      </div>
+
+
       <div>
         <button
           class="btn btn-sm btn-primary"
@@ -179,6 +195,8 @@ export default {
       contactResult: [],
       coownerQuery: '',
       contactQuery: '',
+      ownership_id: {},
+      ownership_id_title: "Ownership ID",
       waiting: false
     };
   },
@@ -204,11 +222,10 @@ export default {
       return users;
     },
 
-    getURL () {
-      //
+    getURL (keyword) {
       let path = window.location.pathname;
       let res = path.split('/');
-      res[res.length - 1] = 'coowners';
+      res[res.length - 1] = keyword;
       return res.join('/');
     },
 
@@ -222,7 +239,7 @@ export default {
         this.contactQuery = null;
       }
 
-      const res = await fetch(this.getURL(), {
+      const res = await fetch(this.getURL('coowners'), {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -240,9 +257,9 @@ export default {
     },
 
     async getData () {
+      this.waiting = true;
       try {
-        this.waiting = true;
-        const res = await fetch(this.getURL(), {
+        const res = await fetch(this.getURL('coowners'), {
           method: 'GET',
           headers: {
             'content-type': 'application/json'
@@ -251,6 +268,20 @@ export default {
         });
         const data = await res.json();
         this.initialize(data);
+      } catch (error) {
+        window.pybossaNotify('An error occurred.', true, 'error');
+      }
+      try {
+        const res = await fetch(this.getURL('ownership_id'), {
+          method: 'GET',
+          headers: {
+            'content-type': 'application/json'
+          },
+          credentials: 'same-origin'
+        });
+        const data = await res.json();
+        this.ownership_id = data.ownership_id
+        this.ownership_id_title = data.title
       } catch (error) {
         window.pybossaNotify('An error occurred.', true, 'error');
       } finally {
@@ -303,14 +334,15 @@ export default {
     async save () {
       const coowners = Object.keys(this.coowners);
       const contacts = Object.keys(this.contacts);
+      // Reset and hide drop-downs with search results.
+      this.coownerResult = [];
+      this.contactResult = [];
+      this.coownerQuery = null;
+      this.contactQuery = null;
+      this.waiting = true;
+
       try {
-        this.waiting = true;
-        // Reset and hide drop-downs with search results.
-        this.coownerResult = [];
-        this.contactResult = [];
-        this.coownerQuery = null;
-        this.contactQuery = null;
-        const res = await fetch(this.getURL(), {
+        const res = await fetch(this.getURL('coowners'), {
           method: 'POST',
           headers: {
             'content-type': 'application/json',
@@ -332,7 +364,29 @@ export default {
         }
       } catch (error) {
         window.pybossaNotify('An error occurred configuring ownership config.', true, 'error');
-      } finally {
+      }
+      try {
+        const res = await fetch(this.getURL('ownership_id'), {
+          method: 'PUT',
+          headers: {
+            'content-type': 'application/json',
+            'X-CSRFToken': this.csrfToken
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify({ ownership_id: this.ownership_id })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          this.ownership_id = data.ownership_id
+          window.pybossaNotify(data['flash'], true, data['status']);
+        } else {
+          window.pybossaNotify('An error occurred configuring ownership id.', true, 'error');
+        }
+      } catch (error) {
+        window.pybossaNotify('An error occurred configuring ownership id.', true, 'error');
+      }
+
+      finally {
         this.waiting = false;
       }
     }
