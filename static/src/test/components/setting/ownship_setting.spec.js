@@ -26,7 +26,7 @@ describe('ownershipConfig', () => {
     }));
     const wrapper = shallowMount(ownershipConfig);
     await localVue.nextTick();
-    expect(fetch.mock.calls).toHaveLength(1);
+    expect(fetch.mock.calls).toHaveLength(2);
     expect(notify.mock.calls).toHaveLength(0);
     expect(wrapper.vm._data.owner.id).toBe(1);
     expect(Object.keys(wrapper.vm._data.coowners)).toHaveLength(1);
@@ -39,7 +39,7 @@ describe('ownershipConfig', () => {
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' } };
     wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' } };
     const p = wrapper.findAll('p');
-    expect(p).toHaveLength(8);
+    expect(p).toHaveLength(9);
     const button = wrapper.findAll('button');
     expect(button).toHaveLength(3);
   });
@@ -50,7 +50,7 @@ describe('ownershipConfig', () => {
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
     wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
     const p = wrapper.findAll('p');
-    expect(p).toHaveLength(8);
+    expect(p).toHaveLength(9);
   });
 
   it('search users', async () => {
@@ -73,14 +73,14 @@ describe('ownershipConfig', () => {
     wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
     wrapper.vm._data.coownerResult = [];
     wrapper.vm._data.contactResult = [];
-    expect(wrapper.findAll('p')).toHaveLength(8);
+    expect(wrapper.findAll('p')).toHaveLength(9);
     const textBox = wrapper.findAll("input[type='text']").at(0); // Coowners query textbox
     textBox.element.value = 'test';
     textBox.trigger('input');
     const searchButton = wrapper.findAll('button').at(0); // Search users button
     searchButton.trigger('click');
     await localVue.nextTick();
-    expect(wrapper.findAll('p')).toHaveLength(8); // valid search results
+    expect(wrapper.findAll('p')).toHaveLength(9); // valid search results
     expect(notify.mock.calls).toHaveLength(0); // no error alert
   });
 
@@ -93,7 +93,7 @@ describe('ownershipConfig', () => {
     wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
     wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
-    expect(wrapper.findAll('p')).toHaveLength(8);
+    expect(wrapper.findAll('p')).toHaveLength(9);
     const searchButton = wrapper.findAll('button').at(0); // Search users button
     searchButton.trigger('click');
     await localVue.nextTick();
@@ -121,14 +121,14 @@ describe('ownershipConfig', () => {
     wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
     wrapper.vm._data.coownerResult = [];
     wrapper.vm._data.contactResult = [];
-    expect(wrapper.findAll('p')).toHaveLength(8);
+    expect(wrapper.findAll('p')).toHaveLength(9);
     const textBox = wrapper.findAll("input[type='text']").at(1); // Contacts query text box
     textBox.element.value = 'test';
     textBox.trigger('input');
     const searchButton = wrapper.findAll('button').at(1); // Search contacts button
     searchButton.trigger('click');
     await localVue.nextTick();
-    expect(wrapper.findAll('p')).toHaveLength(8); // valid search results
+    expect(wrapper.findAll('p')).toHaveLength(9); // valid search results
     expect(notify.mock.calls).toHaveLength(0); // no error alert
   });
 
@@ -141,7 +141,7 @@ describe('ownershipConfig', () => {
     wrapper.vm._data.owner = { id: 1, fullname: 'user1' };
     wrapper.vm._data.coowners = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
     wrapper.vm._data.contacts = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
-    expect(wrapper.findAll('p')).toHaveLength(8);
+    expect(wrapper.findAll('p')).toHaveLength(9);
     const searchButton = wrapper.findAll('button').at(1); // Search contacts button
     searchButton.trigger('click');
     await localVue.nextTick();
@@ -225,8 +225,8 @@ describe('ownershipConfig', () => {
     const saveButton = wrapper.findAll('button').at(2);
     saveButton.trigger('click');
     await localVue.nextTick();
-    expect(fetch.mock.calls).toHaveLength(2);
-    expect(notify.mock.calls).toHaveLength(2);
+    expect(fetch.mock.calls).toHaveLength(4);
+    expect(notify.mock.calls).toHaveLength(4);
   });
 
   it('saves config fails', async () => {
@@ -241,7 +241,7 @@ describe('ownershipConfig', () => {
     const saveButton = wrapper.findAll('button').at(2);
     saveButton.trigger('click');
     await localVue.nextTick();
-    expect(fetch.mock.calls).toHaveLength(2);
-    expect(notify.mock.calls).toHaveLength(2);
+    expect(fetch.mock.calls).toHaveLength(4);
+    expect(notify.mock.calls).toHaveLength(4);
   });
 });
