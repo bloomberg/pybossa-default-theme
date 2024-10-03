@@ -152,7 +152,7 @@
 
       <div class="form-group row">
         <div class="col-md-4">
-          <p> {{ownership_id_title}} </p>
+          <p> {{ ownership_id_title }} </p>
         </div>
         <div class="col-md-8 pull-right">
           <input
@@ -163,7 +163,6 @@
           >
         </div>
       </div>
-
 
       <div>
         <button
@@ -196,7 +195,7 @@ export default {
       coownerQuery: '',
       contactQuery: '',
       ownership_id: {},
-      ownership_id_title: "Ownership ID",
+      ownership_id_title: 'Ownership ID',
       waiting: false
     };
   },
@@ -280,8 +279,8 @@ export default {
           credentials: 'same-origin'
         });
         const data = await res.json();
-        this.ownership_id = data.ownership_id
-        this.ownership_id_title = data.title
+        this.ownership_id = data.ownership_id;
+        this.ownership_id_title = data.title;
       } catch (error) {
         window.pybossaNotify('An error occurred.', true, 'error');
       } finally {
@@ -377,16 +376,14 @@ export default {
         });
         if (res.ok) {
           const data = await res.json();
-          this.ownership_id = data.ownership_id
+          this.ownership_id = data.ownership_id;
           window.pybossaNotify(data['flash'], true, data['status']);
         } else {
           window.pybossaNotify('An error occurred configuring ownership id.', true, 'error');
         }
       } catch (error) {
         window.pybossaNotify('An error occurred configuring ownership id.', true, 'error');
-      }
-
-      finally {
+      } finally {
         this.waiting = false;
       }
     }

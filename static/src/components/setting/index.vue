@@ -78,8 +78,8 @@
                     <div
                       v-for="u in sortedUsers(searchResult)"
                       id="users"
-                      :title="u.email_addr"
                       :key="u.id"
+                      :title="u.email_addr"
                       class="row"
                       :value="u"
                       @click="add($event, u)"
@@ -101,8 +101,8 @@
                     <div
                       v-for="u in sortedUsers(assignee)"
                       id="users"
-                      :title="u.email_addr"
                       :key="u.id"
+                      :title="u.email_addr"
                       class="row"
                       :value="u.id"
                       @click="remove($event, u.id)"
@@ -206,7 +206,7 @@ export default {
       return users;
     },
 
-    getUsers(allUsers) {
+    getUsers (allUsers) {
       return allUsers
         .filter(u => u.enabled)
         .reduce((users, u) => {
@@ -222,7 +222,7 @@ export default {
       return res.join('/');
     },
 
-    sortedUsers(usersOrIds) {
+    sortedUsers (usersOrIds) {
       // Sorts an array of user objects or user ids.
       const isIds = typeof usersOrIds[0] !== 'object';
       const users = isIds ? usersOrIds.map(id => this.users[id]) : usersOrIds;
