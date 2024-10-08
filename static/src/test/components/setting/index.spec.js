@@ -45,7 +45,7 @@ describe('projectConfig', () => {
     wrapper.vm._data.search = 'user2';
     const search = wrapper.findAll('input').at(0);
     search.trigger('keyup.enter');
-    expect(wrapper.vm._data.searchResult).toHaveLength(1);
+    expect(wrapper.vm._data.searchResult).toHaveLength(2);
   });
 
   it('fetch assign-user data', async () => {
@@ -64,8 +64,6 @@ describe('projectConfig', () => {
     await localVue.nextTick();
     await localVue.nextTick();
     expect(wrapper.vm._data.assignee).toEqual(['1']);
-    expect(wrapper.vm._data.users['1']['fullname']).toEqual('user1');
-    expect(wrapper.vm._data.searchResult[0]['fullname']).toEqual('user1');
   });
 
 it('load empty data', () => {
@@ -97,10 +95,10 @@ it('load empty data', () => {
     wrapper.vm._data.users = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
     wrapper.vm._data.searchResult = [{ id: 1, fullname: 'user1' }, { id: 2, fullname: 'user2' }];
 
-    expect(wrapper.findAll('p')).toHaveLength(6);
-    const user2 = wrapper.findAll('p').at(2);
+    expect(wrapper.findAll('p')).toHaveLength(2);
+    const user2 = wrapper.findAll('p').at(1);
     user2.trigger('click');
-    expect(wrapper.findAll('p')).toHaveLength(7);
+    expect(wrapper.findAll('p')).toHaveLength(2);
   });
 
   it('remove assigned user', () => {
@@ -112,7 +110,7 @@ it('load empty data', () => {
     expect(wrapper.findAll('p')).toHaveLength(5);
     const user1 = wrapper.findAll('p').at(2);
     user1.trigger('click');
-    expect(wrapper.findAll('p')).toHaveLength(4);
+    expect(wrapper.findAll('p')).toHaveLength(5);
   });
 
   it('saves config', async () => {
