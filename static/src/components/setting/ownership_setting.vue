@@ -194,14 +194,17 @@ export default {
       contactResult: [],
       coownerQuery: '',
       contactQuery: '',
-      ownership_id: {},
-      ownership_id_title: 'Ownership ID',
-      waiting: false
+      ownershipId: '',
+      ownershipIdTitle: 'Ownership ID',
+      waiting: false,
+      projectId: ''
     };
   },
 
   created () {
     this.getData();
+    this.getOwnershipIdTitle();
+    this.getProjectId();
   },
 
   methods: {
@@ -221,11 +224,33 @@ export default {
       return users;
     },
 
-    getURL (keyword) {
+    getCoownersURL () {
       let path = window.location.pathname;
       let res = path.split('/');
-      res[res.length - 1] = keyword;
+      res[res.length - 1] = 'coowners';
       return res.join('/');
+    },
+
+    getProjectApiURL () {
+      return `/api/project/${this.projectId}`;
+    },
+
+    getOwnershipIdTitle () {
+      let element = document.getElementById('ownership-id-title');
+      if (element == null) {
+        window.pybossaNotify('An error occurred.', true, 'error');
+        return;
+      }
+      this.ownershipIdTitle = element.innerText;
+    },
+
+    getProjectId () {
+      let element = document.getElementById('project-id');
+      if (element == null) {
+        window.pybossaNotify('An error occurred.', true, 'error');
+        return;
+      }
+      this.projectId = element.innerText;
     },
 
     async search (user, contact) {
@@ -237,8 +262,7 @@ export default {
       } else {
         this.contactQuery = null;
       }
-
-      const res = await fetch(this.getURL('coowners'), {
+      const res = await fetch(this.getCoownersURL(), {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -258,7 +282,7 @@ export default {
     async getData () {
       this.waiting = true;
       try {
-        const res = await fetch(this.getURL('coowners'), {
+        const res = await fetch(this.getCoownersURL(), {
           method: 'GET',
           headers: {
             'content-type': 'application/json'
@@ -271,7 +295,7 @@ export default {
         window.pybossaNotify('An error occurred.', true, 'error');
       }
       try {
-        const res = await fetch(this.getURL('ownership_id'), {
+        const res = await fetch(this.getProjectApiURL(), {
           method: 'GET',
           headers: {
             'content-type': 'application/json'
@@ -279,8 +303,7 @@ export default {
           credentials: 'same-origin'
         });
         const data = await res.json();
-        this.ownership_id = data.ownership_id;
-        this.ownership_id_title = data.title;
+        this.ownershipId = data.info.ownership_id == null ? '' : data.info.ownership_id;
       } catch (error) {
         window.pybossaNotify('An error occurred.', true, 'error');
       } finally {
@@ -304,6 +327,12 @@ export default {
 
     removeContact (event, id) {
       Vue.delete(this.contacts, id);
+    },
+
+    validateOwnershipId () {
+      let reg = new RegExp('^[0-9]+$');
+      return this.ownershipId.length === 0 ||
+        (reg.test(this.ownershipId) && this.ownershipId.length <= 20);
     },
 
     async searchCoowners () {
@@ -331,6 +360,11 @@ export default {
     },
 
     async save () {
+      if (!this.validateOwnershipId()) {
+        window.pybossaNotify(`${this.ownershipIdTitle} must be numeric and less than 20 characters!`, true, 'error');
+        return;
+      }
+
       const coowners = Object.keys(this.coowners);
       const contacts = Object.keys(this.contacts);
       // Reset and hide drop-downs with search results.
@@ -339,9 +373,8 @@ export default {
       this.coownerQuery = null;
       this.contactQuery = null;
       this.waiting = true;
-
       try {
-        const res = await fetch(this.getURL('coowners'), {
+        const res = await fetch(this.getCoownersURL(), {
           method: 'POST',
           headers: {
             'content-type': 'application/json',
@@ -365,19 +398,23 @@ export default {
         window.pybossaNotify('An error occurred configuring ownership config.', true, 'error');
       }
       try {
-        const res = await fetch(this.getURL('ownership_id'), {
+        let body = {
+          'info': {
+            'ownership_id': this.ownershipId
+          }
+        };
+        const res = await fetch(this.getProjectApiURL(), {
           method: 'PUT',
           headers: {
             'content-type': 'application/json',
             'X-CSRFToken': this.csrfToken
           },
           credentials: 'same-origin',
-          body: JSON.stringify({ ownership_id: this.ownership_id })
+          body: JSON.stringify(body)
         });
         if (res.ok) {
           const data = await res.json();
-          this.ownership_id = data.ownership_id;
-          window.pybossaNotify(data['flash'], true, data['status']);
+          this.ownershipId = data.info.ownership_id;
         } else {
           window.pybossaNotify('An error occurred configuring ownership id.', true, 'error');
         }
@@ -396,14 +433,17 @@ export default {
   font-size: 100%;
   margin-right: 10px
 }
+
 .fa-times {
-  margin-left:3px;
-  color:silver
+  margin-left: 3px;
+  color: silver
 }
+
 .fa-times:hover {
   color: red
 }
+
 .form-control.input-sm {
-    width: 280px;
+  width: 280px;
 }
 </style>
