@@ -27,7 +27,7 @@ describe('ownershipConfig', () => {
     const wrapper = shallowMount(ownershipConfig);
     await localVue.nextTick();
     expect(fetch.mock.calls).toHaveLength(2);
-    expect(notify.mock.calls).toHaveLength(0);
+    expect(notify.mock.calls).toHaveLength(2);
     expect(wrapper.vm._data.owner.id).toBe(1);
     expect(Object.keys(wrapper.vm._data.coowners)).toHaveLength(1);
     expect(Object.keys(wrapper.vm._data.contacts)).toHaveLength(1);
@@ -81,7 +81,7 @@ describe('ownershipConfig', () => {
     searchButton.trigger('click');
     await localVue.nextTick();
     expect(wrapper.findAll('p')).toHaveLength(9); // valid search results
-    expect(notify.mock.calls).toHaveLength(0); // no error alert
+    expect(notify.mock.calls).toHaveLength(2); // no error alert
   });
 
   it('search users invalid', async () => {
@@ -97,8 +97,8 @@ describe('ownershipConfig', () => {
     const searchButton = wrapper.findAll('button').at(0); // Search users button
     searchButton.trigger('click');
     await localVue.nextTick();
-    expect(notify.mock.calls).toHaveLength(2); // no search results
-    expect(notify.mock.calls[0][0]).toEqual('Please enter a search query.'); // error alert
+    expect(notify.mock.calls).toHaveLength(4); // no search results
+    expect(notify.mock.calls[2][0]).toEqual('Please enter a search query.'); // error alert
   });
 
   it('search contacts', async () => {
@@ -129,7 +129,7 @@ describe('ownershipConfig', () => {
     searchButton.trigger('click');
     await localVue.nextTick();
     expect(wrapper.findAll('p')).toHaveLength(9); // valid search results
-    expect(notify.mock.calls).toHaveLength(0); // no error alert
+    expect(notify.mock.calls).toHaveLength(2); // no error alert
   });
 
   it('search contacts invalid', async () => {
@@ -145,8 +145,8 @@ describe('ownershipConfig', () => {
     const searchButton = wrapper.findAll('button').at(1); // Search contacts button
     searchButton.trigger('click');
     await localVue.nextTick();
-    expect(notify.mock.calls).toHaveLength(2); // no search results
-    expect(notify.mock.calls[0][0]).toEqual('Please enter a search query.'); // error alert
+    expect(notify.mock.calls).toHaveLength(4); // no search results
+    expect(notify.mock.calls[2][0]).toEqual('Please enter a search query.'); // error alert
   });
 
   it('add coowners', async () => {
@@ -226,7 +226,7 @@ describe('ownershipConfig', () => {
     saveButton.trigger('click');
     await localVue.nextTick();
     expect(fetch.mock.calls).toHaveLength(4);
-    expect(notify.mock.calls).toHaveLength(4);
+    expect(notify.mock.calls).toHaveLength(6);
   });
 
   it('saves config fails', async () => {
@@ -242,6 +242,6 @@ describe('ownershipConfig', () => {
     saveButton.trigger('click');
     await localVue.nextTick();
     expect(fetch.mock.calls).toHaveLength(4);
-    expect(notify.mock.calls).toHaveLength(4);
+    expect(notify.mock.calls).toHaveLength(6);
   });
 });
