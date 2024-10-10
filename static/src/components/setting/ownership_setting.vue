@@ -239,7 +239,7 @@ export default {
       let element = document.getElementById('ownership-id-title');
       if (element == null) {
         window.pybossaNotify('An error occurred.', true, 'error');
-        return
+        return;
       }
       this.ownershipIdTitle = element.innerText;
     },
@@ -248,7 +248,7 @@ export default {
       let element = document.getElementById('project-id');
       if (element == null) {
         window.pybossaNotify('An error occurred.', true, 'error');
-        return
+        return;
       }
       this.projectId = element.innerText;
     },
@@ -303,11 +303,10 @@ export default {
           credentials: 'same-origin'
         });
         const data = await res.json();
-        this.ownershipId = data.info.ownership_id == null ? '' : data.info.ownership_id
+        this.ownershipId = data.info.ownership_id == null ? '' : data.info.ownership_id;
       } catch (error) {
         window.pybossaNotify('An error occurred.', true, 'error');
-      }
-      finally {
+      } finally {
         this.waiting = false;
       }
     },
@@ -332,7 +331,7 @@ export default {
 
     validateOwnershipId () {
       let reg = new RegExp('^[0-9]+$');
-      return this.ownershipId.length == 0 ||
+      return this.ownershipId.length === 0 ||
         (reg.test(this.ownershipId) && this.ownershipId.length <= 20);
     },
 
@@ -363,7 +362,7 @@ export default {
     async save () {
       if (!this.validateOwnershipId()) {
         window.pybossaNotify(`${this.ownershipIdTitle} must be numeric and less than 20 characters!`, true, 'error');
-        return
+        return;
       }
 
       const coowners = Object.keys(this.coowners);
@@ -400,10 +399,10 @@ export default {
       }
       try {
         let body = {
-          "info": {
-            "ownership_id": this.ownershipId
+          'info': {
+            'ownership_id': this.ownershipId
           }
-        }
+        };
         const res = await fetch(this.getProjectApiURL(), {
           method: 'PUT',
           headers: {
