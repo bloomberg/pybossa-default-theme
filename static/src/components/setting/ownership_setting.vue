@@ -171,11 +171,21 @@ export default {
     },
 
     getOwnershipIdTitle() {
-      this.ownershipIdTitle = document.getElementById('ownership-id-title').innerText
+      let element = document.getElementById('ownership-id-title')
+      if (element == null) {
+        window.pybossaNotify('An error occurred.', true, 'error');
+        return
+      }
+      this.ownershipIdTitle = element.innerText
     },
 
     getProjectId() {
-      this.projectId = document.getElementById('project-id').innerText
+      let element = document.getElementById('project-id')
+      if (element == null) {
+        window.pybossaNotify('An error occurred.', true, 'error');
+        return
+      }
+      this.projectId = element.innerText
     },
 
     async search(user, contact) {
