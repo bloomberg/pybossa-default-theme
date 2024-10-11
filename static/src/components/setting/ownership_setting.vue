@@ -152,11 +152,11 @@
 
       <div class="form-group row">
         <div class="col-md-4">
-          <p> {{ ownership_id_title }} </p>
+          <p> {{ ownershipIdTitle }} </p>
         </div>
         <div class="col-md-8 pull-right">
           <input
-            v-model="ownership_id"
+            v-model="ownershipId"
             type="text"
             class="form-control input-sm"
             placeholder="Ownership ID"
