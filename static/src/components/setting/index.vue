@@ -18,6 +18,12 @@
             v-for="field in category.fields"
             :key="field.name"
           >
+            <multiselect
+              v-if="field.type==='MultiSelect'"
+              v-model="externalConfigDict[field.name]"
+              :options="field.choices"
+              :multiple="true"
+            />
             <input
               v-if="field.type==='TextField'"
               v-model="externalConfigDict[field.name]"
