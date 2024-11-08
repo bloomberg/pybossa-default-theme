@@ -111,7 +111,7 @@
         {% if filter_columns %}
           {% if current_user.id in project.owners_ids or current_user.subadmin or current_user.admin %}
             <li class="dropdown" id="info-columns">
-                <button class="dropdown-toggle btn btn-sm" type="button" id="btn-filter-columns" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Display task info"><span class="fa fa-database"><span class="caret"></span></button>
+                <button class="dropdown-toggle btn btn-sm" type="button" id="btn-filter-columns" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Filter task info fields in display and export"><span class="fa fa-database"><span class="caret"></span></button>
                 <ul class="dropdown-menu" aria-labelledby="btn-filter-columns">
                     {% for column_name in filter_columns %}
                         <li><a href="#" class="info_columns_settings" data-value={{column_name}} tabIndex='-1'><input type="checkbox" {{ "checked" if column_name in info_columns }}/>&nbsp; {{column_name}}</a></li>
@@ -861,7 +861,7 @@
 </div>
 </div>
 
-<script src="/static/js/gen/task_browse.min.f2e6528dac3d3e51542c.js"></script>
+<script src="/static/js/gen/task_browse.min.b133db75a73f853b96d8.js"></script>
 <script type="text/javascript">
     function autoRefresh() {
       window.location.reload();
