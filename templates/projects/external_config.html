@@ -23,6 +23,11 @@
 <p>For more information on these settings, please consult the <a href={{config.EXT_CONFIG_DOCS}}>External Configurations documentation</a>.</p>
 {% endif %}
 
+{% if not is_admin %}
+    <h3>Authorized Services</h3>
+    <span>{{ authorized_services|join(', ') }}</span>
+{% endif %}
+
 {% for (form_name, display, form) in forms %}
     <h3>{{display}}</h3>
     {{render_form(form, form_id=form_name, action_url=url_for('project.ext_config', short_name=project.short_name), action_text='Submit', class_='', btn_name=form_name, btn_class='btn btn-default', btn_value=None)}}

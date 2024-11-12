@@ -5,6 +5,14 @@
       class="col-md-12"
       :style="waiting && 'opacity: 0.5'"
     >
+      <div class="form-group row" v-if="!isAdmin">
+        <div class="col-md-5">
+          <p>Authorized Services</p>
+        </div>
+        <div class="col-md-7 pull-right">
+          <span>{{ authorizedServices.join(", ") }}</span>
+        </div>
+      </div>
       <div
         v-for="category in inputFields"
         :key="category.display"
@@ -192,13 +200,14 @@ export default {
       externalConfigDict: {},
       waiting: false,
       completed_tasks_cleanup_days: null,
-      allow_taskrun_edit: false
+      allow_taskrun_edit: false,
+      authorizedServices: [],
+      isAdmin: false,
     };
   },
   created () {
     this.getData();
   },
-
   methods: {
     hasLevel (level) {
       return this.dataAccessConfig.includes(level);
@@ -278,6 +287,8 @@ export default {
         }
         this.inputFields = dataProjConfig.forms;
         this.externalConfigDict = JSON.parse(dataProjConfig.external_config_dict);
+        this.authorizedServices = dataProjConfig.authorized_services;
+        this.isAdmin = dataProjConfig.is_admin;
         if (JSON.parse(dataProjConfig.data_access).length > 0) {
             this.dataAccessConfigured = true;
         }
