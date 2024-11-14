@@ -121,7 +121,7 @@
                       :value="u.id"
                       @click="remove($event, u.id)"
                     >
-                      <p> {{ u.fullname }}</p>
+                      <p class="assigned-user"> {{ u.fullname }}</p>
                     </div>
                   </div>
                 </td>

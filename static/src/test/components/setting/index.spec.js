@@ -1,4 +1,4 @@
-import { mount, shallowMount, createLocalVue } from '@vue/test-utils';
+import { createLocalVue, mount, shallowMount } from '@vue/test-utils';
 import projectConfig from '../../../components/setting/index.vue';
 
 const localVue = createLocalVue();
@@ -14,7 +14,7 @@ describe('projectConfig', () => {
   });
 
   let VALID_ACCESS_LEVELS = [ [ 'L1', 'L1' ], [ 'L2', 'L2' ], [ 'L3', 'L3' ], [ 'L4', 'L4' ] ];
-  let EXT_CONF = { target_bucket: 'bucket' };
+  let EXT_CONF = { target_bucket: 'bucket', authorized_services: [] };
 
   it('fetch external config and access data', async () => {
     let response = {
@@ -66,51 +66,72 @@ describe('projectConfig', () => {
     expect(wrapper.vm._data.assignee).toEqual(['1']);
   });
 
-it('load empty data', () => {
-  propsData = {
-    csrfTRoken: null,
-    externalConfig: {},
-    externalConfigForm: []
-  };
-  const wrapper = shallowMount(projectConfig, { propsData });
-  expect(wrapper.vm._data.dataAccessConfigured).toEqual(false);
-  expect(wrapper.vm._data.users).toEqual({});
-});
+  it('load empty data', () => {
+    propsData = {
+      csrfTRoken: null,
+      externalConfig: {},
+      externalConfigForm: []
+    };
+    const wrapper = shallowMount(projectConfig, { propsData });
+    expect(wrapper.vm._data.dataAccessConfigured).toEqual(false);
+    expect(wrapper.vm._data.users).toEqual({});
+  });
 
   it('show external config', () => {
-    const wrapper = shallowMount(projectConfig, { propsData });
-    wrapper.vm._data.externalConfigDict = { target_bucket: 'bucket', cluster: 'c1' };
-    wrapper.vm._data.inputFields = {
-      gigwork_poller: { display: 'test1', fields: [{ type: 'TextField', name: 'target_bucket' }] },
-      hdfs: { display: 'test2', fields: [{ type: 'SelectField', name: 'cluster', choices: [('c1', 'option1')] }] }
-    };
-    expect(wrapper.findAll('p')).toHaveLength(4);
+    const wrapper = shallowMount(projectConfig,
+      {
+        data() {
+          return {
+            externalConfigDict: { target_bucket: 'bucket', cluster: 'c1' },
+            inputFields: {
+              gigwork_poller: { display: 'test1', fields: [{ type: 'TextField', name: 'target_bucket' }] },
+              hdfs: { display: 'test2', fields: [{ type: 'SelectField', name: 'cluster', choices: [('c1', 'option1')] }] }
+            },
+            isAdmin: false
+          }
+        }
+      }
+    );
+    expect(wrapper.findAll('p')).toHaveLength(5);
     expect(wrapper.findAll('input')).toHaveLength(2);
     expect(wrapper.findAll('select')).toHaveLength(2);
   });
 
   it('add assigned user', () => {
-    const wrapper = shallowMount(projectConfig);
-    wrapper.vm._data.assignee = ['1'];
-    wrapper.vm._data.users = { 1: { id: 1, fullname: 'user1' }, 2: { id: 2, fullname: 'user2' } };
-    wrapper.vm._data.searchResult = [{ id: 1, fullname: 'user1' }, { id: 2, fullname: 'user2' }];
-
-    expect(wrapper.findAll('p')).toHaveLength(2);
-    const user2 = wrapper.findAll('p').at(1);
+    const wrapper = shallowMount(projectConfig,
+      {
+        data() {
+          return {
+            assignee: ['1'],
+            users: [{ 1: { id: 1, fullname: 'sally fields', last_name: 'fields' }}, {2: { id: 2, fullname: 'tom hanks', last_name: 'hanks' } }],
+            searchResult: [{ id: 1, fullname: 'sally fields', last_name: 'fields' }, { id: 2, fullname: 'tom hanks', last_name: 'hanks' }]
+          }
+        }
+      }
+    );
+    expect(wrapper.findAll('#assign-user-column p')).toHaveLength(2);
+    const user2 = wrapper.findAll('#assign-user-column p').at(1);
     user2.trigger('click');
-    expect(wrapper.findAll('p')).toHaveLength(2);
+    expect(wrapper.findAll('#assign-user-column p')).toHaveLength(2);
   });
 
-  it('remove assigned user', () => {
-    const wrapper = shallowMount(projectConfig);
-    wrapper.vm._data.assignee = ['1'];
-    wrapper.vm._data.users = { 1: { id: 1, fullname: 'user' } };
-    wrapper.vm._data.searchResult = [{ id: 1, fullname: 'user' }];
-
-    expect(wrapper.findAll('p')).toHaveLength(5);
-    const user1 = wrapper.findAll('p').at(2);
+  it('remove assigned user', async () => {
+    const wrapper = shallowMount(projectConfig,
+    {
+        data() {
+          return {
+            assignee: ['1'],
+            users: { 1: { id: 1, fullname: 'user 1', last_name: '1' } },
+            searchResult: [{ id: 1, fullname: 'user 1', last_name: '1' }],
+            isAdmin: false
+          }
+        }
+    });
+    expect(wrapper.findAll('p.assigned-user')).toHaveLength(1);
+    const user1 = wrapper.findAll('#users').at(1);
     user1.trigger('click');
-    expect(wrapper.findAll('p')).toHaveLength(5);
+    await localVue.nextTick();
+    expect(wrapper.findAll('p.assigned-user')).toHaveLength(1);
   });
 
   it('saves config', async () => {
