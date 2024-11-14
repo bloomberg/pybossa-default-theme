@@ -58,7 +58,7 @@
                                 {% if value|length and value[0][1] != None %}
                                     {% set ids = value|map(attribute='1')|join(',') %}
                                     {% set count = ids.split(",") | length %}
-                                    <a href="#" class="stat-link" data-toggle="modal" data-target="#statsModal" data-ids="{{ ids }}" data-names="{{ value|map(attribute='2')|join(',') }}" data-owner-names="{{ value|map(attribute='4')|join(',') }}" data-owner-emails="{{ value|map(attribute='5')|join(',') }}">{{ count }}</a>
+                                    <a href="#" class="stat-link" data-toggle="modal" data-target="#statsModal" data-ids="{{ ids }}" data-names="{{ value|map(attribute='2')|join(',') }}" data-owner-names="{{ value|map(attribute='4')|join(',') }}" data-owner-emails="{{ value|map(attribute='5')|join(',') }}" data-last-submissions="{{ value|map(attribute='6')|join(',') }}" data-project-published="{{ value|map(attribute='7')|join(',') }}">{{ count }}</a>
                                 {% elif value|length %}
                                     {{ value[0][0] }}
                                 {% else %}
@@ -88,6 +88,8 @@
                                         <th>Project ID</th>
                                         <th>Project Name</th>
                                         <th>Owner</th>
+                                        <th>Last Submission Date</th>
+                                        <th>Published</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -146,18 +148,34 @@ $(document).ready(function() {
         const names = `${$(this).data('names')}`.split(',');
         const owner_names = `${$(this).data('owner-names')}`.split(',');
         const owner_emails = `${$(this).data('owner-emails')}`.split(',');
+        const last_submissions = `${$(this).data('last-submissions')}`.split(',');
+        const project_published = `${$(this).data('project-published')}`.split(',');
         const table = document.getElementById('project-table').getElementsByTagName('tbody')[0];
 
-        // Clear the table before adding new rows
+        const formattedSubmissions = last_submissions.map(dateString => {
+            dateString = dateString.trim();
+
+            return (dateString === "None" || dateString === "") ? "-" : new Date(dateString).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric'
+            });
+        });
+
+        // Clear the table before adding new rows.
         table.innerHTML = '';
         for (let i = 0; i < ids.length; i++) {
             const row = table.insertRow();
             const cell1 = row.insertCell(0);
             const cell2 = row.insertCell(1);
             const cell3 = row.insertCell(2);
+            const cell4 = row.insertCell(3);
+            const cell5 = row.insertCell(4);
             cell1.textContent = ids[i].trim();
             cell2.innerHTML = `<a href="/projectid/${ids[i].trim()}" target="_blank">${names[i]}</a>`;
             cell3.innerHTML = `<span title="${owner_emails[i]}">${owner_names[i]}</span>`;
+            cell4.innerHTML = `<span title="${formattedSubmissions[i]}">${formattedSubmissions[i]}</span>`;
+            cell5.innerHTML = `<span title="${project_published[i]}">${project_published[i]}</span>`;
         }
     });
 })
