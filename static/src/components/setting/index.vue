@@ -5,7 +5,10 @@
       class="col-md-12"
       :style="waiting && 'opacity: 0.5'"
     >
-      <div class="form-group row" v-if="!isAdmin">
+      <div
+        v-if="!isAdmin"
+        class="form-group row"
+      >
         <div class="col-md-5">
           <p>Authorized Services</p>
         </div>
@@ -121,7 +124,9 @@
                       :value="u.id"
                       @click="remove($event, u.id)"
                     >
-                      <p class="assigned-user"> {{ u.fullname }}</p>
+                      <p class="assigned-user">
+                        {{ u.fullname }}
+                      </p>
                     </div>
                   </div>
                 </td>
@@ -202,7 +207,7 @@ export default {
       completed_tasks_cleanup_days: null,
       allow_taskrun_edit: false,
       authorizedServices: [],
-      isAdmin: false,
+      isAdmin: false
     };
   },
   created () {

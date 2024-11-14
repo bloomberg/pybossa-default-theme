@@ -80,7 +80,7 @@ describe('projectConfig', () => {
   it('show external config', () => {
     const wrapper = shallowMount(projectConfig,
       {
-        data() {
+        data () {
           return {
             externalConfigDict: { target_bucket: 'bucket', cluster: 'c1' },
             inputFields: {
@@ -88,7 +88,7 @@ describe('projectConfig', () => {
               hdfs: { display: 'test2', fields: [{ type: 'SelectField', name: 'cluster', choices: [('c1', 'option1')] }] }
             },
             isAdmin: false
-          }
+          };
         }
       }
     );
@@ -100,12 +100,12 @@ describe('projectConfig', () => {
   it('add assigned user', () => {
     const wrapper = shallowMount(projectConfig,
       {
-        data() {
+        data () {
           return {
             assignee: ['1'],
-            users: [{ 1: { id: 1, fullname: 'sally fields', last_name: 'fields' }}, {2: { id: 2, fullname: 'tom hanks', last_name: 'hanks' } }],
+            users: [{ 1: { id: 1, fullname: 'sally fields', last_name: 'fields' } }, { 2: { id: 2, fullname: 'tom hanks', last_name: 'hanks' } }],
             searchResult: [{ id: 1, fullname: 'sally fields', last_name: 'fields' }, { id: 2, fullname: 'tom hanks', last_name: 'hanks' }]
-          }
+          };
         }
       }
     );
@@ -118,13 +118,13 @@ describe('projectConfig', () => {
   it('remove assigned user', async () => {
     const wrapper = shallowMount(projectConfig,
     {
-        data() {
+        data () {
           return {
             assignee: ['1'],
             users: { 1: { id: 1, fullname: 'user 1', last_name: '1' } },
             searchResult: [{ id: 1, fullname: 'user 1', last_name: '1' }],
             isAdmin: false
-          }
+          };
         }
     });
     expect(wrapper.findAll('p.assigned-user')).toHaveLength(1);
