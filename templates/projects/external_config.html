@@ -23,10 +23,8 @@
 <p>For more information on these settings, please consult the <a href={{config.EXT_CONFIG_DOCS}}>External Configurations documentation</a>.</p>
 {% endif %}
 
-{% if not is_admin %}
-    <h3>Authorized Services</h3>
-    <span>{{ authorized_services|join(', ') }}</span>
-{% endif %}
+<h3>Authorized Services</h3>
+<span>{{ authorized_services|join(', ') }}</span>
 
 {% for (form_name, display, form) in forms %}
     <h3>{{display}}</h3>
