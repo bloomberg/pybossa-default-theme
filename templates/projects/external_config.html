@@ -23,13 +23,23 @@
 <p>For more information on these settings, please consult the <a href={{config.EXT_CONFIG_DOCS}}>External Configurations documentation</a>.</p>
 {% endif %}
 
-<h3>Authorized Services</h3>
-<span>{{ authorized_services|join(', ') }}</span>
 
 {% for (form_name, display, form) in forms %}
     <h3>{{display}}</h3>
     {{render_form(form, form_id=form_name, action_url=url_for('project.ext_config', short_name=project.short_name), action_text='Submit', class_='', btn_name=form_name, btn_class='btn btn-default', btn_value=None)}}
 {% endfor %}
+
+<h3>Authorized Services</h3>
+{% if authorized_services is defined and  authorized_services|length > 0 %}
+<ul>
+{% for service in authorized_services %}
+    <li>{{ service }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>No external services.</p>
+{% endif %}
+
 
 {% endif %}
 
