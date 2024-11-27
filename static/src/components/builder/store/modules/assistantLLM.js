@@ -1,5 +1,5 @@
-import * as types from '../types';
 import utils from '../../utils';
+import * as types from '../types';
 
 const initialState = () => {
   return {
@@ -14,7 +14,7 @@ const initialState = () => {
     },
     promptSourceType: 'variable',
     useStaticPromptPreview: false,
-    model: 'mixtral-8x7b-instruct',
+    model: 'mistral-nemo-instruct',
     modelParams: '',
     pybAnswer: '',
     editable: 'none',
