@@ -176,9 +176,9 @@
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex';
 import '../../../../../css/component_builder.css';
 import * as types from '../../store/types';
-import { mapMutations, mapState } from 'vuex';
 export default {
   name: 'AssistantLLMForm',
   data () {
@@ -191,7 +191,7 @@ export default {
           "seed": null,
           "frequency_penalty": 0.0
     }`,
-      modelOptions: { 'MIXTRAL-8x7B-INSTRUCT': 'mixtral-8x7b-instruct' },
+      modelOptions: { 'MISTRAL-NEMO-INSTRUCT': 'mistral-nemo-instruct' },
       EditableOptions: {
         'Response': 'response',
         'Prompt': 'prompt',
