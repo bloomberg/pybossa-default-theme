@@ -8,8 +8,10 @@
             <h1><strong>Unable to Access Project</strong></h1>
             <h3>Please confirm your project's password settings and assigned workers.</h3>
             {% if private_instance %}
+            <h4><strong>Private GIGwork</strong></h4>
             <p>Ask a project admin to ensure that you are assigned to the project.</p>
             {% else %}
+            <h4><strong>Public GIGwork</strong></h4>
             <p>Ask a project admin to ensure that the project has a password set OR that you are assigned to the
                 project.</p>
             {% endif %}
