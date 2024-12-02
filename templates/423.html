@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% set active_page = "support" %}
+
+{% block content %}
+<div class="container">
+    <div class="row" style="margin-top:50px;">
+        <div class="col-md-12">
+            <h1><strong>Unable to Access Project</strong></h1>
+            <h3>Please confirm your project's password settings and assigned workers.</h3>
+            {% if private_instance %}
+            <h4><strong>Private GIGwork</strong></h4>
+            <p>Ask a project admin to ensure that you are assigned to the project.</p>
+            {% else %}
+            <h4><strong>Public GIGwork</strong></h4>
+            <p>Ask a project admin to ensure that the project has a password set OR that you are assigned to the
+                project.</p>
+            {% endif %}
+
+            <hr>
+
+            <h4><em>For Admins:</em></h4>
+            <ol>
+                <li>To set a project password, Navigate to Project Settings → Project Details → Project Password.</li>
+                <li>To assign workers to the project, navigate to the Assign Workers tab in the top bar of the project
+                    page.</li>
+            </ol>
+        </div>
+    </div>
+</div>
+{% endblock %}
