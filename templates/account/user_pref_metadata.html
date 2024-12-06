@@ -7,7 +7,7 @@
         {% endif %}
         {% if form.data.locations %}
             <p><strong>Location(s):</strong>
-                {% for location in form.data.locations %} {{ '(' ~ location ~ ')' if location|length == 2 else location }}{% if not loop.last %}, {% endif %} {% endfor %}
+                {% for location in form.data.locations %} {{ '(' ~ location ~ ')' if location|length == 2 else location }}{% if not loop.last and location|length == 2 %}, {% endif %} {% endfor %}
             </p>
         {% endif %}
         {% if form.data.work_hours_from %}
