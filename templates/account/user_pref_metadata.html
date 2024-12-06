@@ -6,7 +6,9 @@
             <p><strong>Language(s):</strong> {{form.data.languages|join(', ') }}</p>
         {% endif %}
         {% if form.data.locations %}
-            <p><strong>Location(s):</strong> {{form.data.locations|join(', ') }}</p>
+            <p><strong>Location(s):</strong>
+                {% for location in form.data.locations %} {{ '(' ~ location ~ ')' if location|length == 2 else location }}{% if not loop.last and location|length == 2 %}, {% endif %} {% endfor %}
+            </p>
         {% endif %}
         {% if form.data.work_hours_from %}
             <p><strong>Available:</strong> {{form.data.work_hours_from}} - {{form.data.work_hours_to}} {{form.data.timezone}}</p>
