@@ -248,7 +248,7 @@ export default {
       const users = isIds ? usersOrIds.map(id => this.users[id]) : usersOrIds;
 
       // Sort the users by their last name.
-      return users.slice().sort((a, b) => {
+      return users.filter(u => u).slice().sort((a, b) => {
         return a.last_name.localeCompare(b.last_name, undefined, { sensitivity: 'base' });
       });
     },
