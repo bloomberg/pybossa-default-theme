@@ -4,25 +4,32 @@
 {% block content %}
 <div class="container">
     <div class="row" style="margin-top:50px;">
+        <style>
+            .lead {
+                color: rgb(43, 43, 43) !important;
+            }
+        </style>
         <div class="col-md-12">
             <h1><strong>Unable to Access Project</strong></h1>
-            <h3>Please confirm your project's password settings and assigned workers.</h3>
+            <p class="lead">Please confirm your project's password settings and assigned workers.</p>
             {% if private_instance %}
-            <h4><strong>Private GIGwork</strong></h4>
-            <p>Ask a project admin to ensure that you are assigned to the project.</p>
+            <p class="lead"><strong>Private GIGwork:</strong>Ask a project admin to ensure that you are assigned to the project.</p>
             {% else %}
-            <h4><strong>Public GIGwork</strong></h4>
-            <p>Ask a project admin to ensure that the project has a password set OR that you are assigned to the
+            <p class="lead"><strong>Public GIGwork:</strong> Ask a project admin to ensure that the project has a password set OR that you are assigned to the
                 project.</p>
             {% endif %}
+            <p class="lead">
+                <strong>Project Owner: </strong>
+                <span class="badge badge-info"> {{owner}}</span>
+            </p>
 
             <hr>
 
-            <h4><em>For Admins:</em></h4>
-            <ol>
-                <li>To set a project password, Navigate to Project Settings → Project Details → Project Password.</li>
-                <li>To assign workers to the project, navigate to the Assign Workers tab in the top bar of the project
-                    page.</li>
+            <h4><strong><em>For Admins:</em></strong></h4>
+            <ol class="lead">
+                <li><p class="lead">To set a project password, Navigate to Project Settings → Project Details → Project Password.</p></li>
+                <li><p class="lead">To assign workers to the project, navigate to the Assign Workers tab in the top bar of the project
+                    page.</p></li>
             </ol>
         </div>
     </div>
