@@ -321,6 +321,7 @@ export default {
 
     async save () {
         let data = {};
+        let errormsg = '';
         if (this.dataAccessConfigured && this.validAccessLevels.length > 0) {
             data = {
                 config: this.externalConfigDict,
@@ -352,6 +353,7 @@ export default {
                 const projectData = await projectRes.json();
                 if (projectData['status'] !== 'success') {
                     validConfig = false;
+                    errormsg = projectData['error_msg'];
                     window.pybossaNotify(projectData['flash'], true, projectData['status']);
                 }
             }
@@ -378,7 +380,11 @@ export default {
             if (validConfig) {
                 window.pybossaNotify('Configuration updated successfully', true, 'success');
             } else {
-                window.pybossaNotify('An error occurred configuring project config.', true, 'error');
+                if (errormsg) {
+                  window.pybossaNotify(errormsg, true, 'error');
+                } else {
+                  window.pybossaNotify('An error occurred configuring project config.', true, 'error');
+                }
             }
         } catch (error) {
             window.pybossaNotify('An error occurred configuring project config.', true, 'error');
