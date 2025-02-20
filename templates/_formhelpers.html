@@ -33,7 +33,7 @@
     {% endfor %}
 {%- endmacro %}
 
-{% macro render_select2_field(field, tooltip=None) -%}
+{% macro render_select2_field(field, tooltip=None, config={}) -%}
      <div class="form-group {% if field.errors %}has-error{% endif %} {% if field.flags.required %}required{% endif %} {{ kwargs.pop('class_', '') }}">
         <style>
             .select2-selection {
@@ -52,7 +52,7 @@
         {% endif %}
         <script>
         $(document).ready(function() {
-            $("#{{ field.id }}").select2({ placeholder: "Select multiple" });
+            $("#{{ field.id }}").select2({{ config|tojson }});
         });
         </script>
     </div>
