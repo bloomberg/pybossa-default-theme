@@ -33,7 +33,7 @@
     {% endfor %}
 {%- endmacro %}
 
-{% macro render_select2_field(field, tooltip=None, config={ placeholder: "Select multiple" }) -%}
+{% macro render_select2_field(field, tooltip=None, config={ "placeholder": "Select multiple" }) -%}
      <div class="form-group {% if field.errors %}has-error{% endif %} {% if field.flags.required %}required{% endif %} {{ kwargs.pop('class_', '') }}">
         <style>
             .select2-selection {
