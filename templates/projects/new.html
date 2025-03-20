@@ -35,11 +35,11 @@
             {{ render_field(form.kpi) }}
             {{ render_field(form.input_data_class, onchange="handleAmpStoreProps()") }}
             {{ render_field(form.output_data_class, onchange="handleAmpStoreProps()") }}
+            {{ render_field(form.ownership_id) }}
             {% if 'amp_store' in form %}
                 {{ render_checkbox_field(form.amp_store, checked=form.amp_store.data, onchange="onOptinClicked()", tooltip=_('Opt in to store annotations on Annotation Management Platform')) }}
                 {{ render_field(form.amp_pvf, placeholder=_('PVF that should be used for annotation store')) }}
             {% endif %}
-            {{ render_field(form.ownership_id) }}
             <div class="form-actions">
                 <input type="submit" value={{_('Create the project')}} class="btn btn-primary" />
                 <a href="{{url_for('account.profile', name=current_user.name)}}" class="btn btn-default">{{_('Cancel')}}</a>
