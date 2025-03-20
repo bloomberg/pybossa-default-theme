@@ -35,6 +35,7 @@
             {{ render_field(form.kpi) }}
             {{ render_field(form.input_data_class, onchange="handleAmpStoreProps()") }}
             {{ render_field(form.output_data_class, onchange="handleAmpStoreProps()") }}
+            {{ render_field(form.ownership_id) }}
             {% if 'amp_store' in form %}
                 {{ render_checkbox_field(form.amp_store, checked=form.amp_store.data, onchange="onOptinClicked()", tooltip=_('Opt in to store annotations on Annotation Management Platform')) }}
                 {{ render_field(form.amp_pvf, placeholder=_('PVF that should be used for annotation store')) }}
