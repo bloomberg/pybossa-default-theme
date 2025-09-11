@@ -1,0 +1,30 @@
+{% extends "projects/base.html" %}
+{% set active_page = "projects" %}
+{% set active_link  = "settings" %}
+{% set section = _('Configuration') %}
+{% from "_formhelpers.html" import render_form %}
+
+{% block projectcontent %}
+
+<div id="schemaconfig">
+    <div class="col-md-12">
+        <br>
+        <div >
+            <fields-config > </fields-config>
+        </div>
+        <div>
+            <schema-setting ></schema-setting>
+        </div>
+    </div>
+</div>
+
+<script src="<%= htmlWebpackPlugin.files.chunks.schemaconfig.entry %>"></script>
+
+<script>
+answerFields.setData({
+    csrf: '{{csrf}}',
+    task_info_schema: {{task_info_schema | safe}},
+    task_answer_schema: {{task_answer_schema | safe}}
+});
+</script>
+{% endblock %}
