@@ -14,6 +14,7 @@ module.exports = {
   entry: {
     editor: './editor.js',
     answerfieldsconfig: './answerfieldsconfig.js',
+    schemaconfig: './schemaconfig.js',
     component_helper: './component_helper.js',
     performancestats: './performancestats.js',
     task_browse: './task_browse.js',
@@ -81,6 +82,12 @@ module.exports = {
       hash: false,
       filename: '../../../templates/account/profile.html',
       template: '../../templates/account/profile.webpack.ejs'
+    }),
+    new HtmlWebpackPlugin({
+      inject: false,
+      hash: false,
+      filename: '../../../templates/projects/schemaconfig.html',
+      template: '../../templates/projects/schemaconfig.webpack.ejs'
     }),
     new HtmlWebpackPlugin({
       inject: false,
