@@ -43,6 +43,13 @@
 </div>
 <div id="tasksBrowseControls">
     <ul class="pull-left">
+        {% if user_reports %}
+        <li>
+          <button id="btn-download-reports" class="btn btn-sm" type="button" data-target="#download-reports-modal" data-toggle="modal" title="Download Reports">
+              <i class="fa fa-download" aria-hidden="true"></i>
+          </button>
+        </li>
+        {% endif %}
         <li>
           <button id="btn-add-bookmark" class="btn btn-sm" type="button" data-target="#addBookmarkModal" data-toggle="modal" title="Save Filter">
             <i class="fa fa-floppy-o" aria-hidden="true"></i>
@@ -518,6 +525,46 @@
                   <a class="label label-danger delete-bookmark" data-name= "{{ bookmark['name'] }}">
                     Delete
                   </a>
+                </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Download Reports Modal -->
+<div class="modal fade" id="download-reports-modal" tabindex="-1" role="dialog" aria-labelledby="downloadReportsModalLabel">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="infoModalLabel">Reports</h4>
+      </div>
+      <div class="modal-body">
+        <label for="sort-bookmarks">Available Reports For Download</label>
+        <span id="currentUsername" style="display:none">{{current_user.name}}</span>
+        <table id="bookmarksGrid" class="table table-sm table-striped table-hover border">
+          <thead>
+            <tr>
+              <th>Report</th>
+              <th class="col-md-1">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- user_reports is expected to be a list of (report_date, report_path) tuples -->
+            {% for report_date, report_name, report_path in user_reports %}
+            <tr>
+                <td>
+                  <a href="{{ report_path }}" class="label label-info">{{ report_name }}</a>
+                </td>
+                <td>
+                  <span>{{ report_date }}</span>
                 </td>
             </tr>
             {% endfor %}
