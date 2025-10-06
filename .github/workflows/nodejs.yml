@@ -12,29 +12,30 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - name: Checkout repository and submodules recursively
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         submodules: recursive
         persist-credentials: false
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        cache: 'yarn'
         cache-dependency-path: static/src/yarn.lock
     - name: Pre setup
       run: |
-        npm cache clean --force
-        rm -rf ~/.npm
         TASK_PRESENTER_VERSION=$(node -p "require('./package.json').dependencies['@dtwebservices/task-presenter-components']")
         npm install https://s3.amazonaws.com/cf-s3uploads/pybv/${TASK_PRESENTER_VERSION}/task-presenter-components.tgz
       working-directory: static/src
-    - run: yarn webpack
+    - name: Build (webpack)
+      env:
+        NODE_OPTIONS: --openssl-legacy-provider
+      run: yarn webpack
       working-directory: static/src
     - run: yarn test
       working-directory: static/src
