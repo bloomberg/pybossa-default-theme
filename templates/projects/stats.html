@@ -21,12 +21,7 @@
                     </div>
                 </div>
             {% endif %}
-            {% if config.get('STATS_DASHBOARD_URL') %}
-                {% set dashboard_url = config.get('STATS_DASHBOARD_URL') + "?var-project_id=" + project.id|string + "&var-task_source=GIGWORK_" + ("PRIV" if private_instance else "PUBLIC") %}
-                <div class="row" style="margin-top: 2em;" id="grafana-link">
-                    <a class="btn btn-primary" target="_blank" href="{{dashboard_url}}">Metrics Dashboard</a>
-                </div>
-            {% endif %}
+            {{ helper.render_stats_dashboard_link(project, private_instance) }}
             <!-- Hour Stats CARD -->
             <div id="card" class="row">
                 <div class="col-md-12">

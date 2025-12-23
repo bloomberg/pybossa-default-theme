@@ -691,3 +691,13 @@
     })();
 </script>
 {% endmacro -%}
+
+{%- macro render_stats_dashboard_link(project, private_instance) %}
+{% if config.get('STATS_DASHBOARD_URL') %}
+    {% set cluster = config.get('STATS_DASHBOARD_CLUSTER', '') %}
+    {% set dashboard_url = config.get('STATS_DASHBOARD_URL') + "?var-project_id=" + project.id|string + "&var-task_source=GIGWORK_" + ("PRIV" if private_instance else "PUBLIC") + "&from=now-30d&to=now&var-cluster=" + cluster %}
+    <div class="row" style="margin-top: 2em;" id="grafana-link">
+        <a class="btn btn-primary" target="_blank" href="{{dashboard_url}}">Metrics Dashboard</a>
+    </div>
+{% endif %}
+{% endmacro -%}
