@@ -10,9 +10,11 @@
 <div id="app-form" class="container">
     {% include "projects/wizard.html" %}
 
-    <div class=" col-sm-3 col-md-3 " style="margin-top:30px;">
-        {{ helper.render_account_local_nav(current_user, active_link, upload_method) }}
-    </div>
+    <!-- Products/Subproducts Update Banner -->
+    <div class="alert alert-warning" role="alert" style="margin-top: 20px;">
+        <i class="fa fa-exclamation-triangle"></i>
+        <strong>{{ _('Important Update:') }}</strong>
+        {{ _('We are updating the products and subproducts taxonomy for projects. See') }} <a href="{{ config.get('PRODUCTS_SUBPRODUCTS_UPDATE_DOC_URL', '#') }}" target="_blank" class="alert-link">{{ _('GIGwork documentation') }}</a>{{ _(' for full list of Product and Subproduct changes.') }}</div>
     <div class="col-sm-9 col-md-9" style="margin-top:30px;">
         <h2><strong>{{ _('Project') }}</strong>: {{ _('Create a new project') }}</h2>
         <script src="{{url_for('static', filename='js/amp_store.js')}}" type="text/javascript"></script>
@@ -56,6 +58,8 @@
 
 <script type="text/javascript">
     var ps = {{ prodsubprods | safe }};
+    var deprecatedprodssubprods = {{ deprecatedprodssubprods | tojson | safe }};
+    var deprecationWarningMsg = {{ deprecationWarningMsg | tojson | safe }};
 </script>
 
 {% assets "js_project_new" %}
