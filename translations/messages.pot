@@ -2476,3 +2476,23 @@ msgstr ""
 msgid "Score"
 msgstr ""
 
+#: themes/default/templates/projects/new.html
+#: themes/default/templates/projects/update.html
+msgid "Important Update:"
+msgstr ""
+
+#: themes/default/templates/projects/new.html
+#: themes/default/templates/projects/update.html
+msgid "We are updating the products and subproducts taxonomy for projects. See"
+msgstr ""
+
+#: themes/default/templates/projects/new.html
+#: themes/default/templates/projects/update.html
+msgid "GIGwork Documentation"
+msgstr ""
+
+#: themes/default/templates/projects/new.html
+#: themes/default/templates/projects/update.html
+msgid " for full list of Product and Subproduct changes."
+msgstr ""
+

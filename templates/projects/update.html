@@ -5,6 +5,14 @@
 
 {% block projectcontent %}
 {% from "_formhelpers.html" import render_field, render_checkbox_field, render_select2_field %}
+
+<!-- Products/Subproducts Update Banner -->
+<div class="alert alert-warning" role="alert" style="margin-bottom: 20px;">
+    <i class="fa fa-exclamation-triangle"></i>
+    <strong>{{ _('Important Update:') }}</strong>
+    {{ _('We are updating the products and subproducts taxonomy for projects. See') }} <a href="{{ config.get('PRODUCTS_SUBPRODUCTS_UPDATE_DOC_URL', '#') }}" target="_blank" class="alert-link">{{ _('GIGwork documentation') }}</a>{{ _(' for full list of Product and Subproduct changes.') }}
+</div>
+
 <h2>{{_('Update the avatar')}}</h2>
 <form method="post" action="{{ url_for('project.update', short_name=project.short_name) }}" enctype="multipart/form-data">
     <fieldset>
@@ -169,6 +177,8 @@
 <link rel="stylesheet" href="{{url_for('static', filename='css/select2.min.css')}}"/>
 <script type="text/javascript">
     var ps = {{ prodsubprods | safe }};
+    var deprecatedprodssubprods = {{ deprecatedprodssubprods | tojson | safe }};
+    var deprecationWarningMsg = {{ deprecationWarningMsg | tojson | safe }};
 </script>
 
 {% assets "js_projects_update" %}
