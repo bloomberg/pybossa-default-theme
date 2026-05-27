@@ -10,7 +10,7 @@
         {{ render_project_card_option(project, upload_method, title=_('Dashboard'), explanation=_('Internal statistics'), link=url_for('admin.dashboard'), link_action_text=_('Go'), icon='info')}}
     </div>
     <div id="backgroundjobs" class="col-md-4">
-        {{ render_project_card_option(project, upload_method, title=_('Background Jobs'), explanation=_('Monitor background jobs'), link=url_for('rq_dashboard.overview'), link_action_text=_('Monitor'), icon='search')}}
+        {{ render_project_card_option(project, upload_method, title=_('Background Jobs'), explanation=_('Monitor background jobs'), link=url_for('rq_dashboard.queues_overview'), link_action_text=_('Monitor'), icon='search')}}
     </div>
     <div id="featured-apps" class="col-md-4">
         {{ render_project_card_option(project, upload_method, title=_('Featured Projects'), explanation=_('Show projects on the front page'), link=url_for('admin.featured'), link_action_text=_('Manage'), icon='star')}}
