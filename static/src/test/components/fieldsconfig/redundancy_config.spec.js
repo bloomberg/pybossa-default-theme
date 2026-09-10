@@ -25,14 +25,14 @@ describe('RedundancyConfig', () => {
 
   it('fetch data', async () => {
     let response = {
-      consensus_config: JSON.stringify(consensusConfig),
+      consensus_config: consensusConfig,
       answer_fields: {
         testField: {
           type: 'categorical',
           config: {
             labels: ['A', 'B', 'C']
           },
-          retryForConsensus: false
+          retry_for_consensus: false
         }
       }
     };
@@ -45,6 +45,7 @@ describe('RedundancyConfig', () => {
     expect(wrapper.vm._data.consensusThreshold).toBe(80);
     expect(wrapper.vm._data.redundancyConfig).toBe(2);
     expect(wrapper.vm._data.maxRetries).toBe(10);
+    expect(store.getters.answerFields).toEqual(response.answer_fields);
   });
 
   it('does not load data', () => {

@@ -121,7 +121,7 @@
                 <button class="dropdown-toggle btn btn-sm" type="button" id="btn-filter-columns" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="Display task info"><span class="fa fa-database"><span class="caret"></span></button>
                 <ul class="dropdown-menu" aria-labelledby="btn-filter-columns">
                     {% for column_name in filter_columns %}
-                        <li><a href="#" class="info_columns_settings" data-value={{column_name}} tabIndex='-1'><input type="checkbox" {{ "checked" if column_name in info_columns }}/>&nbsp; {{column_name}}</a></li>
+                        <li><a href="#" class="info_columns_settings" data-value="{{column_name}}" tabIndex='-1'><input type="checkbox" {{ "checked" if column_name in info_columns }}/>&nbsp; {{column_name}}</a></li>
                     {% endfor %}
                 </ul>
             </li>
@@ -213,7 +213,7 @@
                 {% if 'finish_time' in filter_data.display_columns %}
                 <th class="{{'sort-asc' if filter_data.order_by['finish_time'] == 'asc'}} {{'sort-desc' if filter_data.order_by['finish_time'] == 'desc'}} sortable" data-sort="finish_time">Completed</th>
                 {% endif %}
-                {% if 'gold_task' in filter_data.display_columns %}
+                {% if can_know_task_is_gold and 'gold_task' in filter_data.display_columns %}
                 <th class="{{'sort-asc' if filter_data.order_by['gold_task'] == 'asc'}} {{'sort-desc' if filter_data.order_by['gold_task'] == 'desc'}}">Gold Task</th>
                 {% endif %}
                 {% if 'actions' in filter_data.display_columns %}
@@ -222,13 +222,13 @@
                 {% for column_name in info_columns %}
                 <th class="{{'sort-asc' if filter_data.order_by[column_name] == 'asc'}} {{'sort-desc' if filter_data.order_by[column_name] == 'desc'}} sortable" data-sort="{{column_name}}" >{{ column_name }} </th>
                 {% endfor %}
-                {% if 'lock_status' in filter_data.display_columns %}
+                {% if admin_subadmin_coowner and 'lock_status' in filter_data.display_columns %}
                 <th class="{{'sort-asc' if filter_data.order_by['lock_status'] == 'asc'}} {{'sort-desc' if filter_data.order_by['lock_status'] == 'desc'}} sortable" data-sort="lock_status">Active Users</th>
                 {% endif %}
-                {% if 'completed_by' in filter_data.display_columns %}
+                {% if admin_subadmin_coowner and 'completed_by' in filter_data.display_columns %}
                 <th>Completed By</th>
                 {% endif %}
-                {% if 'assigned_users' in filter_data.display_columns %}
+                {% if admin_subadmin_coowner and 'assigned_users' in filter_data.display_columns %}
                 <th class="{{'sort-asc' if filter_data.order_by['assigned_users'] == 'asc'}} {{'sort-desc' if filter_data.order_by['assigned_users'] == 'desc'}} sortable" data-sort="assigned_users">Assigned Users</th>
                 {% endif %}
                 {% if 'in_progress' in filter_data.display_columns %}
@@ -270,7 +270,7 @@
                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dateModal" data-info="ftime">Filter</button>
                 </th>
                 {% endif %}
-                {% if 'gold_task' in filter_data.display_columns %}
+                {% if can_know_task_is_gold and 'gold_task' in filter_data.display_columns %}
                 <th>
                     <div>
                         <select id="gold_task" class="input-sm">
@@ -288,13 +288,13 @@
                 {% for column_name in info_columns %}
                 <th>&nbsp;</th>
                 {% endfor %}
-                {% if 'lock_status' in filter_data.display_columns %}
+                {% if admin_subadmin_coowner and 'lock_status' in filter_data.display_columns %}
                 <th>&nbsp;</th>
                 {% endif %}
-                {% if 'completed_by' in filter_data.display_columns %}
+                {% if admin_subadmin_coowner and 'completed_by' in filter_data.display_columns %}
                 <th>&nbsp;</th>
                 {% endif %}
-                {% if 'assigned_users' in filter_data.display_columns %}
+                {% if admin_subadmin_coowner and 'assigned_users' in filter_data.display_columns %}
                 <th>
                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#textModal" data-info="assign_user" data-label="Email">Filter</button>
                 </th>
@@ -349,9 +349,7 @@
                         {% endif %}
                     {% else %}
                         {% if allow_taskrun_edit and (regular_user or request.args['view'] == "edit_submission") %}
-                            {% if not t.calibration %}
-                                <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='edit_submission', view=request.args['view']) }}">#{{ t.id }}</a>
-                            {% endif %}
+                            <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, task_submitter_id=current_user.id, mode='edit_submission', view=request.args['view']) }}">#{{ t.id }}</a>
                         {% else %}
                             <a class="label label-info" target="_blank" href="{{ url_for('project.task_presenter', short_name=project.short_name, task_id=t.id, mode='read_only') }}">#{{ t.id }}</a>
                         {% endif %}
@@ -383,7 +381,7 @@
                 {% if 'finish_time' in filter_data.display_columns %}
                 <td><div style="width: 100px;">{{ t.finish_time or '' }}</div></td>
                 {% endif %}
-                {% if 'gold_task' in filter_data.display_columns %}
+                {% if can_know_task_is_gold and 'gold_task' in filter_data.display_columns %}
                     {% if t.calibration %}
                         <td>
                             <div class="make-gold-cell">
@@ -438,17 +436,17 @@
                       <td>{{ t.info[column_name] }}</td>
                     {% endif %}
                 {% endfor %}
-                {% if 'lock_status' in filter_data.display_columns %}
+                {% if admin_subadmin_coowner and 'lock_status' in filter_data.display_columns %}
                 <td>
                   {{ t.lock_users }}
                 </td>
                 {% endif %}
-                {% if 'completed_by' in filter_data.display_columns %}
+                {% if admin_subadmin_coowner and 'completed_by' in filter_data.display_columns %}
                 <td>
                   {{ t.completed_users }}
                 </td>
                 {% endif %}
-                {% if 'assigned_users' in filter_data.display_columns %}
+                {% if admin_subadmin_coowner and 'assigned_users' in filter_data.display_columns %}
                 <td title="{{ t.assigned_users_emails|join(', ') }}">
                   {{ t.assigned_users|join(', ') }}
                 </td>

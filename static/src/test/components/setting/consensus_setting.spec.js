@@ -22,6 +22,20 @@ describe('ConsensusConfig', () => {
     notify = window.pybossaNotify = jest.fn();
   });
 
+  it('fetches structured config', async () => {
+    let response = { consensus_config: consensusConfig };
+    fetch.mockImplementation((arg) => ({
+      ok: true,
+      json: () => Promise.resolve(response)
+    }));
+
+    const wrapper = shallowMount(ConsensusConfig, { store, localVue });
+    await localVue.nextTick();
+
+    expect(wrapper.vm._data.consensusMethod).toBe('dice');
+    expect(wrapper.vm._data.agreementThreshold).toBe(80);
+  });
+
   it('loads empty config', () => {
     store.commit('setData', {
       answerFields: {

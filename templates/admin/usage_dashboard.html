@@ -58,9 +58,11 @@
                         <td>
                             <p>
                                 {% if value|length and value[0][1] != None %}
-                                    {% set ids = value|map(attribute='1')|join(',') %}
-                                    {% set count = ids.split(",") | length %}
-                                    <a href="#" class="stat-link" data-toggle="modal" data-target="#statsModal" data-ids="{{ ids }}" data-names="{{ value|map(attribute='2')|join(',') }}" data-owner-names="{{ value|map(attribute='4')|join(',') }}" data-owner-emails="{{ value|map(attribute='5')|join(',') }}" data-last-submissions="{{ value|map(attribute='6')|join(',') }}" data-project-published="{{ value|map(attribute='7')|join(',') }}">{{ count }}</a>
+                                    {% set rows = [] %}
+                                    {%- for record in value -%}
+                                        {%- set _ = rows.append({'id': record[1], 'name': record[2], 'owner_name': record[4], 'owner_email': record[5], 'last_submission': record[6], 'published': record[7]}) -%}
+                                    {%- endfor -%}
+                                    <a href="#" class="stat-link" data-toggle="modal" data-target="#statsModal" data-rows='{{ rows|tojson }}'>{{ rows|length }}</a>
                                 {% elif value|length %}
                                     {{ value[0][0] }}
                                 {% else %}
@@ -145,40 +147,61 @@ $(document).ready(function() {
         const title = $(this).closest('tr').find('.row-heading').text();
         $('#modal-subject').text(title);
 
-        // Get data for table rows.
-        const ids = `${$(this).data('ids')}`.split(',');
-        const names = `${$(this).data('names')}`.split(',');
-        const owner_names = `${$(this).data('owner-names')}`.split(',');
-        const owner_emails = `${$(this).data('owner-emails')}`.split(',');
-        const last_submissions = `${$(this).data('last-submissions')}`.split(',');
-        const project_published = `${$(this).data('project-published')}`.split(',');
+        // Get data for table rows. One structured JSON attribute rather than six
+        // comma-joined ones, so a project name containing a comma no longer shifts
+        // every column of every following row.
+        let rows = [];
+        try {
+            rows = JSON.parse($(this).attr('data-rows')) || [];
+        } catch (err) {
+            rows = [];
+        }
         const table = document.getElementById('project-table').getElementsByTagName('tbody')[0];
 
-        const formattedSubmissions = last_submissions.map(dateString => {
-            dateString = dateString.trim();
+        const asText = value => (value === null || value === undefined) ? '' : String(value);
+
+        const formatSubmission = dateString => {
+            dateString = asText(dateString).trim();
 
             return (dateString === "None" || dateString === "") ? "-" : new Date(dateString).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'numeric',
                 day: 'numeric'
             });
-        });
+        };
+
+        const titledSpan = (text, title) => {
+            const span = document.createElement('span');
+            span.textContent = asText(text);
+            span.setAttribute('title', asText(title));
+            return span;
+        };
 
         // Clear the table before adding new rows.
         table.innerHTML = '';
-        for (let i = 0; i < ids.length; i++) {
+        rows.forEach(record => {
             const row = table.insertRow();
-            const cell1 = row.insertCell(0);
-            const cell2 = row.insertCell(1);
-            const cell3 = row.insertCell(2);
-            const cell4 = row.insertCell(3);
-            const cell5 = row.insertCell(4);
-            cell1.textContent = ids[i].trim();
-            cell2.innerHTML = `<a href="/projectid/${ids[i].trim()}" target="_blank">${names[i]}</a>`;
-            cell3.innerHTML = `<span title="${owner_emails[i]}">${owner_names[i]}</span>`;
-            cell4.innerHTML = `<span title="${formattedSubmissions[i]}">${formattedSubmissions[i]}</span>`;
-            cell5.innerHTML = `<span title="${project_published[i]}">${project_published[i]}</span>`;
-        }
+            const id = asText(record.id).trim();
+
+            // Build every cell as text or via setAttribute, never by interpolating
+            // into an HTML string. These values reach us HTML-decoded from the data
+            // attribute, so composing markup here would undo the server-side
+            // escaping guarantees.
+            row.insertCell(0).textContent = id;
+
+            const link = document.createElement('a');
+            link.setAttribute('href', '/projectid/' + encodeURIComponent(id));
+            link.setAttribute('target', '_blank');
+            link.textContent = asText(record.name);
+            row.insertCell(1).appendChild(link);
+
+            row.insertCell(2).appendChild(titledSpan(record.owner_name, record.owner_email));
+
+            const submission = formatSubmission(record.last_submission);
+            row.insertCell(3).appendChild(titledSpan(submission, submission));
+
+            row.insertCell(4).appendChild(titledSpan(record.published, record.published));
+        });
     });
 })
 

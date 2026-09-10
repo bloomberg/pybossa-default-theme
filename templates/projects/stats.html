@@ -5,13 +5,13 @@
 {% block projectcontent %}
 <!-- Default Style -->
 <script src="{{url_for('static', filename='js/stats/flotr2.min.js')}}" type="text/javascript"></script>
-<script>
-    var projectStats = {{projectStats|safe}};
-</script>
 
         {% if enforce_privacy and (not (current_user.id in project.owners_ids) and not current_user.admin and not current_user.subadmin) %}
         {{ privacy.render_lock_page() }}
         {% else %}
+        <script>
+            var projectStats = {{ projectStats|tojson }};
+        </script>
         <br/>
             {% if private %}
                 <div class="row">

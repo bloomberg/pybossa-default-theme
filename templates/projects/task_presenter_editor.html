@@ -109,9 +109,9 @@
                           {{render_field(form.guidelines)}}
                           <div class="form-actions">
                               {% if disable_editor %}
-                              <input type="submit" name="task-guidelines" value={{ _('Update the project guidelines') }} class="btn btn-primary" disabled />
+                              <input type="submit" name="task-guidelines" value="{{ _('Update the project guidelines') }}" class="btn btn-primary" disabled />
                               {% else %}
-                              <input type="submit" name="task-guidelines" value={{ _('Update the project guidelines') }} class="btn btn-primary"/>
+                              <input type="submit" name="task-guidelines" value="{{ _('Update the project guidelines') }}" class="btn btn-primary"/>
                               {% endif %}
                               <a class="btn btn-default btn-preview-guidelines" value="preview">{{ _('Preview the task') }}</a>
                           </div>
@@ -153,7 +153,10 @@
                             </tr>
                             <tr>
                                 <td><p>Last Commit:</p></td>
-                                <td class="ref-details"><a href={{ guidelines_github.ref_url }} target="_blank">{{ guidelines_github.ref }}</a></td>
+                                <td class="ref-details">
+                                  {% if guidelines_ref_url %}<a href="{{ guidelines_ref_url }}" target="_blank">{{ guidelines_github.ref }}</a>
+                                  {% else %}{{ guidelines_github.ref }}{% endif %}
+                                </td>
                             </tr>
                             {% if guidelines_github.error %}
                             <tr>
@@ -194,9 +197,9 @@
 
                               <div class="form-actions">
                                   {% if disable_editor %}
-                                  <input type="submit" name="task-presenter" value={{ _('Update the project task presenter') }} class="btn btn-primary" disabled />
+                                  <input type="submit" name="task-presenter" value="{{ _('Update the project task presenter') }}" class="btn btn-primary" disabled />
                                   {% else %}
-                                  <input type="submit" name="task-presenter" value={{ _('Update the project task presenter') }} class="btn btn-primary" />
+                                  <input type="submit" name="task-presenter" value="{{ _('Update the project task presenter') }}" class="btn btn-primary" />
                                   {% endif %}
                                   <a href="#" class="btn btn-default btn-preview" value="preview">{{ _('Preview the task presenter') }}</a>
                                   {% if current_user.admin or current_user.subadmin %}
@@ -243,7 +246,10 @@
                             </tr>
                             <tr>
                                 <td><p>Last Commit:</p></td>
-                                <td class="ref-details"><a href={{ task_presenter_github.ref_url }} target="_blank">{{ task_presenter_github.ref }}</a></td>
+                                <td class="ref-details">
+                                  {% if task_presenter_ref_url %}<a href="{{ task_presenter_ref_url }}" target="_blank">{{ task_presenter_github.ref }}</a>
+                                  {% else %}{{ task_presenter_github.ref }}{% endif %}
+                                </td>
                             </tr>
                             {% if task_presenter_github.error %}
                             <tr>
@@ -280,16 +286,20 @@
                           </tr>
                           <tr>
                               <td><p>Synced With:</p></td>
-                              <td class="ref-details"><a href={{ project.info.sync.source_url + '/project/' + project.short_name }} target="_blank">
-                                      {{ project.info.sync.source_url + '/project/' + project.short_name }}
-                              </a></td>
+                              <td class="ref-details">
+                                {% if sync_source_url %}<a href="{{ sync_source_url + '/project/' + project.short_name }}" target="_blank">
+                                  {{ project.info.sync.source_url + '/project/' + project.short_name }}
+                                </a>
+                                {% else %}{{ project.info.sync.source_url + '/project/' + project.short_name }}{% endif %}
+                              </td>
                           </tr>
                           {% if project.info.sync.ref and project.info.sync.ref_url %}
                           <tr>
                               <td><p>GitHub Reference:</p></td>
-                              <td class="ref-details"><a href={{ project.info.sync.ref_url }} target="_blank">
-                                      {{ project.info.sync.ref }}
-                              </a></td>
+                              <td class="ref-details">
+                                {% if sync_ref_url %}<a href="{{ sync_ref_url }}" target="_blank">{{ project.info.sync.ref }}</a>
+                                {% else %}{{ project.info.sync.ref }}{% endif %}
+                              </td>
                           </tr>
                           {% endif %}
                         </table>

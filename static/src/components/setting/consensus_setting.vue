@@ -88,7 +88,7 @@ export default {
         },
 
         initialize (data) {
-            let config = JSON.parse(data.consensus_config);
+            let config = data.consensus_config;
             this.consensusMethod = config.consensus_method || consensusMethods.default;
             this.agreementThreshold = config.agreement_threshold;
             this.setPairwiseConsensus();

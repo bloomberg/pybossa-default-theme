@@ -23,8 +23,8 @@
 <script>
 answerFields.setData({
     csrf: '{{csrf}}',
-    answerFields: {{answer_fields | safe}},
-    consensus: {{consensus_config | safe}}
+    answerFields: {{answer_fields | tojson}},
+    consensus: {{consensus_config | tojson}}
 });
 </script>
 {% endblock %}

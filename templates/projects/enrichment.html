@@ -23,8 +23,8 @@
 {% endassets %}
 
 <script>
-    var enrich_data = {{ enrichments | safe }};
-    var enrichment_types = {{ enrichment_types | safe }};
+    var enrich_data = {{ enrichments | tojson }};
+    var enrichment_types = {{ enrichment_types | tojson }};
 
     var enrich_types = [];
     for(var et in enrichment_types) enrich_types.push({ Name: et, Value: et });
