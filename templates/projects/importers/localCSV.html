@@ -8,7 +8,7 @@
 {% block projectcontent %}
 <h3>{{_('From Local CSV Spreadsheet')}}</h3>
 {% if config.DATA_ACCESS_MESSAGE %}
-    <p>{{ config.DATA_ACCESS_MESSAGE|replace('SHORT_NAME', project.short_name)|safe }}</p>
+    <p>{{ config.DATA_ACCESS_MESSAGE|safe|replace('SHORT_NAME', project.short_name|e) }}</p>
 {% endif %}
 <form method="post" enctype="multipart/form-data" action="{{ url_for(target, short_name=project.short_name) }}">
    <fieldset class="import">

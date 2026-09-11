@@ -89,13 +89,13 @@ export default {
     ...mapMutations(['setCSRF', 'updateRedundancyConfig', 'setAnswerFields']),
 
     initialize (data) {
-      let config = JSON.parse(data.consensus_config);
+      let config = data.consensus_config;
       this.consensusThreshold = config.consensus_threshold;
       this.redundancyConfig = config.redundancy_config;
       this.maxRetries = config.max_retries;
       this.setCSRF(data.csrf);
       this.updateRedundancyConfig(config);
-      this.setAnswerFields(JSON.parse(data.answer_fields));
+      this.setAnswerFields(data.answer_fields);
     },
 
     _isIntegerNumeric: function (_n) {

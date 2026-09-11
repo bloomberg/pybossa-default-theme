@@ -9,7 +9,7 @@
         task runs, and results from the current project to the cloned project.
         Please set a different project name and project short name for the new project.</p>
 {% if config.DATA_ACCESS_MESSAGE %}
-    <p>{{ config.DATA_ACCESS_MESSAGE|replace('SHORT_NAME', project.short_name)|safe }}</p>
+    <p>{{ config.DATA_ACCESS_MESSAGE|safe|replace('SHORT_NAME', project.short_name|e) }}</p>
 {% endif %}
 
 {{ render_form(form, action_url=action_url) }}

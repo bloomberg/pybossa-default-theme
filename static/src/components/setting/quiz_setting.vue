@@ -8,12 +8,25 @@
       <label>
         Number of gold tasks: {{ model.n_gold_unexpired }}
       </label>
-      <p>
+      <div>
         In order to enable and configure quiz mode, this project must have at least one gold question. Please click
-        <a
-          :href="`/project/${getProjectName()}/make-random-gold`"
-        >here</a> to create gold questions.
-      </p>
+        <form
+          :action="`/project/${getProjectName()}/make-random-gold`"
+          method="post"
+          style="display: inline"
+        >
+          <input
+            :value="csrfToken"
+            name="csrf_token"
+            type="hidden"
+          >
+          <button
+            :disabled="!csrfToken"
+            class="btn btn-link"
+            type="submit"
+          >here</button>
+        </form> to create gold questions.
+      </div>
       <vue-form-generator
         ref="quizForm"
         :schema="schema"

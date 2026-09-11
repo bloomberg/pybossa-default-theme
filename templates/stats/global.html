@@ -32,9 +32,12 @@
 
                             </div>
                             <div id="users" class="col-md-6" style="height:400px;"></div>
+                            {# view/stats.py pre-serializes chart data for the shared response contract:
+                               handle_content_type decodes it for JSON responses; here, tojson embeds
+                               each string safely and JSON.parse restores the object. #}
                             <script>
                                 (function(){
-                                 var data = {{users|safe}};
+                                 var data = JSON.parse({{ users|tojson }});
                                  var container = document.getElementById('users');
                                  var graph = Flotr.draw(container, [
                                      {data:[data['values'][0]['value']], label:data['values'][0]['label']},
@@ -80,7 +83,7 @@ legend  : {position: 'se'}
                             <div id="projects" class="col-md-6" style="height:400px;"></div>
                             <script>
                                 (function(){
-                                 var data = {{projects|safe}};
+                                 var data = JSON.parse({{ projects|tojson }});
                                  var container = document.getElementById('projects');
                                  var graph = Flotr.draw(container, [
                                      {data:[data['values'][0]['value']], label:data['values'][0]['label']},
@@ -127,7 +130,7 @@ legend  : {position: 'se'}
                             <div id="tasks" class="col-md-6" style="height:400px;"></div>
                             <script>
                                 (function(){
-                                 var data = {{tasks|safe}};
+                                 var data = JSON.parse({{ tasks|tojson }});
                                  var container = document.getElementById('tasks');
                                  var graph = Flotr.draw(container, [
                                      {data:[data['values'][0]['value']], label:data['values'][0]['label']},
@@ -169,7 +172,7 @@ minZoom:1
 }).addTo(map);
 
                          var i = 0;
-                         var locations = {{locs|safe}};
+                         var locations = JSON.parse({{ locs|tojson }});
                          var l = locations.length;
                          var markers = new L.MarkerClusterGroup();
                          for (i;i<l;i++) {

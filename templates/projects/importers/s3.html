@@ -48,7 +48,7 @@
                 $('#objects').empty();
                 $.get('/amazon/bucket/'+bucketName).done(function(objects) {
                     objects.forEach(function(object){
-                        var objectElement = $('<li class="object" role="button" style="cursor:pointer;">' + object + '</li>');
+                        var objectElement = $('<li>', {class: 'object', role: 'button', style: 'cursor:pointer;'}).text(object);
                         $('#objects').append(objectElement);
                         });
                     $(".object").each(function(){

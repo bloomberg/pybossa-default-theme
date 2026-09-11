@@ -8,10 +8,6 @@ To recover your password, please visit the URL below:
 
 [Click here to recover your account]({{ recovery_url }})
 
-or provide the key below to your browser:
-
-{{ key }}
-
 Regards,
 
 {{ config.BRAND }} Team

@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block body %}
-{{blog['body'] | markdown }}
+{{blog['body'] | e | markdown }}
 <hr>
 <hr>
 {% endblock %}

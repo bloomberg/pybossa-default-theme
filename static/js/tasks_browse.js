@@ -803,7 +803,7 @@ function displayTaskInfo(taskInfo, data) {
     // Extract headers
     for (var headerName in dataInfo[0].info) {
         headers.push(headerName);
-        info += '<th>' + headerName + '</th>'
+        info += '<th>' + sanitizeHtml(headerName) + '</th>'
     }
     info += '</tr></thead><tbody>';
     for (var i = 0; i < dataInfo.length; i++) {
@@ -822,7 +822,7 @@ function displayTaskInfo(taskInfo, data) {
         info += '<thead><tr><th>Field Name</th>'
         info += '<th>Field Value</th></tr></thead><tbody>'
         for (var fieldName in dataGoldAnswers){
-            info += '<tr><td>' + fieldName + '</td>'
+            info += '<tr><td>' + sanitizeHtml(fieldName) + '</td>'
             info += '<td>' + sanitizeHtml(dataGoldAnswers[fieldName]) + '</td></tr>'
         }
         info += '</tbody></table>';
