@@ -7,8 +7,8 @@
 {% from "projects/_helpers.html" import render_project_admin_featured, broken_image %}
 
 {% block content %}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-<script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/chartist/0.11.0/chartist.min.css') }}">
+<script src="{{ url_for('static', filename='vendor/chartist/0.11.0/chartist.min.js') }}"></script>
 <style>
     .ct-bar, .ct-line, .ct-point {
         stroke: #3AB0D5 !important;
